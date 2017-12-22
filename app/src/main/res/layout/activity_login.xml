@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="3"
+    tools:context="com.example.jujiiz.mis.LoginActivity">
+
+    <LinearLayout
+        android:id="@+id/headMainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/midMainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="250dp"
+            android:hint="ชื่อผู้ใช้"
+            android:layout_height="wrap_content"
+            android:text="900001"/>
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="250dp"
+            android:hint="รหัสผ่าน"
+            android:text="asdqwe123"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="เข้าสู่ระบบ" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/footMainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+    </LinearLayout>
+
+</LinearLayout>
