@@ -31,10 +31,16 @@
         <activity android:name=".controllers.PeopleFormActivity" />
         <activity android:name=".controllers.LandFormActivity" />
         <activity android:name=".controllers.VehicalFormActivity" />
-        <activity android:name=".controllers.TR14Activity" />
+        <activity
+            android:name=".controllers.TR14Activity"
+            android:label="@string/title_activity_tr14"
+            android:theme="@style/AppTheme" />
         <activity android:name=".controllers.TR14HouseFormActivity" />
         <activity android:name=".controllers.TR14DwellerActivity" />
-        <activity android:name=".controllers.OPTActivity"></activity>
+        <activity
+            android:name=".controllers.OPTActivity"
+            android:label="@string/title_activity_opt"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
