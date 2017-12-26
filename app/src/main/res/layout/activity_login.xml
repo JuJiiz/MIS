@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="3"
-    tools:context="com.example.jujiiz.mis.LoginActivity">
+    tools:context="com.example.jujiiz.mis.controllers.LoginActivity">
 
     <LinearLayout
         android:id="@+id/headMainLayout"

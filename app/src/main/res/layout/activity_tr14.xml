@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.jujiiz.mis.controllers.HouseholdActivity"
-    tools:showIn="@layout/app_bar_household">
+    tools:context="com.example.jujiiz.mis.controllers.TR14Activity">
 
     <LinearLayout
         android:id="@+id/householdheaderLayout"
@@ -18,27 +16,36 @@
         android:orientation="horizontal"
         android:weightSum="5">
 
-        <!--หมู่บ้าน-->
-        <Spinner
-            android:id="@+id/spVName"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2.3" />
-
         <EditText
-            android:id="@+id/etSearch"
+            android:id="@+id/etAddHouseNumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1.3"
             android:hint="บ้านเลขที่"
-            android:textSize="13dp" />
-
-        <Button
-            android:id="@+id/btnSearch"
+            android:textSize="13dp"
+            android:inputType="number" />
+        <EditText
+            android:id="@+id/etAddVillageName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.2"
-            android:text="Search" />
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1.3"
+            android:hint="รหัสประจำบ้าน"
+            android:textSize="13dp"
+            android:inputType="text" />
+        <Button
+            android:id="@+id/btnAddVillage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ค้นหา"/>
+        <Button
+            android:id="@+id/btnVlaageSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.4"
+            android:text="เพิ่มหมู่บ้าน"/>
     </LinearLayout>
 
     <LinearLayout
@@ -56,8 +63,8 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="หมู่ที่"
+            android:layout_weight="2.2"
+            android:text="ชื่อหมู่บ้าน"
             android:textAlignment="viewStart"
             android:textColor="#000" />
 
@@ -72,16 +79,8 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="หมู่บ้าน"
-            android:textAlignment="center"
-            android:textColor="#000" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="สถานะงาน"
+            android:layout_weight="1.8"
+            android:text="รหัสประจำบ้าน"
             android:textAlignment="viewEnd"
             android:textColor="#000" />
     </LinearLayout>
@@ -94,7 +93,7 @@
         android:orientation="vertical">
 
         <ListView
-            android:id="@+id/lvHousehold"
+            android:id="@+id/listHousehold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></ListView>
 
@@ -108,7 +107,7 @@
         android:gravity="center"
         android:background="#f2f2f2"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <Button
             android:id="@+id/btnPrevious"

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.jujiiz.mis.controllers.TR14HouseFormActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:text="ครัวเรือน ทร.14"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="30dp" />
+
+        <Button
+            android:id="@+id/btnSavingData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="บันทึก" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ชื่อหมู่บ้าน"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <Spinner
+                android:id="@+id/etOwnertName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="เลขประจำบ้าน"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etOwnerPersonalID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="เลขประจำบ้าน"
+                android:inputType="number" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="บ้านเลขที่"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etRegisterDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="บ้านเลขที่"
+                android:inputType="number" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="เจ้าของบ้าน"
+                android:textColor="#000"
+                android:textSize="20dp" />
+
+            <RadioGroup
+                android:id="@+id/rgHouseOwner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <RadioButton
+                    android:id="@+id/rbHouseOwnerNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ไม่มี" />
+
+                <RadioButton
+                    android:id="@+id/rbHouseOwnerYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="มี" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:id="@+id/loHouseOwner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="เลขประจำตัวประชาชน"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <EditText
+                    android:id="@+id/etHouseOwnerPersonalID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:hint="เลขประจำตัวประชาชน"
+                    android:inputType="number" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="คำนำหน้านาม"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <Spinner
+                    android:id="@+id/spPrefix"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.jujiiz.mis.controllers.LandFormActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:text="ข้อมูลที่ดิน"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="30dp" />
+
+        <Button
+            android:id="@+id/btnSavingData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="บันทึก" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="เจ้าของที่ดิน"
+                android:textColor="#000"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ชื่อ-นามสกุล"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etOwnertName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="ชื่อ-นามสกุล"
+                android:inputType="text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="เลขประจำตัวประชาชน"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etOwnerPersonalID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="เลขประจำตัวประชาชน"
+                android:inputType="number" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="รหัสระบบ"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etSystemID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="รหัสระบบ"
+                android:inputType="number" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="เจ้าของที่ดิน"
+                android:textColor="#000"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ไร่"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etDimenA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="ไร่"
+                android:inputType="number" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="งาน"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etDimenB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="งาน"
+                android:inputType="number" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ตร.วา"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etDimenC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="ตร.วา"
+                android:inputType="number" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

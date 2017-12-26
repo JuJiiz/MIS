@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.jujiiz.mis.controllers.VillageFormActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:textAlignment="center"
+            android:text="ชื่อชุมชน/หมู่บ้าน"
+            android:textColor="#000"
+            android:textSize="26dp" />
+
+        <Button
+            android:id="@+id/btnSavingData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="บันทึก" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="พิกัด"
+                android:textColor="#000"
+                android:textSize="16dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:weightSum="10">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Latitude: "
+                    android:textColor="#000" />
+                <EditText
+                    android:id="@+id/etLat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:inputType="numberDecimal"
+                    android:hint="E" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Longitude: "
+                    android:textColor="#000" />
+                <EditText
+                    android:id="@+id/etLong"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:inputType="numberDecimal"
+                    android:hint="N" />
+            </LinearLayout>
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/googleMap"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="#c5c5c5"></com.google.android.gms.maps.MapView>
+            <Button
+                android:id="@+id/btnCurrentLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="พิกัดปัจจุบัน" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="พื้นที่รับผิดชอบ"
+                android:textColor="#000"
+                android:textSize="16dp" />
+            <EditText
+                android:id="@+id/etArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="พื้นที่รับผิดชอบ"
+                android:inputType="number" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ชุมชนน่าอยู่"
+                android:textColor="#000"
+                android:textSize="16dp" />
+            <RadioGroup
+                android:id="@+id/rgLovelyCommunity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+                <RadioButton
+                    android:id="@+id/rbLovelyCommunityYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="น่าอยู่"/>
+                <RadioButton
+                    android:id="@+id/rbLovelyCommunityNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ไม่น่าอยู่"/>
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="แหล่งเสื่อมโทรม"
+                android:textColor="#000"
+                android:textSize="16dp" />
+            <RadioGroup
+                android:id="@+id/rgSlum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+                <RadioButton
+                    android:id="@+id/rbSlumNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ไม่มี"/>
+                <RadioButton
+                    android:id="@+id/rbSlumYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="มี"/>
+            </RadioGroup>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

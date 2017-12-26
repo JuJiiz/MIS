@@ -4,15 +4,16 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_OPT"
+            android:title="ข้อมูล อปท." />
         <item
             android:id="@+id/nav_Household"
-            android:title="ข้อมูลครัวเรือน" />
+            android:title="ฟอร์ม" />
         <item
-            android:id="@+id/nav_People"
-            android:title="ข้อมูลประชากร" />
-        <item
-            android:id="@+id/nav_Property"
-            android:title="ข้อมูลทรัพย์สิน" />
+            android:id="@+id/nav_TR14"
+            android:title="จัดการ ทร.14" />
     </group>
 
     <!--<item android:title="Communicate">

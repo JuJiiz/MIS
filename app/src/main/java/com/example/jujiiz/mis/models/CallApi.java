@@ -1,4 +1,4 @@
-package com.example.jujiiz.mis;
+package com.example.jujiiz.mis.models;
 
 import android.os.AsyncTask;
 

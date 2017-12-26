@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jujiiz.mis.OPTFormActivity">
+    android:orientation="vertical"
+    tools:context="com.example.jujiiz.mis.controllers.OPTFormActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,9 +15,8 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="15dp"
-            android:textAlignment="center"
             android:text="ข้อมูลองค์กรปกครองส่วนท้องถิ่น"
+            android:textAlignment="center"
             android:textColor="#000"
             android:textSize="20dp" />
 
@@ -31,7 +30,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,6 +46,7 @@
                 android:text="ชื่อ อปท."
                 android:textColor="#000"
                 android:textSize="16dp" />
+
             <EditText
                 android:id="@+id/etOPTName"
                 android:layout_width="match_parent"
@@ -59,6 +61,7 @@
                 android:text="รหัส อปท."
                 android:textColor="#000"
                 android:textSize="16dp" />
+
             <EditText
                 android:id="@+id/etOPT์ID"
                 android:layout_width="match_parent"
@@ -73,12 +76,12 @@
                 android:text="ประเภท อปท."
                 android:textColor="#000"
                 android:textSize="16dp" />
+
             <Spinner
                 android:id="@+id/spOPTType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
-            </Spinner>
+                android:layout_marginBottom="16dp"></Spinner>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -86,6 +89,7 @@
                 android:text="พิกัด"
                 android:textColor="#000"
                 android:textSize="16dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,38 +97,44 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:weightSum="10">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:text="Latitude: "
                     android:textColor="#000" />
+
                 <EditText
                     android:id="@+id/etLat"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:inputType="numberDecimal"
-                    android:hint="E" />
+                    android:hint="E"
+                    android:inputType="numberDecimal" />
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:text="Longitude: "
                     android:textColor="#000" />
+
                 <EditText
                     android:id="@+id/etLong"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:inputType="numberDecimal"
-                    android:hint="N" />
+                    android:hint="N"
+                    android:inputType="numberDecimal" />
             </LinearLayout>
+
             <com.google.android.gms.maps.MapView
                 android:id="@+id/googleMap"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:background="#c5c5c5"></com.google.android.gms.maps.MapView>
+
             <Button
                 android:id="@+id/btnCurrentLocation"
                 android:layout_width="match_parent"
@@ -137,6 +147,7 @@
                 android:text="เลขที่ตั้ง"
                 android:textColor="#000"
                 android:textSize="16dp" />
+
             <EditText
                 android:id="@+id/etLocationNumber"
                 android:layout_width="match_parent"
@@ -151,6 +162,7 @@
                 android:text="หมู่ที่"
                 android:textColor="#000"
                 android:textSize="16dp" />
+
             <EditText
                 android:id="@+id/etVillageNumber"
                 android:layout_width="match_parent"
@@ -165,6 +177,7 @@
                 android:text="ตรอก/ซอย"
                 android:textColor="#000"
                 android:textSize="16dp" />
+
             <EditText
                 android:id="@+id/etAlley"
                 android:layout_width="match_parent"
@@ -179,6 +192,7 @@
                 android:text="ถนน"
                 android:textColor="#000"
                 android:textSize="16dp" />
+
             <EditText
                 android:id="@+id/etStreet"
                 android:layout_width="match_parent"
@@ -193,12 +207,12 @@
                 android:text="จังหวัด"
                 android:textColor="#000"
                 android:textSize="16dp" />
+
             <Spinner
                 android:id="@+id/spProvince"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
-            </Spinner>
+                android:layout_marginBottom="16dp"></Spinner>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -206,12 +220,12 @@
                 android:text="อำเภอ"
                 android:textColor="#000"
                 android:textSize="16dp" />
+
             <Spinner
                 android:id="@+id/spDistrict"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
-            </Spinner>
+                android:layout_marginBottom="16dp"></Spinner>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -219,12 +233,12 @@
                 android:text="ตำบล"
                 android:textColor="#000"
                 android:textSize="16dp" />
+
             <Spinner
                 android:id="@+id/spSubDistrict"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp">
-            </Spinner>
+                android:layout_marginBottom="16dp"></Spinner>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -232,6 +246,7 @@
                 android:text="รหัสไปรษณีย์"
                 android:textColor="#000"
                 android:textSize="16dp" />
+
             <EditText
                 android:id="@+id/etZipCode"
                 android:layout_width="match_parent"
@@ -246,6 +261,7 @@
                 android:text="โทรศัพท์"
                 android:textColor="#000"
                 android:textSize="16dp" />
+
             <EditText
                 android:id="@+id/etTel"
                 android:layout_width="match_parent"
@@ -260,6 +276,7 @@
                 android:text="โทรสาร"
                 android:textColor="#000"
                 android:textSize="16dp" />
+
             <EditText
                 android:id="@+id/etFax"
                 android:layout_width="match_parent"
@@ -274,6 +291,7 @@
                 android:text="วิสัยทัศน์"
                 android:textColor="#000"
                 android:textSize="16dp" />
+
             <EditText
                 android:id="@+id/etVision"
                 android:layout_width="match_parent"

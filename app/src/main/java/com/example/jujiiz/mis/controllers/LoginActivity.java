@@ -1,4 +1,4 @@
-package com.example.jujiiz.mis;
+package com.example.jujiiz.mis.controllers;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.ModelLogin;
+import com.example.jujiiz.mis.models.ModelToken;
+import com.example.jujiiz.mis.models.Sha1Hash;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;

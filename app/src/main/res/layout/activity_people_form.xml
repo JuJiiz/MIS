@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.jujiiz.mis.PeopleActivity">
+    tools:context="com.example.jujiiz.mis.controllers.PeopleFormActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

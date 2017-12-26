@@ -1,4 +1,4 @@
-package com.example.jujiiz.mis;
+package com.example.jujiiz.mis.models;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+
+import com.example.jujiiz.mis.controllers.LoginActivity;
+import com.example.jujiiz.mis.controllers.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +43,7 @@ public class ModelToken {
         return result;
     }
 
-    public static boolean checkToken(final MainActivity context){
+    public static boolean checkToken(final Context context){
         SharedPreferences sp = context.getSharedPreferences("myStorage", Context.MODE_PRIVATE);
         String token = sp.getString("token", "");
         if(ModelToken.getByName(token,"status").equals("OK")){

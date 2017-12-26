@@ -1,20 +1,15 @@
-package com.example.jujiiz.mis;
+package com.example.jujiiz.mis.controllers;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
+
+import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.ModelToken;
 
 /**
  * Created by JuJiiz on 20/12/2560.
