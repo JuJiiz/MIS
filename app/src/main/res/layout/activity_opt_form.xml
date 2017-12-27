@@ -110,8 +110,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:hint="E"
-                    android:inputType="numberDecimal" />
+                    android:hint="E" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -125,26 +124,31 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:hint="N"
-                    android:inputType="numberDecimal" />
+                    android:hint="N" />
             </LinearLayout>
 
-            <com.google.android.gms.maps.MapView
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:map="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/googleMap"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:background="#c5c5c5"></com.google.android.gms.maps.MapView>
+                android:background="#c5c5c5"
+                tools:context=".controllers.OPTFormActivity" />
 
             <Button
                 android:id="@+id/btnCurrentLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:text="พิกัดปัจจุบัน" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="เลขที่ตั้ง"
+                android:paddingTop="16dp"
                 android:textColor="#000"
                 android:textSize="16dp" />
 
