@@ -845,7 +845,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:tag="0"
-                        android:text="วาตภัยย" />
+                        android:text="วาตภัย" />
 
                     <LinearLayout
                         android:id="@+id/loStorm"
@@ -1507,6 +1507,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:enabled="false"
                 android:hint="วันที่บันทึก"
                 android:inputType="date" />
 

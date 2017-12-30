@@ -95,7 +95,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="เจ้าของที่ดิน"
+                android:text="จำนวนพื้นที่"
                 android:textColor="#000"
                 android:textSize="20dp" />
 
@@ -143,6 +143,164 @@
                 android:layout_marginBottom="16dp"
                 android:hint="ตร.วา"
                 android:inputType="number" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="การใช้ประโยชน์ที่ดิน"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <RadioGroup
+                android:id="@+id/rgLandBenefit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/rbLB1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ที่พักอาศัย" />
+
+                <RadioButton
+                    android:id="@+id/rbLB2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="เพาะปลูก" />
+
+                <RadioButton
+                    android:id="@+id/rbLB3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="เลี้ยงสัตว์" />
+
+                <RadioButton
+                    android:id="@+id/rbLB4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ประกอบกิจการ" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ที่ตั้งที่ดิน"
+                android:textColor="#000"
+                android:textSize="20dp" />
+
+            <RadioGroup
+                android:id="@+id/rgLandLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/rbLL1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="อยู่ในเขต อปท." />
+
+                <RadioButton
+                    android:id="@+id/rbLL2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="อยู่นอกเขต อปท." />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ชำระภาษี"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <RadioGroup
+                android:id="@+id/rgLandTax"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/rbLT1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ชำระ" />
+
+                <RadioButton
+                    android:id="@+id/rbLT2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ไม่ชำระ" />
+
+                <RadioButton
+                    android:id="@+id/rbLT3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ถูกยกเว้น" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="การให้เช่าใช้ที่ดิน"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <RadioGroup
+                android:id="@+id/rgLandRent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/rbLR1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ให้เช่าใช้" />
+
+                <RadioButton
+                    android:id="@+id/rbLR2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ไม่ให้เช่าใช้" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ชื่อผู้ให้ข้อมูล"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <Spinner
+                    android:id="@+id/spContributor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></Spinner>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="วันที่บันทึกข้อมูล"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <EditText
+                    android:id="@+id/etDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:enabled="false"
+                    android:hint="วันที่บันทึก"
+                    android:inputType="date" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

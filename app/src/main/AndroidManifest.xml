@@ -29,11 +29,7 @@
             android:label="@string/title_activity_household"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".controllers.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".controllers.OPTFormActivity" />
         <activity android:name=".controllers.PeopleFormActivity" />
@@ -51,7 +47,13 @@
             android:name=".controllers.OPTActivity"
             android:label="@string/title_activity_opt"
             android:theme="@style/AppTheme" />
-        <activity android:name=".controllers.HouseholdFormActivity"></activity>
+        <activity android:name=".controllers.HouseholdFormActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"

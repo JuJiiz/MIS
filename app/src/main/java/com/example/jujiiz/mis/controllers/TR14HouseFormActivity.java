@@ -18,6 +18,7 @@ public class TR14HouseFormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tr14_house_form);
         init();
+        spPrefixSetAdapter();
     }
 
     private void init() {
