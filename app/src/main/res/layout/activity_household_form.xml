@@ -123,7 +123,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ตารางแสดงผลผู้อยู่อาศํยในครัวเรือน"
+                android:text="ตารางแสดงผลผู้อยู่อาศัยในครัวเรือน"
                 android:textColor="#000"
                 android:textSize="16dp" />
 
@@ -180,6 +180,7 @@
                 </LinearLayout>
 
                 <Button
+                    android:id="@+id/btnAddDweller"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -281,16 +282,21 @@
 
                 </LinearLayout>
 
-                <com.google.android.gms.maps.MapView
+                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:map="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
                     android:id="@+id/googleMap"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    android:background="#c5c5c5"></com.google.android.gms.maps.MapView>
+                    android:background="#c5c5c5"
+                    tools:context=".controllers.OPTFormActivity" />
 
                 <Button
                     android:id="@+id/btnCurrentLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:text="พิกัดปัจจุบัน" />
             </LinearLayout>
 

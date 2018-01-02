@@ -79,27 +79,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="อื่นๆ" />
-                </RadioGroup>
-
-                <LinearLayout
-                    android:id="@+id/loAnotherNationality"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="เลือกสัญชาติ" />
-
-                    <Spinner
-                        android:id="@+id/spAnotherNationality"
+                    <LinearLayout
+                        android:id="@+id/loAnotherNationality"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"></Spinner>
-                </LinearLayout>
+                        android:layout_marginLeft="16dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#000"
+                            android:text="เลือกสัญชาติ" />
+
+                        <Spinner
+                            android:id="@+id/spAnotherNationality"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"></Spinner>
+                    </LinearLayout>
+                </RadioGroup>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -233,7 +233,7 @@
                     android:textSize="16dp" />
 
                 <EditText
-                    android:id="@+id/etHigh"
+                    android:id="@+id/etHeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
@@ -413,6 +413,7 @@
                                 android:layout_marginBottom="16dp"
                                 android:inputType="number" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -454,7 +455,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="บ้านเลขที่ *" />
+                                android:text="ระบุประเทศ" />
 
                             <Spinner
                                 android:id="@+id/spCountry"
@@ -462,6 +463,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="16dp"></Spinner>
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -470,7 +472,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="รหัสประจำบ้าน *" />
+                                android:text="ระบุจังหวัด" />
 
                             <Spinner
                                 android:id="@+id/spProvince"
@@ -500,6 +502,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="อาศัยอยู่ในครัวเรือนนี้ *" />
+
                     <RadioButton
                         android:id="@+id/rbNotInHousehold"
                         android:layout_width="wrap_content"
@@ -521,7 +524,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="ระบุจังหวัด" />
+                                android:text="ระบุประเทศ" />
 
                             <Spinner
                                 android:id="@+id/spIHCountry"
@@ -529,6 +532,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="16dp"></Spinner>
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -537,7 +541,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="ระบุประเทศ" />
+                                android:text="ระบุจังหวัด" />
 
                             <Spinner
                                 android:id="@+id/spIHProvince"
@@ -567,6 +571,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="เป็นเจ้าบ้าน" />
+
                     <RadioButton
                         android:id="@+id/rbStatusDweller"
                         android:layout_width="wrap_content"
@@ -1047,6 +1052,7 @@
                     android:id="@+id/rbDebt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <RadioButton
                         android:id="@+id/rbDebtNo"
                         android:layout_width="wrap_content"
@@ -1071,6 +1077,7 @@
                     android:id="@+id/rbSaving"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <RadioButton
                         android:id="@+id/rbSavingNo"
                         android:layout_width="wrap_content"
@@ -1127,36 +1134,40 @@
                         android:id="@+id/loCongenital"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
-                        android:visibility="gone"
-                        android:orientation="vertical">
+                        android:visibility="gone">
 
                         <CheckBox
                             android:id="@+id/cbCong1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="ความดันโลหิตสูง"/>
+                            android:text="ความดันโลหิตสูง" />
+
                         <CheckBox
                             android:id="@+id/cbCong2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="เบาหวาน"/>
+                            android:text="เบาหวาน" />
+
                         <CheckBox
                             android:id="@+id/cbCong3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="หัวใจขาดเลือด"/>
+                            android:text="หัวใจขาดเลือด" />
+
                         <CheckBox
                             android:id="@+id/cbCong4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="มะเร็ง"/>
+                            android:text="มะเร็ง" />
+
                         <CheckBox
                             android:id="@+id/cbCong5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="อื่นๆ"/>
+                            android:text="อื่นๆ" />
 
                     </LinearLayout>
 
@@ -1190,66 +1201,76 @@
                         android:id="@+id/loContagious"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
-                        android:visibility="gone"
-                        android:orientation="vertical">
+                        android:visibility="gone">
 
                         <CheckBox
                             android:id="@+id/cbCont1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="อหิวาตกโรค"/>
+                            android:text="อหิวาตกโรค" />
+
                         <CheckBox
                             android:id="@+id/cbCont2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="คอตีบ"/>
+                            android:text="คอตีบ" />
+
                         <CheckBox
                             android:id="@+id/cbCont3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="ไอกรน"/>
+                            android:text="ไอกรน" />
+
                         <CheckBox
                             android:id="@+id/cbCont4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="บาดทะยัก"/>
+                            android:text="บาดทะยัก" />
+
                         <CheckBox
                             android:id="@+id/cbCont5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="โปลิโอ"/>
+                            android:text="โปลิโอ" />
+
                         <CheckBox
                             android:id="@+id/cbCont6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="ไข้เลือดออก "/>
+                            android:text="ไข้เลือดออก " />
+
                         <CheckBox
                             android:id="@+id/cbCont7"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="พิษสุนัขบ้า"/>
+                            android:text="พิษสุนัขบ้า" />
+
                         <CheckBox
                             android:id="@+id/cbCont8"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="วัณโรค"/>
+                            android:text="วัณโรค" />
+
                         <CheckBox
                             android:id="@+id/cbCont9"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="ไข้มาเลเลีย"/>
+                            android:text="ไข้มาเลเลีย" />
+
                         <CheckBox
                             android:id="@+id/cbCont10"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="เอดส์"/>
+                            android:text="เอดส์" />
+
                         <CheckBox
                             android:id="@+id/cbCont11"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="อื่นๆ"/>
+                            android:text="อื่นๆ" />
                     </LinearLayout>
                 </RadioGroup>
 
@@ -1281,16 +1302,16 @@
                         android:id="@+id/loAllergic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
-                        android:visibility="gone"
-                        android:orientation="vertical">
+                        android:visibility="gone">
 
                         <EditText
                             android:id="@+id/etAllergic"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="ระบุ"/>
+                            android:hint="ระบุ" />
 
                     </LinearLayout>
                 </RadioGroup>
@@ -1494,6 +1515,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="#000"
                             android:text="ระดับการศึกษา" />
 
                         <Spinner
@@ -1518,6 +1540,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="#000"
                             android:text="ระดับการศึกษา" />
 
                         <Spinner
@@ -1557,7 +1580,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ความรู้ด้านเทคโนโลยี่"
+                    android:text="ความรู้ด้านเทคโนโลยี"
                     android:textColor="#000"
                     android:textSize="16dp" />
 
@@ -1691,6 +1714,168 @@
                         android:inputType="text" />
                 </LinearLayout>
 
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9. การมีส่วนร่วมในชุมชน/กลุ่ม/สมาคม"
+                android:textColor="#000"
+                android:textSize="20dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <RadioGroup
+                    android:id="@+id/rgParticipation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/rbParticipationNo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ไม่มีการมีส่วนรวม" />
+
+                    <RadioButton
+                        android:id="@+id/rbParticipationYes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="มีการมีส่วนร่วม" />
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="การไปใช้สิทธิ์เลือกตั้ง"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <RadioGroup
+                    android:id="@+id/rgElection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/rbElectionAlway"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ทุกครั้ง" />
+
+                    <RadioButton
+                        android:id="@+id/rbElectionSometime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="บางครั้ง" />
+
+                    <RadioButton
+                        android:id="@+id/rbElectionNever"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ไม่เคยไป" />
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="การใช้บริการขนส่งสาธารณะ(ภายใน 6 เดือน)"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <RadioGroup
+                    android:id="@+id/rgTransportation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/rbTransportationNo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ไม่ได้ใช้" />
+
+                    <RadioButton
+                        android:id="@+id/rbTransportationYes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ใช้" />
+
+                    <LinearLayout
+                        android:id="@+id/loTransportation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <CheckBox
+                            android:id="@+id/cbTrans1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="รถโดยสาร" />
+
+                        <CheckBox
+                            android:id="@+id/cbTrans2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="เรือโดยสาร" />
+
+                        <CheckBox
+                            android:id="@+id/cbTrans3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="รถไฟโดยสาร" />
+
+                        <CheckBox
+                            android:id="@+id/cbTrans4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="เครื่องบินโดยสาร" />
+                    </LinearLayout>
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ชื่อผู้ให้ข้อมูล"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <Spinner
+                    android:id="@+id/spContributor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"></Spinner>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="วันที่บันทึกข้อมูล"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <EditText
+                    android:id="@+id/etDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:enabled="false"
+                    android:hint="วันที่บันทึก"
+                    android:inputType="date" />
             </LinearLayout>
 
         </LinearLayout>

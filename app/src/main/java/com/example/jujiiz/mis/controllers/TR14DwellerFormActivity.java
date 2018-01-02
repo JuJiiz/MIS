@@ -11,14 +11,14 @@ import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
 
 import java.util.ArrayList;
 
-public class TR14HouseFormActivity extends AppCompatActivity {
+public class TR14DwellerFormActivity extends AppCompatActivity {
     String[] spPrefixArray = {"นาย", "นาง", "นางสาว", "เด็กชาย", "เด็กหญิง", "อื่นๆ (ระบุ)"};
     Spinner spPrefix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tr14_house_form);
+        setContentView(R.layout.activity_tr14_dweller_form);
 
         init();
 

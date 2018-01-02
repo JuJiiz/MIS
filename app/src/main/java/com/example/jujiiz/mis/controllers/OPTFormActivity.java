@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -51,12 +52,12 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
     Marker mCurrLocationMarker;
     MarkerOptions markerOptions;
     LatLng latLng;
-
-    ArrayList<String> spList = new ArrayList<String>();
+    EditText etLat, etLong;
 
     Button btnCurrentLocation;
-    EditText etLat, etLong;
     Spinner spOPTType;
+
+    String[] spOPTTypeArray = {"อบจ.", "กรุงเทพมหานครฯ", "เมืองพัทยา", "เทศบาลนคร", "เทศบาลเมือง", "เทศบาลตำบล", "อบต. ขนาดใหญ่", "อบต. ขนาดกลาง", "อบต. ขนาดเล็ก"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +65,8 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_opt_form);
 
         init();
-        spPrefixSetAdapter();
 
+        spOPTType.setAdapter(new ModelSpinnerAdapter(this, R.layout.simple_spinner_item, spOPTTypeArray, "เลือก"));
     }
 
     private void init() {
@@ -79,24 +80,6 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
         etLong = (EditText) findViewById(R.id.etLong);
 
         spOPTType = (Spinner) findViewById(R.id.spOPTType);
-    }
-
-    private void spPrefixSetAdapter(){
-        spList.add("อบจ.");
-        spList.add("กรุงเทพมหานครฯ");
-        spList.add("เมืองพัทยา");
-        spList.add("เทศบาลนคร");
-        spList.add("เทศบาลเมือง");
-        spList.add("เทศบาลตำบล");
-        spList.add("อบต. ขนาดใหญ่");
-        spList.add("อบต. ขนาดกลาง");
-        spList.add("อบต. ขนาดเล็ก");
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, spList);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spOPTType.setAdapter(arrayAdapter);
-        spOPTType.setSelection(0);
     }
 
     @Override
