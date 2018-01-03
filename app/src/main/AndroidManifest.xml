@@ -10,6 +10,7 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
+
     <uses-permission android:name="com.example.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -36,29 +37,30 @@
             android:name=".controllers.TR14Activity"
             android:label="@string/title_activity_tr14"
             android:theme="@style/AppTheme" />
-        <activity android:name=".controllers.LoginActivity">
+        <activity android:name=".controllers.LoginActivity"></activity>
+        <activity android:name=".controllers.OPTFormActivity" />
+        <activity android:name=".controllers.PeopleFormActivity" />
+        <activity android:name=".controllers.OPTVillageActivity" />
+        <activity android:name=".controllers.OPTVillageFormActivity" />
+        <activity android:name=".controllers.LandFormActivity" />
+        <activity android:name=".controllers.VehicalFormActivity" />
+        <activity android:name=".controllers.TR14HouseFormActivity" />
+        <activity android:name=".controllers.TR14DwellerFormActivity" />
+        <activity android:name=".controllers.HouseholdFormActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controllers.OPTFormActivity"></activity>
-        <activity android:name=".controllers.PeopleFormActivity"></activity>
-        <activity android:name=".controllers.VillageActivity" />
-        <activity android:name=".controllers.VillageFormActivity" />
-        <activity android:name=".controllers.LandFormActivity" />
-        <activity android:name=".controllers.VehicalFormActivity" />
-        <activity android:name=".controllers.TR14HouseFormActivity"></activity>
-        <activity android:name=".controllers.TR14DwellerFormActivity"></activity>
-        <activity android:name=".controllers.HouseholdFormActivity"></activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCKpFgIkzIB3PYigoKVEeOHChh_dmEs_eY"/>
+            android:value="AIzaSyCKpFgIkzIB3PYigoKVEeOHChh_dmEs_eY" />
+
     </application>
 
 </manifest>

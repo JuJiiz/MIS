@@ -4,7 +4,12 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,14 +25,17 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
 import com.example.jujiiz.mis.models.ModelShowHideLayout;
+import com.example.jujiiz.mis.models.myDBClass;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -42,6 +50,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -58,23 +68,35 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     Marker mCurrLocationMarker;
     MarkerOptions markerOptions;
     LatLng latLng;
-    EditText etLat, etLong;
 
-    Button btnSavingData, btnCurrentLocation, btnAddDweller;
-    EditText etDate;
+    SQLiteDatabase db;
 
-    CheckBox cbProb10;
+    String COL5,COL19,COL42,COL43;
+    double COL6,COL7;
+    int COL1,COL2,COL3,COL4,COL8,COL9,COL10,COL11,COL12,COL13,COL14,COL15,COL16,COL17,COL18,COLH1,COL20,COL21,COL22,COL23,COL24,COL25,COLH2,COL26,COL27,COL28,COL29,COL30,COL31,COL32,COL33,COL34,COL35,COL36,COL37,COL38,COL39,COL40,COL41;
+
+    RadioButton rbRegisterYes,rbRegisterNo,rbNormalHouse,rbAbandonedHouse,rbDemolitionHouse,rbSingleFamily,rbExtendedFamily;
+    EditText etHouseNumber,etVillageID,etLat,etLong,etAnotherProblem,etDate;
+    Spinner spVillageName,spContributor;
+    CheckBox cbProb1,cbProb2,cbProb3,cbProb4,cbProb5,cbProb6,cbProb7,cbProb8,cbProb9,cbProb10;
+
+    Button btnSavingData, btnCurrentLocation, btnAddDweller,btnImagePick;
+    ImageView ivImage;
+
     LinearLayout loAnotherProblem;
 
-    RadioButton rbProbEnvyYes;
+    RadioButton rbProbEnvyNo,rbProbEnvyYes;
     CheckBox cbSound, cbShock, cbDust, cbSmell, cbAir, cbWater, cbGarbage;
     LinearLayout loEnvyProblem, loSound, loShock, loDust, loSmell, loAir, loWater, loGarbage;
+    //RadioButton rbSoundHigh,rbSoundMid,rbSoundLow,rbShockHigh,rbShockMid,rbShockLow,rbDustHigh,rbDustMid,rbDustLow,rbSmellHigh,rbSmellMid,rbSmellLow,rbAirHigh,rbAirMid,rbAirLow,rbWaterHigh,rbWaterMid,rbWaterLow,rbGarbageHigh,rbGarbageMid,rbGarbageLow;
 
-    RadioButton rbDisasterYes;
+    RadioButton rbDisasterNo,rbDisasterYes;
     CheckBox cbStorm, cbFlood, cbMud, cbEarthquake, cbBuilding, cbDrought, cbCold, cbRoad, cbFire, cbFireForest, cbSmoke, cbChemical, cbPlague, cbWeed;
     LinearLayout loDisaster, loStorm, loFlood, loMud, loEarthquake, loBuilding, loDrought, loCold, loRoad, loFire, loFireForest, loSmoke, loChemical, loPlague, loWeed;
+    //RadioButton rbStormHigh,rbStormMid,rbStormLow,rbFloodHigh,rbFloodMid,rbFloodLow,rbMudHigh,rbMudMid,rbMudLow,rbEarthquakeHigh,rbEarthquakeMid,rbEarthquakeLow,rbBuildingHigh,rbBuildingMid,rbBuildingLow,rbDroughtHigh,rbDroughtMid,rbDroughtLow,rbColdHigh,rbColdMid,rbColdLow,rbRoadHigh,rbRoadMid,rbRoadLow,rbFireHigh,rbFireMid,rbFireLow,rbFireForestHigh,rbFireForestMid,rbFireForestLow,rbSmokeHigh,rbSmokeMid,rbSmokeLow,rbChemicalHigh,rbChemicalMid,rbChemicalLow,rbPlagueHigh,rbPlagueMid,rbPlagueLow,rbWeedHigh,rbWeedMid,rbWeedLow;
 
     Intent intent;
+    Bitmap selectedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +104,9 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         setContentView(R.layout.activity_household_form);
 
         init();
+
+        myDBClass myDb = new myDBClass(this); // เริ่มต้นการเรียกใช้งาน Class
+        myDb.getWritableDatabase(); // เริ่มการเขียน Database (เป็นการสร้าง Database และ Table)
 
         ModelCurrentCalendar.edittextCurrentCalendar(this, etDate);
 
@@ -102,13 +127,22 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         btnAddDweller = (Button) findViewById(R.id.btnAddDweller);
         btnAddDweller.setOnClickListener(this);
 
+        btnImagePick = (Button) findViewById(R.id.btnImagePick);
+        btnImagePick.setOnClickListener(this);
+
         etDate = (EditText) findViewById(R.id.etDate);
 
+        ivImage = (ImageView) findViewById(R.id.ivImage);
+
         rbProbEnvyYes = (RadioButton) findViewById(R.id.rbProbEnvyYes);
+        rbProbEnvyNo = (RadioButton) findViewById(R.id.rbProbEnvyNo);
         rbDisasterYes = (RadioButton) findViewById(R.id.rbDisasterYes);
+        rbDisasterNo = (RadioButton) findViewById(R.id.rbDisasterNo);
 
         rbProbEnvyYes.setOnCheckedChangeListener(this);
+        rbProbEnvyNo.setOnCheckedChangeListener(this);
         rbDisasterYes.setOnCheckedChangeListener(this);
+        rbDisasterNo.setOnCheckedChangeListener(this);
 
         cbProb10 = (CheckBox) findViewById(R.id.cbProb10);
         cbSound = (CheckBox) findViewById(R.id.cbSound);
@@ -185,6 +219,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
         //RadioButton
         if (compoundButton == rbProbEnvyYes) {
             ModelShowHideLayout.radiobuttonShowHide(rbProbEnvyYes, loEnvyProblem);
@@ -376,8 +411,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
@@ -404,18 +438,31 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                 }
                 return;
             }
+        }
+    }
 
-            // other 'case' lines to check for other
-            // permissions this app might request
+    @Override
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            try {
+                final Uri imageUri = data.getData();
+                InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                selectedImage = BitmapFactory.decodeStream(imageStream);
+                ivImage.setImageBitmap(selectedImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        }else {
+            Toast.makeText(this, "You haven't picked Image",Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onClick(View view) {
         if (view == btnCurrentLocation) {
-            Log.d("MYLOG", "mLastLocation: " + mLastLocation);
-            Log.d("MYLOG", "markerOptions: " + markerOptions);
-            Log.d("MYLOG", "latLng: " + latLng);
 
             if (mCurrLocationMarker != null) {
                 mCurrLocationMarker.remove();
@@ -431,6 +478,11 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         if (view == btnAddDweller) {
             intent = new Intent(this, PeopleFormActivity.class);
             this.startActivity(intent);
+        }
+        if(view == btnImagePick){
+            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+            photoPickerIntent.setType("image/*");
+            startActivityForResult(photoPickerIntent, 1);
         }
     }
 }

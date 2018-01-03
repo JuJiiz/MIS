@@ -56,21 +56,18 @@
                 <RadioGroup
                     android:id="@+id/registerRadioGroup"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:tag="F01-10-01">
+                    android:layout_height="wrap_content">
 
                     <RadioButton
                         android:id="@+id/rbRegisterYes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:tag="0"
                         android:text="อยู่ในทะเบียนราษฎร์" />
 
                     <RadioButton
                         android:id="@+id/rbRegisterNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:tag="0"
                         android:text="ไม่อยู่ในทะเบียนราษฎร์" />
 
                 </RadioGroup>
@@ -93,28 +90,24 @@
                 <RadioGroup
                     android:id="@+id/housestatusRadioGroup"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:tag="F01-10-01">
+                    android:layout_height="wrap_content">
 
                     <RadioButton
                         android:id="@+id/rbNormalHouse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:tag="0"
                         android:text="บ้านปกติ" />
 
                     <RadioButton
                         android:id="@+id/rbAbandonedHouse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:tag="0"
                         android:text="บ้านร้าง" />
 
                     <RadioButton
                         android:id="@+id/rbDemolitionHouse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:tag="0"
                         android:text="บ้านที่ถูกรื้อถอน" />
 
                 </RadioGroup>
@@ -290,7 +283,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:background="#c5c5c5"
-                    tools:context=".controllers.OPTFormActivity" />
+                    tools:context=".controllers.HouseholdFormActivity" />
 
                 <Button
                     android:id="@+id/btnCurrentLocation"
@@ -462,14 +455,12 @@
                     android:id="@+id/probenvyRadioGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:tag="F01-10-01">
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/rbProbEnvyNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:tag="0"
                         android:checked="true"
                         android:text="ไม่มี" />
 
@@ -477,7 +468,6 @@
                         android:id="@+id/rbProbEnvyYes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:tag="0"
                         android:text="มี" />
                 </RadioGroup>
 
@@ -506,28 +496,24 @@
                         <RadioGroup
                             android:id="@+id/soundRadioGroup"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:tag="F01-10-01">
+                            android:layout_height="wrap_content">
 
                             <RadioButton
                                 android:id="@+id/rbSoundHigh"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="มาก" />
 
                             <RadioButton
                                 android:id="@+id/rbSoundMid"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="ปานกลาง" />
 
                             <RadioButton
                                 android:id="@+id/rbSoundLow"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="น้อย" />
                         </RadioGroup>
                     </LinearLayout>
@@ -550,28 +536,24 @@
                         <RadioGroup
                             android:id="@+id/shockRadioGroup"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:tag="F01-10-01">
+                            android:layout_height="wrap_content">
 
                             <RadioButton
                                 android:id="@+id/rbShockHigh"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="มาก" />
 
                             <RadioButton
                                 android:id="@+id/rbShockMid"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="ปานกลาง" />
 
                             <RadioButton
                                 android:id="@+id/rbShockLow"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="น้อย" />
                         </RadioGroup>
                     </LinearLayout>
@@ -601,21 +583,18 @@
                                 android:id="@+id/rbDustHigh"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="มาก" />
 
                             <RadioButton
                                 android:id="@+id/rbDustMid"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="ปานกลาง" />
 
                             <RadioButton
                                 android:id="@+id/rbDustLow"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="น้อย" />
                         </RadioGroup>
                     </LinearLayout>
@@ -689,21 +668,18 @@
                                 android:id="@+id/rbAirHigh"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="มาก" />
 
                             <RadioButton
                                 android:id="@+id/rbAirMid"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="ปานกลาง" />
 
                             <RadioButton
                                 android:id="@+id/rbAirLow"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="น้อย" />
                         </RadioGroup>
                     </LinearLayout>
@@ -712,7 +688,6 @@
                         android:id="@+id/cbWater"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:tag="0"
                         android:text="น้ำเสีย" />
 
                     <LinearLayout
@@ -733,21 +708,18 @@
                                 android:id="@+id/rbWaterHigh"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="มาก" />
 
                             <RadioButton
                                 android:id="@+id/rbWaterMid"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="ปานกลาง" />
 
                             <RadioButton
                                 android:id="@+id/rbWaterLow"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="น้อย" />
                         </RadioGroup>
                     </LinearLayout>
@@ -756,7 +728,6 @@
                         android:id="@+id/cbGarbage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:tag="0"
                         android:text="ขยะ" />
 
                     <LinearLayout
@@ -777,21 +748,18 @@
                                 android:id="@+id/rbGarbageHigh"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="มาก" />
 
                             <RadioButton
                                 android:id="@+id/rbGarbageMid"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="ปานกลาง" />
 
                             <RadioButton
                                 android:id="@+id/rbGarbageLow"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:tag="0"
                                 android:text="น้อย" />
                         </RadioGroup>
                     </LinearLayout>
@@ -1478,11 +1446,13 @@
                 android:layout_marginBottom="16dp"
                 android:orientation="vertical">
                 <ImageView
+                    android:id="@+id/ivImage"
                     android:layout_gravity="center"
                     android:layout_width="300dp"
                     android:layout_height="150dp"
                     android:background="#c5c5c5"/>
                 <Button
+                    android:id="@+id/btnImagePick"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="เพิ่มรูปภาพ"/>

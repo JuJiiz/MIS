@@ -5,11 +5,11 @@ import android.os.Bundle;
 
 import com.example.jujiiz.mis.R;
 
-public class VillageFormActivity extends AppCompatActivity {
+public class OPTVillageFormActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_village_form);
+        setContentView(R.layout.activity_opt_village_form);
     }
 }

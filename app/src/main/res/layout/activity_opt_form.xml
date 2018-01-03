@@ -19,13 +19,6 @@
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="20dp" />
-
-        <Button
-            android:id="@+id/btnSavingData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="บันทึก" />
     </RelativeLayout>
 
     <ScrollView
@@ -304,12 +297,29 @@
                 android:hint="วิสัยทัศน์"
                 android:inputType="text" />
 
-            <Button
-                android:id="@+id/btnOPTEdit"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="แก้ไขข้อมูล อปท."/>
+                android:orientation="horizontal"
+                android:weightSum="2">
+                <Button
+                    android:id="@+id/btnOPTEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="16dp"
+                    android:text="แก้ไขข้อมูล อปท."/>
+
+
+                <Button
+                    android:id="@+id/btnSavingData"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="บันทึก" />
+            </LinearLayout>
+
+
 
         </LinearLayout>
     </ScrollView>
