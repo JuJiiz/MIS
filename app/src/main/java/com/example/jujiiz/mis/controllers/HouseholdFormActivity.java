@@ -55,7 +55,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class HouseholdFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, OnMapReadyCallback,
+public class HouseholdFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, View.OnClickListener, OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
@@ -71,26 +71,30 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
 
     SQLiteDatabase db;
 
-    String COL5,COL19,COL42,COL43;
-    double COL6,COL7;
-    int COL1,COL2,COL3,COL4,COL8,COL9,COL10,COL11,COL12,COL13,COL14,COL15,COL16,COL17,COL18,COLH1,COL20,COL21,COL22,COL23,COL24,COL25,COLH2,COL26,COL27,COL28,COL29,COL30,COL31,COL32,COL33,COL34,COL35,COL36,COL37,COL38,COL39,COL40,COL41;
+    String COL5, COL19, COL42, COL43;
+    double COL6, COL7;
+    int COL1, COL2, COL3, COL4, COL8, COL9, COL10, COL11, COL12, COL13, COL14, COL15, COL16, COL17, COL18, COLH1, COL20, COL21, COL22, COL23, COL24, COL25, COLH2, COL26, COL27, COL28, COL29, COL30, COL31, COL32, COL33, COL34, COL35, COL36, COL37, COL38, COL39, COL40, COL41;
 
-    RadioButton rbRegisterYes,rbRegisterNo,rbNormalHouse,rbAbandonedHouse,rbDemolitionHouse,rbSingleFamily,rbExtendedFamily;
-    EditText etHouseNumber,etVillageID,etLat,etLong,etAnotherProblem,etDate;
-    Spinner spVillageName,spContributor;
-    CheckBox cbProb1,cbProb2,cbProb3,cbProb4,cbProb5,cbProb6,cbProb7,cbProb8,cbProb9,cbProb10;
+    //RadioButton rbRegisterYes,rbRegisterNo,rbNormalHouse,rbAbandonedHouse,rbDemolitionHouse,rbSingleFamily,rbExtendedFamily;
+    RadioGroup registerRadioGroup, housestatusRadioGroup, familyRadioGroup;
+    RadioGroup probenvyRadioGroup, soundRadioGroup, shockRadioGroup, dustRadioGroup, smellRadioGroup, airRadioGroup, waterRadioGroup, garbageRadioGroup;
+    RadioGroup disasterRadioGroup, stormRadioGroup, floodRadioGroup, mudRadioGroup, earthquakeRadioGroup, buildingRadioGroup, droughtRadioGroup, coldRadioGroup, roadRadioGroup, fireRadioGroup, fireforestRadioGroup, smokeRadioGroup, chemicalRadioGroup, plagueRadioGroup, weedRadioGroup;
+    RadioButton radioButton;
+    EditText etHouseNumber, etVillageID, etLat, etLong, etAnotherProblem, etDate;
+    Spinner spVillageName, spContributor;
+    CheckBox cbProb1, cbProb2, cbProb3, cbProb4, cbProb5, cbProb6, cbProb7, cbProb8, cbProb9, cbProb10;
 
-    Button btnSavingData, btnCurrentLocation, btnAddDweller,btnImagePick;
+    Button btnSavingData, btnCurrentLocation, btnAddDweller, btnImagePick;
     ImageView ivImage;
 
     LinearLayout loAnotherProblem;
 
-    RadioButton rbProbEnvyNo,rbProbEnvyYes;
+    RadioButton rbProbEnvyNo, rbProbEnvyYes;
     CheckBox cbSound, cbShock, cbDust, cbSmell, cbAir, cbWater, cbGarbage;
     LinearLayout loEnvyProblem, loSound, loShock, loDust, loSmell, loAir, loWater, loGarbage;
     //RadioButton rbSoundHigh,rbSoundMid,rbSoundLow,rbShockHigh,rbShockMid,rbShockLow,rbDustHigh,rbDustMid,rbDustLow,rbSmellHigh,rbSmellMid,rbSmellLow,rbAirHigh,rbAirMid,rbAirLow,rbWaterHigh,rbWaterMid,rbWaterLow,rbGarbageHigh,rbGarbageMid,rbGarbageLow;
 
-    RadioButton rbDisasterNo,rbDisasterYes;
+    RadioButton rbDisasterNo, rbDisasterYes;
     CheckBox cbStorm, cbFlood, cbMud, cbEarthquake, cbBuilding, cbDrought, cbCold, cbRoad, cbFire, cbFireForest, cbSmoke, cbChemical, cbPlague, cbWeed;
     LinearLayout loDisaster, loStorm, loFlood, loMud, loEarthquake, loBuilding, loDrought, loCold, loRoad, loFire, loFireForest, loSmoke, loChemical, loPlague, loWeed;
     //RadioButton rbStormHigh,rbStormMid,rbStormLow,rbFloodHigh,rbFloodMid,rbFloodLow,rbMudHigh,rbMudMid,rbMudLow,rbEarthquakeHigh,rbEarthquakeMid,rbEarthquakeLow,rbBuildingHigh,rbBuildingMid,rbBuildingLow,rbDroughtHigh,rbDroughtMid,rbDroughtLow,rbColdHigh,rbColdMid,rbColdLow,rbRoadHigh,rbRoadMid,rbRoadLow,rbFireHigh,rbFireMid,rbFireLow,rbFireForestHigh,rbFireForestMid,rbFireForestLow,rbSmokeHigh,rbSmokeMid,rbSmokeLow,rbChemicalHigh,rbChemicalMid,rbChemicalLow,rbPlagueHigh,rbPlagueMid,rbPlagueLow,rbWeedHigh,rbWeedMid,rbWeedLow;
@@ -120,6 +124,61 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         btnCurrentLocation.setOnClickListener(this);
         etLat = (EditText) findViewById(R.id.etLat);
         etLong = (EditText) findViewById(R.id.etLong);
+
+        registerRadioGroup = (RadioGroup) findViewById(R.id.registerRadioGroup);
+        registerRadioGroup.setOnCheckedChangeListener(this);
+        housestatusRadioGroup = (RadioGroup) findViewById(R.id.housestatusRadioGroup);
+        housestatusRadioGroup.setOnCheckedChangeListener(this);
+        familyRadioGroup = (RadioGroup) findViewById(R.id.familyRadioGroup);
+        familyRadioGroup.setOnCheckedChangeListener(this);
+
+        probenvyRadioGroup = (RadioGroup) findViewById(R.id.probenvyRadioGroup);
+        probenvyRadioGroup.setOnCheckedChangeListener(this);
+        soundRadioGroup = (RadioGroup) findViewById(R.id.soundRadioGroup);
+        soundRadioGroup.setOnCheckedChangeListener(this);
+        shockRadioGroup = (RadioGroup) findViewById(R.id.shockRadioGroup);
+        shockRadioGroup.setOnCheckedChangeListener(this);
+        dustRadioGroup = (RadioGroup) findViewById(R.id.dustRadioGroup);
+        dustRadioGroup.setOnCheckedChangeListener(this);
+        smellRadioGroup = (RadioGroup) findViewById(R.id.smellRadioGroup);
+        smellRadioGroup.setOnCheckedChangeListener(this);
+        airRadioGroup = (RadioGroup) findViewById(R.id.airRadioGroup);
+        airRadioGroup.setOnCheckedChangeListener(this);
+        waterRadioGroup = (RadioGroup) findViewById(R.id.waterRadioGroup);
+        waterRadioGroup.setOnCheckedChangeListener(this);
+        garbageRadioGroup = (RadioGroup) findViewById(R.id.garbageRadioGroup);
+        garbageRadioGroup.setOnCheckedChangeListener(this);
+
+        disasterRadioGroup = (RadioGroup) findViewById(R.id.disasterRadioGroup);
+        disasterRadioGroup.setOnCheckedChangeListener(this);
+        stormRadioGroup = (RadioGroup) findViewById(R.id.stormRadioGroup);
+        stormRadioGroup.setOnCheckedChangeListener(this);
+        floodRadioGroup = (RadioGroup) findViewById(R.id.floodRadioGroup);
+        floodRadioGroup.setOnCheckedChangeListener(this);
+        mudRadioGroup = (RadioGroup) findViewById(R.id.mudRadioGroup);
+        mudRadioGroup.setOnCheckedChangeListener(this);
+        earthquakeRadioGroup = (RadioGroup) findViewById(R.id.earthquakeRadioGroup);
+        earthquakeRadioGroup.setOnCheckedChangeListener(this);
+        buildingRadioGroup = (RadioGroup) findViewById(R.id.buildingRadioGroup);
+        buildingRadioGroup.setOnCheckedChangeListener(this);
+        droughtRadioGroup = (RadioGroup) findViewById(R.id.droughtRadioGroup);
+        droughtRadioGroup.setOnCheckedChangeListener(this);
+        coldRadioGroup = (RadioGroup) findViewById(R.id.coldRadioGroup);
+        coldRadioGroup.setOnCheckedChangeListener(this);
+        roadRadioGroup = (RadioGroup) findViewById(R.id.roadRadioGroup);
+        roadRadioGroup.setOnCheckedChangeListener(this);
+        fireRadioGroup = (RadioGroup) findViewById(R.id.fireRadioGroup);
+        fireRadioGroup.setOnCheckedChangeListener(this);
+        fireforestRadioGroup = (RadioGroup) findViewById(R.id.fireforestRadioGroup);
+        fireforestRadioGroup.setOnCheckedChangeListener(this);
+        smokeRadioGroup = (RadioGroup) findViewById(R.id.smokeRadioGroup);
+        smokeRadioGroup.setOnCheckedChangeListener(this);
+        chemicalRadioGroup = (RadioGroup) findViewById(R.id.chemicalRadioGroup);
+        chemicalRadioGroup.setOnCheckedChangeListener(this);
+        plagueRadioGroup = (RadioGroup) findViewById(R.id.plagueRadioGroup);
+        plagueRadioGroup.setOnCheckedChangeListener(this);
+        weedRadioGroup = (RadioGroup) findViewById(R.id.weedRadioGroup);
+        weedRadioGroup.setOnCheckedChangeListener(this);
 
         btnSavingData = (Button) findViewById(R.id.btnSavingData);
         btnSavingData.setOnClickListener(this);
@@ -455,8 +514,8 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
 
-        }else {
-            Toast.makeText(this, "You haven't picked Image",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -479,10 +538,173 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             intent = new Intent(this, PeopleFormActivity.class);
             this.startActivity(intent);
         }
-        if(view == btnImagePick){
+        if (view == btnImagePick) {
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");
             startActivityForResult(photoPickerIntent, 1);
+        }
+        if (view == btnSavingData) {
+
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+        if (radioGroup == registerRadioGroup) {
+            int register = registerRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = registerRadioGroup.indexOfChild(radioButton);
+            COL1 = idx;
+        }
+        if (radioGroup == housestatusRadioGroup) {
+            int register = housestatusRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = housestatusRadioGroup.indexOfChild(radioButton);
+            COL2 = idx;
+        }
+        if (radioGroup == familyRadioGroup) {
+            int register = familyRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = familyRadioGroup.indexOfChild(radioButton);
+            COL3 = idx;
+        }
+        if (radioGroup == probenvyRadioGroup) {
+            int register = probenvyRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = probenvyRadioGroup.indexOfChild(radioButton);
+            COLH1 = idx;
+        }
+        if (radioGroup == soundRadioGroup) {
+            int register = soundRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = soundRadioGroup.indexOfChild(radioButton);
+            COL20 = idx;
+        }
+        if (radioGroup == shockRadioGroup) {
+            int register = shockRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = shockRadioGroup.indexOfChild(radioButton);
+            COL21 = idx;
+        }
+        if (radioGroup == dustRadioGroup) {
+            int register = dustRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = dustRadioGroup.indexOfChild(radioButton);
+            COL22 = idx;
+        }
+        if (radioGroup == smellRadioGroup) {
+            int register = smellRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = smellRadioGroup.indexOfChild(radioButton);
+            COL23 = idx;
+        }
+        if (radioGroup == airRadioGroup) {
+            int register = airRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = airRadioGroup.indexOfChild(radioButton);
+            COL24 = idx;
+        }
+        if (radioGroup == waterRadioGroup) {
+            int register = waterRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = waterRadioGroup.indexOfChild(radioButton);
+            COL25 = idx;
+        }
+        if (radioGroup == garbageRadioGroup) {
+            int register = garbageRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = garbageRadioGroup.indexOfChild(radioButton);
+            COL26 = idx;
+        }
+        if (radioGroup == disasterRadioGroup) {
+            int register = disasterRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = disasterRadioGroup.indexOfChild(radioButton);
+            COLH2 = idx;
+        }
+        if (radioGroup == stormRadioGroup) {
+            int register = stormRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = stormRadioGroup.indexOfChild(radioButton);
+            COL27 = idx;
+        }
+        if (radioGroup == floodRadioGroup) {
+            int register = floodRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = floodRadioGroup.indexOfChild(radioButton);
+            COL28 = idx;
+        }
+        if (radioGroup == mudRadioGroup) {
+            int register = mudRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = mudRadioGroup.indexOfChild(radioButton);
+            COL29 = idx;
+        }
+        if (radioGroup == earthquakeRadioGroup) {
+            int register = earthquakeRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = earthquakeRadioGroup.indexOfChild(radioButton);
+            COL30 = idx;
+        }
+        if (radioGroup == buildingRadioGroup) {
+            int register = buildingRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = buildingRadioGroup.indexOfChild(radioButton);
+            COL31 = idx;
+        }
+        if (radioGroup == droughtRadioGroup) {
+            int register = droughtRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = droughtRadioGroup.indexOfChild(radioButton);
+            COL32 = idx;
+        }
+        if (radioGroup == coldRadioGroup) {
+            int register = coldRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = coldRadioGroup.indexOfChild(radioButton);
+            COL33 = idx;
+        }
+        if (radioGroup == roadRadioGroup) {
+            int register = roadRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = roadRadioGroup.indexOfChild(radioButton);
+            COL34 = idx;
+        }
+        if (radioGroup == fireRadioGroup) {
+            int register = fireRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = fireRadioGroup.indexOfChild(radioButton);
+            COL35 = idx;
+        }
+        if (radioGroup == fireforestRadioGroup) {
+            int register = fireforestRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = fireforestRadioGroup.indexOfChild(radioButton);
+            COL36 = idx;
+        }
+        if (radioGroup == smokeRadioGroup) {
+            int register = smokeRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = smokeRadioGroup.indexOfChild(radioButton);
+            COL37 = idx;
+        }
+        if (radioGroup == chemicalRadioGroup) {
+            int register = chemicalRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = chemicalRadioGroup.indexOfChild(radioButton);
+            COL38 = idx;
+        }
+        if (radioGroup == plagueRadioGroup) {
+            int register = plagueRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = plagueRadioGroup.indexOfChild(radioButton);
+            COL39 = idx;
+        }
+        if (radioGroup == weedRadioGroup) {
+            int register = weedRadioGroup.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = weedRadioGroup.indexOfChild(radioButton);
+            COL40 = idx;
         }
     }
 }
