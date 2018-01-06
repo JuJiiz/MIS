@@ -1,6 +1,7 @@
 package com.example.jujiiz.mis.controllers;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -69,7 +70,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     MarkerOptions markerOptions;
     LatLng latLng;
 
-    SQLiteDatabase db;
+    final myDBClass myDb = new myDBClass(this);
 
     String COL5, COL19, COL42, COL43;
     double COL6, COL7;
@@ -80,7 +81,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     RadioGroup probenvyRadioGroup, soundRadioGroup, shockRadioGroup, dustRadioGroup, smellRadioGroup, airRadioGroup, waterRadioGroup, garbageRadioGroup;
     RadioGroup disasterRadioGroup, stormRadioGroup, floodRadioGroup, mudRadioGroup, earthquakeRadioGroup, buildingRadioGroup, droughtRadioGroup, coldRadioGroup, roadRadioGroup, fireRadioGroup, fireforestRadioGroup, smokeRadioGroup, chemicalRadioGroup, plagueRadioGroup, weedRadioGroup;
     RadioButton radioButton;
-    EditText etHouseNumber, etVillageID, etLat, etLong, etAnotherProblem, etDate;
+    EditText etHouseNumber, etHouseID, etLat, etLong, etAnotherProblem, etDate;
     Spinner spVillageName, spContributor;
     CheckBox cbProb1, cbProb2, cbProb3, cbProb4, cbProb5, cbProb6, cbProb7, cbProb8, cbProb9, cbProb10;
 
@@ -190,6 +191,9 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         btnImagePick.setOnClickListener(this);
 
         etDate = (EditText) findViewById(R.id.etDate);
+        etHouseID = (EditText) findViewById(R.id.etHouseID);
+        etHouseNumber = (EditText) findViewById(R.id.etHouseNumber);
+        etAnotherProblem = (EditText) findViewById(R.id.etAnotherProblem);
 
         ivImage = (ImageView) findViewById(R.id.ivImage);
 
@@ -544,7 +548,24 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             startActivityForResult(photoPickerIntent, 1);
         }
         if (view == btnSavingData) {
-
+            ContentValues Val = new ContentValues();
+            /*Val.put("house_id", etHouseID.getText().toString());
+            Val.put("house_no", etHouseNumber.getText().toString());
+            Val.put("vilage_id", strTel);
+            Val.put("Tel", strTel);
+            Val.put("Tel", strTel);
+            Val.put("Tel", strTel);
+            Val.put("Tel", strTel);
+            Val.put("Tel", strTel);
+            Val.put("Tel", strTel);
+            Val.put("Tel", strTel);
+            Val.put("Tel", strTel);
+            Val.put("Tel", strTel);
+            Val.put("Tel", strTel);
+            Val.put("Tel", strTel);
+            Val.put("Tel", strTel);
+            Val.put("Tel", strTel);*/
+            myDb.InsertData("house",Val);
         }
     }
 

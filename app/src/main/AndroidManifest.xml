@@ -28,7 +28,13 @@
         <activity
             android:name=".controllers.OPTActivity"
             android:label="@string/title_activity_opt"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".controllers.HouseholdActivity"
             android:label="@string/title_activity_household"
@@ -46,13 +52,7 @@
         <activity android:name=".controllers.VehicalFormActivity" />
         <activity android:name=".controllers.TR14HouseFormActivity" />
         <activity android:name=".controllers.TR14DwellerFormActivity" />
-        <activity android:name=".controllers.HouseholdFormActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".controllers.HouseholdFormActivity"></activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
