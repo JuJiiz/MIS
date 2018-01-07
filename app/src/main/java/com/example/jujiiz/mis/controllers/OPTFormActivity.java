@@ -26,7 +26,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,7 +39,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -63,16 +61,20 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
     Spinner spOPTType, spProvince, spDistrict, spSubDistrict;
 
     myDBClass db = new myDBClass(this);
+
     List<String> OPTTypeList;
     //ArrayList<HashMap<String, String>> OPTList;
     ArrayList<HashMap<String, String>> OPTList;
+
+    ContentValues Val;
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opt_form);
 
-        db.getWritableDatabase();
+        //db.getWritableDatabase();
 
         init();
 
@@ -149,6 +151,7 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
         etFax.setEnabled(onoff);
         etVision.setEnabled(onoff);
         spOPTType.setEnabled(onoff);
+        btnCurrentLocation.setEnabled(onoff);
     }
 
     @Override
@@ -305,7 +308,8 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
             etLong.setText(mLastLocation.convert(mLastLocation.getLongitude(), mLastLocation.FORMAT_DEGREES));
         }
         if (view == btnSavingData) {
-            ContentValues Val = new ContentValues();
+            String date = df.format(Calendar.getInstance().getTime());
+            Val = new ContentValues();
             Val.put("opt_id", etOPT์ID.getText().toString());
             Val.put("opt_name", etOPTName.getText().toString());
             Val.put("opt_type_id", spOPTType.getSelectedItemPosition() + 1);
@@ -322,14 +326,13 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
             Val.put("opt_tel", etTel.getText().toString());
             Val.put("opt_fax", etFax.getText().toString());
             Val.put("opt_vision", etVision.getText().toString());
-            Val.put("cr_by", "JuJiiz");
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Val.put("cr_date", df.format(Calendar.getInstance().getTime()));
-            Val.put("upd_by", "");
-            Val.put("upd_date", "");
+            Val.put("upd_by", "JuJiiz");
+            Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
 
             if (OPTList.isEmpty()) {
+                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_date", date);
                 db.InsertData("opt", Val);
                 Toast.makeText(this, "เพิ่มข้อมูลสำเร็จแล้ว", Toast.LENGTH_SHORT).show();
                 Log.d("MYLOG", "Insert");

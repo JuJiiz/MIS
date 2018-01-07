@@ -18,11 +18,13 @@ import android.widget.LinearLayout;
 import com.example.jujiiz.mis.R;
 import com.example.jujiiz.mis.models.ModelNavClick;
 import com.example.jujiiz.mis.models.ModelToken;
+import com.example.jujiiz.mis.models.myDBClass;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     boolean searchVisibility = false;
+    myDBClass db = new myDBClass(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 1);
+
+        db.getWritableDatabase();
 
         //ModelToken.checkToken(this);
 

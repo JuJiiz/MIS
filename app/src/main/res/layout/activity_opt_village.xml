@@ -7,7 +7,7 @@
     tools:context="com.example.jujiiz.mis.controllers.OPTVillageActivity">
 
     <LinearLayout
-        android:id="@+id/householdheaderLayout"
+        android:id="@+id/villeAddLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#f2f2f2"
@@ -21,7 +21,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:layout_weight=".6"
+            android:layout_weight="1"
             android:hint="หมู่ที่"
             android:textSize="13dp"
             android:inputType="number" />
@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:layout_weight="2"
+            android:layout_weight="2.5"
             android:hint="ชื่อหมู่บ้าน"
             android:textSize="13dp"
             android:inputType="text" />
@@ -38,21 +38,15 @@
             android:id="@+id/btnAddVillage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.4"
+            android:layout_weight="1.5"
             android:text="เพิ่มหมู่บ้าน"/>
-        <Button
-            android:id="@+id/btnVlaageSave"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="บันทึก"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/listviewHeadLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/householdheaderLayout"
+        android:layout_below="@+id/villeAddLayout"
         android:orientation="horizontal"
         android:background="#f7f7f7"
         android:paddingLeft="16dp"
@@ -63,7 +57,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="2.5"
             android:text="หมู่บ้าน"
             android:textAlignment="viewStart"
             android:textColor="#000" />
@@ -79,15 +73,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="ลบหมู่บ้าน"
-            android:textAlignment="center"
-            android:textColor="#000" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.5"
             android:text="สถานะ"
             android:textAlignment="viewEnd"
             android:textColor="#000" />
@@ -101,43 +87,10 @@
         android:orientation="vertical">
 
         <ListView
-            android:id="@+id/listHousehold"
+            android:id="@+id/listOPTVille"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></ListView>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/pageLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:background="#f2f2f2"
-        android:orientation="horizontal"
-        android:visibility="visible">
-
-        <Button
-            android:id="@+id/btnPrevious"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Previous" />
-
-        <TextView
-            android:id="@+id/tvPageNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="Page" />
-
-        <Button
-            android:id="@+id/btnNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Next" />
-
-    </LinearLayout>
-
 
 </RelativeLayout>
