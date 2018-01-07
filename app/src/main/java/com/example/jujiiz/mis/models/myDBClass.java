@@ -133,6 +133,7 @@ public class myDBClass extends SQLiteOpenHelper {
         }
     }
 
+    // Update Data
     public long UpdateData(String TableName, ContentValues Val, String strPK, String strPKValue) {
         // TODO Auto-generated method stub
         try {
@@ -146,6 +147,46 @@ public class myDBClass extends SQLiteOpenHelper {
             return rows; // return rows inserted.
         } catch (Exception e) {
             return -1;
+        }
+    }
+
+    // Select Where Data
+    public ArrayList<HashMap<String, String>> SelectWhereData(String tableName, String strKey, String strValue) {
+        // TODO Auto-generated method stub
+
+        try {
+            //String arrData[] = null;
+            ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+            HashMap<String, String> map;
+
+            SQLiteDatabase db;
+            db = this.getReadableDatabase(); // Read Data
+
+            /*Cursor cursor = db.query("opt_type", new String[]{"*"}, null,
+                    new String[]{String.valueOf(strMemberID)}, null, null, null, null);*/
+            String strSQL = "SELECT * FROM " + tableName + " WHERE " + strKey + " = " + strValue;
+            Cursor cursor = db.rawQuery(strSQL, null);
+            //Log.d("MYLOG", "cursor: " + cursor);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        map = new HashMap<String, String>();
+                        //arrData = new String[cursor.getColumnCount()];
+                        for (int i = 0; i < cursor.getColumnCount(); i++) {
+                            //arrData[i] = cursor.getString(i);
+                            map.put(cursor.getColumnName(i), cursor.getString(i));
+                        }
+                        MyArrList.add(map);
+                    } while (cursor.moveToNext());
+                }
+            }
+            cursor.close();
+            db.close();
+            Log.d("MYLOG", "Selected List: " + MyArrList);
+            return MyArrList;
+
+        } catch (Exception e) {
+            return null;
         }
     }
 

@@ -1,10 +1,12 @@
 package com.example.jujiiz.mis.controllers;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class OPTVillageActivity extends AppCompatActivity implements View.OnClickListener {
+public class OPTVillageActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemClickListener {
     EditText etAddVillageNumber, etAddVillageName;
     Button btnAddVillage;
     ListView listOPTVille;
@@ -31,8 +33,8 @@ public class OPTVillageActivity extends AppCompatActivity implements View.OnClic
 
     ArrayList<HashMap<String, String>> OPTList, VilleList, VilleActive;
     String OPTid;
-
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +54,14 @@ public class OPTVillageActivity extends AppCompatActivity implements View.OnClic
         btnAddVillage.setOnClickListener(this);
 
         listOPTVille = (ListView) findViewById(R.id.listOPTVille);
+        listOPTVille.setOnItemClickListener(this);
     }
 
     private void setListView() {
         String strVilleName = "Name";
         String strVilleNo = "Number";
         String strSurStatus = "Status";
+        String strVilleID = "ID";
         VilleActive = new ArrayList<HashMap<String, String>>();
         VilleList = db.SelectData("vilage");
         if (!VilleList.isEmpty()) {
@@ -69,13 +73,14 @@ public class OPTVillageActivity extends AppCompatActivity implements View.OnClic
                     temp.put(strVilleName, VilleList.get(i).get("vilage_name"));
                     temp.put(strVilleNo, VilleList.get(i).get("vilage_no"));
                     temp.put(strSurStatus, VilleList.get(i).get("survey_status"));
+                    temp.put(strVilleID, VilleList.get(i).get("vilage_id"));
                     VilleActive.add(temp);
                 }
             }
         }
         SimpleAdapter simpleAdapter = new SimpleAdapter(this, VilleActive, R.layout.view_village_column,
-                new String[]{strVilleName, strVilleNo, strSurStatus},
-                new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3}
+                new String[]{strVilleName, strVilleNo, strSurStatus, strVilleID},
+                new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvHiddenColumn}
         );
         listOPTVille.setAdapter(simpleAdapter);
     }
@@ -116,7 +121,7 @@ public class OPTVillageActivity extends AppCompatActivity implements View.OnClic
                     Val.put("vilage_informant_firstname", "");
                     Val.put("vilage_informant_lastname", "");
                     Val.put("vilage_informant_tel", "");
-                    Val.put("survey_status", "ยังไม่สำรวจ");
+                    Val.put("survey_status", "0");
                     Val.put("cr_by", "JuJiiz");
                     Val.put("cr_date", date);
                     Val.put("upd_by", "JuJiiz");
@@ -134,5 +139,17 @@ public class OPTVillageActivity extends AppCompatActivity implements View.OnClic
                 Toast.makeText(this, "ไม่มีข้อมูล อปท.", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        HashMap<String, String> Item = (HashMap<String, String>) listOPTVille.getItemAtPosition(i);
+        String SelectedIDItem = Item.get("ID").toString();
+        //String SelectedStatusItem = Item.get("status").toString();
+        //Toast.makeText(getApplicationContext(), SelectedIDItem, Toast.LENGTH_SHORT).show();
+        intent = new Intent(getApplicationContext(), OPTVillageFormActivity.class);
+        intent.putExtra("VillageID", SelectedIDItem);
+        this.finish();
+        startActivity(intent);
     }
 }

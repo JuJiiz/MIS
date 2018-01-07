@@ -281,7 +281,7 @@
                     android:id="@+id/googleMap"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="300dp"
                     android:background="#c5c5c5"
                     tools:context=".controllers.HouseholdFormActivity" />
 

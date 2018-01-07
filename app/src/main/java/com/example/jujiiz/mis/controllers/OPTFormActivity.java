@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -54,7 +55,7 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
     Location mLastLocation;
     Marker mCurrLocationMarker;
     MarkerOptions markerOptions;
-    LatLng latLng;
+    LatLng latLng,NewLatlng;
     EditText etLat, etLong, etOPTName, etOPT์ID, etLocationNumber, etVillageNumber, etAlley, etStreet, etZipCode, etTel, etFax, etVision;
 
     Button btnCurrentLocation, btnSavingData, btnOPTEdit;
@@ -65,6 +66,7 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
     List<String> OPTTypeList;
     //ArrayList<HashMap<String, String>> OPTList;
     ArrayList<HashMap<String, String>> OPTList;
+    Boolean onDataReady = false;
 
     ContentValues Val;
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -77,6 +79,8 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
         //db.getWritableDatabase();
 
         init();
+
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //Important!! (Form)
 
         OPTTypeList = db.SelectOPTType();
         String[] spOPTTypeArray = OPTTypeList.toArray(new String[0]);
@@ -114,8 +118,8 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
 
     private void setField() {
         OPTList = db.SelectOPT();
-        Log.d("MYLOG", "OPTList: " + OPTList);
         if (!OPTList.isEmpty()) {
+            onDataReady = true;
             etOPTName.append(OPTList.get(0).get("opt_name"));
             etOPT์ID.append(OPTList.get(0).get("opt_id"));
             spOPTType.setSelection(Integer.parseInt(OPTList.get(0).get("opt_type_id")) - 1);
@@ -221,14 +225,24 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
     public void onLocationChanged(Location location) {
         mLastLocation = location;
 
-        //Place current location marker
-        latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-        //Log.d("MYLOG", "markerOptions: "+markerOptions);
-
+        if(onDataReady == true){
+            NewLatlng = new LatLng(Double.parseDouble(OPTList.get(0).get("opt_location_lat")), Double.parseDouble(OPTList.get(0).get("opt_location_lng")));
+            markerOptions = new MarkerOptions();
+            markerOptions.position(NewLatlng);
+            markerOptions.title("Current Position");
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+            if (mCurrLocationMarker != null)
+                mCurrLocationMarker.remove();
+            mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(NewLatlng, 16));
+            onDataReady = false;
+        }if(onDataReady == false){
+            latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            markerOptions = new MarkerOptions();
+            markerOptions.position(latLng);
+            markerOptions.title("Current Position");
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        }
         btnCurrentLocation.setVisibility(View.VISIBLE);
     }
 
