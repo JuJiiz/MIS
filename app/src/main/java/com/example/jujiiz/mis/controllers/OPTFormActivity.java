@@ -59,7 +59,7 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
     LatLng latLng;
     EditText etLat, etLong, etOPTName, etOPT์ID, etLocationNumber, etVillageNumber, etAlley, etStreet, etZipCode, etTel, etFax, etVision;
 
-    Button btnCurrentLocation, btnSavingData,btnOPTEdit;
+    Button btnCurrentLocation, btnSavingData, btnOPTEdit;
     Spinner spOPTType, spProvince, spDistrict, spSubDistrict;
 
     myDBClass db = new myDBClass(this);
@@ -112,11 +112,11 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
 
     private void setField() {
         OPTList = db.SelectOPT();
-        Log.d("MYLOG", "OPTList: "+OPTList);
+        Log.d("MYLOG", "OPTList: " + OPTList);
         if (!OPTList.isEmpty()) {
             etOPTName.append(OPTList.get(0).get("opt_name"));
             etOPT์ID.append(OPTList.get(0).get("opt_id"));
-            spOPTType.setSelection(Integer.parseInt(OPTList.get(0).get("opt_type_id"))-1);
+            spOPTType.setSelection(Integer.parseInt(OPTList.get(0).get("opt_type_id")) - 1);
             etLat.append(OPTList.get(0).get("opt_location_lat"));
             etLong.append(OPTList.get(0).get("opt_location_lng"));
             etLocationNumber.append(OPTList.get(0).get("opt_address_no"));
@@ -128,23 +128,27 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
             etFax.append(OPTList.get(0).get("opt_fax"));
             etVision.append(OPTList.get(0).get("opt_vision"));
 
-            etOPTName.setEnabled(false);
-            etOPT์ID.setEnabled(false);
-            etLat.setEnabled(false);
-            etLong.setEnabled(false);
-            etLocationNumber.setEnabled(false);
-            etVillageNumber.setEnabled(false);
-            etAlley.setEnabled(false);
-            etStreet.setEnabled(false);
-            etZipCode.setEnabled(false);
-            etTel.setEnabled(false);
-            etFax.setEnabled(false);
-            etVision.setEnabled(false);
-            spOPTType.setClickable(false);
-        }else{
+            fieldEnabled(false);
+        } else {
             btnOPTEdit.setVisibility(View.GONE);
             btnSavingData.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void fieldEnabled(boolean onoff) {
+        etOPTName.setEnabled(onoff);
+        etOPT์ID.setEnabled(onoff);
+        etLat.setEnabled(onoff);
+        etLong.setEnabled(onoff);
+        etLocationNumber.setEnabled(onoff);
+        etVillageNumber.setEnabled(onoff);
+        etAlley.setEnabled(onoff);
+        etStreet.setEnabled(onoff);
+        etZipCode.setEnabled(onoff);
+        etTel.setEnabled(onoff);
+        etFax.setEnabled(onoff);
+        etVision.setEnabled(onoff);
+        spOPTType.setEnabled(onoff);
     }
 
     @Override
@@ -253,7 +257,6 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
                         .create()
                         .show();
             } else {
-                Log.d("KUY", "Test ");
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -293,23 +296,19 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         if (view == btnCurrentLocation) {
-
-            if (mCurrLocationMarker != null) {
+            if (mCurrLocationMarker != null)
                 mCurrLocationMarker.remove();
-            }
             mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
 
             etLat.setText(mLastLocation.convert(mLastLocation.getLatitude(), mLastLocation.FORMAT_DEGREES));
             etLong.setText(mLastLocation.convert(mLastLocation.getLongitude(), mLastLocation.FORMAT_DEGREES));
-
-            Toast.makeText(getApplicationContext(), mLastLocation.getLatitude() + " and " + mLastLocation.getLongitude(), Toast.LENGTH_SHORT).show();
         }
         if (view == btnSavingData) {
             ContentValues Val = new ContentValues();
             Val.put("opt_id", etOPT์ID.getText().toString());
             Val.put("opt_name", etOPTName.getText().toString());
-            Val.put("opt_type_id", spOPTType.getSelectedItemPosition()+1);
+            Val.put("opt_type_id", spOPTType.getSelectedItemPosition() + 1);
             Val.put("opt_location_lat", etLat.getText().toString());
             Val.put("opt_location_lng", etLong.getText().toString());
             Val.put("opt_address_no", etLocationNumber.getText().toString());
@@ -330,46 +329,24 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
             Val.put("upd_date", "");
             Val.put("ACTIVE", "Y");
 
-            if(OPTList.isEmpty()) {
+            if (OPTList.isEmpty()) {
                 db.InsertData("opt", Val);
+                Toast.makeText(this, "เพิ่มข้อมูลสำเร็จแล้ว", Toast.LENGTH_SHORT).show();
                 Log.d("MYLOG", "Insert");
-            }else{
-                db.UpdateData("opt", Val,"opt_id",etOPT์ID.getText().toString());
+            } else {
+                db.UpdateData("opt", Val, "opt_id", etOPT์ID.getText().toString());
+                Toast.makeText(this, "แก้ไขข้อมูลสำเร็จแล้ว", Toast.LENGTH_SHORT).show();
                 Log.d("MYLOG", "Update");
             }
-            etOPTName.setEnabled(false);
-            etOPT์ID.setEnabled(false);
-            etLat.setEnabled(false);
-            etLong.setEnabled(false);
-            etLocationNumber.setEnabled(false);
-            etVillageNumber.setEnabled(false);
-            etAlley.setEnabled(false);
-            etStreet.setEnabled(false);
-            etZipCode.setEnabled(false);
-            etTel.setEnabled(false);
-            etFax.setEnabled(false);
-            etVision.setEnabled(false);
-            spOPTType.setClickable(false);
+
+            fieldEnabled(false);
             btnOPTEdit.setVisibility(View.VISIBLE);
             btnSavingData.setVisibility(View.GONE);
         }
-        if(view == btnOPTEdit){
+        if (view == btnOPTEdit) {
+            fieldEnabled(true);
             btnOPTEdit.setVisibility(View.GONE);
             btnSavingData.setVisibility(View.VISIBLE);
-
-            etOPTName.setEnabled(true);
-            etOPT์ID.setEnabled(true);
-            etLat.setEnabled(true);
-            etLong.setEnabled(true);
-            etLocationNumber.setEnabled(true);
-            etVillageNumber.setEnabled(true);
-            etAlley.setEnabled(true);
-            etStreet.setEnabled(true);
-            etZipCode.setEnabled(true);
-            etTel.setEnabled(true);
-            etFax.setEnabled(true);
-            etVision.setEnabled(true);
-            spOPTType.setClickable(true);
         }
     }
 
