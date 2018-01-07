@@ -24,6 +24,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -72,6 +73,7 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
     Button btnCurrentLocation, btnImagePick, btnSavingData;
     TextView tvVillageName;
     RadioGroup rgLovelyCommunity, rgSlum;
+    RadioButton radioButton;
     LinearLayout loSlum;
     CheckBox cbSC1, cbSC2, cbSC3, cbSC4, cbSoil1, cbSoil2, cbSoil3, cbSoil4, cbSoil5;
     Spinner spProvince, spDistrict, spSubDistrict;
@@ -159,6 +161,7 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
         if (!VilleList.isEmpty()) {
             String strLat = VilleList.get(0).get("vilage_location_lat");
             String strLng = VilleList.get(0).get("vilage_location_lng");
+            String strLive = VilleList.get(0).get("vilage_liveable");
             if (!strLat.equals("") && !strLng.equals("")) {
                 onDataReady = true;
             }
@@ -180,6 +183,10 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
             etStreet.append(VilleList.get(0).get("vilage_road"));
             etZipCode.append(VilleList.get(0).get("vilage_postal_code"));
             etTel.append(VilleList.get(0).get("vilage_tel"));
+
+            if(!strLive.equals("")){
+                ((RadioButton)rgLovelyCommunity.getChildAt(Integer.parseInt(VilleList.get(0).get("vilage_liveable")))).setChecked(true);
+            }
         }
     }
 
@@ -359,7 +366,11 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
             Val.put("vilage_location_lat", etLat.getText().toString());
             Val.put("vilage_location_lng", etLong.getText().toString());
             Val.put("vilage_aor", etArea.getText().toString());
-            //Val.put("vilage_liveable", etLat.getText().toString()); ชุมชนน่าอยู่ Radio
+
+            int register = rgLovelyCommunity.getCheckedRadioButtonId();
+            radioButton = (RadioButton) findViewById(register);
+            int idx = rgLovelyCommunity.indexOfChild(radioButton);
+            Val.put("vilage_liveable", idx);
             Val.put("vilage_start", etEstablished.getText().toString());
             Val.put("vilage_history", etHistory.getText().toString());
             Val.put("vilage_problem", etProblem.getText().toString());
