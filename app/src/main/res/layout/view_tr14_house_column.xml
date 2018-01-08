@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:weightSum="5"
-    android:orientation="horizontal">
+    android:weightSum="5">
 
     <TextView
         android:id="@+id/tvColumn1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2.5"
-        android:text="หมู่บ้าน"
+        android:layout_weight="2.2"
+        android:text="ชื่อหมู่บ้าน"
         android:textAlignment="viewStart" />
 
     <TextView
@@ -23,21 +21,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="บ้านเลขที่"
-        android:textAlignment="center"/>
+        android:textAlignment="center" />
 
     <TextView
         android:id="@+id/tvColumn3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.5"
-        android:text="สถานะ"
+        android:layout_weight="1.8"
+        android:text="รหัสประจำบ้าน"
         android:textAlignment="viewEnd"/>
-
-    <TextView
-        android:id="@+id/tvHiddenColumn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:textAlignment="viewEnd" />
 
 </LinearLayout>

@@ -39,7 +39,7 @@
             android:textSize="13dp" />
 
         <Button
-            android:id="@+id/btnAddVillage"
+            android:id="@+id/btnSearchVillage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
@@ -107,7 +107,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnVlaageSave"
+            android:id="@+id/btnAddVillage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="เพิ่มหมู่บ้าน" />

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,7 +46,7 @@ public class OPTVillageActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_opt_village);
 
         init();
-
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //Important!! (Form)
         setListView();
     }
 
@@ -91,12 +92,12 @@ public class OPTVillageActivity extends AppCompatActivity implements View.OnClic
                     VilleActive.add(temp);
                 }
             }
+            SimpleAdapter simpleAdapter = new SimpleAdapter(this, VilleActive, R.layout.view_village_column,
+                    new String[]{strVilleName, strVilleNo, strSurStatus, strVilleID},
+                    new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvHiddenColumn}
+            );
+            listOPTVille.setAdapter(simpleAdapter);
         }
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this, VilleActive, R.layout.view_village_column,
-                new String[]{strVilleName, strVilleNo, strSurStatus, strVilleID},
-                new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvHiddenColumn}
-        );
-        listOPTVille.setAdapter(simpleAdapter);
     }
 
     @Override
