@@ -50,9 +50,9 @@ public class myDBClass extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `vilage` (`vilage_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`opt_id`\tINTEGER NOT NULL,`vilage_name`\tTEXT NOT NULL,`vilage_location_lat`\tTEXT NOT NULL,`vilage_location_lng`\tTEXT NOT NULL,`vilage_aor`\tINTEGER NOT NULL,`vilage_liveable`\tTEXT NOT NULL,`vilage_start`\tTEXT NOT NULL,`vilage_history`\tTEXT NOT NULL,`vilage_problem`\tTEXT NOT NULL,`vilage_sup_firstname`\tTEXT NOT NULL,`vilage_sup_lastname`\tTEXT NOT NULL,`vilage_sup_startdate`\tTEXT NOT NULL,`vilage_address_no`\tINTEGER NOT NULL,`vilage_no`\tINTEGER NOT NULL,`vilage_alley`\tTEXT NOT NULL,`vilage_road`\tTEXT NOT NULL,`vilage_province`\tTEXT NOT NULL,`vilage_district`\tTEXT NOT NULL,`vilage_sub_district`\tTEXT NOT NULL,`vilage_postal_code`\tINTEGER NOT NULL,`vilage_tel`\tINTEGER NOT NULL,`vilage_img`\tTEXT NOT NULL,`vilage_informant_firstname`\tTEXT NOT NULL,`vilage_informant_lastname`\tTEXT NOT NULL,`vilage_informant_tel`\tINTEGER NOT NULL,`survey_status`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `vilage_area` (`area_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`area_river`\tTEXT NOT NULL,`area_plateau`\tTEXT NOT NULL,`area_mountain`\tTEXT NOT NULL,`area_coastal`\tTEXT NOT NULL,`vilage_id`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `vilage_slum` (`slum_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`slum_status`\tTEXT NOT NULL,`slum_address`\tTEXT NOT NULL,`vilage_id`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `vilage_soil` (`soil_id`\tINTEGER NOT NULL,`soil_bog`\tTEXT NOT NULL,`soil_don`\tTEXT NOT NULL,`soil_clay`\tTEXT NOT NULL,`soil_mold`\tTEXT NOT NULL,`soil_sandy`\tTEXT NOT NULL,`vilage_id`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `vilage_soil` (`soil_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`soil_bog`\tTEXT NOT NULL,`soil_don`\tTEXT NOT NULL,`soil_clay`\tTEXT NOT NULL,`soil_mold`\tTEXT NOT NULL,`soil_sandy`\tTEXT NOT NULL,`vilage_id`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
         Log.d("MYLOG", "Create Table Successfully.");
+
         sqLiteDatabase.execSQL("INSERT INTO `opt_type` VALUES (1,'อบจ.','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
         sqLiteDatabase.execSQL("INSERT INTO `opt_type` VALUES (2,'กรุงเทพมหานครฯ','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
         sqLiteDatabase.execSQL("INSERT INTO `opt_type` VALUES (3,'เมืองพัทยา','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
@@ -65,9 +65,6 @@ public class myDBClass extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("INSERT INTO `nationality` VALUES (1,'ไทย','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
         sqLiteDatabase.execSQL("INSERT INTO `members` VALUES (1,'admin','1234','administrator','1','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
 
-        //sqLiteDatabase.execSQL("");
-
-        Log.d("MYLOG", "INSERT Successfully.");
     }
 
     @Override
@@ -182,7 +179,6 @@ public class myDBClass extends SQLiteOpenHelper {
             }
             cursor.close();
             db.close();
-            Log.d("MYLOG", "Selected List: " + MyArrList);
             return MyArrList;
 
         } catch (Exception e) {

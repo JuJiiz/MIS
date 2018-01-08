@@ -31,6 +31,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.ModelCheckboxCheck;
+import com.example.jujiiz.mis.models.ModelShowHideLayout;
 import com.example.jujiiz.mis.models.myDBClass;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -67,13 +69,13 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
 
     String VilleID;
     myDBClass db = new myDBClass(this);
-    ArrayList<HashMap<String, String>> VilleList;
+    ArrayList<HashMap<String, String>> VilleList, SoilList, SlumList, AreaList;
 
     EditText etLat, etLong, etArea, etSlum, etEstablished, etHistory, etProblem, etConAdFName, etConAdLName, etConAdAppoint, etLocationNumber, etHno, etAlley, etStreet, etZipCode, etTel;
     Button btnCurrentLocation, btnImagePick, btnSavingData;
     TextView tvVillageName;
     RadioGroup rgLovelyCommunity, rgSlum;
-    RadioButton radioButton;
+    RadioButton radioButton, rbSlumYes;
     LinearLayout loSlum;
     CheckBox cbSC1, cbSC2, cbSC3, cbSC4, cbSoil1, cbSoil2, cbSoil3, cbSoil4, cbSoil5;
     Spinner spProvince, spDistrict, spSubDistrict;
@@ -81,16 +83,17 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
 
     Boolean onDataReady = false;
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    ContentValues values, Val;
+    //String
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_opt_village_form);
         VilleID = getIntent().getExtras().getString("VillageID");
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //Important!! (Form)
 
         init();
-
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //Important!! (Form)
 
         setField();
     }
@@ -132,6 +135,9 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
         rgLovelyCommunity = (RadioGroup) findViewById(R.id.rgLovelyCommunity);
         rgSlum = (RadioGroup) findViewById(R.id.rgSlum);
 
+        rbSlumYes = (RadioButton) findViewById(R.id.rbSlumYes);
+        rbSlumYes.setOnCheckedChangeListener(this);
+
         cbSC1 = (CheckBox) findViewById(R.id.cbSC1);
         cbSC2 = (CheckBox) findViewById(R.id.cbSC2);
         cbSC3 = (CheckBox) findViewById(R.id.cbSC3);
@@ -165,7 +171,6 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
             if (!strLat.equals("") && !strLng.equals("")) {
                 onDataReady = true;
             }
-
             tvVillageName.setText(VilleList.get(0).get("vilage_name"));
             etLat.append(VilleList.get(0).get("vilage_location_lat"));
             etLong.append(VilleList.get(0).get("vilage_location_lng"));
@@ -183,16 +188,170 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
             etStreet.append(VilleList.get(0).get("vilage_road"));
             etZipCode.append(VilleList.get(0).get("vilage_postal_code"));
             etTel.append(VilleList.get(0).get("vilage_tel"));
-
-            if(!strLive.equals("")){
-                ((RadioButton)rgLovelyCommunity.getChildAt(Integer.parseInt(VilleList.get(0).get("vilage_liveable")))).setChecked(true);
+            if (!strLive.equals("")) {
+                ((RadioButton) rgLovelyCommunity.getChildAt(Integer.parseInt(strLive))).setChecked(true);
             }
         }
+
+        SlumList = db.SelectWhereData("vilage_slum", "vilage_id", VilleID);
+        AreaList = db.SelectWhereData("vilage_area", "vilage_id", VilleID);
+        SoilList = db.SelectWhereData("vilage_soil", "vilage_id", VilleID);
+        Log.d("MYLOG", "SlumList: " + SlumList);
+        Log.d("MYLOG", "AreaList: " + AreaList);
+        Log.d("MYLOG", "SoilList: " + SoilList);
+        if (!AreaList.isEmpty() && !SlumList.isEmpty() && !SoilList.isEmpty()) {
+            String strSlum = SlumList.get(0).get("slum_status");
+            int strA1 = Integer.parseInt(AreaList.get(0).get("area_river")),
+                    strA2 = Integer.parseInt(AreaList.get(0).get("area_plateau")),
+                    strA3 = Integer.parseInt(AreaList.get(0).get("area_mountain")),
+                    strA4 = Integer.parseInt(AreaList.get(0).get("area_coastal"));
+            int strS1 = Integer.parseInt(SoilList.get(0).get("soil_bog")),
+                    strS2 = Integer.parseInt(SoilList.get(0).get("soil_don")),
+                    strS3 = Integer.parseInt(SoilList.get(0).get("soil_clay")),
+                    strS4 = Integer.parseInt(SoilList.get(0).get("soil_mold")),
+                    strS5 = Integer.parseInt(SoilList.get(0).get("soil_sandy"));
+            if (!strSlum.equals("")) {
+                if (strSlum.equals("0")){
+                    ((RadioButton) rgSlum.getChildAt(0)).setChecked(true);
+                }
+                if (strSlum.equals("1")) {
+                    rbSlumYes.setChecked(true);
+                }
+            }
+            etSlum.append(SlumList.get(0).get("slum_address"));
+
+            ModelCheckboxCheck.checkboxSetCheck(this, cbSC1, strA1);
+            ModelCheckboxCheck.checkboxSetCheck(this, cbSC2, strA2);
+            ModelCheckboxCheck.checkboxSetCheck(this, cbSC3, strA3);
+            ModelCheckboxCheck.checkboxSetCheck(this, cbSC4, strA4);
+
+            ModelCheckboxCheck.checkboxSetCheck(this, cbSoil1, strS1);
+            ModelCheckboxCheck.checkboxSetCheck(this, cbSoil2, strS2);
+            ModelCheckboxCheck.checkboxSetCheck(this, cbSoil3, strS3);
+            ModelCheckboxCheck.checkboxSetCheck(this, cbSoil4, strS4);
+            ModelCheckboxCheck.checkboxSetCheck(this, cbSoil5, strS5);
+        } else {
+            insertAreaSoilSlum();
+        }
+    }
+
+    private void insertAreaSoilSlum() {
+        String date = df.format(Calendar.getInstance().getTime());
+        values = new ContentValues();
+        values.put("area_river", "0");
+        values.put("area_plateau", "0");
+        values.put("area_mountain", "0");
+        values.put("area_coastal", "0");
+        values.put("vilage_id", VilleID);
+        values.put("cr_by", "JuJiiz");
+        values.put("cr_date", date);
+        values.put("upd_by", "JuJiiz");
+        values.put("upd_date", date);
+        values.put("ACTIVE", "Y");
+        db.InsertData("vilage_area", values);
+
+        values = new ContentValues();
+        values.put("slum_status", "");
+        values.put("slum_address", "");
+        values.put("vilage_id", VilleID);
+        values.put("cr_by", "JuJiiz");
+        values.put("cr_date", date);
+        values.put("upd_by", "JuJiiz");
+        values.put("upd_date", date);
+        values.put("ACTIVE", "Y");
+        db.InsertData("vilage_slum", values);
+
+        values = new ContentValues();
+        values.put("soil_bog", "0");
+        values.put("soil_don", "0");
+        values.put("soil_clay", "0");
+        values.put("soil_mold", "0");
+        values.put("soil_sandy", "0");
+        values.put("vilage_id", VilleID);
+        values.put("cr_by", "JuJiiz");
+        values.put("cr_date", date);
+        values.put("upd_by", "JuJiiz");
+        values.put("upd_date", date);
+        values.put("ACTIVE", "Y");
+        db.InsertData("vilage_soil", values);
+        Log.d("MYLOG", "INSERT COMPLETE");
+    }
+
+    private void updateData() {
+        String date = df.format(Calendar.getInstance().getTime());
+
+        Val = new ContentValues();
+        Val.put("vilage_location_lat", etLat.getText().toString());
+        Val.put("vilage_location_lng", etLong.getText().toString());
+        Val.put("vilage_aor", etArea.getText().toString());
+        int live = rgLovelyCommunity.getCheckedRadioButtonId();
+        radioButton = (RadioButton) findViewById(live);
+        int idx = rgLovelyCommunity.indexOfChild(radioButton);
+        if (idx<0){
+            idx = 0;
+        }
+        Val.put("vilage_liveable", idx);
+        Val.put("vilage_start", etEstablished.getText().toString());
+        Val.put("vilage_history", etHistory.getText().toString());
+        Val.put("vilage_problem", etProblem.getText().toString());
+        Val.put("vilage_sup_firstname", etConAdFName.getText().toString());
+        Val.put("vilage_sup_lastname", etConAdLName.getText().toString());
+        Val.put("vilage_sup_startdate", etConAdAppoint.getText().toString());
+        Val.put("vilage_address_no", etLocationNumber.getText().toString());
+        Val.put("vilage_alley", etAlley.getText().toString());
+        Val.put("vilage_road", etStreet.getText().toString());
+        Val.put("vilage_province", "");
+        Val.put("vilage_district", "");
+        Val.put("vilage_sub_district", "");
+        Val.put("vilage_postal_code", etZipCode.getText().toString());
+        Val.put("vilage_tel", etTel.getText().toString());
+        Val.put("vilage_img", "");
+        Val.put("vilage_informant_firstname", "");
+        Val.put("vilage_informant_lastname", "");
+        Val.put("vilage_informant_tel", "");
+        Val.put("survey_status", "1");
+        Val.put("upd_by", "JuJiiz");
+        Val.put("upd_date", date);
+        db.UpdateData("vilage", Val, "vilage_id", VilleID);
+
+        Val = new ContentValues();
+        int slum = rgSlum.getCheckedRadioButtonId();
+        radioButton = (RadioButton) findViewById(slum);
+        int idxSlum = rgLovelyCommunity.indexOfChild(radioButton);
+        if (idxSlum<0){
+            idxSlum = 0;
+        }
+        Val.put("slum_status", idxSlum);
+        Val.put("slum_address", etSlum.getText().toString());
+        Val.put("upd_by", "JuJiiz");
+        Val.put("upd_date", date);
+        db.UpdateData("vilage_slum", Val, "vilage_id", VilleID);
+
+        Val = new ContentValues();
+        Val.put("area_river", ModelCheckboxCheck.checkboxReturnCheck(cbSC1));
+        Val.put("area_plateau", ModelCheckboxCheck.checkboxReturnCheck(cbSC2));
+        Val.put("area_mountain", ModelCheckboxCheck.checkboxReturnCheck(cbSC3));
+        Val.put("area_coastal", ModelCheckboxCheck.checkboxReturnCheck(cbSC4));
+        Val.put("upd_by", "JuJiiz");
+        Val.put("upd_date", date);
+        db.UpdateData("vilage_area", Val, "vilage_id", VilleID);
+
+        Val = new ContentValues();
+        Val.put("soil_bog", ModelCheckboxCheck.checkboxReturnCheck(cbSoil1));
+        Val.put("soil_don", ModelCheckboxCheck.checkboxReturnCheck(cbSoil2));
+        Val.put("soil_clay", ModelCheckboxCheck.checkboxReturnCheck(cbSoil3));
+        Val.put("soil_mold", ModelCheckboxCheck.checkboxReturnCheck(cbSoil4));
+        Val.put("soil_sandy", ModelCheckboxCheck.checkboxReturnCheck(cbSoil5));
+        Val.put("upd_by", "JuJiiz");
+        Val.put("upd_date", date);
+        db.UpdateData("vilage_soil", Val, "vilage_id", VilleID);
     }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
+        if (compoundButton == rbSlumYes) {
+            ModelShowHideLayout.radiobuttonShowHide(rbSlumYes, loSlum);
+        }
     }
 
     @Override
@@ -361,42 +520,9 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
             etLong.setText(mLastLocation.convert(mLastLocation.getLongitude(), mLastLocation.FORMAT_DEGREES));
         }
         if (view == btnSavingData) {
-            String date = df.format(Calendar.getInstance().getTime());
-            ContentValues Val = new ContentValues();
-            Val.put("vilage_location_lat", etLat.getText().toString());
-            Val.put("vilage_location_lng", etLong.getText().toString());
-            Val.put("vilage_aor", etArea.getText().toString());
-
-            int register = rgLovelyCommunity.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = rgLovelyCommunity.indexOfChild(radioButton);
-            Val.put("vilage_liveable", idx);
-            Val.put("vilage_start", etEstablished.getText().toString());
-            Val.put("vilage_history", etHistory.getText().toString());
-            Val.put("vilage_problem", etProblem.getText().toString());
-            Val.put("vilage_sup_firstname", etConAdFName.getText().toString());
-            Val.put("vilage_sup_lastname", etConAdLName.getText().toString());
-            Val.put("vilage_sup_startdate", etConAdAppoint.getText().toString());
-            Val.put("vilage_address_no", etLocationNumber.getText().toString());
-            Val.put("vilage_alley", etAlley.getText().toString());
-            Val.put("vilage_road", etStreet.getText().toString());
-            Val.put("vilage_province", "");
-            Val.put("vilage_district", "");
-            Val.put("vilage_sub_district", "");
-            Val.put("vilage_postal_code", etZipCode.getText().toString());
-            Val.put("vilage_tel", etTel.getText().toString());
-            Val.put("vilage_img", "");
-            Val.put("vilage_informant_firstname", "");
-            Val.put("vilage_informant_lastname", "");
-            Val.put("vilage_informant_tel", "");
-            Val.put("survey_status", "1");
-            Val.put("upd_by", "JuJiiz");
-            Val.put("upd_date", date);
-            //Log.d("MYLOG", "Val: " + Val);
-            db.UpdateData("vilage", Val, "vilage_id", VilleID);
+            updateData();
             Toast.makeText(this, "แก้ไขข้อมูลสำเร็จแล้ว", Toast.LENGTH_SHORT).show();
-            InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
             this.finish();
             Intent intent = new Intent(getApplicationContext(), OPTActivity.class);
             startActivity(intent);
