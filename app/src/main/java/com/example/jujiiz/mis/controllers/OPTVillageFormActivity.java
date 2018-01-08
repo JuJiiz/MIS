@@ -5,7 +5,10 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -48,6 +51,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,6 +77,7 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
     ArrayList<HashMap<String, String>> VilleList, SoilList, SlumList, AreaList;
 
     EditText etLat, etLong, etArea, etSlum, etEstablished, etHistory, etProblem, etConAdFName, etConAdLName, etConAdAppoint, etLocationNumber, etHno, etAlley, etStreet, etZipCode, etTel;
+    EditText etDistributorF, etDistributorL, etDistributorTel, etDate;
     Button btnCurrentLocation, btnImagePick, btnSavingData;
     TextView tvVillageName;
     RadioGroup rgLovelyCommunity, rgSlum;
@@ -83,7 +89,9 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
 
     Boolean onDataReady = false;
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    DateFormat etd = new SimpleDateFormat("DD/MM/YYYY");
     ContentValues values, Val;
+    Bitmap selectedImage;
     //String
 
     @Override
@@ -124,6 +132,10 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
         etStreet = (EditText) findViewById(R.id.etStreet);
         etZipCode = (EditText) findViewById(R.id.etZipCode);
         etTel = (EditText) findViewById(R.id.etTel);
+        etDistributorF = (EditText) findViewById(R.id.etDistributorF);
+        etDistributorL = (EditText) findViewById(R.id.etDistributorL);
+        etDistributorTel = (EditText) findViewById(R.id.etDistributorTel);
+        etDate = (EditText) findViewById(R.id.etDate);
 
         btnCurrentLocation = (Button) findViewById(R.id.btnCurrentLocation);
         btnCurrentLocation.setOnClickListener(this);
@@ -188,6 +200,12 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
             etStreet.append(VilleList.get(0).get("vilage_road"));
             etZipCode.append(VilleList.get(0).get("vilage_postal_code"));
             etTel.append(VilleList.get(0).get("vilage_tel"));
+
+            etDistributorF.append(VilleList.get(0).get("vilage_informant_firstname"));
+            etDistributorL.append(VilleList.get(0).get("vilage_informant_lastname"));
+            etDistributorTel.append(VilleList.get(0).get("vilage_informant_tel"));
+            etDate.setText(etd.format(Calendar.getInstance().getTime()));
+
             if (!strLive.equals("")) {
                 ((RadioButton) rgLovelyCommunity.getChildAt(Integer.parseInt(strLive))).setChecked(true);
             }
@@ -211,7 +229,7 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
                     strS4 = Integer.parseInt(SoilList.get(0).get("soil_mold")),
                     strS5 = Integer.parseInt(SoilList.get(0).get("soil_sandy"));
             if (!strSlum.equals("")) {
-                if (strSlum.equals("0")){
+                if (strSlum.equals("0")) {
                     ((RadioButton) rgSlum.getChildAt(0)).setChecked(true);
                 }
                 if (strSlum.equals("1")) {
@@ -287,7 +305,7 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
         int live = rgLovelyCommunity.getCheckedRadioButtonId();
         radioButton = (RadioButton) findViewById(live);
         int idx = rgLovelyCommunity.indexOfChild(radioButton);
-        if (idx<0){
+        if (idx < 0) {
             idx = 0;
         }
         Val.put("vilage_liveable", idx);
@@ -306,9 +324,9 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
         Val.put("vilage_postal_code", etZipCode.getText().toString());
         Val.put("vilage_tel", etTel.getText().toString());
         Val.put("vilage_img", "");
-        Val.put("vilage_informant_firstname", "");
-        Val.put("vilage_informant_lastname", "");
-        Val.put("vilage_informant_tel", "");
+        Val.put("vilage_informant_firstname", etDistributorF.getText().toString());
+        Val.put("vilage_informant_lastname", etDistributorL.getText().toString());
+        Val.put("vilage_informant_tel", etDistributorTel.getText().toString());
         Val.put("survey_status", "1");
         Val.put("upd_by", "JuJiiz");
         Val.put("upd_date", date);
@@ -318,7 +336,7 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
         int slum = rgSlum.getCheckedRadioButtonId();
         radioButton = (RadioButton) findViewById(slum);
         int idxSlum = rgLovelyCommunity.indexOfChild(radioButton);
-        if (idxSlum<0){
+        if (idxSlum < 0) {
             idxSlum = 0;
         }
         Val.put("slum_status", idxSlum);
@@ -509,6 +527,25 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
     }
 
     @Override
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            try {
+                final Uri imageUri = data.getData();
+                InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                selectedImage = BitmapFactory.decodeStream(imageStream);
+                ivImage.setImageBitmap(selectedImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        } else {
+            Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
     public void onClick(View view) {
         if (view == btnCurrentLocation) {
             if (mCurrLocationMarker != null)
@@ -526,6 +563,11 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
             this.finish();
             Intent intent = new Intent(getApplicationContext(), OPTActivity.class);
             startActivity(intent);
+        }
+        if (view == btnImagePick){
+            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+            photoPickerIntent.setType("image/*");
+            startActivityForResult(photoPickerIntent, 1);
         }
     }
 }

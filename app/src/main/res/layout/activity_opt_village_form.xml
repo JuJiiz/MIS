@@ -101,28 +101,28 @@
                 android:id="@+id/btnCurrentLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="พิกัดปัจจุบัน" />
+                android:text="พิกัดปัจจุบัน"
+                android:visibility="gone" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="พื้นที่รับผิดชอบ"
-                    android:paddingTop="16dp"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="พื้นที่รับผิดชอบ"
+                android:textColor="#000"
+                android:textSize="16dp" />
 
-                <EditText
-                    android:id="@+id/etArea"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
+            <EditText
+                android:id="@+id/etArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -136,9 +136,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="2"
                     android:paddingLeft="16dp"
-                    android:paddingRight="16dp">
+                    android:paddingRight="16dp"
+                    android:weightSum="2">
+
                     <RadioButton
                         android:id="@+id/rbLovelyCommunityNo"
                         android:layout_width="0dp"
@@ -158,8 +159,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -206,8 +207,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -250,8 +251,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -300,54 +301,54 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ประวัติความเป็นมา"
                 android:paddingTop="16dp"
+                android:text="ประวัติความเป็นมา"
                 android:textColor="#000"
                 android:textSize="20dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:text="เริ่มก่อตั้งหมู่บ้านเมื่อ"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="เริ่มก่อตั้งหมู่บ้านเมื่อ"
+                android:textColor="#000"
+                android:textSize="16dp" />
 
-                <EditText
-                    android:id="@+id/etEstablished"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="date" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:text="ความเป็นมาของการตั้งหมู่บ้าน"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
-
-                <EditText
-                    android:id="@+id/etHistory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
+            <EditText
+                android:id="@+id/etEstablished"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date" />
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:text="สภาพปัญหาในหมู่บ้าน"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="ความเป็นมาของการตั้งหมู่บ้าน"
+                android:textColor="#000"
+                android:textSize="16dp" />
 
-                <EditText
-                    android:id="@+id/etProblem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
+            <EditText
+                android:id="@+id/etHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="สภาพปัญหาในหมู่บ้าน"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etProblem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -358,50 +359,49 @@
                 android:textSize="16dp" />
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:text="ชื่อ"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="ชื่อ"
+                android:textColor="#000"
+                android:textSize="16dp" />
 
-                <EditText
-                    android:id="@+id/etConAdFName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:text="นามสกุล"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
-
-                <EditText
-                    android:id="@+id/etConAdLName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
+            <EditText
+                android:id="@+id/etConAdFName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:text="รับตำแหน่งเมื่อวันที่"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="นามสกุล"
+                android:textColor="#000"
+                android:textSize="16dp" />
 
-                <EditText
-                    android:id="@+id/etConAdAppoint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="date" />
+            <EditText
+                android:id="@+id/etConAdLName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="รับตำแหน่งเมื่อวันที่"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etConAdAppoint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -412,70 +412,71 @@
                 android:textSize="20dp" />
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:text="เลขที่ตั้ง"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="เลขที่ตั้ง"
+                android:textColor="#000"
+                android:textSize="16dp" />
 
-                <EditText
-                    android:id="@+id/etLocationNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:text="หมู่ที่"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
-
-                <EditText
-                    android:id="@+id/etHno"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
+            <EditText
+                android:id="@+id/etLocationNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:text="ตรอก/ซอย"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="หมู่ที่"
+                android:textColor="#000"
+                android:textSize="16dp" />
 
-                <EditText
-                    android:id="@+id/etAlley"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
+            <EditText
+                android:id="@+id/etHno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:text="ถนน"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="ตรอก/ซอย"
+                android:textColor="#000"
+                android:textSize="16dp" />
 
-                <EditText
-                    android:id="@+id/etStreet"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
+            <EditText
+                android:id="@+id/etAlley"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="ถนน"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etStreet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="16dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -492,14 +493,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="16dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="อำเภอ"
                     android:textColor="#000"
                     android:textSize="16dp" />
+
                 <Spinner
                     android:id="@+id/spDistrict"
                     android:layout_width="match_parent"
@@ -509,14 +512,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="16dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ตำบล"
                     android:textColor="#000"
                     android:textSize="16dp" />
+
                 <Spinner
                     android:id="@+id/spSubDistrict"
                     android:layout_width="match_parent"
@@ -524,34 +529,34 @@
             </LinearLayout>
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:text="รหัสไปรษณีย์"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="รหัสไปรษณีย์"
+                android:textColor="#000"
+                android:textSize="16dp" />
 
-                <EditText
-                    android:id="@+id/etZipCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
+            <EditText
+                android:id="@+id/etZipCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:text="เบอร์ติดต่อ"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="เบอร์ติดต่อ"
+                android:textColor="#000"
+                android:textSize="16dp" />
 
-                <EditText
-                    android:id="@+id/etTel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
+            <EditText
+                android:id="@+id/etTel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -565,18 +570,85 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/ivImage"
-                    android:layout_gravity="center"
                     android:layout_width="300dp"
                     android:layout_height="150dp"
-                    android:background="#c5c5c5"/>
+                    android:layout_gravity="center"
+                    android:background="#c5c5c5" />
+
                 <Button
                     android:id="@+id/btnImagePick"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="เพิ่มรูปภาพ"/>
+                    android:text="เพิ่มรูปภาพ" />
             </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="ชื่อผู้ให้ข้อมูล"
+                android:textColor="#000"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="ชื่อ"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etDistributorF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="นามสกุล"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etDistributorL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="เบอร์ติดต่อ"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etDistributorTel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:text="วันที่บันทึกข้อมูล"
+                android:textColor="#000"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/etDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:inputType="date" />
 
         </LinearLayout>
     </ScrollView>

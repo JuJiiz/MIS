@@ -1,6 +1,8 @@
 package com.example.jujiiz.mis.controllers;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,13 +25,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class OPTVillageActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemClickListener {
+public class OPTVillageActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener {
     EditText etAddVillageNumber, etAddVillageName;
     Button btnAddVillage;
     ListView listOPTVille;
     String VillageNumber = "", VillageName = "";
 
     myDBClass db = new myDBClass(this);
+    String SelectedIDItem,SelectedNameItem;
 
     ArrayList<HashMap<String, String>> OPTList, VilleList, VilleActive;
     String OPTid;
@@ -55,6 +58,7 @@ public class OPTVillageActivity extends AppCompatActivity implements View.OnClic
 
         listOPTVille = (ListView) findViewById(R.id.listOPTVille);
         listOPTVille.setOnItemClickListener(this);
+        listOPTVille.setOnItemLongClickListener(this);
     }
 
     private void setListView() {
@@ -62,6 +66,7 @@ public class OPTVillageActivity extends AppCompatActivity implements View.OnClic
         String strVilleNo = "Number";
         String strSurStatus = "Status";
         String strVilleID = "ID";
+        String strSurvey = "Survey";
         VilleActive = new ArrayList<HashMap<String, String>>();
         VilleList = db.SelectData("vilage");
         if (!VilleList.isEmpty()) {
@@ -72,7 +77,16 @@ public class OPTVillageActivity extends AppCompatActivity implements View.OnClic
                     HashMap<String, String> temp = new HashMap<String, String>();
                     temp.put(strVilleName, VilleList.get(i).get("vilage_name"));
                     temp.put(strVilleNo, VilleList.get(i).get("vilage_no"));
-                    temp.put(strSurStatus, VilleList.get(i).get("survey_status"));
+                    if (VilleList.get(i).get("survey_status").equals("0")){
+                        strSurvey = "รอการสำรวจ";
+                    }
+                    if (VilleList.get(i).get("survey_status").equals("1")){
+                        strSurvey = "กำลังสำรวจ";
+                    }
+                    if (VilleList.get(i).get("survey_status").equals("2")){
+                        strSurvey = "สำรวจแล้ว";
+                    }
+                    temp.put(strSurStatus, strSurvey);
                     temp.put(strVilleID, VilleList.get(i).get("vilage_id"));
                     VilleActive.add(temp);
                 }
@@ -144,12 +158,41 @@ public class OPTVillageActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         HashMap<String, String> Item = (HashMap<String, String>) listOPTVille.getItemAtPosition(i);
-        String SelectedIDItem = Item.get("ID").toString();
+        SelectedIDItem = Item.get("ID").toString();
         //String SelectedStatusItem = Item.get("status").toString();
         //Toast.makeText(getApplicationContext(), SelectedIDItem, Toast.LENGTH_SHORT).show();
         intent = new Intent(getApplicationContext(), OPTVillageFormActivity.class);
         intent.putExtra("VillageID", SelectedIDItem);
         this.finish();
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+        HashMap<String, String> Item = (HashMap<String, String>) listOPTVille.getItemAtPosition(i);
+        SelectedIDItem = Item.get("ID").toString();
+        SelectedNameItem = Item.get("Name").toString();
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        ContentValues Val = new ContentValues();
+                        Val.put("ACTIVE","N");
+                        db.UpdateData("vilage",Val,"vilage_id",SelectedIDItem);
+                        Toast.makeText(getApplicationContext(),"ลบข้อมูลเรียบร้อย",Toast.LENGTH_SHORT).show();
+                        setListView();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("ท่านต้องการลบข้อมูล "+ SelectedNameItem +" ?").setPositiveButton("ใช่", dialogClickListener)
+                .setNegativeButton("ไม่ใช่", dialogClickListener).show();
+        return false;
     }
 }
