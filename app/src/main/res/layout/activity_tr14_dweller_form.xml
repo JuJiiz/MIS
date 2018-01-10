@@ -55,18 +55,24 @@
                 android:hint="เลขประจำตัวประชาชน"
                 android:inputType="number" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="คำนำหน้านาม"
-                android:textColor="#000"
-                android:textSize="16dp" />
-
-            <Spinner
-                android:id="@+id/spPrefix"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="คำนำหน้านาม"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <Spinner
+                    android:id="@+id/spPrefix"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -113,57 +119,54 @@
                 android:hint="วันเกิด"
                 android:inputType="date" />
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="สัญชาติ"
-                android:textColor="#000"
-                android:textSize="16dp" />
-
-            <RadioGroup
-                android:id="@+id/rgNationality"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
-
-                <RadioButton
-                    android:id="@+id/rbThaiNationality"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ไทย" />
-
-                <RadioButton
-                    android:id="@+id/rbAnotherNationality"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="อื่นๆ" />
-            </RadioGroup>
-
             <LinearLayout
-                android:id="@+id/loAnotherNationality"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:orientation="horizontal"
-                android:visibility="visible">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="เลือกสัญชาติ" />
+                    android:text="สัญชาติ"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
 
-                <EditText
-                    android:id="@+id/etDwellerNationality"
+                <RadioGroup
+                    android:id="@+id/rgNationality"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="ระบุสัญชาติ"
-                    android:inputType="text" />
-            </LinearLayout>
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
 
+                    <RadioButton
+                        android:id="@+id/rbThaiNationality"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ไทย" />
+
+                    <RadioButton
+                        android:id="@+id/rbAnotherNationality"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="อื่นๆ" />
+
+                    <LinearLayout
+                        android:id="@+id/loAnotherNationality"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <EditText
+                            android:id="@+id/etDwellerNationality"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:hint="ระบุสัญชาติ"
+                            android:inputType="text" />
+                    </LinearLayout>
+                </RadioGroup>
+            </LinearLayout>
 
 
         </LinearLayout>

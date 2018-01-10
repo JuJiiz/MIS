@@ -63,7 +63,7 @@ public class TR14Activity extends AppCompatActivity
 
         btnSearchVillage = (Button) findViewById(R.id.btnSearchVillage);
         btnSearchVillage.setOnClickListener(this);
-        btnAddVillage = (Button) findViewById(R.id.btnSearchVillage);
+        btnAddVillage = (Button) findViewById(R.id.btnAddVillage);
         btnAddVillage.setOnClickListener(this);
     }
 
@@ -139,7 +139,7 @@ public class TR14Activity extends AppCompatActivity
     @Override
     public void onClick(View view) {
         if (view == btnAddVillage){
-            Intent intent = new Intent(getApplicationContext(), TR14HouseFormActivity.class);
+            Intent intent = new Intent(this, TR14HouseFormActivity.class);
             this.finish();
             startActivity(intent);
         }

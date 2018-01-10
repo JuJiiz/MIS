@@ -535,8 +535,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
 
             etLat.setText(mLastLocation.convert(mLastLocation.getLatitude(), mLastLocation.FORMAT_DEGREES));
             etLong.setText(mLastLocation.convert(mLastLocation.getLongitude(), mLastLocation.FORMAT_DEGREES));
-
-            Toast.makeText(getApplicationContext(), mLastLocation.getLatitude() + " and " + mLastLocation.getLongitude(), Toast.LENGTH_SHORT).show();
         }
         if (view == btnAddDweller) {
             intent = new Intent(this, PeopleFormActivity.class);

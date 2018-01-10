@@ -64,7 +64,6 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
     myDBClass db = new myDBClass(this);
 
     List<String> OPTTypeList;
-    //ArrayList<HashMap<String, String>> OPTList;
     ArrayList<HashMap<String, String>> OPTList;
     Boolean onDataReady = false;
 
@@ -117,24 +116,26 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void setField() {
-        OPTList = db.SelectOPT();
+        OPTList = db.SelectWhereData("opt","opt_id_ai","1");
         if (!OPTList.isEmpty()) {
             onDataReady = true;
-            etOPTName.append(OPTList.get(0).get("opt_name"));
-            etOPT์ID.append(OPTList.get(0).get("opt_id"));
+            etOPTName.setText(OPTList.get(0).get("opt_name"));
+            etOPT์ID.setText(OPTList.get(0).get("opt_id"));
             spOPTType.setSelection(Integer.parseInt(OPTList.get(0).get("opt_type_id")) - 1);
-            etLat.append(OPTList.get(0).get("opt_location_lat"));
-            etLong.append(OPTList.get(0).get("opt_location_lng"));
-            etLocationNumber.append(OPTList.get(0).get("opt_address_no"));
-            etVillageNumber.append(OPTList.get(0).get("opt_vilage_no"));
-            etAlley.append(OPTList.get(0).get("opt_alley"));
-            etStreet.append(OPTList.get(0).get("opt_road"));
-            etZipCode.append(OPTList.get(0).get("opt_postal_code"));
-            etTel.append(OPTList.get(0).get("opt_tel"));
-            etFax.append(OPTList.get(0).get("opt_fax"));
-            etVision.append(OPTList.get(0).get("opt_vision"));
+            etLat.setText(OPTList.get(0).get("opt_location_lat"));
+            etLong.setText(OPTList.get(0).get("opt_location_lng"));
+            etLocationNumber.setText(OPTList.get(0).get("opt_address_no"));
+            etVillageNumber.setText(OPTList.get(0).get("opt_vilage_no"));
+            etAlley.setText(OPTList.get(0).get("opt_alley"));
+            etStreet.setText(OPTList.get(0).get("opt_road"));
+            etZipCode.setText(OPTList.get(0).get("opt_postal_code"));
+            etTel.setText(OPTList.get(0).get("opt_tel"));
+            etFax.setText(OPTList.get(0).get("opt_fax"));
+            etVision.setText(OPTList.get(0).get("opt_vision"));
 
             fieldEnabled(false);
+
+
         } else {
             btnOPTEdit.setVisibility(View.GONE);
             btnSavingData.setVisibility(View.VISIBLE);
@@ -343,7 +344,7 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
             Val.put("upd_by", "JuJiiz");
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
-
+            OPTList = db.SelectWhereData("opt","opt_id_ai","1");
             if (OPTList.isEmpty()) {
                 Val.put("cr_by", "JuJiiz");
                 Val.put("cr_date", date);
@@ -351,7 +352,7 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(this, "เพิ่มข้อมูลสำเร็จแล้ว", Toast.LENGTH_SHORT).show();
                 Log.d("MYLOG", "Insert");
             } else {
-                db.UpdateData("opt", Val, "opt_id", etOPT์ID.getText().toString());
+                db.UpdateData("opt", Val, "opt_id_ai", "1");
                 Toast.makeText(this, "แก้ไขข้อมูลสำเร็จแล้ว", Toast.LENGTH_SHORT).show();
                 Log.d("MYLOG", "Update");
             }

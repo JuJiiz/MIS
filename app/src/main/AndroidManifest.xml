@@ -34,7 +34,7 @@
         <activity
             android:name=".controllers.OPTActivity"
             android:label="@string/title_activity_opt"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".controllers.HouseholdActivity"
             android:label="@string/title_activity_household"
@@ -43,7 +43,7 @@
             android:name=".controllers.TR14Activity"
             android:label="@string/title_activity_tr14"
             android:theme="@style/AppTheme" />
-        <activity android:name=".controllers.LoginActivity"></activity>
+        <activity android:name=".controllers.LoginActivity" />
         <activity android:name=".controllers.OPTFormActivity" />
         <activity android:name=".controllers.PeopleFormActivity" />
         <activity android:name=".controllers.OPTVillageActivity" />
@@ -52,7 +52,7 @@
         <activity android:name=".controllers.VehicalFormActivity" />
         <activity android:name=".controllers.TR14HouseFormActivity" />
         <activity android:name=".controllers.TR14DwellerFormActivity" />
-        <activity android:name=".controllers.HouseholdFormActivity"></activity>
+        <activity android:name=".controllers.HouseholdFormActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -61,6 +61,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCKpFgIkzIB3PYigoKVEeOHChh_dmEs_eY" />
 
+        <activity android:name=".controllers.PetFormActivity"></activity>
     </application>
 
 </manifest>

@@ -97,6 +97,7 @@ public class OPTVillageActivity extends AppCompatActivity implements View.OnClic
                     new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvHiddenColumn}
             );
             listOPTVille.setAdapter(simpleAdapter);
+            Log.d("MYLOG", "Set ListView");
         }
     }
 
@@ -108,7 +109,7 @@ public class OPTVillageActivity extends AppCompatActivity implements View.OnClic
             OPTList = db.SelectData("opt");
             String date = df.format(Calendar.getInstance().getTime());
             if (!OPTList.isEmpty()) {
-                OPTid = OPTList.get(0).get("opt_id");
+                OPTid = OPTList.get(0).get("opt_id_ai");
                 if (!VillageNumber.equals("") && !VillageName.equals("")) {
                     ContentValues Val = new ContentValues();
                     Val.put("opt_id", OPTid);

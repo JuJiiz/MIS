@@ -33,18 +33,24 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ชื่อหมู่บ้าน"
-                android:textColor="#000"
-                android:textSize="16dp" />
-
-            <Spinner
-                android:id="@+id/etOwnertName"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ชื่อหมู่บ้าน"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <Spinner
+                    android:id="@+id/spVillageName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -54,7 +60,7 @@
                 android:textSize="16dp" />
 
             <EditText
-                android:id="@+id/etOwnerPersonalID"
+                android:id="@+id/etHouseID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -69,50 +75,59 @@
                 android:textSize="16dp" />
 
             <EditText
-                android:id="@+id/etRegisterDate"
+                android:id="@+id/etHouseNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="บ้านเลขที่"
                 android:inputType="number" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="เจ้าของบ้าน"
-                android:textColor="#000"
-                android:textSize="20dp" />
-
-            <RadioGroup
-                android:id="@+id/rgHouseOwner"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/rbHouseOwnerNo"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ไม่มี" />
+                    android:text="เจ้าของบ้าน"
+                    android:textColor="#000"
+                    android:textSize="20dp" />
 
-                <RadioButton
-                    android:id="@+id/rbHouseOwnerYes"
-                    android:layout_width="wrap_content"
+                <RadioGroup
+                    android:id="@+id/rgHouseOwner"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="มี" />
-            </RadioGroup>
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp">
+
+                    <RadioButton
+                        android:id="@+id/rbHouseOwnerNo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ไม่มี" />
+
+                    <RadioButton
+                        android:id="@+id/rbHouseOwnerYes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="มี" />
+                </RadioGroup>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/loHouseOwner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingRight="16dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -129,18 +144,24 @@
                     android:hint="เลขประจำตัวประชาชน"
                     android:inputType="number" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="คำนำหน้านาม"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
-
-                <Spinner
-                    android:id="@+id/spPrefix"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="คำนำหน้านาม"
+                        android:textColor="#000"
+                        android:textSize="16dp" />
+
+                    <Spinner
+                        android:id="@+id/spPrefix"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp" />
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -221,9 +242,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone"
                     android:paddingLeft="16dp"
-                    android:paddingRight="16dp">
+                    android:paddingRight="16dp"
+                    android:visibility="gone">
+
                     <EditText
                         android:id="@+id/etHouseOwnerNationality"
                         android:layout_width="match_parent"
@@ -306,19 +328,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/btnEditData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:visibility="gone"
-                    android:text="แก้ไขข้อมูล"/>
+                    android:text="แก้ไขข้อมูล"
+                    android:visibility="gone" />
+
                 <Button
                     android:id="@+id/btnSavingData"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text="บันทึก" />
+                    android:text="บันทึก"
+                    android:visibility="visible" />
             </LinearLayout>
 
         </LinearLayout>
