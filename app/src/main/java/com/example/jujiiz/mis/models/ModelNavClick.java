@@ -24,9 +24,9 @@ public class ModelNavClick {
                 if (context instanceof HouseholdActivity) {
                     //Toast.makeText(context,context.toString(),Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(context,"ปิดปรับปรุง",Toast.LENGTH_SHORT).show();
-                    //intent = new Intent(context, HouseholdActivity.class);
-                    //context.startActivity(intent);
+                    //Toast.makeText(context,"ปิดปรับปรุง",Toast.LENGTH_SHORT).show();
+                    intent = new Intent(context, HouseholdActivity.class);
+                    context.startActivity(intent);
                 }
                 //fragment = new HouseholdFragment();
                 break;

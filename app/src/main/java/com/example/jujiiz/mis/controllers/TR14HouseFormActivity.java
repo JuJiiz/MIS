@@ -1,10 +1,13 @@
 package com.example.jujiiz.mis.controllers;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -20,12 +23,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TR14HouseFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
+public class TR14HouseFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener,View.OnClickListener {
     myDBClass db = new myDBClass(this);
     Spinner spPrefix,spVillageName;
     RadioGroup rgHouseOwner;
     RadioButton rbHouseOwnerYes;
     LinearLayout loHouseOwner;
+    Button btnAddDweller;
 
     ArrayList<String> Prefix = new ArrayList<String>();
     ArrayList<String> Village = new ArrayList<String>();
@@ -43,7 +47,7 @@ public class TR14HouseFormActivity extends AppCompatActivity implements Compound
 
     private void setSpinner(){
         PrefixList = db.SelectData("prename");
-        if (!VillageList.isEmpty()) {
+        if (!PrefixList.isEmpty()) {
             for (int i = 0; i < PrefixList.size(); i++) {
                 String strPrefix = PrefixList.get(i).get("prename_detail");
                 Prefix.add(strPrefix);
@@ -79,12 +83,23 @@ public class TR14HouseFormActivity extends AppCompatActivity implements Compound
         rbHouseOwnerYes.setOnCheckedChangeListener(this);
 
         loHouseOwner = (LinearLayout) findViewById(R.id.loHouseOwner);
+
+        btnAddDweller = (Button) findViewById(R.id.btnAddDweller);
+        btnAddDweller.setOnClickListener(this);
     }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if (compoundButton == rbHouseOwnerYes) {
             ModelShowHideLayout.radiobuttonShowHide(rbHouseOwnerYes, loHouseOwner);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == btnAddDweller) {
+            Intent intent = new Intent(getApplicationContext(), TR14DwellerFormActivity.class);
+            getApplicationContext().startActivity(intent);
         }
     }
 }

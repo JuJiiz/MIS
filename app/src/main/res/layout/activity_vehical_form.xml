@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context="com.example.jujiiz.mis.controllers.VehicalFormActivity">
 
@@ -37,84 +37,252 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ชื่อหมู่บ้าน"
-                android:textColor="#000"
-                android:textSize="16dp" />
-
-            <Spinner
-                android:id="@+id/etOwnertName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="เลขประจำบ้าน"
-                android:textColor="#000"
-                android:textSize="16dp" />
-
-            <EditText
-                android:id="@+id/etOwnerPersonalID"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="เลขประจำบ้าน"
-                android:inputType="number" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="บ้านเลขที่"
-                android:textColor="#000"
-                android:textSize="16dp" />
-
-            <EditText
-                android:id="@+id/etRegisterDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="บ้านเลขที่"
-                android:inputType="number" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="เจ้าของบ้าน"
+                android:paddingLeft="8dp"
+                android:text="เจ้าของยานพาหนะ"
                 android:textColor="#000"
                 android:textSize="20dp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ประเภทยานพาหนะทั่วไป"
-                android:textColor="#000"
-                android:textSize="16dp" />
 
-            <Spinner
-                android:id="@+id/spVehicalTypeGeneral"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน "
-                android:textColor="#000"
-                android:textSize="16dp" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="ชื่อ-นามสกุล"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
 
-            <Spinner
-                android:id="@+id/spVehicalTypeInfrastructure"
+                <EditText
+                    android:id="@+id/etOwnerName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" />
+                android:layout_weight="3"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="เลขประจำตัวประชาชน"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <EditText
+                    android:id="@+id/etOwnerPersonalID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:inputType="number"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="จดทะเบียนเมื่อวันที่"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <EditText
+                    android:id="@+id/etPetOwner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:inputType="date" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ประเภทยานพาหนะ"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <RadioGroup
+                    android:id="@+id/rdVehicalType"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical"
+                    android:weightSum="2">
+
+                    <RadioButton
+                        android:id="@+id/rbVehicalType1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ประเภทยานพาหนะทั่วไป" />
+
+                    <RadioButton
+                        android:id="@+id/rbVehicalType2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน" />
+
+                    <RadioButton
+                        android:id="@+id/rbVehicalType3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ประเภทยานพาหนะด้านบรรเทาสาธารณภัย" />
+
+                    <RadioButton
+                        android:id="@+id/rbVehicalType4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ประเภทยานพาหนะด้านสิ่งแวดล้อม" />
+
+                    <RadioButton
+                        android:id="@+id/rbVehicalType5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ประเภทยานพาหนะด้านการศึกษา" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="การให้เช่าใช้"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <RadioGroup
+                    android:id="@+id/rdRent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <RadioButton
+                        android:id="@+id/rbRentNo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ไม่ให้เช่าใช้" />
+
+                    <RadioButton
+                        android:id="@+id/rbRentYes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ให้เช่าใช้" />
+
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ชื่อผู้ให้ข้อมูล"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <Spinner
+                    android:id="@+id/spDistributor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"></Spinner>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="วันที่บันทึกข้อมูล"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <EditText
+                    android:id="@+id/etDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:enabled="false"
+                    android:text="xx/xx/xx"
+                    android:inputType="date" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

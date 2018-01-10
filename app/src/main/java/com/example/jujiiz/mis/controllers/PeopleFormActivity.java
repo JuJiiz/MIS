@@ -1,8 +1,11 @@
 package com.example.jujiiz.mis.controllers;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -15,7 +18,8 @@ import com.example.jujiiz.mis.models.ModelCurrentCalendar;
 import com.example.jujiiz.mis.models.ModelShowHideLayout;
 import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
 
-public class PeopleFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
+public class PeopleFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+    Button btnLandForm, btnVehicalForm, btnPetForm;
     RadioButton rbThaiNationality, rbAnotherNationality;
     RadioButton rbMale, rbFemale;
     RadioButton rbAlive, rbDead;
@@ -78,6 +82,13 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     }
 
     private void init() {
+        btnLandForm = (Button) findViewById(R.id.btnLandForm);
+        btnLandForm.setOnClickListener(this);
+        btnVehicalForm = (Button) findViewById(R.id.btnVehicalForm);
+        btnVehicalForm.setOnClickListener(this);
+        btnPetForm = (Button) findViewById(R.id.btnPetForm);
+        btnPetForm.setOnClickListener(this);
+
         loAnotherNationality = (LinearLayout) findViewById(R.id.loAnotherNationality);
         loAnotherPrefix = (LinearLayout) findViewById(R.id.loAnotherPrefix);
         loBloodType = (LinearLayout) findViewById(R.id.loBloodType);
@@ -228,14 +239,14 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         rbAllergicNo = (RadioButton) findViewById(R.id.rbAllergicNo);
         rbAllergicYes = (RadioButton) findViewById(R.id.rbAllergicYes);
         rbDisabledNo = (RadioButton) findViewById(R.id.rbDisabledNo);
-        rbDisabledYes =(RadioButton) findViewById(R.id.rbDisabledYes);
+        rbDisabledYes = (RadioButton) findViewById(R.id.rbDisabledYes);
         rbDisadvantageNo = (RadioButton) findViewById(R.id.rbDisadvantageNo);
         rbDisadvantageYes = (RadioButton) findViewById(R.id.rbDisadvantageYes);
         rbSubAlNo = (RadioButton) findViewById(R.id.rbSubAlNo);
         rbSubAlYes = (RadioButton) findViewById(R.id.rbSubAlYes);
         rbNoStudy = (RadioButton) findViewById(R.id.rbNoStudy);
         rbInStudy = (RadioButton) findViewById(R.id.rbInStudy);
-        rbGraduated =(RadioButton) findViewById(R.id.rbGraduated);
+        rbGraduated = (RadioButton) findViewById(R.id.rbGraduated);
         rbLiteracyYes = (RadioButton) findViewById(R.id.rbLiteracyYes);
         rbLiteracyNo = (RadioButton) findViewById(R.id.rbLiteracyNo);
         rbTechnologyNo = (RadioButton) findViewById(R.id.rbTechnologyNo);
@@ -372,45 +383,61 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if (compoundButton == cbAgri)
-            ModelShowHideLayout.checkboxShowHide(cbAgri,loAgri);
+            ModelShowHideLayout.checkboxShowHide(cbAgri, loAgri);
         if (compoundButton == cbPet)
-            ModelShowHideLayout.checkboxShowHide(cbPet,loPet);
+            ModelShowHideLayout.checkboxShowHide(cbPet, loPet);
         if (compoundButton == cbGovern)
-            ModelShowHideLayout.checkboxShowHide(cbGovern,loGovern);
+            ModelShowHideLayout.checkboxShowHide(cbGovern, loGovern);
         if (compoundButton == cbPrivate)
-            ModelShowHideLayout.checkboxShowHide(cbPrivate,loPrivate);
+            ModelShowHideLayout.checkboxShowHide(cbPrivate, loPrivate);
 
         if (compoundButton == rbAnotherNationality)
-            ModelShowHideLayout.radiobuttonShowHide(rbAnotherNationality,loAnotherNationality);
+            ModelShowHideLayout.radiobuttonShowHide(rbAnotherNationality, loAnotherNationality);
         if (compoundButton == rbInRegister)
-            ModelShowHideLayout.radiobuttonShowHide(rbInRegister,loInRegister);
+            ModelShowHideLayout.radiobuttonShowHide(rbInRegister, loInRegister);
         if (compoundButton == rbNotInRegister)
-            ModelShowHideLayout.radiobuttonShowHide(rbNotInRegister,loNotInRegister);
+            ModelShowHideLayout.radiobuttonShowHide(rbNotInRegister, loNotInRegister);
         if (compoundButton == rbNotInHousehold)
-            ModelShowHideLayout.radiobuttonShowHide(rbNotInHousehold,loNotInHousehold);
+            ModelShowHideLayout.radiobuttonShowHide(rbNotInHousehold, loNotInHousehold);
         if (compoundButton == rbJGCareer)
-            ModelShowHideLayout.radiobuttonShowHide(rbJGCareer,loCareer);
+            ModelShowHideLayout.radiobuttonShowHide(rbJGCareer, loCareer);
         if (compoundButton == rbICMonth)
-            ModelShowHideLayout.radiobuttonShowHide(rbICMonth,loICMonth);
+            ModelShowHideLayout.radiobuttonShowHide(rbICMonth, loICMonth);
         if (compoundButton == rbICYear)
-            ModelShowHideLayout.radiobuttonShowHide(rbICYear,loICYear);
+            ModelShowHideLayout.radiobuttonShowHide(rbICYear, loICYear);
         if (compoundButton == rbCongenitalYes)
-            ModelShowHideLayout.radiobuttonShowHide(rbCongenitalYes,loCongenital);
+            ModelShowHideLayout.radiobuttonShowHide(rbCongenitalYes, loCongenital);
         if (compoundButton == rbContagiousYes)
-            ModelShowHideLayout.radiobuttonShowHide(rbContagiousYes,loContagious);
+            ModelShowHideLayout.radiobuttonShowHide(rbContagiousYes, loContagious);
         if (compoundButton == rbAllergicYes)
-            ModelShowHideLayout.radiobuttonShowHide(rbAllergicYes,loAllergic);
+            ModelShowHideLayout.radiobuttonShowHide(rbAllergicYes, loAllergic);
         if (compoundButton == rbDisabledYes)
-            ModelShowHideLayout.radiobuttonShowHide(rbDisabledYes,loDisabled);
+            ModelShowHideLayout.radiobuttonShowHide(rbDisabledYes, loDisabled);
         if (compoundButton == rbInStudy)
-            ModelShowHideLayout.radiobuttonShowHide(rbInStudy,loInStudy);
+            ModelShowHideLayout.radiobuttonShowHide(rbInStudy, loInStudy);
         if (compoundButton == rbGraduated)
-            ModelShowHideLayout.radiobuttonShowHide(rbGraduated,loGraduated);
+            ModelShowHideLayout.radiobuttonShowHide(rbGraduated, loGraduated);
         if (compoundButton == rbExpertiseYes)
-            ModelShowHideLayout.radiobuttonShowHide(rbExpertiseYes,loExpertise);
+            ModelShowHideLayout.radiobuttonShowHide(rbExpertiseYes, loExpertise);
         if (compoundButton == rbAnotherReligion)
-            ModelShowHideLayout.radiobuttonShowHide(rbAnotherReligion,loAnotherReligion);
+            ModelShowHideLayout.radiobuttonShowHide(rbAnotherReligion, loAnotherReligion);
         if (compoundButton == rbTransportationYes)
-            ModelShowHideLayout.radiobuttonShowHide(rbTransportationYes,loTransportation);
+            ModelShowHideLayout.radiobuttonShowHide(rbTransportationYes, loTransportation);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view == btnLandForm){
+            Intent intent = new Intent(getApplicationContext(), LandFormActivity.class);
+            startActivity(intent);
+        }
+        if(view == btnVehicalForm){
+            Intent intent = new Intent(getApplicationContext(), VehicalFormActivity.class);
+            startActivity(intent);
+        }
+        if(view == btnPetForm){
+            Intent intent = new Intent(getApplicationContext(), PetFormActivity.class);
+            startActivity(intent);
+        }
     }
 }

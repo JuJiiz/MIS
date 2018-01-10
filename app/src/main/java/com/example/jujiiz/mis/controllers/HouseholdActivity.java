@@ -40,7 +40,7 @@ public class HouseholdActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, AdapterView.OnItemClickListener {
 
     ListView lvHousehold;
-    Button btnSearch;
+    Button btnSearch,btnDumpPopulation;
     Spinner spVName;
     EditText etSearch;
 
@@ -52,7 +52,7 @@ public class HouseholdActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_household);
 
-        ModelToken.checkToken(this);
+        //ModelToken.checkToken(this);
 
         init();
 
@@ -74,12 +74,14 @@ public class HouseholdActivity extends AppCompatActivity
     private void init() {
         lvHousehold = (ListView) findViewById(R.id.lvHousehold);
         btnSearch = (Button) findViewById(R.id.btnSearch);
+        btnDumpPopulation = (Button) findViewById(R.id.btnDumpPopulation);
         spVName = (Spinner) findViewById(R.id.spVName);
         etSearch = (EditText) findViewById(R.id.etSearch);
 
         lvHousehold.setOnItemClickListener(this);
 
         btnSearch.setOnClickListener(this);
+        btnDumpPopulation.setOnClickListener(this);
         /*btnPrevious.setOnClickListener(this);
         btnNext.setOnClickListener(this);*/
     }
@@ -109,6 +111,10 @@ public class HouseholdActivity extends AppCompatActivity
     public void onClick(View view) {
         if (view == btnSearch) {
 
+        }
+        if (view == btnDumpPopulation) {
+            Intent intent = new Intent(getApplicationContext(), PeopleFormActivity.class);
+            getApplicationContext().startActivity(intent);
         }
     }
 

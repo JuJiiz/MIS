@@ -466,212 +466,212 @@
                         android:layout_weight="2"></Spinner>
                 </LinearLayout>
 
-                    <TextView
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ที่อยู่ตามทะเบียนบ้าน"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <RadioGroup
+                    android:id="@+id/rgRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/rbInRegister"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ที่อยู่ตามทะเบียนบ้าน"
-                        android:textColor="#000"
-                        android:textSize="16dp" />
+                        android:text="มีชื่ออยู่ในทะเบียนบ้าน" />
 
-                    <RadioGroup
-                        android:id="@+id/rgRegister"
+                    <LinearLayout
+                        android:id="@+id/loInRegister"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <RadioButton
-                            android:id="@+id/rbInRegister"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="มีชื่ออยู่ในทะเบียนบ้าน" />
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <LinearLayout
-                            android:id="@+id/loInRegister"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone">
+                            android:orientation="horizontal"
+                            android:visibility="visible">
 
-                            <LinearLayout
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="บ้านเลขที่ *" />
+
+                            <EditText
+                                android:id="@+id/etHNo"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:visibility="visible">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="บ้านเลขที่ *" />
-
-                                <EditText
-                                    android:id="@+id/etHNo"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="16dp"
-                                    android:inputType="number" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:visibility="visible">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="รหัสประจำบ้าน *" />
-
-                                <EditText
-                                    android:id="@+id/etHID"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="16dp"
-                                    android:inputType="number" />
-                            </LinearLayout>
+                                android:layout_marginBottom="16dp"
+                                android:inputType="number" />
                         </LinearLayout>
-
-                        <RadioButton
-                            android:id="@+id/rbNotInRegister"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ไม่มีชื่ออยู่ทะเบียนบ้าน (ระบุ) *" />
 
                         <LinearLayout
-                            android:id="@+id/loNotInRegister"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone">
+                            android:orientation="horizontal"
+                            android:visibility="visible">
 
-                            <LinearLayout
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="รหัสประจำบ้าน *" />
+
+                            <EditText
+                                android:id="@+id/etHID"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="ระบุประเทศ" />
-
-                                <Spinner
-                                    android:id="@+id/spCountry"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="16dp"></Spinner>
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="ระบุจังหวัด" />
-
-                                <Spinner
-                                    android:id="@+id/spProvince"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="16dp"></Spinner>
-                            </LinearLayout>
+                                android:layout_marginBottom="16dp"
+                                android:inputType="number" />
                         </LinearLayout>
-                    </RadioGroup>
+                    </LinearLayout>
 
-                    <TextView
+                    <RadioButton
+                        android:id="@+id/rbNotInRegister"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ที่อยู่ปัจจุบัน"
-                        android:textColor="#000"
-                        android:textSize="16dp" />
+                        android:text="ไม่มีชื่ออยู่ทะเบียนบ้าน (ระบุ) *" />
 
-                    <RadioGroup
-                        android:id="@+id/rgCurrentAddress"
+                    <LinearLayout
+                        android:id="@+id/loNotInRegister"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="16dp">
-
-                        <RadioButton
-                            android:id="@+id/rbInHousehold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="อาศัยอยู่ในครัวเรือนนี้ *" />
-
-                        <RadioButton
-                            android:id="@+id/rbNotInHousehold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ไม่อยู่ในครัวเรือนนี้เกินกว่า 6 เดือน (ระบุ) *" />
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <LinearLayout
-                            android:id="@+id/loNotInHousehold"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:visibility="gone">
+                            android:orientation="horizontal">
 
-                            <LinearLayout
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ระบุประเทศ" />
+
+                            <Spinner
+                                android:id="@+id/spCountry"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="ระบุประเทศ" />
-
-                                <Spinner
-                                    android:id="@+id/spIHCountry"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="16dp"></Spinner>
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="ระบุจังหวัด" />
-
-                                <Spinner
-                                    android:id="@+id/spIHProvince"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="16dp"></Spinner>
-                            </LinearLayout>
+                                android:layout_marginBottom="16dp"></Spinner>
                         </LinearLayout>
-                    </RadioGroup>
 
-                    <TextView
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ระบุจังหวัด" />
+
+                            <Spinner
+                                android:id="@+id/spProvince"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"></Spinner>
+                        </LinearLayout>
+                    </LinearLayout>
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ที่อยู่ปัจจุบัน"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <RadioGroup
+                    android:id="@+id/rgCurrentAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="16dp">
+
+                    <RadioButton
+                        android:id="@+id/rbInHousehold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="สถานภาพของการอาศัย *"
-                        android:textColor="#000"
-                        android:textSize="16dp" />
+                        android:text="อาศัยอยู่ในครัวเรือนนี้ *" />
 
-                    <RadioGroup
-                        android:id="@+id/rgStatus"
+                    <RadioButton
+                        android:id="@+id/rbNotInHousehold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ไม่อยู่ในครัวเรือนนี้เกินกว่า 6 เดือน (ระบุ) *" />
+
+                    <LinearLayout
+                        android:id="@+id/loNotInHousehold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="16dp">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                        <RadioButton
-                            android:id="@+id/rbStatusOwner"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="เป็นเจ้าบ้าน" />
+                            android:orientation="horizontal">
 
-                        <RadioButton
-                            android:id="@+id/rbStatusDweller"
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ระบุประเทศ" />
+
+                            <Spinner
+                                android:id="@+id/spIHCountry"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"></Spinner>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="เป็นผู้อาศัย" />
-                    </RadioGroup>
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ระบุจังหวัด" />
+
+                            <Spinner
+                                android:id="@+id/spIHProvince"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"></Spinner>
+                        </LinearLayout>
+                    </LinearLayout>
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="สถานภาพของการอาศัย *"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <RadioGroup
+                    android:id="@+id/rgStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="16dp">
+
+                    <RadioButton
+                        android:id="@+id/rbStatusOwner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="เป็นเจ้าบ้าน" />
+
+                    <RadioButton
+                        android:id="@+id/rbStatusDweller"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="เป็นผู้อาศัย" />
+                </RadioGroup>
 
             </LinearLayout>
 
@@ -1231,71 +1231,72 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp">
 
-                    <TextView
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ประวัติโรคประจําตัว"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <RadioGroup
+                    android:id="@+id/rgCongenitalHis"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2">
+
+                    <RadioButton
+                        android:id="@+id/rbCongenitalNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ประวัติโรคประจําตัว"
-                        android:textColor="#000"
-                        android:textSize="16dp" />
+                        android:text="ไม่มี" />
 
-                    <RadioGroup
-                        android:id="@+id/rgCongenitalHis"
+                    <RadioButton
+                        android:id="@+id/rbCongenitalYes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="มี (ระบุ)" />
+
+                    <LinearLayout
+                        android:id="@+id/loCongenital"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2">
+                        android:orientation="vertical"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:visibility="gone">
 
-                        <RadioButton
-                            android:id="@+id/rbCongenitalNo"
+                        <CheckBox
+                            android:id="@+id/cbCong1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="ไม่มี" />
+                            android:text="ความดันโลหิตสูง" />
 
-                        <RadioButton
-                            android:id="@+id/rbCongenitalYes"
+                        <CheckBox
+                            android:id="@+id/cbCong2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="มี (ระบุ)" />
-                        <LinearLayout
-                            android:id="@+id/loCongenital"
-                            android:layout_width="match_parent"
+                            android:text="เบาหวาน" />
+
+                        <CheckBox
+                            android:id="@+id/cbCong3"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingLeft="16dp"
-                            android:paddingRight="16dp"
-                            android:visibility="gone">
+                            android:text="หัวใจขาดเลือด" />
 
-                            <CheckBox
-                                android:id="@+id/cbCong1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="ความดันโลหิตสูง" />
+                        <CheckBox
+                            android:id="@+id/cbCong4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="มะเร็ง" />
 
-                            <CheckBox
-                                android:id="@+id/cbCong2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="เบาหวาน" />
+                        <CheckBox
+                            android:id="@+id/cbCong5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="อื่นๆ" />
 
-                            <CheckBox
-                                android:id="@+id/cbCong3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="หัวใจขาดเลือด" />
-
-                            <CheckBox
-                                android:id="@+id/cbCong4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="มะเร็ง" />
-
-                            <CheckBox
-                                android:id="@+id/cbCong5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="อื่นๆ" />
-
-                        </LinearLayout>
-                    </RadioGroup>
+                    </LinearLayout>
+                </RadioGroup>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2000,6 +2001,35 @@
                     android:enabled="false"
                     android:hint="วันที่บันทึก"
                     android:inputType="date" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:weightSum="3">
+
+                <Button
+                    android:id="@+id/btnLandForm"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ที่ดิน" />
+
+                <Button
+                    android:id="@+id/btnVehicalForm"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ยานพาหนะ" />
+
+                <Button
+                    android:id="@+id/btnPetForm"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="สัตว์เลี้ยง" />
             </LinearLayout>
 
         </LinearLayout>

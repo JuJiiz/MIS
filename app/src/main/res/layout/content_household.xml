@@ -42,10 +42,22 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lodumpPoppulation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/householdheaderLayout">
+        <Button
+            android:id="@+id/btnDumpPopulation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ประชากร"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/listviewHeadLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/householdheaderLayout"
+        android:layout_below="@+id/lodumpPoppulation"
         android:orientation="horizontal"
         android:background="#f7f7f7"
         android:paddingLeft="16dp"
