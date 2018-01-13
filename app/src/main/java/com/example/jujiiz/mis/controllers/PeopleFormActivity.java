@@ -73,12 +73,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //Important!! (Form)
 
-        spPrefix.setAdapter(new ModelSpinnerAdapter(this, R.layout.simple_spinner_item, spPrefixArray, "เลือก"));
-        spBloodType.setAdapter(new ModelSpinnerAdapter(this, R.layout.simple_spinner_item, spBloodGroupArray, "เลือก"));
-        spMaritalStatus.setAdapter(new ModelSpinnerAdapter(this, R.layout.simple_spinner_item, spMaritalStatusArray, "เลือก"));
-        spInStudy.setAdapter(new ModelSpinnerAdapter(this, R.layout.simple_spinner_item, spEducationArray, "เลือก"));
-        spGraduated.setAdapter(new ModelSpinnerAdapter(this, R.layout.simple_spinner_item, spEducationArray, "เลือก"));
-        spExpertise.setAdapter(new ModelSpinnerAdapter(this, R.layout.simple_spinner_item, spExpertiseArray, "เลือก"));
+        ModelSpinnerAdapter.setSpinnerItem(this,spPrefixArray,spPrefix);
+        ModelSpinnerAdapter.setSpinnerItem(this,spBloodGroupArray,spBloodType);
+        ModelSpinnerAdapter.setSpinnerItem(this,spMaritalStatusArray,spMaritalStatus);
+        ModelSpinnerAdapter.setSpinnerItem(this,spEducationArray,spInStudy);
+        ModelSpinnerAdapter.setSpinnerItem(this,spEducationArray,spGraduated);
+        ModelSpinnerAdapter.setSpinnerItem(this,spExpertiseArray,spExpertise);
     }
 
     private void init() {

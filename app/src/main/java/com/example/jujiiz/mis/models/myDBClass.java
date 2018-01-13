@@ -34,7 +34,7 @@ public class myDBClass extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `nationality` (`nationality_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`nationality_detail`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `opt` (`opt_id_ai`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`opt_id`\tINTEGER NOT NULL,`opt_name`\tTEXT NOT NULL,`opt_type_id`\tINTEGER NOT NULL,`opt_location_lat`\tTEXT NOT NULL,`opt_location_lng`\tTEXT NOT NULL,`opt_address_no`\tINTEGER NOT NULL,`opt_vilage_no`\tINTEGER NOT NULL,`opt_alley`\tTEXT NOT NULL,`opt_road`\tTEXT NOT NULL,`opt_province`\tTEXT NOT NULL,`opt_district`\tTEXT NOT NULL,`opt_sub_district`\tTEXT NOT NULL,`opt_postal_code`\tINTEGER NOT NULL,`opt_tel`\tINTEGER NOT NULL,`opt_fax`\tINTEGER NOT NULL,`opt_vision`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `opt_type` (`opt_type_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`opt_type_name`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population` (`population_idcard`\tINTEGER NOT NULL,`prename_id`\tINTEGER NOT NULL,`firstname`\tTEXT NOT NULL,`lastname`\tTEXT NOT NULL,`birthdate`\tTEXT NOT NULL,`height`\tINTEGER NOT NULL,`weight`\tINTEGER NOT NULL,`sex`\tTEXT NOT NULL,`bloodgroup`\tTEXT NOT NULL,`living`\tTEXT NOT NULL,`maritalstatus`\tTEXT NOT NULL,`tel`\tINTEGER NOT NULL,`nationality_id`\tINTEGER NOT NULL,`house_id`\tINTEGER NOT NULL,`currentaddr`\tTEXT NOT NULL,`currentaddr_province`\tTEXT NOT NULL,`currentaddr_country`\tTEXT NOT NULL,`dwellerstatus`\tTEXT NOT NULL,`income`\tTEXT NOT NULL,`income_money`\tINTEGER NOT NULL,`dept`\tTEXT NOT NULL,`saving`\tTEXT NOT NULL,`allergichis`\tTEXT NOT NULL,`allergichis_detail`\tTEXT NOT NULL,`disadvantage`\tTEXT NOT NULL,`sub_al`\tTEXT NOT NULL,`education`\tTEXT NOT NULL,`education_class`\tTEXT NOT NULL,`literacy`\tTEXT NOT NULL,`technology`\tTEXT NOT NULL,`expertise`\tTEXT NOT NULL,`expertise_name`\tTEXT NOT NULL,`expertise_detail`\tTEXT NOT NULL,`religion`\tTEXT NOT NULL,`religion_another`\tTEXT NOT NULL,`participation`\tTEXT NOT NULL,`election`\tTEXT NOT NULL,`residence_status`\tTEXT NOT NULL,`latentpop_province`\tTEXT NOT NULL,`latentpop_country`\tTEXT NOT NULL,`distributor`\tTEXT NOT NULL,`survey_status`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population` (`population_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`population_idcard`\tINTEGER NOT NULL,`prename_id`\tINTEGER NOT NULL,`firstname`\tTEXT NOT NULL,`lastname`\tTEXT NOT NULL,`birthdate`\tTEXT NOT NULL,`height`\tINTEGER NOT NULL,`weight`\tINTEGER NOT NULL,`sex`\tTEXT NOT NULL,`bloodgroup`\tTEXT NOT NULL,`living`\tTEXT NOT NULL,`maritalstatus`\tTEXT NOT NULL,`tel`\tINTEGER NOT NULL,`nationality_id`\tINTEGER NOT NULL,`house_id`\tINTEGER NOT NULL,`currentaddr`\tTEXT NOT NULL,`currentaddr_province`\tTEXT NOT NULL,`currentaddr_country`\tTEXT NOT NULL,`dwellerstatus`\tTEXT NOT NULL,`income`\tTEXT NOT NULL,`income_money`\tINTEGER NOT NULL,`dept`\tTEXT NOT NULL,`saving`\tTEXT NOT NULL,`allergichis`\tTEXT NOT NULL,`allergichis_detail`\tTEXT NOT NULL,`disadvantage`\tTEXT NOT NULL,`sub_al`\tTEXT NOT NULL,`education`\tTEXT NOT NULL,`education_class`\tTEXT NOT NULL,`literacy`\tTEXT NOT NULL,`technology`\tTEXT NOT NULL,`expertise`\tTEXT NOT NULL,`expertise_name`\tTEXT NOT NULL,`expertise_detail`\tTEXT NOT NULL,`religion`\tTEXT NOT NULL,`religion_another`\tTEXT NOT NULL,`participation`\tTEXT NOT NULL,`election`\tTEXT NOT NULL,`residence_status`\tTEXT NOT NULL,`latentpop_province`\tTEXT NOT NULL,`latentpop_country`\tTEXT NOT NULL,`distributor`\tTEXT NOT NULL,`survey_status`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_congenitalhis` (`congh_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`congh_type`\tTEXT NOT NULL,`congh1`\tTEXT NOT NULL,`congh2`\tTEXT NOT NULL,`congh3`\tTEXT NOT NULL,`congh4`\tTEXT NOT NULL,`congh5`\tTEXT NOT NULL,`congh_another`\tTEXT NOT NULL,`population_idcard`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_contagioushis` (`conth_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`conth_type`\tTEXT NOT NULL,`conth1`\tTEXT NOT NULL,`conth2`\tTEXT NOT NULL,`conth3`\tTEXT NOT NULL,`conth4`\tTEXT NOT NULL,`conth5`\tTEXT NOT NULL,`conth6`\tTEXT NOT NULL,`conth7`\tTEXT NOT NULL,`conth8`\tTEXT NOT NULL,`conth9`\tTEXT NOT NULL,`conth10`\tTEXT NOT NULL,`conth11`\tTEXT NOT NULL,`conth_another`\tTEXT NOT NULL,`population_idcard`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_disabled` (`disabled_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`disabled_type`\tTEXT NOT NULL,`disabled1`\tTEXT NOT NULL,`disabled2`\tTEXT NOT NULL,`disabled3`\tTEXT NOT NULL,`disabled4`\tTEXT NOT NULL,`disabled5`\tTEXT NOT NULL,`disabled6`\tTEXT NOT NULL,`population_idcard`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
@@ -93,7 +93,6 @@ public class myDBClass extends SQLiteOpenHelper {
                     new String[]{String.valueOf(strMemberID)}, null, null, null, null);*/
             String strSQL = "SELECT * FROM " + tableName;
             Cursor cursor = db.rawQuery(strSQL, null);
-            //Log.d("MYLOG", "cursor: " + cursor);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
                     do {
@@ -109,7 +108,7 @@ public class myDBClass extends SQLiteOpenHelper {
             }
             cursor.close();
             db.close();
-            Log.d("MYLOG", "Selected List: " + MyArrList);
+            //Log.d("MYLOG", "Selected List: " + MyArrList);
             return MyArrList;
 
         } catch (Exception e) {
@@ -124,11 +123,10 @@ public class myDBClass extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db;
             db = this.getWritableDatabase(); // Write Data
-            Log.d("MYLOG", "Val Insert: " + Val);
-
             long rows = db.insert(TableName, null, Val);
-
+            Log.d("MYLOG", TableName + " Insert: " + Val);
             db.close();
+
             return rows; // return rows inserted.
 
         } catch (Exception e) {
@@ -142,10 +140,10 @@ public class myDBClass extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db;
             db = this.getWritableDatabase(); // Write Data
-            Log.d("MYLOG", "Val Update: " + Val);
             String where = strPK + " = ?";
             String[] whereArgs = new String[]{String.valueOf(strPKValue)};
             long rows = db.update(TableName, Val, where, whereArgs);
+            Log.d("MYLOG", TableName + " Update: " + Val);
             db.close();
             return rows; // return rows inserted.
         } catch (Exception e) {
@@ -169,7 +167,6 @@ public class myDBClass extends SQLiteOpenHelper {
                     new String[]{String.valueOf(strMemberID)}, null, null, null, null);*/
             String strSQL = "SELECT * FROM " + tableName + " WHERE " + strKey + " = " + strValue;
             Cursor cursor = db.rawQuery(strSQL, null);
-            //Log.d("MYLOG", "cursor: " + cursor);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
                     do {
@@ -218,50 +215,19 @@ public class myDBClass extends SQLiteOpenHelper {
         }
     }
 
-    public ArrayList<HashMap<String, String>> SelectOPT() {
-        try {
-            ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-            HashMap<String, String> map;
+    public ArrayList<String> CheckTable(){
+        SQLiteDatabase db;
+        db = this.getReadableDatabase(); // Read Data
+        ArrayList<String> arrTblNames = new ArrayList<String>();
+        Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
 
-            SQLiteDatabase db;
-            db = this.getReadableDatabase();
-
-            String strSQL = "SELECT * FROM opt";
-            Cursor cursor = db.rawQuery(strSQL, null);
-
-            if (cursor != null) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        map = new HashMap<String, String>();
-                        map.put("opt_id", cursor.getString(0));
-                        map.put("opt_name", cursor.getString(1));
-                        map.put("opt_type_id", cursor.getString(2));
-                        map.put("opt_location_lat", cursor.getString(3));
-                        map.put("opt_location_lng", cursor.getString(4));
-                        map.put("opt_address_no", cursor.getString(5));
-                        map.put("opt_vilage_no", cursor.getString(6));
-                        map.put("opt_alley", cursor.getString(7));
-                        map.put("opt_road", cursor.getString(8));
-                        map.put("opt_province", cursor.getString(9));
-                        map.put("opt_district", cursor.getString(10));
-                        map.put("opt_sub_district", cursor.getString(11));
-                        map.put("opt_postal_code", cursor.getString(12));
-                        map.put("opt_tel", cursor.getString(13));
-                        map.put("opt_fax", cursor.getString(14));
-                        map.put("opt_vision", cursor.getString(15));
-                        map.put("cr_by", cursor.getString(16));
-                        map.put("cr_date", cursor.getString(17));
-
-                        MyArrList.add(map);
-                    } while (cursor.moveToNext());
-                }
+        if (c.moveToFirst()) {
+            while ( !c.isAfterLast() ) {
+                arrTblNames.add( c.getString( c.getColumnIndex("name")) );
+                c.moveToNext();
             }
-            cursor.close();
-            db.close();
-            return MyArrList;
-        } catch (Exception e) {
-            return null;
         }
+        return arrTblNames;
     }
 
 }

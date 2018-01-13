@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.example.jujiiz.mis.controllers.TR14HouseFormActivity">
 
     <RelativeLayout
+        android:id="@+id/HeaderLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -23,15 +24,20 @@
     </RelativeLayout>
 
     <ScrollView
+        android:id="@+id/ContentLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/HeaderLayout"
+        android:layout_above="@+id/FooterLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingBottom="8dp"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:paddingRight="16dp"
+            android:paddingTop="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -100,15 +106,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:orientation="horizontal"
-                    android:weightSum="2"
                     android:paddingLeft="16dp"
-                    android:paddingRight="16dp">
+                    android:paddingRight="16dp"
+                    android:weightSum="2">
 
                     <RadioButton
                         android:id="@+id/rbHouseOwnerNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:checked="true"
                         android:text="ไม่มี" />
 
                     <RadioButton
@@ -208,14 +215,29 @@
                     android:hint="วันเกิด"
                     android:inputType="date" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="สัญชาติ"
-                    android:textColor="#000"
-                    android:textSize="20dp" />
+                    android:orientation="horizontal"
+                    android:weightSum="3">
 
-                <RadioGroup
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="สัญชาติ"
+                        android:textColor="#000"
+                        android:textSize="20dp" />
+
+                    <Spinner
+                        android:id="@+id/spNationality"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"></Spinner>
+                </LinearLayout>
+
+
+                <!--<RadioGroup
                     android:id="@+id/rgHouseOwnerNationality"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -235,13 +257,14 @@
                         android:layout_height="wrap_content"
                         android:checked="true"
                         android:text="อื่นๆ (ระบุ)" />
-                </RadioGroup>
+                </RadioGroup>-->
 
                 <LinearLayout
                     android:id="@+id/loHouseOwnerNationality"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:paddingBottom="16dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:visibility="gone">
@@ -257,22 +280,27 @@
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ตารางแสดงผลผู้อยู่อาศัย"
-                android:textColor="#000"
-                android:textSize="16dp" />
-
             <RelativeLayout
+                android:id="@+id/loListview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tvListHead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:paddingBottom="8dp"
+                    android:text="ตารางแสดงผลผู้อยู่อาศัย"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
 
                 <LinearLayout
                     android:id="@+id/listviewHeadLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvListHead"
                     android:background="#ededed"
                     android:orientation="horizontal"
                     android:weightSum="5">
@@ -313,7 +341,7 @@
                     <ListView
                         android:id="@+id/listDweller"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></ListView>
+                        android:layout_height="100dp"></ListView>
                 </LinearLayout>
 
                 <Button
@@ -325,28 +353,23 @@
                     android:text="ปุ่มเพิ่มผู้อาศัย" />
             </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btnEditData"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:text="แก้ไขข้อมูล"
-                    android:visibility="gone" />
-
-                <Button
-                    android:id="@+id/btnSavingData"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="บันทึก"
-                    android:visibility="visible" />
-            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/FooterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#fff"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnSavingData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="บันทึก" />
+    </LinearLayout>
+
+</RelativeLayout>

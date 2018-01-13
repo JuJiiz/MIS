@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -64,11 +65,12 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
     myDBClass db = new myDBClass(this);
 
     List<String> OPTTypeList;
-    ArrayList<HashMap<String, String>> OPTList;
+    ArrayList<HashMap<String, String>> OPTList,TestList;
     Boolean onDataReady = false;
 
     ContentValues Val;
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    ArrayAdapter<String> optTypeArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +85,7 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
 
         OPTTypeList = db.SelectOPTType();
         String[] spOPTTypeArray = OPTTypeList.toArray(new String[0]);
-        spOPTType.setAdapter(new ModelSpinnerAdapter(this, R.layout.simple_spinner_item, spOPTTypeArray, "เลือก"));
+        optTypeArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this,spOPTTypeArray,spOPTType);
 
         setField();
     }
@@ -121,7 +123,10 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
             onDataReady = true;
             etOPTName.setText(OPTList.get(0).get("opt_name"));
             etOPT์ID.setText(OPTList.get(0).get("opt_id"));
-            spOPTType.setSelection(Integer.parseInt(OPTList.get(0).get("opt_type_id")) - 1);
+            TestList = db.SelectWhereData("opt_type", "opt_type_id", OPTList.get(0).get("opt_type_id"));
+            int spinnerPositionType = optTypeArrayAdapter.getPosition(TestList.get(0).get("opt_type_name"));
+            spOPTType.setSelection(spinnerPositionType);
+
             etLat.setText(OPTList.get(0).get("opt_location_lat"));
             etLong.setText(OPTList.get(0).get("opt_location_lng"));
             etLocationNumber.setText(OPTList.get(0).get("opt_address_no"));
@@ -327,7 +332,11 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
             Val = new ContentValues();
             Val.put("opt_id", etOPT์ID.getText().toString());
             Val.put("opt_name", etOPTName.getText().toString());
-            Val.put("opt_type_id", spOPTType.getSelectedItemPosition() + 1);
+
+            TestList = db.SelectWhereData("opt_type", "opt_type_name", "\"" + spOPTType.getSelectedItem().toString() +"\"");
+            Val.put("opt_type_id", TestList.get(0).get("opt_type_id"));
+            //Val.put("opt_type_id", spOPTType.getSelectedItemPosition());
+
             Val.put("opt_location_lat", etLat.getText().toString());
             Val.put("opt_location_lng", etLong.getText().toString());
             Val.put("opt_address_no", etLocationNumber.getText().toString());
