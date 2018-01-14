@@ -163,10 +163,10 @@ public class HouseholdActivity extends AppCompatActivity
     private void searchEvent() {
         String strSpinnerItem = spVName.getSelectedItem().toString();
         String strEditText = etSearch.getText().toString();
+        HouseList = db.SelectData("house");
         if (!strSpinnerItem.equals("ทั้งหมด") && !strEditText.equals("")) {
             TestList = db.SelectWhereData("vilage", "vilage_name", "\"" + strSpinnerItem + "\"");
             HouseActive = new ArrayList<HashMap<String, String>>();
-            HouseList = db.SelectData("house");
             if (!HouseList.isEmpty()) {
                 for (int i = 0; i < HouseList.size(); i++) {
                     String strActive = HouseList.get(i).get("ACTIVE");
@@ -200,7 +200,6 @@ public class HouseholdActivity extends AppCompatActivity
             }
         } else if (strSpinnerItem.equals("ทั้งหมด") && !strEditText.equals("")) {
             HouseActive = new ArrayList<HashMap<String, String>>();
-            HouseList = db.SelectData("house");
             if (!HouseList.isEmpty()) {
                 for (int i = 0; i < HouseList.size(); i++) {
                     String strActive = HouseList.get(i).get("ACTIVE");
@@ -235,7 +234,6 @@ public class HouseholdActivity extends AppCompatActivity
         } else if (!strSpinnerItem.equals("ทั้งหมด") && strEditText.equals("")) {
             TestList = db.SelectWhereData("vilage", "vilage_name", "\"" + strSpinnerItem + "\"");
             HouseActive = new ArrayList<HashMap<String, String>>();
-            HouseList = db.SelectWhereData("house", "vilage_id", TestList.get(0).get("vilage_id"));
             if (!HouseList.isEmpty()) {
                 for (int i = 0; i < HouseList.size(); i++) {
                     String strActive = HouseList.get(i).get("ACTIVE");
@@ -307,6 +305,8 @@ public class HouseholdActivity extends AppCompatActivity
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         HashMap<String, String> Item = (HashMap<String, String>) lvHousehold.getItemAtPosition(i);
         SelectedIDItem = Item.get("ID").toString();
-        Toast.makeText(this,"House ID: " + SelectedIDItem , Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), HouseholdFormActivity.class);
+        intent.putExtra("PersonID", SelectedIDItem);
+        startActivity(intent);
     }
 }

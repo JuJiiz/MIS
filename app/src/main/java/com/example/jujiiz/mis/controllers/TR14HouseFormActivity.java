@@ -152,6 +152,13 @@ public class TR14HouseFormActivity extends AppCompatActivity implements Compound
 
         listDweller = (ListView) findViewById(R.id.listDweller);
         listDweller.setOnItemClickListener(this);
+        listDweller.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
 
         btnAddDweller = (Button) findViewById(R.id.btnAddDweller);
         btnAddDweller.setOnClickListener(this);

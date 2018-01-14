@@ -28,14 +28,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TR14Activity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,AdapterView.OnItemClickListener {
-    EditText etAddHouseNumber, etAddVillageName;
-    Button btnSearchVillage, btnAddVillage;
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, AdapterView.OnItemClickListener {
+    EditText etHNo, etHID;
+    Button btnSearch, btnAddVillage;
     ListView listHousehold;
 
     myDBClass db = new myDBClass(this);
-    ArrayList<HashMap<String, String>> HouseList, HouseActive, VilleList;
+    ArrayList<HashMap<String, String>> HouseList, HouseActive, VilleList, TestList;
     String SelectedIDItem;
+    String strVilleName = "Name";
+    String strHouseNo = "Number";
+    String strHouseID = "ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,24 +67,21 @@ public class TR14Activity extends AppCompatActivity
     }
 
     private void init() {
-        etAddHouseNumber = (EditText) findViewById(R.id.etAddHouseNumber);
-        etAddVillageName = (EditText) findViewById(R.id.etAddVillageName);
+        etHNo = (EditText) findViewById(R.id.etHNo);
+        etHID = (EditText) findViewById(R.id.etHID);
 
         listHousehold = (ListView) findViewById(R.id.listHousehold);
         listHousehold.setOnItemClickListener(this);
 
-        btnSearchVillage = (Button) findViewById(R.id.btnSearchVillage);
-        btnSearchVillage.setOnClickListener(this);
+        btnSearch = (Button) findViewById(R.id.btnSearch);
+        btnSearch.setOnClickListener(this);
         btnAddVillage = (Button) findViewById(R.id.btnAddVillage);
         btnAddVillage.setOnClickListener(this);
     }
 
     private void setListView() {
-        String strVilleName = "Name";
-        String strHouseNo = "Number";
-        String strHouseID = "ID";
-        HouseActive = new ArrayList<HashMap<String, String>>();
         HouseList = db.SelectData("house");
+        HouseActive = new ArrayList<HashMap<String, String>>();
         if (!HouseList.isEmpty()) {
             for (int i = 0; i < HouseList.size(); i++) {
                 String strActive = HouseList.get(i).get("ACTIVE");
@@ -100,6 +100,80 @@ public class TR14Activity extends AppCompatActivity
             );
             listHousehold.setAdapter(simpleAdapter);
         }
+    }
+
+    private void searchEvent() {
+        String strHNo = etHNo.getText().toString();
+        String strHID = etHID.getText().toString();
+        HouseList = db.SelectData("house");
+        if (!strHNo.equals("") && !strHID.equals("")) {
+            HouseActive = new ArrayList<HashMap<String, String>>();
+            if (!HouseList.isEmpty()) {
+                for (int i = 0; i < HouseList.size(); i++) {
+                    String strActive = HouseList.get(i).get("ACTIVE");
+                    if (strActive.equals("Y")) {
+                        if (HouseList.get(i).get("house_no").equals(strHNo) && HouseList.get(i).get("house_id").equals(strHID)) {
+                            VilleList = db.SelectWhereData("vilage", "vilage_id", HouseList.get(i).get("vilage_id"));
+                            HashMap<String, String> temp = new HashMap<String, String>();
+                            temp.put(strVilleName, VilleList.get(0).get("vilage_name"));
+                            temp.put(strHouseNo, HouseList.get(i).get("house_no"));
+                            temp.put(strHouseID, HouseList.get(i).get("house_id"));
+                            HouseActive.add(temp);
+                        }
+                    }
+                }
+                SimpleAdapter simpleAdapter = new SimpleAdapter(this, HouseActive, R.layout.view_tr14_house_column,
+                        new String[]{strVilleName, strHouseNo, strHouseID},
+                        new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3}
+                );
+                listHousehold.setAdapter(simpleAdapter);
+            }
+        } else if (!strHNo.equals("") && strHID.equals("")) {
+            HouseActive = new ArrayList<HashMap<String, String>>();
+            if (!HouseList.isEmpty()) {
+                for (int i = 0; i < HouseList.size(); i++) {
+                    String strActive = HouseList.get(i).get("ACTIVE");
+                    if (strActive.equals("Y")) {
+                        if (HouseList.get(i).get("house_no").equals(strHNo)) {
+                            VilleList = db.SelectWhereData("vilage", "vilage_id", HouseList.get(i).get("vilage_id"));
+                            HashMap<String, String> temp = new HashMap<String, String>();
+                            temp.put(strVilleName, VilleList.get(0).get("vilage_name"));
+                            temp.put(strHouseNo, HouseList.get(i).get("house_no"));
+                            temp.put(strHouseID, HouseList.get(i).get("house_id"));
+                            HouseActive.add(temp);
+                        }
+                    }
+                }
+                SimpleAdapter simpleAdapter = new SimpleAdapter(this, HouseActive, R.layout.view_tr14_house_column,
+                        new String[]{strVilleName, strHouseNo, strHouseID},
+                        new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3}
+                );
+                listHousehold.setAdapter(simpleAdapter);
+            }
+        } else if (strHNo.equals("") && !strHID.equals("")) {
+            HouseActive = new ArrayList<HashMap<String, String>>();
+            if (!HouseList.isEmpty()) {
+                for (int i = 0; i < HouseList.size(); i++) {
+                    String strActive = HouseList.get(i).get("ACTIVE");
+                    if (strActive.equals("Y")) {
+                        if (HouseList.get(i).get("house_id").equals(strHID)) {
+                            VilleList = db.SelectWhereData("vilage", "vilage_id", HouseList.get(i).get("vilage_id"));
+                            HashMap<String, String> temp = new HashMap<String, String>();
+                            temp.put(strVilleName, VilleList.get(0).get("vilage_name"));
+                            temp.put(strHouseNo, HouseList.get(i).get("house_no"));
+                            temp.put(strHouseID, HouseList.get(i).get("house_id"));
+                            HouseActive.add(temp);
+                        }
+                    }
+                }
+                SimpleAdapter simpleAdapter = new SimpleAdapter(this, HouseActive, R.layout.view_tr14_house_column,
+                        new String[]{strVilleName, strHouseNo, strHouseID},
+                        new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3}
+                );
+                listHousehold.setAdapter(simpleAdapter);
+            }
+        }
+
     }
 
     @Override
@@ -125,11 +199,19 @@ public class TR14Activity extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
-        if (view == btnAddVillage){
+        if (view == btnAddVillage) {
             Intent intent = new Intent(this, TR14HouseFormActivity.class);
             intent.putExtra("HouseID", "Nope");
             //this.finish();
             startActivity(intent);
+        }
+        if (view == btnSearch) {
+            if (etHNo.getText().toString().equals("") && etHID.getText().toString().equals("")) {
+                setListView();
+            } else {
+                listHousehold.setAdapter(null);
+                searchEvent();
+            }
         }
     }
 

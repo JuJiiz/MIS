@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -17,6 +18,10 @@ import com.example.jujiiz.mis.R;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
 import com.example.jujiiz.mis.models.ModelShowHideLayout;
 import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
+import com.example.jujiiz.mis.models.myDBClass;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PeopleFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
     Button btnLandForm, btnVehicalForm, btnPetForm;
@@ -56,8 +61,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     CheckBox cbDisabled1, cbDisabled2, cbDisabled3, cbDisabled4, cbDisabled5, cbDisabled6;
     CheckBox cbTrans1, cbTrans2, cbTrans3, cbTrans4;
 
-    String[] spPrefixArray = {"นาย", "นาง", "นางสาว", "เด็กชาย", "เด็กหญิง", "อื่นๆ (ระบุ)"};
-    String[] spBloodGroupArray = {"O", "A", "B", "AB", "อื่นๆ (ระบุ)"};
+    myDBClass db = new myDBClass(this);
+    ArrayList<HashMap<String, String>> PrefixList;
+    ArrayList<String> Prefix = new ArrayList<String>();
+    ArrayAdapter<String> prefixArrayAdapter;
+
+    String[] spBloodGroupArray = {"O", "A", "B", "AB", "อื่นๆ"};
     String[] spMaritalStatusArray = {"สมรส", "โสด", "หย่าร้าง", "หม้าย", "แยกกันอยู่"};
     String[] spEducationArray = {"ระดับก่อนประถมศึกษา", "ระดับประถมศึกษา", "ระดับมัธยมศึกษาตอนต้น", "ระดับมัธยมศึกษาตอนปลาย", "ระดับอนุปริญญา", "ระดับปริญญาตรี", "ระดับปริญญาโท", "ระดับปริญญาเอก"};
     String[] spExpertiseArray = {"สาขาการเกษตรและพัฒนาชนบท", "สาขาอุตสาหกรรมก่อสร้าง", "สาขาการศึกษา", "สาขาพลังงาน", "สาขาสิ่งแวดล้อม", "สาขาการเงิน", "สาขาสาธารณสุข", "สาขาอุตสาหกรรม", "สาขาเบ็ดเตล็ด", "สาขาประชากร", "สาขาเทคโนโลยีสารสนเทศและการสื่อสาร", "สาขาการท่องเที่ยว", "สาขาการขนส่ง", "สาขาการพัฒนาเมือง", "สาขาการประปาและสุขาภิบาล", "สาขาภาษาต่างประเทศ"};
@@ -73,12 +82,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //Important!! (Form)
 
-        ModelSpinnerAdapter.setSpinnerItem(this,spPrefixArray,spPrefix);
-        ModelSpinnerAdapter.setSpinnerItem(this,spBloodGroupArray,spBloodType);
-        ModelSpinnerAdapter.setSpinnerItem(this,spMaritalStatusArray,spMaritalStatus);
-        ModelSpinnerAdapter.setSpinnerItem(this,spEducationArray,spInStudy);
-        ModelSpinnerAdapter.setSpinnerItem(this,spEducationArray,spGraduated);
-        ModelSpinnerAdapter.setSpinnerItem(this,spExpertiseArray,spExpertise);
+        setSpinner();
     }
 
     private void init() {
@@ -378,6 +382,24 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         rbElectionNever.setOnCheckedChangeListener(this);
         rbTransportationNo.setOnCheckedChangeListener(this);
         rbTransportationYes.setOnCheckedChangeListener(this);
+    }
+
+    private void setSpinner(){
+        PrefixList = db.SelectData("prename");
+        if (!PrefixList.isEmpty()) {
+            for (int i = 0; i < PrefixList.size(); i++) {
+                String strPrefix = PrefixList.get(i).get("prename_detail");
+                Prefix.add(strPrefix);
+            }
+            String[] spPrefixArray = Prefix.toArray(new String[0]);
+            prefixArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spPrefixArray, spPrefix);
+        }
+
+        ModelSpinnerAdapter.setSpinnerItem(this,spBloodGroupArray,spBloodType);
+        ModelSpinnerAdapter.setSpinnerItem(this,spMaritalStatusArray,spMaritalStatus);
+        ModelSpinnerAdapter.setSpinnerItem(this,spEducationArray,spInStudy);
+        ModelSpinnerAdapter.setSpinnerItem(this,spEducationArray,spGraduated);
+        ModelSpinnerAdapter.setSpinnerItem(this,spExpertiseArray,spExpertise);
     }
 
     @Override

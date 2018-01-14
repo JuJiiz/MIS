@@ -19,7 +19,7 @@
         android:weightSum="5">
 
         <EditText
-            android:id="@+id/etAddHouseNumber"
+            android:id="@+id/etHNo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -29,7 +29,7 @@
             android:textSize="13dp" />
 
         <EditText
-            android:id="@+id/etAddVillageName"
+            android:id="@+id/etHID"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -39,7 +39,7 @@
             android:textSize="13dp" />
 
         <Button
-            android:id="@+id/btnSearchVillage"
+            android:id="@+id/btnSearch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
