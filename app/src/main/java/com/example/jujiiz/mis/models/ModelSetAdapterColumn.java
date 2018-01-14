@@ -5,7 +5,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.example.jujiiz.mis.R;
-import com.example.jujiiz.mis.controllers.HouseholdActivity;
 
 import java.util.ArrayList;
 

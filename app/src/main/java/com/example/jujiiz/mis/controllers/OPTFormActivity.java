@@ -120,13 +120,15 @@ public class OPTFormActivity extends AppCompatActivity implements View.OnClickLi
     private void setField() {
         OPTList = db.SelectWhereData("opt","opt_id_ai","1");
         if (!OPTList.isEmpty()) {
-            onDataReady = true;
+
             etOPTName.setText(OPTList.get(0).get("opt_name"));
             etOPT์ID.setText(OPTList.get(0).get("opt_id"));
             TestList = db.SelectWhereData("opt_type", "opt_type_id", OPTList.get(0).get("opt_type_id"));
             int spinnerPositionType = optTypeArrayAdapter.getPosition(TestList.get(0).get("opt_type_name"));
             spOPTType.setSelection(spinnerPositionType);
-
+            if (!OPTList.get(0).get("opt_location_lat").equals("") && !OPTList.get(0).get("opt_location_lng").equals("")){
+                onDataReady = true;
+            }
             etLat.setText(OPTList.get(0).get("opt_location_lat"));
             etLong.setText(OPTList.get(0).get("opt_location_lng"));
             etLocationNumber.setText(OPTList.get(0).get("opt_address_no"));

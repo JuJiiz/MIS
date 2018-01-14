@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -35,7 +36,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-public class TR14HouseFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class TR14HouseFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, AdapterView.OnItemSelectedListener,AdapterView.OnItemClickListener,View.OnTouchListener {
     myDBClass db = new myDBClass(this);
     Spinner spPrefix, spVillageName, spNationality;
     RadioGroup rgHouseOwner, rgHouseOwnerNationality;
@@ -56,7 +57,7 @@ public class TR14HouseFormActivity extends AppCompatActivity implements Compound
     ContentValues Val;
     boolean booSuccess = false;
 
-    String HouseID,dwellerstatus = "0";
+    String HouseID,dwellerstatus = "0",SelectedIDItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +151,7 @@ public class TR14HouseFormActivity extends AppCompatActivity implements Compound
         loListview = (RelativeLayout) findViewById(R.id.loListview);
 
         listDweller = (ListView) findViewById(R.id.listDweller);
+        listDweller.setOnItemClickListener(this);
 
         btnAddDweller = (Button) findViewById(R.id.btnAddDweller);
         btnAddDweller.setOnClickListener(this);
@@ -480,5 +482,28 @@ public class TR14HouseFormActivity extends AppCompatActivity implements Compound
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        HashMap<String, String> Item = (HashMap<String, String>) listDweller.getItemAtPosition(position);
+        SelectedIDItem = Item.get("ID").toString();
+
+        ArrayList<HashMap<String, String>> Dweller = db.SelectWhereData("population", "population_id", SelectedIDItem);
+
+        if (Dweller.get(0).get("dwellerstatus").equals("1")){
+            Intent intent = new Intent(getApplicationContext(), TR14DwellerFormActivity.class);
+            intent.putExtra("HouseID", etHouseID.getText().toString());
+            intent.putExtra("DwellerID", SelectedIDItem);
+            startActivity(intent);
+        }else{
+            Toast.makeText(this, "เจ้าของบ้าน", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+
+        return false;
     }
 }

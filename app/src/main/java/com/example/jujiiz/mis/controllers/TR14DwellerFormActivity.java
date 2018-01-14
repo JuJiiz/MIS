@@ -50,6 +50,7 @@ public class TR14DwellerFormActivity extends AppCompatActivity implements View.O
         setContentView(R.layout.activity_tr14_dweller_form);
         HouseID = getIntent().getExtras().getString("HouseID");
         DwellerID = getIntent().getExtras().getString("DwellerID");
+
         init();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //Important!! (Form)
         setSpinner();

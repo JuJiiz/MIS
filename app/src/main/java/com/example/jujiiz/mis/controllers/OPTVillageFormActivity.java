@@ -561,8 +561,8 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
             Toast.makeText(this, "แก้ไขข้อมูลสำเร็จแล้ว", Toast.LENGTH_SHORT).show();
 
             this.finish();
-            Intent intent = new Intent(getApplicationContext(), OPTActivity.class);
-            startActivity(intent);
+            //Intent intent = new Intent(getApplicationContext(), OPTActivity.class);
+            //startActivity(intent);
         }
         if (view == btnImagePick){
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);

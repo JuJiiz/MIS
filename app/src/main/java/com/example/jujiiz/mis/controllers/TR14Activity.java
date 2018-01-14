@@ -95,7 +95,7 @@ public class TR14Activity extends AppCompatActivity
                 }
             }
             SimpleAdapter simpleAdapter = new SimpleAdapter(this, HouseActive, R.layout.view_tr14_house_column,
-                    new String[]{strVilleName, strHouseNo, strHouseID,},
+                    new String[]{strVilleName, strHouseNo, strHouseID},
                     new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3}
             );
             listHousehold.setAdapter(simpleAdapter);

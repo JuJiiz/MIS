@@ -50,6 +50,12 @@ public class OPTVillageActivity extends AppCompatActivity implements View.OnClic
         setListView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setListView();
+    }
+
     private void init() {
         etAddVillageNumber = (EditText) findViewById(R.id.etAddVillageNumber);
         etAddVillageName = (EditText) findViewById(R.id.etAddVillageName);
@@ -165,7 +171,7 @@ public class OPTVillageActivity extends AppCompatActivity implements View.OnClic
         //Toast.makeText(getApplicationContext(), SelectedIDItem, Toast.LENGTH_SHORT).show();
         intent = new Intent(getApplicationContext(), OPTVillageFormActivity.class);
         intent.putExtra("VillageID", SelectedIDItem);
-        this.finish();
+        //this.finish();
         startActivity(intent);
     }
 
