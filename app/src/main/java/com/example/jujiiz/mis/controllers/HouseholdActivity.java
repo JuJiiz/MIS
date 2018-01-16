@@ -41,7 +41,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class HouseholdActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, AdapterView.OnItemClickListener {
+        implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     ListView lvHousehold;
     Button btnSearch;
@@ -73,14 +73,13 @@ public class HouseholdActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);*/
 
         setSpinner();
         setListView();
@@ -268,6 +267,7 @@ public class HouseholdActivity extends AppCompatActivity
         }
     }
 
+    /*
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -288,7 +288,7 @@ public class HouseholdActivity extends AppCompatActivity
 
         return true;
     }
-
+*/
     @Override
     public void onClick(View view) {
         if (view == btnSearch) {
@@ -306,7 +306,7 @@ public class HouseholdActivity extends AppCompatActivity
         HashMap<String, String> Item = (HashMap<String, String>) lvHousehold.getItemAtPosition(i);
         SelectedIDItem = Item.get("ID").toString();
         Intent intent = new Intent(getApplicationContext(), HouseholdFormActivity.class);
-        intent.putExtra("PersonID", SelectedIDItem);
+        intent.putExtra("HouseID", SelectedIDItem);
         startActivity(intent);
     }
 }

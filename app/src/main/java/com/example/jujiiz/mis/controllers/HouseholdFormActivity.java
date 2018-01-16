@@ -20,22 +20,27 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
 import com.example.jujiiz.mis.models.ModelShowHideLayout;
+import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
 import com.example.jujiiz.mis.models.myDBClass;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -53,8 +58,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class HouseholdFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, View.OnClickListener, OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -69,8 +77,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     Marker mCurrLocationMarker;
     MarkerOptions markerOptions;
     LatLng latLng;
-
-    final myDBClass myDb = new myDBClass(this);
 
     String COL5, COL19, COL42, COL43;
     double COL6, COL7;
@@ -89,6 +95,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     ImageView ivImage;
 
     LinearLayout loAnotherProblem;
+    ListView listHousehold;
 
     RadioButton rbProbEnvyNo, rbProbEnvyYes;
     CheckBox cbSound, cbShock, cbDust, cbSmell, cbAir, cbWater, cbGarbage;
@@ -102,20 +109,28 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
 
     Intent intent;
     Bitmap selectedImage;
+    myDBClass db = new myDBClass(this);
+    String HouseID;
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    ContentValues Val;
+    ArrayList<HashMap<String, String>> HouseList, DwellerList, DwellerActive;
+    ArrayList<String> Dweller = new ArrayList<String>();
+    ArrayAdapter<String> dwellerArrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_household_form);
+        HouseID = getIntent().getExtras().getString("HouseID");
 
         init();
-
-        myDBClass myDb = new myDBClass(this); // เริ่มต้นการเรียกใช้งาน Class
-        myDb.getWritableDatabase(); // เริ่มการเขียน Database (เป็นการสร้าง Database และ Table)
 
         ModelCurrentCalendar.edittextCurrentCalendar(this, etDate);
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //Important!! (Form)
+        setSpinner();
+        setListView();
+        setField();
     }
 
     private void init() {
@@ -125,6 +140,17 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         btnCurrentLocation.setOnClickListener(this);
         etLat = (EditText) findViewById(R.id.etLat);
         etLong = (EditText) findViewById(R.id.etLong);
+
+        spContributor = (Spinner) findViewById(R.id.spContributor);
+
+        listHousehold = (ListView) findViewById(R.id.listHousehold);
+        listHousehold.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
 
         registerRadioGroup = (RadioGroup) findViewById(R.id.registerRadioGroup);
         registerRadioGroup.setOnCheckedChangeListener(this);
@@ -278,6 +304,39 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         loPlague = (LinearLayout) findViewById(R.id.loPlague);
         loWeed = (LinearLayout) findViewById(R.id.loWeed);
 
+    }
+
+    private void setField() {
+        HouseList = db.SelectWhereData("house", "house_id", HouseID);
+        if (!HouseList.isEmpty()) {
+            etHouseID.setText(HouseList.get(0).get("house_id"));
+            etHouseNumber.setText(HouseList.get(0).get("house_no"));
+            etLat.setText(HouseList.get(0).get("house_location_lat"));
+            etLong.setText(HouseList.get(0).get("house_location_lng"));
+
+                /*OwnerList = db.SelectWhereData("population", "house_id", HouseID);
+                if (!OwnerList.isEmpty()) {
+                    for (int i = 0; i < OwnerList.size(); i++) {
+                        if (OwnerList.get(i).get("dwellerstatus").equals("0")) {
+                            rbHouseOwnerYes.setChecked(true);
+                            etHouseOwnerPersonalID.setText(OwnerList.get(i).get("population_idcard"));
+                            TestList = db.SelectWhereData("prename", "prename_id", OwnerList.get(i).get("prename_id"));
+                            int spinnerPositionPrefix = prefixArrayAdapter.getPosition(TestList.get(0).get("prename_detail"));
+                            spPrefix.setSelection(spinnerPositionPrefix);
+                            etHouseOwnerFirstName.setText(OwnerList.get(i).get("firstname"));
+                            etHouseOwnerLastName.setText(OwnerList.get(i).get("lastname"));
+                            etHouseOwnerBirtDate.setText(OwnerList.get(i).get("birthdate"));
+                            TestList = db.SelectWhereData("nationality", "nationality_id", OwnerList.get(i).get("nationality_id"));
+                            int spinnerPositionNat = natArrayAdapter.getPosition(TestList.get(0).get("nationality_detail"));
+                            spNationality.setSelection(spinnerPositionNat);
+
+                            setListView();
+                        } else {
+                            rbHouseOwnerYes.setChecked(true);
+                        }
+                    }
+                } */
+        }
     }
 
     @Override
@@ -538,6 +597,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         }
         if (view == btnAddDweller) {
             intent = new Intent(this, PeopleFormActivity.class);
+            intent.putExtra("PersonID", "Nope");
             this.startActivity(intent);
         }
         if (view == btnImagePick) {
@@ -546,46 +606,124 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             startActivityForResult(photoPickerIntent, 1);
         }
         if (view == btnSavingData) {
-            ContentValues Val = new ContentValues();
-            /*Val.put("house_id", etHouseID.getText().toString());
-            Val.put("house_no", etHouseNumber.getText().toString());
-            Val.put("vilage_id", strTel);
-            Val.put("Tel", strTel);
-            Val.put("Tel", strTel);
-            Val.put("Tel", strTel);
-            Val.put("Tel", strTel);
-            Val.put("Tel", strTel);
-            Val.put("Tel", strTel);
-            Val.put("Tel", strTel);
-            Val.put("Tel", strTel);
-            Val.put("Tel", strTel);
-            Val.put("Tel", strTel);
-            Val.put("Tel", strTel);
-            Val.put("Tel", strTel);
-            Val.put("Tel", strTel);*/
-            myDb.InsertData("house",Val);
+            if (registerRadioGroup.getCheckedRadioButtonId() != -1) {
+                if (housestatusRadioGroup.getCheckedRadioButtonId() != -1) {
+                    if (familyRadioGroup.getCheckedRadioButtonId() != -1) {
+                        updateData();
+                    } else {
+                        Toast.makeText(this, "กรุณาระบุ รูปแบบครอบครัว", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ สถานะบ้าน", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "กรุณาระบุ ทะเบียนราษฎ์", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void updateData() {
+        String date = df.format(Calendar.getInstance().getTime());
+        Val = new ContentValues();
+        Val.put("house_id", etHouseID.getText().toString());
+        Val.put("house_no", etHouseNumber.getText().toString());
+        Val.put("vilage_id", "");
+        Val.put("house_location_lat", "");
+        Val.put("house_location_lng", "");
+        int register = registerRadioGroup.getCheckedRadioButtonId();
+        radioButton = (RadioButton) findViewById(register);
+        int idxregister = registerRadioGroup.indexOfChild(radioButton);
+        Val.put("house_in_registry", idxregister);
+        int hStatus = housestatusRadioGroup.getCheckedRadioButtonId();
+        radioButton = (RadioButton) findViewById(hStatus);
+        int idxhStatus = housestatusRadioGroup.indexOfChild(radioButton);
+        Val.put("house_status", idxhStatus);
+        int famtype = familyRadioGroup.getCheckedRadioButtonId();
+        radioButton = (RadioButton) findViewById(famtype);
+        int idxfamtype = familyRadioGroup.indexOfChild(radioButton);
+        Val.put("house_family_type", idxfamtype);
+        Val.put("distributor_img", "");
+        Val.put("distributor", spContributor.getSelectedItem().toString());
+        Val.put("survey_status", "");
+        Val.put("upd_by", "");
+        Val.put("upd_date", date);
+        Log.d("MYLOG", "insertData House: " + Val);
+    }
+
+    private void setSpinner() {
+        DwellerList = db.SelectWhereData("population", "house_id", HouseID);
+        Log.d("MYLOG", "DwellerList: " + DwellerList);
+
+        if (!DwellerList.isEmpty()) {
+            for (int i = 0; i < DwellerList.size(); i++) {
+                String strDweller = DwellerList.get(i).get("firstname") + " " + DwellerList.get(i).get("lastname");
+                Dweller.add(strDweller);
+            }
+            String[] spDwellerArray = Dweller.toArray(new String[0]);
+            Log.d("MYLOG", "spDwellerArray: " + spDwellerArray);
+            dwellerArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spDwellerArray, spContributor);
+        }
+    }
+
+    private void setListView() {
+        String strLatent = "*";
+        String strFName = "FName";
+        String strLName = "LName";
+        String strSStatus = "Status";
+        String survey = "survey";
+        String latent = "*";
+        String strPopulationID = "ID";
+        DwellerActive = new ArrayList<HashMap<String, String>>();
+        DwellerList = db.SelectWhereData("population", "house_id", HouseID);
+        if (!DwellerList.isEmpty()) {
+            for (int i = 0; i < DwellerList.size(); i++) {
+                String strActive = DwellerList.get(i).get("ACTIVE");
+                if (strActive.equals("Y")) {
+                    HashMap<String, String> temp = new HashMap<String, String>();
+                    if (DwellerList.get(i).get("residence_status").equals("0")) {
+                        latent = "*";
+                    }
+                    if (DwellerList.get(i).get("residence_status").equals("1")) {
+                        latent = " ";
+                    }
+                    temp.put(strLatent, latent);
+                    temp.put(strFName, DwellerList.get(i).get("firstname"));
+                    temp.put(strLName, DwellerList.get(i).get("lastname"));
+                    if (DwellerList.get(i).get("survey_status").equals("0")) {
+                        survey = "รอการสำรวจ";
+                    }
+                    if (DwellerList.get(i).get("survey_status").equals("1")) {
+                        survey = "กำลังสำรวจ";
+                    }
+                    if (DwellerList.get(i).get("survey_status").equals("2")) {
+                        survey = "สำรวจแล้ว";
+                    }
+                    temp.put(strSStatus, survey);
+                    temp.put(strPopulationID, DwellerList.get(i).get("population_id"));
+                    DwellerActive.add(temp);
+                }
+            }
+            SimpleAdapter simpleAdapter = new SimpleAdapter(this, DwellerActive, R.layout.view_population_column,
+                    new String[]{strLatent, strFName, strLName, strSStatus, strPopulationID},
+                    new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvColumn4, R.id.tvHiddenColumn}
+            );
+            listHousehold.setAdapter(simpleAdapter);
         }
     }
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
         if (radioGroup == registerRadioGroup) {
-            int register = registerRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = registerRadioGroup.indexOfChild(radioButton);
-            COL1 = idx;
+
+            //COL1 = idx;
         }
         if (radioGroup == housestatusRadioGroup) {
-            int register = housestatusRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = housestatusRadioGroup.indexOfChild(radioButton);
-            COL2 = idx;
+
+            //COL2 = idx;
         }
         if (radioGroup == familyRadioGroup) {
-            int register = familyRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = familyRadioGroup.indexOfChild(radioButton);
-            COL3 = idx;
+
+            //COL3 = idx;
         }
         if (radioGroup == probenvyRadioGroup) {
             int register = probenvyRadioGroup.getCheckedRadioButtonId();

@@ -419,8 +419,16 @@ public class TR14HouseFormActivity extends AppCompatActivity implements Compound
                     Val.put("upd_by", "JuJiiz");
                     Val.put("upd_date", date);
                     Val.put("ACTIVE", "Y");
-                    db.InsertData("population", Val);
-                    booSuccess = true;
+                    HouseList = db.SelectWhereData("population", "population_idcard", etHouseOwnerPersonalID.getText().toString());
+                    if (HouseList.isEmpty()) {
+                        Val.put("cr_by", "JuJiiz");
+                        Val.put("cr_date", date);
+                        db.InsertData("population", Val);
+                        booSuccess = true;
+                    } else {
+                        db.UpdateData("population", Val, "population_idcard", etHouseOwnerPersonalID.getText().toString());
+                        booSuccess = true;
+                    }
                 }
             }
         } else {
