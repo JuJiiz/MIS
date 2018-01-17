@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -38,6 +39,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.ModelCheckboxCheck;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
 import com.example.jujiiz.mis.models.ModelShowHideLayout;
 import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
@@ -64,7 +66,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class HouseholdFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, View.OnClickListener, OnMapReadyCallback,
+public class HouseholdFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, View.OnClickListener,AdapterView.OnItemClickListener, OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
@@ -76,11 +78,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     Location mLastLocation;
     Marker mCurrLocationMarker;
     MarkerOptions markerOptions;
-    LatLng latLng;
-
-    String COL5, COL19, COL42, COL43;
-    double COL6, COL7;
-    int COL1, COL2, COL3, COL4, COL8, COL9, COL10, COL11, COL12, COL13, COL14, COL15, COL16, COL17, COL18, COLH1, COL20, COL21, COL22, COL23, COL24, COL25, COLH2, COL26, COL27, COL28, COL29, COL30, COL31, COL32, COL33, COL34, COL35, COL36, COL37, COL38, COL39, COL40, COL41;
+    LatLng latLng, NewLatlng;
 
     //RadioButton rbRegisterYes,rbRegisterNo,rbNormalHouse,rbAbandonedHouse,rbDemolitionHouse,rbSingleFamily,rbExtendedFamily;
     RadioGroup registerRadioGroup, housestatusRadioGroup, familyRadioGroup;
@@ -113,9 +111,11 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     String HouseID;
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     ContentValues Val;
-    ArrayList<HashMap<String, String>> HouseList, DwellerList, DwellerActive;
+    ArrayList<HashMap<String, String>> HouseList, DwellerList, DwellerActive, HProbList, HEnProbList, HDisasList;
     ArrayList<String> Dweller = new ArrayList<String>();
     ArrayAdapter<String> dwellerArrayAdapter;
+    Boolean onDataReady = false;
+    String SelectedIDItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,8 +124,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         HouseID = getIntent().getExtras().getString("HouseID");
 
         init();
-
-        ModelCurrentCalendar.edittextCurrentCalendar(this, etDate);
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //Important!! (Form)
         setSpinner();
@@ -144,6 +142,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         spContributor = (Spinner) findViewById(R.id.spContributor);
 
         listHousehold = (ListView) findViewById(R.id.listHousehold);
+        listHousehold.setOnItemClickListener(this);
         listHousehold.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -233,6 +232,16 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         rbDisasterYes.setOnCheckedChangeListener(this);
         rbDisasterNo.setOnCheckedChangeListener(this);
 
+        cbProb1 = (CheckBox) findViewById(R.id.cbProb1);
+        cbProb2 = (CheckBox) findViewById(R.id.cbProb2);
+        cbProb3 = (CheckBox) findViewById(R.id.cbProb3);
+        cbProb4 = (CheckBox) findViewById(R.id.cbProb4);
+        cbProb5 = (CheckBox) findViewById(R.id.cbProb5);
+        cbProb6 = (CheckBox) findViewById(R.id.cbProb6);
+        cbProb7 = (CheckBox) findViewById(R.id.cbProb7);
+        cbProb8 = (CheckBox) findViewById(R.id.cbProb8);
+        cbProb9 = (CheckBox) findViewById(R.id.cbProb9);
+
         cbProb10 = (CheckBox) findViewById(R.id.cbProb10);
         cbSound = (CheckBox) findViewById(R.id.cbSound);
         cbShock = (CheckBox) findViewById(R.id.cbShock);
@@ -313,29 +322,675 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             etHouseNumber.setText(HouseList.get(0).get("house_no"));
             etLat.setText(HouseList.get(0).get("house_location_lat"));
             etLong.setText(HouseList.get(0).get("house_location_lng"));
+            if (!HouseList.get(0).get("house_location_lat").equals("") && !HouseList.get(0).get("house_location_lng").equals("")) {
+                onDataReady = true;
+            }
+            if (!HouseList.get(0).get("house_in_registry").equals("")) {
+                ((RadioButton) registerRadioGroup.getChildAt(Integer.parseInt(HouseList.get(0).get("house_in_registry")))).setChecked(true);
+            }
+            if (!HouseList.get(0).get("house_status").equals("")) {
+                ((RadioButton) housestatusRadioGroup.getChildAt(Integer.parseInt(HouseList.get(0).get("house_status")))).setChecked(true);
+            }
+            if (!HouseList.get(0).get("house_family_type").equals("")) {
+                ((RadioButton) familyRadioGroup.getChildAt(Integer.parseInt(HouseList.get(0).get("house_family_type")))).setChecked(true);
+            }
+            int spinnerPositionContri = dwellerArrayAdapter.getPosition(HouseList.get(0).get("distributor"));
+            spContributor.setSelection(spinnerPositionContri);
+            ModelCurrentCalendar.edittextCurrentCalendar(this, etDate);
 
-                /*OwnerList = db.SelectWhereData("population", "house_id", HouseID);
-                if (!OwnerList.isEmpty()) {
-                    for (int i = 0; i < OwnerList.size(); i++) {
-                        if (OwnerList.get(i).get("dwellerstatus").equals("0")) {
-                            rbHouseOwnerYes.setChecked(true);
-                            etHouseOwnerPersonalID.setText(OwnerList.get(i).get("population_idcard"));
-                            TestList = db.SelectWhereData("prename", "prename_id", OwnerList.get(i).get("prename_id"));
-                            int spinnerPositionPrefix = prefixArrayAdapter.getPosition(TestList.get(0).get("prename_detail"));
-                            spPrefix.setSelection(spinnerPositionPrefix);
-                            etHouseOwnerFirstName.setText(OwnerList.get(i).get("firstname"));
-                            etHouseOwnerLastName.setText(OwnerList.get(i).get("lastname"));
-                            etHouseOwnerBirtDate.setText(OwnerList.get(i).get("birthdate"));
-                            TestList = db.SelectWhereData("nationality", "nationality_id", OwnerList.get(i).get("nationality_id"));
-                            int spinnerPositionNat = natArrayAdapter.getPosition(TestList.get(0).get("nationality_detail"));
-                            spNationality.setSelection(spinnerPositionNat);
+            HProbList = db.SelectWhereData("house_problem", "house_id", HouseID);
+            if (!HProbList.isEmpty()) {
+                int strP1 = Integer.parseInt(HProbList.get(0).get("prob1")),
+                        strP2 = Integer.parseInt(HProbList.get(0).get("prob2")),
+                        strP3 = Integer.parseInt(HProbList.get(0).get("prob3")),
+                        strP4 = Integer.parseInt(HProbList.get(0).get("prob4")),
+                        strP5 = Integer.parseInt(HProbList.get(0).get("prob5")),
+                        strP6 = Integer.parseInt(HProbList.get(0).get("prob6")),
+                        strP7 = Integer.parseInt(HProbList.get(0).get("prob7")),
+                        strP8 = Integer.parseInt(HProbList.get(0).get("prob8")),
+                        strP9 = Integer.parseInt(HProbList.get(0).get("prob9")),
+                        strP10 = Integer.parseInt(HProbList.get(0).get("prob10"));
+                ModelCheckboxCheck.checkboxSetCheck(this, cbProb1, strP1);
+                ModelCheckboxCheck.checkboxSetCheck(this, cbProb2, strP2);
+                ModelCheckboxCheck.checkboxSetCheck(this, cbProb3, strP3);
+                ModelCheckboxCheck.checkboxSetCheck(this, cbProb4, strP4);
+                ModelCheckboxCheck.checkboxSetCheck(this, cbProb5, strP5);
+                ModelCheckboxCheck.checkboxSetCheck(this, cbProb6, strP6);
+                ModelCheckboxCheck.checkboxSetCheck(this, cbProb7, strP7);
+                ModelCheckboxCheck.checkboxSetCheck(this, cbProb8, strP8);
+                ModelCheckboxCheck.checkboxSetCheck(this, cbProb9, strP9);
+                ModelCheckboxCheck.checkboxSetCheck(this, cbProb10, strP10);
+                etAnotherProblem.setText(HProbList.get(0).get("problem_another"));
+            }
 
-                            setListView();
-                        } else {
-                            rbHouseOwnerYes.setChecked(true);
-                        }
+            HEnProbList = db.SelectWhereData("house_envyprob", "house_id", HouseID);
+            Log.d("MYLOG", "HEnProbList: "+HEnProbList);
+            if (!HEnProbList.isEmpty()) {
+                ((RadioButton) probenvyRadioGroup.getChildAt(Integer.parseInt(HEnProbList.get(0).get("envyprob_type")))).setChecked(true);
+                ModelCheckboxCheck.enviProb(cbSound, soundRadioGroup, Integer.parseInt(HEnProbList.get(0).get("ep1")));
+                ModelCheckboxCheck.enviProb(cbShock, shockRadioGroup, Integer.parseInt(HEnProbList.get(0).get("ep2")));
+                ModelCheckboxCheck.enviProb(cbDust, dustRadioGroup, Integer.parseInt(HEnProbList.get(0).get("ep3")));
+                ModelCheckboxCheck.enviProb(cbSmell, smellRadioGroup, Integer.parseInt(HEnProbList.get(0).get("ep4")));
+                ModelCheckboxCheck.enviProb(cbAir, airRadioGroup, Integer.parseInt(HEnProbList.get(0).get("ep5")));
+                ModelCheckboxCheck.enviProb(cbWater, waterRadioGroup, Integer.parseInt(HEnProbList.get(0).get("ep6")));
+                ModelCheckboxCheck.enviProb(cbGarbage, garbageRadioGroup, Integer.parseInt(HEnProbList.get(0).get("ep7")));
+            }
+
+            HDisasList = db.SelectWhereData("house_disaster", "house_id", HouseID);
+            if (!HDisasList.isEmpty()) {
+                ((RadioButton) disasterRadioGroup.getChildAt(Integer.parseInt(HDisasList.get(0).get("disaster_type")))).setChecked(true);
+                ModelCheckboxCheck.enviProb(cbStorm, stormRadioGroup, Integer.parseInt(HDisasList.get(0).get("dis1")));
+                ModelCheckboxCheck.enviProb(cbFlood, floodRadioGroup, Integer.parseInt(HDisasList.get(0).get("dis2")));
+                ModelCheckboxCheck.enviProb(cbMud, mudRadioGroup, Integer.parseInt(HDisasList.get(0).get("dis3")));
+                ModelCheckboxCheck.enviProb(cbEarthquake, earthquakeRadioGroup, Integer.parseInt(HDisasList.get(0).get("dis4")));
+                ModelCheckboxCheck.enviProb(cbBuilding, buildingRadioGroup, Integer.parseInt(HDisasList.get(0).get("dis5")));
+                ModelCheckboxCheck.enviProb(cbDrought, droughtRadioGroup, Integer.parseInt(HDisasList.get(0).get("dis6")));
+                ModelCheckboxCheck.enviProb(cbCold, coldRadioGroup, Integer.parseInt(HDisasList.get(0).get("dis7")));
+                ModelCheckboxCheck.enviProb(cbRoad, roadRadioGroup, Integer.parseInt(HDisasList.get(0).get("dis8")));
+                ModelCheckboxCheck.enviProb(cbFire, fireRadioGroup, Integer.parseInt(HDisasList.get(0).get("dis9")));
+                ModelCheckboxCheck.enviProb(cbFireForest, fireforestRadioGroup, Integer.parseInt(HDisasList.get(0).get("dis10")));
+                ModelCheckboxCheck.enviProb(cbSmoke, smokeRadioGroup, Integer.parseInt(HDisasList.get(0).get("dis11")));
+                ModelCheckboxCheck.enviProb(cbChemical, chemicalRadioGroup, Integer.parseInt(HDisasList.get(0).get("dis12")));
+                ModelCheckboxCheck.enviProb(cbPlague, plagueRadioGroup, Integer.parseInt(HDisasList.get(0).get("dis13")));
+                ModelCheckboxCheck.enviProb(cbWeed, weedRadioGroup, Integer.parseInt(HDisasList.get(0).get("dis14")));
+            }
+        }
+    }
+
+    private void updateData() {
+        String date = df.format(Calendar.getInstance().getTime());
+        Val = new ContentValues();
+        Val.put("house_id", etHouseID.getText().toString());
+        Val.put("house_no", etHouseNumber.getText().toString());
+        Val.put("house_location_lat", etLat.getText().toString());
+        Val.put("house_location_lng", etLong.getText().toString());
+        int register = registerRadioGroup.getCheckedRadioButtonId();
+        radioButton = (RadioButton) findViewById(register);
+        int idxregister = registerRadioGroup.indexOfChild(radioButton);
+        Val.put("house_in_registry", idxregister);
+        int hStatus = housestatusRadioGroup.getCheckedRadioButtonId();
+        radioButton = (RadioButton) findViewById(hStatus);
+        int idxhStatus = housestatusRadioGroup.indexOfChild(radioButton);
+        Val.put("house_status", idxhStatus);
+        int famtype = familyRadioGroup.getCheckedRadioButtonId();
+        radioButton = (RadioButton) findViewById(famtype);
+        int idxfamtype = familyRadioGroup.indexOfChild(radioButton);
+        Val.put("house_family_type", idxfamtype);
+        Val.put("distributor_img", "");
+        Val.put("distributor", spContributor.getSelectedItem().toString());
+        Val.put("survey_status", "1");
+        Val.put("upd_by", "");
+        Val.put("upd_date", date);
+        db.UpdateData("house", Val, "house_id", HouseID);
+        ///////////////////////////////////House///////////////////////////////////////////
+
+        Val = new ContentValues();
+        Val.put("prob1", ModelCheckboxCheck.checkboxReturnCheck(cbProb1));
+        Val.put("prob2", ModelCheckboxCheck.checkboxReturnCheck(cbProb2));
+        Val.put("prob3", ModelCheckboxCheck.checkboxReturnCheck(cbProb3));
+        Val.put("prob4", ModelCheckboxCheck.checkboxReturnCheck(cbProb4));
+        Val.put("prob5", ModelCheckboxCheck.checkboxReturnCheck(cbProb5));
+        Val.put("prob6", ModelCheckboxCheck.checkboxReturnCheck(cbProb6));
+        Val.put("prob7", ModelCheckboxCheck.checkboxReturnCheck(cbProb7));
+        Val.put("prob8", ModelCheckboxCheck.checkboxReturnCheck(cbProb8));
+        Val.put("prob9", ModelCheckboxCheck.checkboxReturnCheck(cbProb9));
+        Val.put("prob10", ModelCheckboxCheck.checkboxReturnCheck(cbProb10));
+        if (ModelCheckboxCheck.checkboxReturnCheck(cbProb10) == 0) {
+            Val.put("problem_another", "");
+        } else {
+            Val.put("problem_another", etAnotherProblem.getText().toString());
+        }
+        Val.put("house_id", HouseID);
+        Val.put("upd_by", "");
+        Val.put("upd_date", date);
+        Val.put("ACTIVE", "Y");
+        HProbList = db.SelectWhereData("house_problem", "house_id", HouseID);
+        if (HProbList.isEmpty()) {
+            Val.put("cr_by", "JuJiiz");
+            Val.put("cr_date", date);
+            db.InsertData("house_problem", Val);
+        } else {
+            db.UpdateData("house_problem", Val, "house_id", HouseID);
+        }
+        ///////////////////////////////////House Problem///////////////////////////////////////////
+
+        Val = new ContentValues();
+        if (rbProbEnvyNo.isChecked() == true) {
+            Val.put("envyprob_type", "0");
+            Val.put("ep1", "0");
+            Val.put("ep2", "0");
+            Val.put("ep3", "0");
+            Val.put("ep4", "0");
+            Val.put("ep5", "0");
+            Val.put("ep6", "0");
+            Val.put("ep7", "0");
+        } else if (rbProbEnvyYes.isChecked() == true) {
+            Val.put("envyprob_type", "1");
+            if (cbSound.isChecked() == true) {
+                if (soundRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int sound = soundRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(sound);
+                    int idxsound = soundRadioGroup.indexOfChild(radioButton);
+                    if (idxsound == 0) {
+                        Val.put("ep1", "3");
                     }
-                } */
+                    if (idxsound == 1) {
+                        Val.put("ep1", "2");
+                    }
+                    if (idxsound == 2) {
+                        Val.put("ep1", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("ep1", "0");
+            }
+            if (cbShock.isChecked() == true) {
+                if (shockRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int shock = shockRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(shock);
+                    int idxshock = shockRadioGroup.indexOfChild(radioButton);
+                    if (idxshock == 0) {
+                        Val.put("ep2", "3");
+                    }
+                    if (idxshock == 1) {
+                        Val.put("ep2", "2");
+                    }
+                    if (idxshock == 2) {
+                        Val.put("ep2", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("ep2", "0");
+            }
+            if (cbDust.isChecked() == true) {
+                if (dustRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int dust = dustRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(dust);
+                    int idxdust = dustRadioGroup.indexOfChild(radioButton);
+                    if (dust == 0) {
+                        Val.put("ep3", "3");
+                    }
+                    if (dust == 1) {
+                        Val.put("ep3", "2");
+                    }
+                    if (dust == 2) {
+                        Val.put("ep3", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("ep3", "0");
+            }
+            if (cbSmell.isChecked() == true) {
+                if (smellRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int smell = smellRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(smell);
+                    int idxsmell = smellRadioGroup.indexOfChild(radioButton);
+                    if (idxsmell == 0) {
+                        Val.put("ep4", "3");
+                    }
+                    if (idxsmell == 1) {
+                        Val.put("ep4", "2");
+                    }
+                    if (idxsmell == 2) {
+                        Val.put("ep4", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("ep4", "0");
+            }
+            if (cbAir.isChecked() == true) {
+                if (airRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int air = airRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(air);
+                    int idxair = airRadioGroup.indexOfChild(radioButton);
+                    if (idxair == 0) {
+                        Val.put("ep5", "3");
+                    }
+                    if (idxair == 1) {
+                        Val.put("ep5", "2");
+                    }
+                    if (idxair == 2) {
+                        Val.put("ep5", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("ep5", "0");
+            }
+            if (cbWater.isChecked() == true) {
+                if (waterRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int water = waterRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(water);
+                    int idxwater = waterRadioGroup.indexOfChild(radioButton);
+                    if (idxwater == 0) {
+                        Val.put("ep6", "3");
+                    }
+                    if (idxwater == 1) {
+                        Val.put("ep6", "2");
+                    }
+                    if (idxwater == 2) {
+                        Val.put("ep6", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("ep6", "0");
+            }
+            if (cbGarbage.isChecked() == true) {
+                if (garbageRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int garbage = garbageRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(garbage);
+                    int idxgarbage = garbageRadioGroup.indexOfChild(radioButton);
+                    if (idxgarbage == 0) {
+                        Val.put("ep7", "3");
+                    }
+                    if (idxgarbage == 1) {
+                        Val.put("ep7", "2");
+                    }
+                    if (idxgarbage == 2) {
+                        Val.put("ep7", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("ep7", "0");
+            }
+        }
+        Val.put("house_id", HouseID);
+        Val.put("upd_by", "");
+        Val.put("upd_date", date);
+        Val.put("ACTIVE", "Y");
+        HEnProbList = db.SelectWhereData("house_envyprob", "house_id", HouseID);
+        if (HEnProbList.isEmpty()) {
+            Val.put("cr_by", "JuJiiz");
+            Val.put("cr_date", date);
+            db.InsertData("house_envyprob", Val);
+        } else {
+            db.UpdateData("house_envyprob", Val, "house_id", HouseID);
+        }
+        ///////////////////////////////////House Environment Problem///////////////////////////////////////////
+
+        Val = new ContentValues();
+        if (rbDisasterNo.isChecked() == true) {
+            Val.put("disaster_type", "0");
+            Val.put("dis1", "0");
+            Val.put("dis2", "0");
+            Val.put("dis3", "0");
+            Val.put("dis4", "0");
+            Val.put("dis5", "0");
+            Val.put("dis6", "0");
+            Val.put("dis7", "0");
+            Val.put("dis8", "0");
+            Val.put("dis9", "0");
+            Val.put("dis10", "0");
+            Val.put("dis11", "0");
+            Val.put("dis12", "0");
+            Val.put("dis13", "0");
+            Val.put("dis14", "0");
+        } else if (rbDisasterYes.isChecked() == true) {
+            Val.put("disaster_type", "1");
+            if (cbStorm.isChecked() == true) {
+                if (stormRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int rg = stormRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(rg);
+                    int idx = stormRadioGroup.indexOfChild(radioButton);
+                    if (idx == 0) {
+                        Val.put("dis1", "3");
+                    }
+                    if (idx == 1) {
+                        Val.put("dis1", "2");
+                    }
+                    if (idx == 2) {
+                        Val.put("dis1", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("dis1", "0");
+            }
+            if (cbFlood.isChecked() == true) {
+                if (floodRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int rg = floodRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(rg);
+                    int idx = floodRadioGroup.indexOfChild(radioButton);
+                    if (idx == 0) {
+                        Val.put("dis2", "3");
+                    }
+                    if (idx == 1) {
+                        Val.put("dis2", "2");
+                    }
+                    if (idx == 2) {
+                        Val.put("dis2", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("dis2", "0");
+            }
+            if (cbMud.isChecked() == true) {
+                if (mudRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int rg = mudRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(rg);
+                    int idx = mudRadioGroup.indexOfChild(radioButton);
+                    if (idx == 0) {
+                        Val.put("dis3", "3");
+                    }
+                    if (idx == 1) {
+                        Val.put("dis3", "2");
+                    }
+                    if (idx == 2) {
+                        Val.put("dis3", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("dis3", "0");
+            }
+            if (cbEarthquake.isChecked() == true) {
+                if (earthquakeRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int rg = earthquakeRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(rg);
+                    int idx = earthquakeRadioGroup.indexOfChild(radioButton);
+                    if (idx == 0) {
+                        Val.put("dis4", "3");
+                    }
+                    if (idx == 1) {
+                        Val.put("dis4", "2");
+                    }
+                    if (idx == 2) {
+                        Val.put("dis4", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("dis4", "0");
+            }
+            if (cbBuilding.isChecked() == true) {
+                if (buildingRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int rg = buildingRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(rg);
+                    int idx = buildingRadioGroup.indexOfChild(radioButton);
+                    if (idx == 0) {
+                        Val.put("dis5", "3");
+                    }
+                    if (idx == 1) {
+                        Val.put("dis5", "2");
+                    }
+                    if (idx == 2) {
+                        Val.put("dis5", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("dis5", "0");
+            }
+            if (cbDrought.isChecked() == true) {
+                if (droughtRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int rg = droughtRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(rg);
+                    int idx = droughtRadioGroup.indexOfChild(radioButton);
+                    if (idx == 0) {
+                        Val.put("dis6", "3");
+                    }
+                    if (idx == 1) {
+                        Val.put("dis6", "2");
+                    }
+                    if (idx == 2) {
+                        Val.put("dis6", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("dis6", "0");
+            }
+            if (cbCold.isChecked() == true) {
+                if (coldRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int rg = coldRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(rg);
+                    int idx = coldRadioGroup.indexOfChild(radioButton);
+                    if (idx == 0) {
+                        Val.put("dis7", "3");
+                    }
+                    if (idx == 1) {
+                        Val.put("dis7", "2");
+                    }
+                    if (idx == 2) {
+                        Val.put("dis7", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("dis7", "0");
+            }
+            if (cbRoad.isChecked() == true) {
+                if (roadRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int rg = roadRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(rg);
+                    int idx = roadRadioGroup.indexOfChild(radioButton);
+                    if (idx == 0) {
+                        Val.put("dis8", "3");
+                    }
+                    if (idx == 1) {
+                        Val.put("dis8", "2");
+                    }
+                    if (idx == 2) {
+                        Val.put("dis8", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("dis8", "0");
+            }
+            if (cbFire.isChecked() == true) {
+                if (fireRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int rg = fireRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(rg);
+                    int idx = fireRadioGroup.indexOfChild(radioButton);
+                    if (idx == 0) {
+                        Val.put("dis9", "3");
+                    }
+                    if (idx == 1) {
+                        Val.put("dis9", "2");
+                    }
+                    if (idx == 2) {
+                        Val.put("dis9", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("dis9", "0");
+            }
+            if (cbFireForest.isChecked() == true) {
+                if (fireforestRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int rg = fireforestRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(rg);
+                    int idx = fireforestRadioGroup.indexOfChild(radioButton);
+                    if (idx == 0) {
+                        Val.put("dis10", "3");
+                    }
+                    if (idx == 1) {
+                        Val.put("dis10", "2");
+                    }
+                    if (idx == 2) {
+                        Val.put("dis10", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("dis10", "0");
+            }
+            if (cbSmoke.isChecked() == true) {
+                if (smokeRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int rg = smokeRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(rg);
+                    int idx = smokeRadioGroup.indexOfChild(radioButton);
+                    if (idx == 0) {
+                        Val.put("dis11", "3");
+                    }
+                    if (idx == 1) {
+                        Val.put("dis11", "2");
+                    }
+                    if (idx == 2) {
+                        Val.put("dis11", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("dis11", "0");
+            }
+            if (cbChemical.isChecked() == true) {
+                if (chemicalRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int rg = chemicalRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(rg);
+                    int idx = chemicalRadioGroup.indexOfChild(radioButton);
+                    if (idx == 0) {
+                        Val.put("dis12", "3");
+                    }
+                    if (idx == 1) {
+                        Val.put("dis12", "2");
+                    }
+                    if (idx == 2) {
+                        Val.put("dis12", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("dis12", "0");
+            }
+            if (cbPlague.isChecked() == true) {
+                if (plagueRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int rg = plagueRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(rg);
+                    int idx = plagueRadioGroup.indexOfChild(radioButton);
+                    if (idx == 0) {
+                        Val.put("dis13", "3");
+                    }
+                    if (idx == 1) {
+                        Val.put("dis13", "2");
+                    }
+                    if (idx == 2) {
+                        Val.put("dis13", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("dis13", "0");
+            }
+            if (cbWeed.isChecked() == true) {
+                if (weedRadioGroup.getCheckedRadioButtonId() != -1) {
+                    int rg = weedRadioGroup.getCheckedRadioButtonId();
+                    radioButton = (RadioButton) findViewById(rg);
+                    int idx = weedRadioGroup.indexOfChild(radioButton);
+                    if (idx == 0) {
+                        Val.put("dis14", "3");
+                    }
+                    if (idx == 1) {
+                        Val.put("dis14", "2");
+                    }
+                    if (idx == 2) {
+                        Val.put("dis14", "1");
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุ ระดับ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Val.put("dis14", "0");
+            }
+        }
+        Val.put("house_id", HouseID);
+        Val.put("upd_by", "");
+        Val.put("upd_date", date);
+        Val.put("ACTIVE", "Y");
+        HDisasList = db.SelectWhereData("house_disaster", "house_id", HouseID);
+        if (HDisasList.isEmpty()) {
+            Val.put("cr_by", "JuJiiz");
+            Val.put("cr_date", date);
+            db.InsertData("house_disaster", Val);
+        } else {
+            db.UpdateData("house_disaster", Val, "house_id", HouseID);
+        }
+        ///////////////////////////////////House Disaster///////////////////////////////////////////
+    }
+
+    private void setSpinner() {
+        DwellerList = db.SelectWhereData("population", "house_id", HouseID);
+        Log.d("MYLOG", "DwellerList: " + DwellerList);
+
+        if (!DwellerList.isEmpty()) {
+            for (int i = 0; i < DwellerList.size(); i++) {
+                String strDweller = DwellerList.get(i).get("firstname") + " " + DwellerList.get(i).get("lastname");
+                Dweller.add(strDweller);
+            }
+            String[] spDwellerArray = Dweller.toArray(new String[0]);
+            Log.d("MYLOG", "spDwellerArray: " + spDwellerArray);
+            dwellerArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spDwellerArray, spContributor);
+        }
+    }
+
+    private void setListView() {
+        String strLatent = "*";
+        String strFName = "FName";
+        String strLName = "LName";
+        String strSStatus = "Status";
+        String survey = "survey";
+        String latent = "*";
+        String strPopulationID = "ID";
+        DwellerActive = new ArrayList<HashMap<String, String>>();
+        DwellerList = db.SelectWhereData("population", "house_id", HouseID);
+        if (!DwellerList.isEmpty()) {
+            for (int i = 0; i < DwellerList.size(); i++) {
+                String strActive = DwellerList.get(i).get("ACTIVE");
+                if (strActive.equals("Y")) {
+                    HashMap<String, String> temp = new HashMap<String, String>();
+                    if (DwellerList.get(i).get("residence_status").equals("0")) {
+                        latent = "*";
+                    }
+                    if (DwellerList.get(i).get("residence_status").equals("1")) {
+                        latent = "";
+                    }
+                    temp.put(strLatent, latent);
+                    temp.put(strFName, DwellerList.get(i).get("firstname"));
+                    temp.put(strLName, DwellerList.get(i).get("lastname"));
+                    if (DwellerList.get(i).get("survey_status").equals("0")) {
+                        survey = "";
+                    }
+                    if (DwellerList.get(i).get("survey_status").equals("1")) {
+                        survey = "*";
+                    }
+                    temp.put(strSStatus, survey);
+                    temp.put(strPopulationID, DwellerList.get(i).get("population_id"));
+                    DwellerActive.add(temp);
+                }
+            }
+            SimpleAdapter simpleAdapter = new SimpleAdapter(this, DwellerActive, R.layout.view_dweller_household_column,
+                    new String[]{strLatent, strFName, strLName, strSStatus, strPopulationID},
+                    new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvColumn4, R.id.tvHiddenColumn}
+            );
+            listHousehold.setAdapter(simpleAdapter);
         }
     }
 
@@ -486,12 +1141,25 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     public void onLocationChanged(Location location) {
         mLastLocation = location;
 
-        //Place current location marker
-        latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        if (onDataReady == true) {
+            NewLatlng = new LatLng(Double.parseDouble(HouseList.get(0).get("house_location_lat")), Double.parseDouble(HouseList.get(0).get("house_location_lng")));
+            markerOptions = new MarkerOptions();
+            markerOptions.position(NewLatlng);
+            markerOptions.title("Current Position");
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+            if (mCurrLocationMarker != null)
+                mCurrLocationMarker.remove();
+            mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(NewLatlng, 16));
+            onDataReady = false;
+        }
+        if (onDataReady == false) {
+            latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            markerOptions = new MarkerOptions();
+            markerOptions.position(latLng);
+            markerOptions.title("Current Position");
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        }
 
         btnCurrentLocation.setVisibility(View.VISIBLE);
     }
@@ -610,6 +1278,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                 if (housestatusRadioGroup.getCheckedRadioButtonId() != -1) {
                     if (familyRadioGroup.getCheckedRadioButtonId() != -1) {
                         updateData();
+                        Toast.makeText(this,"บันทึกข้อมูลเรียบร้อย",Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(this, "กรุณาระบุ รูปแบบครอบครัว", Toast.LENGTH_SHORT).show();
                     }
@@ -622,246 +1291,16 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         }
     }
 
-    private void updateData() {
-        String date = df.format(Calendar.getInstance().getTime());
-        Val = new ContentValues();
-        Val.put("house_id", etHouseID.getText().toString());
-        Val.put("house_no", etHouseNumber.getText().toString());
-        Val.put("vilage_id", "");
-        Val.put("house_location_lat", "");
-        Val.put("house_location_lng", "");
-        int register = registerRadioGroup.getCheckedRadioButtonId();
-        radioButton = (RadioButton) findViewById(register);
-        int idxregister = registerRadioGroup.indexOfChild(radioButton);
-        Val.put("house_in_registry", idxregister);
-        int hStatus = housestatusRadioGroup.getCheckedRadioButtonId();
-        radioButton = (RadioButton) findViewById(hStatus);
-        int idxhStatus = housestatusRadioGroup.indexOfChild(radioButton);
-        Val.put("house_status", idxhStatus);
-        int famtype = familyRadioGroup.getCheckedRadioButtonId();
-        radioButton = (RadioButton) findViewById(famtype);
-        int idxfamtype = familyRadioGroup.indexOfChild(radioButton);
-        Val.put("house_family_type", idxfamtype);
-        Val.put("distributor_img", "");
-        Val.put("distributor", spContributor.getSelectedItem().toString());
-        Val.put("survey_status", "");
-        Val.put("upd_by", "");
-        Val.put("upd_date", date);
-        Log.d("MYLOG", "insertData House: " + Val);
-    }
-
-    private void setSpinner() {
-        DwellerList = db.SelectWhereData("population", "house_id", HouseID);
-        Log.d("MYLOG", "DwellerList: " + DwellerList);
-
-        if (!DwellerList.isEmpty()) {
-            for (int i = 0; i < DwellerList.size(); i++) {
-                String strDweller = DwellerList.get(i).get("firstname") + " " + DwellerList.get(i).get("lastname");
-                Dweller.add(strDweller);
-            }
-            String[] spDwellerArray = Dweller.toArray(new String[0]);
-            Log.d("MYLOG", "spDwellerArray: " + spDwellerArray);
-            dwellerArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spDwellerArray, spContributor);
-        }
-    }
-
-    private void setListView() {
-        String strLatent = "*";
-        String strFName = "FName";
-        String strLName = "LName";
-        String strSStatus = "Status";
-        String survey = "survey";
-        String latent = "*";
-        String strPopulationID = "ID";
-        DwellerActive = new ArrayList<HashMap<String, String>>();
-        DwellerList = db.SelectWhereData("population", "house_id", HouseID);
-        if (!DwellerList.isEmpty()) {
-            for (int i = 0; i < DwellerList.size(); i++) {
-                String strActive = DwellerList.get(i).get("ACTIVE");
-                if (strActive.equals("Y")) {
-                    HashMap<String, String> temp = new HashMap<String, String>();
-                    if (DwellerList.get(i).get("residence_status").equals("0")) {
-                        latent = "*";
-                    }
-                    if (DwellerList.get(i).get("residence_status").equals("1")) {
-                        latent = " ";
-                    }
-                    temp.put(strLatent, latent);
-                    temp.put(strFName, DwellerList.get(i).get("firstname"));
-                    temp.put(strLName, DwellerList.get(i).get("lastname"));
-                    if (DwellerList.get(i).get("survey_status").equals("0")) {
-                        survey = "รอการสำรวจ";
-                    }
-                    if (DwellerList.get(i).get("survey_status").equals("1")) {
-                        survey = "กำลังสำรวจ";
-                    }
-                    if (DwellerList.get(i).get("survey_status").equals("2")) {
-                        survey = "สำรวจแล้ว";
-                    }
-                    temp.put(strSStatus, survey);
-                    temp.put(strPopulationID, DwellerList.get(i).get("population_id"));
-                    DwellerActive.add(temp);
-                }
-            }
-            SimpleAdapter simpleAdapter = new SimpleAdapter(this, DwellerActive, R.layout.view_population_column,
-                    new String[]{strLatent, strFName, strLName, strSStatus, strPopulationID},
-                    new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvColumn4, R.id.tvHiddenColumn}
-            );
-            listHousehold.setAdapter(simpleAdapter);
-        }
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int i) {
     }
 
     @Override
-    public void onCheckedChanged(RadioGroup radioGroup, int i) {
-        if (radioGroup == registerRadioGroup) {
-
-            //COL1 = idx;
-        }
-        if (radioGroup == housestatusRadioGroup) {
-
-            //COL2 = idx;
-        }
-        if (radioGroup == familyRadioGroup) {
-
-            //COL3 = idx;
-        }
-        if (radioGroup == probenvyRadioGroup) {
-            int register = probenvyRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = probenvyRadioGroup.indexOfChild(radioButton);
-            COLH1 = idx;
-        }
-        if (radioGroup == soundRadioGroup) {
-            int register = soundRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = soundRadioGroup.indexOfChild(radioButton);
-            COL20 = idx;
-        }
-        if (radioGroup == shockRadioGroup) {
-            int register = shockRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = shockRadioGroup.indexOfChild(radioButton);
-            COL21 = idx;
-        }
-        if (radioGroup == dustRadioGroup) {
-            int register = dustRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = dustRadioGroup.indexOfChild(radioButton);
-            COL22 = idx;
-        }
-        if (radioGroup == smellRadioGroup) {
-            int register = smellRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = smellRadioGroup.indexOfChild(radioButton);
-            COL23 = idx;
-        }
-        if (radioGroup == airRadioGroup) {
-            int register = airRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = airRadioGroup.indexOfChild(radioButton);
-            COL24 = idx;
-        }
-        if (radioGroup == waterRadioGroup) {
-            int register = waterRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = waterRadioGroup.indexOfChild(radioButton);
-            COL25 = idx;
-        }
-        if (radioGroup == garbageRadioGroup) {
-            int register = garbageRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = garbageRadioGroup.indexOfChild(radioButton);
-            COL26 = idx;
-        }
-        if (radioGroup == disasterRadioGroup) {
-            int register = disasterRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = disasterRadioGroup.indexOfChild(radioButton);
-            COLH2 = idx;
-        }
-        if (radioGroup == stormRadioGroup) {
-            int register = stormRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = stormRadioGroup.indexOfChild(radioButton);
-            COL27 = idx;
-        }
-        if (radioGroup == floodRadioGroup) {
-            int register = floodRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = floodRadioGroup.indexOfChild(radioButton);
-            COL28 = idx;
-        }
-        if (radioGroup == mudRadioGroup) {
-            int register = mudRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = mudRadioGroup.indexOfChild(radioButton);
-            COL29 = idx;
-        }
-        if (radioGroup == earthquakeRadioGroup) {
-            int register = earthquakeRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = earthquakeRadioGroup.indexOfChild(radioButton);
-            COL30 = idx;
-        }
-        if (radioGroup == buildingRadioGroup) {
-            int register = buildingRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = buildingRadioGroup.indexOfChild(radioButton);
-            COL31 = idx;
-        }
-        if (radioGroup == droughtRadioGroup) {
-            int register = droughtRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = droughtRadioGroup.indexOfChild(radioButton);
-            COL32 = idx;
-        }
-        if (radioGroup == coldRadioGroup) {
-            int register = coldRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = coldRadioGroup.indexOfChild(radioButton);
-            COL33 = idx;
-        }
-        if (radioGroup == roadRadioGroup) {
-            int register = roadRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = roadRadioGroup.indexOfChild(radioButton);
-            COL34 = idx;
-        }
-        if (radioGroup == fireRadioGroup) {
-            int register = fireRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = fireRadioGroup.indexOfChild(radioButton);
-            COL35 = idx;
-        }
-        if (radioGroup == fireforestRadioGroup) {
-            int register = fireforestRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = fireforestRadioGroup.indexOfChild(radioButton);
-            COL36 = idx;
-        }
-        if (radioGroup == smokeRadioGroup) {
-            int register = smokeRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = smokeRadioGroup.indexOfChild(radioButton);
-            COL37 = idx;
-        }
-        if (radioGroup == chemicalRadioGroup) {
-            int register = chemicalRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = chemicalRadioGroup.indexOfChild(radioButton);
-            COL38 = idx;
-        }
-        if (radioGroup == plagueRadioGroup) {
-            int register = plagueRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = plagueRadioGroup.indexOfChild(radioButton);
-            COL39 = idx;
-        }
-        if (radioGroup == weedRadioGroup) {
-            int register = weedRadioGroup.getCheckedRadioButtonId();
-            radioButton = (RadioButton) findViewById(register);
-            int idx = weedRadioGroup.indexOfChild(radioButton);
-            COL40 = idx;
-        }
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        HashMap<String, String> Item = (HashMap<String, String>) listHousehold.getItemAtPosition(position);
+        SelectedIDItem = Item.get("ID").toString();
+        Intent intent = new Intent(getApplicationContext(), PeopleFormActivity.class);
+        intent.putExtra("PersonID", SelectedIDItem);
+        startActivity(intent);
     }
 }

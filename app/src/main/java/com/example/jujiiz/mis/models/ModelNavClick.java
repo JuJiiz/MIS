@@ -28,25 +28,27 @@ public class ModelNavClick {
                     intent = new Intent(context, HouseholdActivity.class);
                     context.startActivity(intent);
                 }
-                //fragment = new HouseholdFragment();
+
                 break;
 
             case R.id.nav_OPT:
-                if (context instanceof HouseholdActivity) {
+                Toast.makeText(context,"ปิดปรับปรุง",Toast.LENGTH_SHORT).show();
+                /*if (context instanceof HouseholdActivity) {
                     Toast.makeText(context, context.toString(), Toast.LENGTH_SHORT).show();
                 } else {
                     intent = new Intent(context, OPTActivity.class);
                     context.startActivity(intent);
-                }
+                }*/
                 break;
 
             case R.id.nav_TR14:
-                if (context instanceof TR14Activity) {
+                Toast.makeText(context,"ปิดปรับปรุง",Toast.LENGTH_SHORT).show();
+                /*if (context instanceof TR14Activity) {
                     //Toast.makeText(context,context.toString(),Toast.LENGTH_SHORT).show();
                 } else {
                     intent = new Intent(context, TR14Activity.class);
                     context.startActivity(intent);
-                }
+                }*/
                 break;
         }
         /*if (fragment != null) {

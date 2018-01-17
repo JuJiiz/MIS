@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,7 +24,7 @@ import com.example.jujiiz.mis.models.myDBClass;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PeopleFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+public class PeopleFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
     Button btnLandForm, btnVehicalForm, btnPetForm;
     RadioButton rbThaiNationality, rbAnotherNationality;
     RadioButton rbMale, rbFemale;
@@ -49,9 +50,9 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     RadioButton rbParticipationNo, rbParticipationYes;
     RadioButton rbElectionAlway, rbElectionSometime, rbElectionNever;
     RadioButton rbTransportationNo, rbTransportationYes;
-    LinearLayout loAnotherNationality, loAnotherPrefix, loBloodType, loInRegister, loNotInRegister, loNotInHousehold, loCareer, loAgri, loAnotherAgri, loPet, loAnotherPet, loGovern, loAnotherGovern, loPrivate, loAnotherPrivate, loICMonth, loICYear, loCongenital, loContagious, loAllergic, loDisabled, loInStudy, loGraduated, loExpertise, loAnotherReligion, loTransportation;
-    Spinner spAnotherNationality, spPrefix, spBloodType, spMaritalStatus, spVillageName, spCountry, spProvince, spIHCountry, spIHProvince, spInStudy, spGraduated, spExpertise, spContributor;
-    EditText etFirstName, etLastName, etAnotherPrefix, etPersonalID, etBirtDate, etHeight, etWeight, etBloodType, etTel, etHNo, etHID, etAnotherAgri, etAnotherPet, etAnotherGovern, etAnotherPrivate, etICMonth, etICYear, etAllergic, etAnotherReligion, etDate;
+    LinearLayout loNationality, loAnotherPrefix, loBloodType, loInRegister, loNotInRegister, loNotInHousehold, loCareer, loAgri, loAnotherAgri, loPet, loAnotherPet, loGovern, loAnotherGovern, loPrivate, loAnotherPrivate, loICMonth, loICYear, loCongenital, loContagious, loAllergic, loDisabled, loInStudy, loGraduated, loExpertise, loAnotherReligion, loTransportation;
+    Spinner spNationality, spAnotherNationality, spPrefix, spBloodType, spMaritalStatus, spVillageName, spCountry, spProvince, spIHCountry, spIHProvince, spInStudy, spGraduated, spExpertise, spContributor;
+    EditText etNationality, etFirstName, etLastName, etAnotherPrefix, etPersonalID, etBirtDate, etHeight, etWeight, etBloodType, etTel, etHNo, etHID, etAnotherAgri, etAnotherPet, etAnotherGovern, etAnotherPrivate, etICMonth, etICYear, etAllergic, etAnotherReligion, etDate;
     CheckBox cbAgri, cbAgri1, cbAgri2, cbAgri3, cbAgri4, cbAgri5, cbAgri6, cbAgri7, cbAgri8;
     CheckBox cbPet, cbPet1, cbPet2, cbPet3, cbPet4, cbPet5, cbPet6, cbPet7, cbPet8, cbPet9;
     CheckBox cbGovern, cbGovern1, cbGovern2, cbGovern3, cbGovern4, cbGovern5;
@@ -62,9 +63,11 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     CheckBox cbTrans1, cbTrans2, cbTrans3, cbTrans4;
 
     myDBClass db = new myDBClass(this);
-    ArrayList<HashMap<String, String>> PrefixList;
+    ArrayList<HashMap<String, String>> NationalityList, PrefixList, PersonList, TestList;
     ArrayList<String> Prefix = new ArrayList<String>();
-    ArrayAdapter<String> prefixArrayAdapter;
+    ArrayList<String> Nationality = new ArrayList<String>();
+    ArrayAdapter<String> prefixArrayAdapter, nationalityArrayAdapter;
+    String PersonID;
 
     String[] spBloodGroupArray = {"O", "A", "B", "AB", "อื่นๆ"};
     String[] spMaritalStatusArray = {"สมรส", "โสด", "หย่าร้าง", "หม้าย", "แยกกันอยู่"};
@@ -75,6 +78,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_people_form);
+        PersonID = getIntent().getExtras().getString("PersonID");
 
         init();
 
@@ -83,6 +87,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //Important!! (Form)
 
         setSpinner();
+        setField();
     }
 
     private void init() {
@@ -93,7 +98,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         btnPetForm = (Button) findViewById(R.id.btnPetForm);
         btnPetForm.setOnClickListener(this);
 
-        loAnotherNationality = (LinearLayout) findViewById(R.id.loAnotherNationality);
+        loNationality = (LinearLayout) findViewById(R.id.loNationality);
         loAnotherPrefix = (LinearLayout) findViewById(R.id.loAnotherPrefix);
         loBloodType = (LinearLayout) findViewById(R.id.loBloodType);
         loInRegister = (LinearLayout) findViewById(R.id.loInRegister);
@@ -120,7 +125,8 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         loAnotherReligion = (LinearLayout) findViewById(R.id.loAnotherReligion);
         loTransportation = (LinearLayout) findViewById(R.id.loTransportation);
 
-        spAnotherNationality = (Spinner) findViewById(R.id.spAnotherNationality);
+        spNationality = (Spinner) findViewById(R.id.spNationality);
+        spNationality.setOnItemSelectedListener(this);
         spPrefix = (Spinner) findViewById(R.id.spPrefix);
         spBloodType = (Spinner) findViewById(R.id.spBloodType);
         spMaritalStatus = (Spinner) findViewById(R.id.spMaritalStatus);
@@ -134,6 +140,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         spExpertise = (Spinner) findViewById(R.id.spExpertise);
         spContributor = (Spinner) findViewById(R.id.spContributor);
 
+        etNationality = (EditText) findViewById(R.id.etNationality);
         etFirstName = (EditText) findViewById(R.id.etFirstName);
         etLastName = (EditText) findViewById(R.id.etLastName);
         etAnotherPrefix = (EditText) findViewById(R.id.etAnotherPrefix);
@@ -215,8 +222,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         cbTrans3 = (CheckBox) findViewById(R.id.cbTrans3);
         cbTrans4 = (CheckBox) findViewById(R.id.cbTrans4);
 
-        rbThaiNationality = (RadioButton) findViewById(R.id.rbThaiNationality);
-        rbAnotherNationality = (RadioButton) findViewById(R.id.rbAnotherNationality);
         rbMale = (RadioButton) findViewById(R.id.rbMale);
         rbFemale = (RadioButton) findViewById(R.id.rbFemale);
         rbAlive = (RadioButton) findViewById(R.id.rbAlive);
@@ -329,8 +334,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         cbTrans3.setOnCheckedChangeListener(this);
         cbTrans4.setOnCheckedChangeListener(this);
 
-        rbThaiNationality.setOnCheckedChangeListener(this);
-        rbAnotherNationality.setOnCheckedChangeListener(this);
         rbMale.setOnCheckedChangeListener(this);
         rbFemale.setOnCheckedChangeListener(this);
         rbAlive.setOnCheckedChangeListener(this);
@@ -384,7 +387,23 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         rbTransportationYes.setOnCheckedChangeListener(this);
     }
 
-    private void setSpinner(){
+    private void setSpinner() {
+        NationalityList = db.SelectData("nationality");
+        if (!NationalityList.isEmpty()) {
+            for (int i = 0; i < NationalityList.size(); i++) {
+                String strActive = NationalityList.get(i).get("ACTIVE");
+                if (strActive.equals("Y")) {
+                    String strNat = NationalityList.get(i).get("nationality_detail");
+                    if (!Nationality.contains(strNat)) {
+                        Nationality.add(strNat);
+                    }
+                }
+            }
+            Nationality.add("อื่นๆ");
+            String[] spNatArray = Nationality.toArray(new String[0]);
+            nationalityArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spNatArray, spNationality);
+        }
+
         PrefixList = db.SelectData("prename");
         if (!PrefixList.isEmpty()) {
             for (int i = 0; i < PrefixList.size(); i++) {
@@ -395,11 +414,37 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             prefixArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spPrefixArray, spPrefix);
         }
 
-        ModelSpinnerAdapter.setSpinnerItem(this,spBloodGroupArray,spBloodType);
-        ModelSpinnerAdapter.setSpinnerItem(this,spMaritalStatusArray,spMaritalStatus);
-        ModelSpinnerAdapter.setSpinnerItem(this,spEducationArray,spInStudy);
-        ModelSpinnerAdapter.setSpinnerItem(this,spEducationArray,spGraduated);
-        ModelSpinnerAdapter.setSpinnerItem(this,spExpertiseArray,spExpertise);
+        ModelSpinnerAdapter.setSpinnerItem(this, spBloodGroupArray, spBloodType);
+        ModelSpinnerAdapter.setSpinnerItem(this, spMaritalStatusArray, spMaritalStatus);
+        ModelSpinnerAdapter.setSpinnerItem(this, spEducationArray, spInStudy);
+        ModelSpinnerAdapter.setSpinnerItem(this, spEducationArray, spGraduated);
+        ModelSpinnerAdapter.setSpinnerItem(this, spExpertiseArray, spExpertise);
+    }
+
+    private void setField() {
+        if (!PersonID.equals("Nope")) {
+            PersonList = db.SelectWhereData("population", "population_id", PersonID);
+            if (!PersonList.isEmpty()) {
+                TestList = db.SelectWhereData("nationality", "nationality_id", PersonList.get(0).get("nationality_id"));
+                int spinnerPositionNat = nationalityArrayAdapter.getPosition(TestList.get(0).get("nationality_detail"));
+                spNationality.setSelection(spinnerPositionNat);
+                etFirstName.setText(PersonList.get(0).get("firstname"));
+                etLastName.setText(PersonList.get(0).get("lastname"));
+                TestList = db.SelectWhereData("prename", "prename_id", PersonList.get(0).get("prename_id"));
+                int spinnerPositionPrefix = prefixArrayAdapter.getPosition(TestList.get(0).get("prename_detail"));
+                spPrefix.setSelection(spinnerPositionPrefix);
+                if (PersonList.get(0).get("sex").equals("M")) {
+                    rbMale.setChecked(true);
+                }
+                if (PersonList.get(0).get("sex").equals("F")) {
+                    rbFemale.setChecked(true);
+                }
+                etPersonalID.setText(PersonList.get(0).get("population_idcard"));
+                etBirtDate.setText(PersonList.get(0).get("birthdate"));
+
+                ModelCurrentCalendar.edittextCurrentCalendar(this, etDate);
+            }
+        }
     }
 
     @Override
@@ -413,8 +458,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         if (compoundButton == cbPrivate)
             ModelShowHideLayout.checkboxShowHide(cbPrivate, loPrivate);
 
-        if (compoundButton == rbAnotherNationality)
-            ModelShowHideLayout.radiobuttonShowHide(rbAnotherNationality, loAnotherNationality);
         if (compoundButton == rbInRegister)
             ModelShowHideLayout.radiobuttonShowHide(rbInRegister, loInRegister);
         if (compoundButton == rbNotInRegister)
@@ -449,17 +492,33 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
     @Override
     public void onClick(View view) {
-        if(view == btnLandForm){
+        if (view == btnLandForm) {
             Intent intent = new Intent(getApplicationContext(), LandFormActivity.class);
             startActivity(intent);
         }
-        if(view == btnVehicalForm){
+        if (view == btnVehicalForm) {
             Intent intent = new Intent(getApplicationContext(), VehicalFormActivity.class);
             startActivity(intent);
         }
-        if(view == btnPetForm){
+        if (view == btnPetForm) {
             Intent intent = new Intent(getApplicationContext(), PetFormActivity.class);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent == spNationality) {
+            if (spNationality.getSelectedItem().toString().equals("อื่นๆ")) {
+                loNationality.setVisibility(View.VISIBLE);
+            } else {
+                loNationality.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -18,17 +19,12 @@ public class ModelGetData {
     public static JSONArray getJsonArray(Context context, String apiURL, String pname) {
         JSONArray jsonArray = null;
         String result = "";
-        SharedPreferences sp = context.getSharedPreferences("myStorage", Context.MODE_PRIVATE);
-        String token = sp.getString("token", "");
-        Log.d("XXXXXXXXXXXX", "token: " + token);
-        String districtCode = ModelToken.getByName(token, "cus_data.DISTRICT_CODE");
-        Log.d("XXXXXXXXXXXX", "districtCode: " + districtCode);
         try {
-            String url = apiURL + "DISTRICT_CODE=" + districtCode + "&token=" + token;
+            String url = apiURL;
             String strGetJson = new CallApi().execute(url).get();
-            Log.d("XXXXXXXXXXXX", "strGetJson: " + strGetJson);
             JSONObject jsonObject = new JSONObject(strGetJson);
-            result = jsonObject.getString(pname);
+            result = new String(jsonObject.getString(pname).getBytes("ISO-8859-1"), "UTF-8");
+            //result = jsonObject.getString(pname);
             jsonArray = new JSONArray(result);
 
         } catch (InterruptedException e) {
@@ -37,30 +33,10 @@ public class ModelGetData {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
         return jsonArray;
     }
 
-    /*public static String getHouseholdJsonArray(Context context, String apiURL, String pkey, String taskID) {
-        String result = "";
-        SharedPreferences sp = context.getSharedPreferences("myStorage", Context.MODE_PRIVATE);
-        String token = sp.getString("token", "");
-        Log.d("XXXXXXXXXXXX", "token: " + token);
-        String districtCode = ModelToken.getByName(token, "cus_data.DISTRICT_CODE");
-        Log.d("XXXXXXXXXXXX", "districtCode: " + districtCode);
-        try {
-            String url = apiURL + "DISTRICT_CODE=" + districtCode + "&token=" + token + "&id=" + taskID;
-            String strGetJson = new CallApi().execute(url).get();
-            Log.d("XXXXXXXXXXXX", "strGetJson: " + strGetJson);
-            JSONObject jsonObject = new JSONObject(strGetJson);
-            result = jsonObject.getString(pkey);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }*/
 }
