@@ -62,7 +62,8 @@
             android:value="AIzaSyCKpFgIkzIB3PYigoKVEeOHChh_dmEs_eY" />
 
         <activity android:name=".controllers.PetFormActivity" />
-        <activity android:name=".controllers.AnimalFormActivity"></activity>
+        <activity android:name=".controllers.AnimalFormActivity" />
+        <activity android:name=".controllers.UploadActivity"></activity>
     </application>
 
 </manifest>

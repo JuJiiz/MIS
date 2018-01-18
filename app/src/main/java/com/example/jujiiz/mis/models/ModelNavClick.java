@@ -9,6 +9,7 @@ import com.example.jujiiz.mis.R;
 import com.example.jujiiz.mis.controllers.OPTActivity;
 import com.example.jujiiz.mis.controllers.OPTFormActivity;
 import com.example.jujiiz.mis.controllers.TR14Activity;
+import com.example.jujiiz.mis.controllers.UploadActivity;
 
 /**
  * Created by JuJiiz on 21/12/2560.
@@ -17,46 +18,46 @@ import com.example.jujiiz.mis.controllers.TR14Activity;
 public class ModelNavClick {
 
     public static void displaySelectedScreen(Context context, int id) {
-        //android.support.v4.app.Fragment fragment = null;
         Intent intent = null;
         switch (id) {
             case R.id.nav_Household:
                 if (context instanceof HouseholdActivity) {
-                    //Toast.makeText(context,context.toString(),Toast.LENGTH_SHORT).show();
                 } else {
-                    //Toast.makeText(context,"ปิดปรับปรุง",Toast.LENGTH_SHORT).show();
                     intent = new Intent(context, HouseholdActivity.class);
                     context.startActivity(intent);
                 }
 
                 break;
 
-            case R.id.nav_OPT:
+            case R.id.nav_Upload:
+                if (context instanceof UploadActivity) {
+                } else {
+                    //Toast.makeText(context,"ปิดปรับปรุง",Toast.LENGTH_SHORT).show();
+                    intent = new Intent(context, UploadActivity.class);
+                    context.startActivity(intent);
+                }
+
+                break;
+
+            /*case R.id.nav_OPT:
                 Toast.makeText(context,"ปิดปรับปรุง",Toast.LENGTH_SHORT).show();
-                /*if (context instanceof HouseholdActivity) {
+                *//*if (context instanceof HouseholdActivity) {
                     Toast.makeText(context, context.toString(), Toast.LENGTH_SHORT).show();
                 } else {
                     intent = new Intent(context, OPTActivity.class);
                     context.startActivity(intent);
-                }*/
+                }*//*
                 break;
 
             case R.id.nav_TR14:
                 Toast.makeText(context,"ปิดปรับปรุง",Toast.LENGTH_SHORT).show();
-                /*if (context instanceof TR14Activity) {
+                *//*if (context instanceof TR14Activity) {
                     //Toast.makeText(context,context.toString(),Toast.LENGTH_SHORT).show();
                 } else {
                     intent = new Intent(context, TR14Activity.class);
                     context.startActivity(intent);
-                }*/
-                break;
+                }*//*
+                break;*/
         }
-        /*if (fragment != null) {
-            android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_main, fragment);
-            ft.commit();
-        }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);*/
     }
 }

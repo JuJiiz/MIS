@@ -5,15 +5,18 @@
 
     <group android:checkableBehavior="single">
 
-        <item
+        <!--<item
             android:id="@+id/nav_OPT"
-            android:title="ข้อมูล อปท." />
+            android:title="ข้อมูล อปท." />-->
         <item
             android:id="@+id/nav_Household"
             android:title="ฟอร์ม" />
         <item
+            android:id="@+id/nav_Upload"
+            android:title="อัพโหลด" />
+        <!--<item
             android:id="@+id/nav_TR14"
-            android:title="จัดการ ทร.14" />
+            android:title="จัดการ ทร.14" />-->
     </group>
 
     <!--<item android:title="Communicate">
