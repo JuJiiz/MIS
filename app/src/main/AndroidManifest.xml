@@ -61,7 +61,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCKpFgIkzIB3PYigoKVEeOHChh_dmEs_eY" />
 
-        <activity android:name=".controllers.PetFormActivity"></activity>
+        <activity android:name=".controllers.PetFormActivity" />
+        <activity android:name=".controllers.AnimalFormActivity"></activity>
     </application>
 
 </manifest>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="com.example.jujiiz.mis.controllers.PetFormActivity">
+    tools:context="com.example.jujiiz.mis.controllers.AnimalFormActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="15dp"
-            android:text="ข้อมูลสัตว์เลี้ยง"
+            android:text="ข้อมูลปศุสัตว์"
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="26dp" />
@@ -57,7 +57,7 @@
                     android:textSize="16dp" />
 
                 <EditText
-                    android:id="@+id/etPetOwner"
+                    android:id="@+id/etAnimalOwner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2" />
@@ -107,7 +107,7 @@
                     android:textSize="16dp" />
 
                 <RadioGroup
-                    android:id="@+id/rdPetRegister"
+                    android:id="@+id/rdAnimalRegister"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -115,14 +115,14 @@
                     android:weightSum="2">
 
                     <RadioButton
-                        android:id="@+id/rbPetRegisterNo"
+                        android:id="@+id/rbAnimalRegisterNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="ไม่เคยขึ้นทะเบียน" />
 
                     <RadioButton
-                        android:id="@+id/rbPetRegisterYes"
+                        android:id="@+id/rbAnimalRegisterYes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -150,11 +150,10 @@
                     android:textSize="16dp" />
 
                 <EditText
-                    android:id="@+id/etPetAmount"
+                    android:id="@+id/etAnimalAmount"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:inputType="number"/>
+                    android:layout_weight="2" />
             </LinearLayout>
 
             <TextView
@@ -169,7 +168,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
-                android:text="สัตว์เลี้ยงในครัวเรือน"
+                android:text="สัตว์เลี้ยงเพื่อการเกษตร"
                 android:textColor="#000"
                 android:textSize="16dp" />
 
@@ -187,175 +186,32 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="ประเภทสัตว์เลี้ยงในครัวเรือน"
+                    android:text="ชนิดสัตว์เลี้ยง"
                     android:textColor="#000"
                     android:textSize="16dp" />
 
-                <RadioGroup
-                    android:id="@+id/rdPetType"
+                <Spinner
+                    android:id="@+id/spAnimalType"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RadioButton
-                        android:id="@+id/rbPetTypeDog"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="หมา" />
-
-                    <RadioButton
-                        android:id="@+id/rbPetTypeCat"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="แมว" />
-
-                </RadioGroup>
+                    android:layout_weight="2"></Spinner>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/loAnimalType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:paddingBottom="8dp"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp">
+                android:paddingRight="16dp">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="เพศ"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
-
-                <RadioGroup
-                    android:id="@+id/rdPetSex"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RadioButton
-                        android:id="@+id/rbPetSexMale"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="เพศผู้" />
-
-                    <RadioButton
-                        android:id="@+id/rbPetSexFemale"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="เพศเมีย" />
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:orientation="horizontal"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="ฉีดวัคซีน"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
-
-                <RadioGroup
-                    android:id="@+id/rdPetVaccine"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RadioButton
-                        android:id="@+id/rbPetVaccineNo"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="ไม่ฉีด" />
-
-                    <RadioButton
-                        android:id="@+id/rbPetVaccineYes"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="ฉีด" />
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/loVaccineContinue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="8dp"
-                android:visibility="gone">
-
-                <RadioGroup
-                    android:id="@+id/rdVaccineContinue"
+                <EditText
+                    android:id="@+id/etAnimalType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <RadioButton
-                        android:id="@+id/rbVaccineContinueNo"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="ไม่ต่อเนื่อง" />
-
-                    <RadioButton
-                        android:id="@+id/rbVaccineContinueYes"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="ต่อเนื่อง" />
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/loLastVaccine"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:orientation="horizontal"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="เดือนที่ฉีดวัคซีนล่าสุด"
-                    android:textColor="#000"
-                    android:textSize="16dp"/>
-
-                <Spinner
-                    android:id="@+id/spLastVaccine"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"></Spinner>
+                    android:hint="ระบุชนิดสัตว์เลี้ยง"/>
             </LinearLayout>
 
             <LinearLayout
@@ -372,37 +228,112 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="การทำหมัน"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
-
-                <Spinner
-                    android:id="@+id/spSterile"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"></Spinner>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:orientation="horizontal"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="จำนวนสัตว์เกิดใหม่ต่อปี"
+                    android:text="การติดโรค"
                     android:textColor="#000"
                     android:textSize="16dp" />
 
                 <RadioGroup
-                    android:id="@+id/rdPetBorn"
+                    android:id="@+id/rdAnimalInfection"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <RadioButton
+                        android:id="@+id/rbAnimalInfectionNo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ไม่เคย" />
+
+                    <RadioButton
+                        android:id="@+id/rbAnimalInfectionYes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="เคย" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/loAnimalInfection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <EditText
+                    android:id="@+id/etAnimalInfection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="ระบุโรค"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="สถานที่เลี้ยง"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <RadioGroup
+                    android:id="@+id/rdAnimalShelter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/rbAnimalShelterIn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ภายในบริเวณที่อาศัย" />
+
+                    <RadioButton
+                        android:id="@+id/rbAnimalShelterOut"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ภายนอกบริเวณที่อาศัย" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="การควบคุมโรค"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <RadioGroup
+                    android:id="@+id/rdInfectionCtrl"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -410,35 +341,160 @@
                     android:weightSum="2">
 
                     <RadioButton
-                        android:id="@+id/rbPetBornNo"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/rbInfectionCtrlNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ไม่มีการควบคุม" />
+
+                    <RadioButton
+                        android:id="@+id/rbInfectionCtrlYes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="มีการควบคุม" />
+
+                    <LinearLayout
+                        android:id="@+id/loInfectionCtrlYes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:visibility="gone">
+
+                        <RadioGroup
+                            android:id="@+id/rdCtrlBy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:orientation="vertical"
+                            android:weightSum="2">
+
+                            <RadioButton
+                                android:id="@+id/rbCtrlBySelf"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="ควบคุมเอง" />
+
+                            <RadioButton
+                                android:id="@+id/rbCtrlByGovern"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="ได้รับความช่วยเหลือจากหน่วยงาน" />
+                        </RadioGroup>
+                    </LinearLayout>
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="สถานที่ปลอดโรค"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <RadioGroup
+                    android:id="@+id/rdDiseaseFree"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/rbDiseaseFreeNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ไม่อยู่ในสถานที่ปลอดโรค" />
+
+                    <RadioButton
+                        android:id="@+id/rbDiseaseFreeYes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="อยู่ในสถานที่ปลอดโรค" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ตลาดในการซื้อขาย"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <RadioGroup
+                    android:id="@+id/rdAnimalMarket"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <RadioButton
+                        android:id="@+id/rbAnimalMarketNo"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="ไม่มี" />
 
                     <RadioButton
-                        android:id="@+id/rbPetBornYes"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/rbAnimalMarketYes"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="มี" />
-
-                    <LinearLayout
-                        android:id="@+id/loPetBorn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <EditText
-                            android:id="@+id/etPetBorn"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="ระบุจำนวน"
-                            android:inputType="number" />
-                    </LinearLayout>
-
                 </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/loAnimalMarket"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="สถานที่ซื้อขาย"
+                    android:textColor="#000"
+                    android:textSize="16dp" />
+
+                <Spinner
+                    android:id="@+id/spAnimalMarket"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"></Spinner>
             </LinearLayout>
 
             <LinearLayout
@@ -488,8 +544,6 @@
                     android:hint="วันที่บันทึก"
                     android:inputType="date" />
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
-
 </LinearLayout>

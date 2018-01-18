@@ -28,9 +28,11 @@ import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
 import com.example.jujiiz.mis.models.myDBClass;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class HouseholdActivity extends AppCompatActivity
@@ -88,7 +90,7 @@ public class HouseholdActivity extends AppCompatActivity
                         case DialogInterface.BUTTON_POSITIVE:
                             downloadJson();
                             setListView();
-                            Toast.makeText(getApplicationContext(),"ดาวน์โหลดสำเร็จแล้ว",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "ดาวน์โหลดสำเร็จแล้ว", Toast.LENGTH_SHORT).show();
                             break;
 
                         case DialogInterface.BUTTON_NEGATIVE:
@@ -154,10 +156,10 @@ public class HouseholdActivity extends AppCompatActivity
                 temp.put(strVilleNo, TR14List.get(0).get("vilage_no"));
                 temp.put(strHouseNo, HouseList.get(i).get("house_no"));
                 temp.put(strVilleName, " ");
-                if (HouseList.get(i).get("survey_status").equals("0")){
+                if (HouseList.get(i).get("survey_status").equals("0")) {
                     survey = "";
                 }
-                if (HouseList.get(i).get("survey_status").equals("1")){
+                if (HouseList.get(i).get("survey_status").equals("1")) {
                     survey = "*";
                 }
                 temp.put(strStatus, survey);
@@ -174,6 +176,10 @@ public class HouseholdActivity extends AppCompatActivity
 
     private void downloadJson() {
         String date = df.format(Calendar.getInstance().getTime());
+        String formattedDate;
+        DateFormat originalFormat;
+        DateFormat targetFormat;
+        Date odate = null;
         STRING_JSONDATA = ModelGetData.getJsonArray(this, apiURL, JKey);
         List = ModelGetJson.JsonArraytoArrayList(STRING_JSONDATA);
         if (!List.isEmpty()) {
@@ -189,7 +195,21 @@ public class HouseholdActivity extends AppCompatActivity
                 Val.put("lastname", List.get(i).get("lastname"));
                 Val.put("sex", List.get(i).get("sex"));
                 Val.put("dweller", List.get(i).get("dweller"));
-                Val.put("birthdate", List.get(i).get("birthdate"));
+
+                originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
+                targetFormat = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    odate = originalFormat.parse(List.get(i).get("birthdate"));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if (odate != null) {
+                    formattedDate = targetFormat.format(odate);
+                } else {
+                    formattedDate = "";
+                }
+
+                Val.put("birthdate", formattedDate);
                 Val.put("nationality", List.get(i).get("nationality"));
                 Val.put("vilage_no", List.get(i).get("vilage_no"));
                 db.InsertData("tr14", Val);
@@ -206,7 +226,6 @@ public class HouseholdActivity extends AppCompatActivity
                     Val.put("house_in_registry", "");
                     Val.put("house_status", "");
                     Val.put("house_family_type", "");
-                    Val.put("distributor_img", "");
                     Val.put("distributor", "");
                     Val.put("survey_status", "0");
                     Val.put("cr_by", "ADMIN");
@@ -222,34 +241,24 @@ public class HouseholdActivity extends AppCompatActivity
                 if (DwellerList.isEmpty()) {
                     Val = new ContentValues();
                     Val.put("population_idcard", List.get(i).get("idcard"));
-                    PrenameList = db.SelectWhereData("prename", "prename_detail", "\"" + List.get(i).get("prename") + "\"");
-                    if (!PrenameList.isEmpty()) {
-                        Val.put("prename_id", PrenameList.get(0).get("prename_id"));
-                    } else {
-                        Val.put("prename_id", "");
-                    }
+                    Val.put("prename", List.get(i).get("prename"));
                     Val.put("firstname", List.get(i).get("firstname"));
                     Val.put("lastname", List.get(i).get("lastname"));
-                    Val.put("birthdate", List.get(i).get("idcard"));
+                    Val.put("birthdate", formattedDate);
                     Val.put("height", "");
                     Val.put("weight", "");
-                    if (List.get(i).get("sex").equals("ชาย")){
+                    if (List.get(i).get("sex").equals("ชาย")) {
                         Val.put("sex", "M");
-                    }else if (List.get(i).get("sex").equals("หญิง")){
+                    } else if (List.get(i).get("sex").equals("หญิง")) {
                         Val.put("sex", "F");
-                    }else {
+                    } else {
                         Val.put("sex", "");
                     }
                     Val.put("bloodgroup", "");
                     Val.put("living", "");
                     Val.put("maritalstatus", "");
                     Val.put("tel", "");
-                    NatList = db.SelectWhereData("nationality", "nationality_detail", "\"" + List.get(i).get("nationality") + "\"");
-                    if (!NatList.isEmpty()) {
-                        Val.put("nationality_id", NatList.get(0).get("nationality_id"));
-                    } else {
-                        Val.put("nationality_id", "");
-                    }
+                    Val.put("nationality", List.get(i).get("nationality"));
                     Val.put("house_id", List.get(i).get("house_id"));
                     Val.put("currentaddr", "");
                     Val.put("currentaddr_province", "");
@@ -295,117 +304,44 @@ public class HouseholdActivity extends AppCompatActivity
     }
 
     private void searchEvent() {
-        String strSpinnerItem = spVName.getSelectedItem().toString();
         String strEditText = etSearch.getText().toString();
-        TR14List = db.SelectData("house");
-        if (!strSpinnerItem.equals("ทั้งหมด") && !strEditText.equals("")) {
-            TestList = db.SelectWhereData("vilage", "vilage_name", "\"" + strSpinnerItem + "\"");
-            HouseActive = new ArrayList<HashMap<String, String>>();
-            if (!TR14List.isEmpty()) {
-                for (int i = 0; i < TR14List.size(); i++) {
-                    String strActive = TR14List.get(i).get("ACTIVE");
-                    if (strActive.equals("Y")) {
-                        if (TR14List.get(i).get("vilage_id").equals(TestList.get(0).get("vilage_id")) && TR14List.get(i).get("house_no").equals(strEditText)) {
-                            VilleList = db.SelectWhereData("vilage", "vilage_id", TR14List.get(i).get("vilage_id"));
-                            temp = new HashMap<String, String>();
-                            temp.put(strVilleNo, TR14List.get(i).get("vilage_id"));
-                            temp.put(strHouseNo, TR14List.get(i).get("house_no"));
-                            temp.put(strVilleName, VilleList.get(0).get("vilage_name"));
-                            if (TR14List.get(i).get("survey_status").equals("0")) {
-                                survey = "รอการสำรวจ";
-                            }
-                            if (TR14List.get(i).get("survey_status").equals("1")) {
-                                survey = "กำลังสำรวจ";
-                            }
-                            if (TR14List.get(i).get("survey_status").equals("2")) {
-                                survey = "สำรวจแล้ว";
-                            }
-                            temp.put(strStatus, survey);
-                            temp.put(strHID, TR14List.get(i).get("house_id"));
-                            HouseActive.add(temp);
+        HouseList = db.SelectData("house");
+
+        HouseActive = new ArrayList<HashMap<String, String>>();
+        if (!HouseList.isEmpty()) {
+            for (int i = 0; i < HouseList.size(); i++) {
+                String strActive = HouseList.get(i).get("ACTIVE");
+                if (strActive.equals("Y")) {
+                    if (HouseList.get(i).get("house_no").equals(strEditText)) {
+                        HashMap<String, String> temp = new HashMap<String, String>();
+                        TR14List = db.SelectWhereData("tr14", "house_id", HouseList.get(i).get("house_id"));
+                        temp.put(strVilleNo, TR14List.get(0).get("vilage_no"));
+                        temp.put(strHouseNo, HouseList.get(i).get("house_no"));
+                        temp.put(strVilleName, " ");
+                        if (HouseList.get(i).get("survey_status").equals("0")) {
+                            survey = "";
                         }
+                        if (HouseList.get(i).get("survey_status").equals("1")) {
+                            survey = "*";
+                        }
+                        temp.put(strStatus, survey);
+                        temp.put(strHID, HouseList.get(i).get("house_id"));
+                        HouseActive.add(temp);
                     }
                 }
-                SimpleAdapter simpleAdapter = new SimpleAdapter(this, HouseActive, R.layout.view_household_column,
-                        new String[]{strVilleNo, strHouseNo, strVilleName, strStatus, strHID},
-                        new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvColumn4, R.id.tvHiddenColumn}
-                );
-                lvHousehold.setAdapter(simpleAdapter);
             }
-        } else if (strSpinnerItem.equals("ทั้งหมด") && !strEditText.equals("")) {
-            HouseActive = new ArrayList<HashMap<String, String>>();
-            if (!TR14List.isEmpty()) {
-                for (int i = 0; i < TR14List.size(); i++) {
-                    String strActive = TR14List.get(i).get("ACTIVE");
-                    if (strActive.equals("Y")) {
-                        if (TR14List.get(i).get("house_no").equals(strEditText)) {
-                            VilleList = db.SelectWhereData("vilage", "vilage_id", TR14List.get(i).get("vilage_id"));
-                            temp = new HashMap<String, String>();
-                            temp.put(strVilleNo, TR14List.get(i).get("vilage_id"));
-                            temp.put(strHouseNo, TR14List.get(i).get("house_no"));
-                            temp.put(strVilleName, VilleList.get(0).get("vilage_name"));
-                            if (TR14List.get(i).get("survey_status").equals("0")) {
-                                survey = "รอการสำรวจ";
-                            }
-                            if (TR14List.get(i).get("survey_status").equals("1")) {
-                                survey = "กำลังสำรวจ";
-                            }
-                            if (TR14List.get(i).get("survey_status").equals("2")) {
-                                survey = "สำรวจแล้ว";
-                            }
-                            temp.put(strStatus, survey);
-                            temp.put(strHID, TR14List.get(i).get("house_id"));
-                            HouseActive.add(temp);
-                        }
-                    }
-                }
-                SimpleAdapter simpleAdapter = new SimpleAdapter(this, HouseActive, R.layout.view_household_column,
-                        new String[]{strVilleNo, strHouseNo, strVilleName, strStatus, strHID},
-                        new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvColumn4, R.id.tvHiddenColumn}
-                );
-                lvHousehold.setAdapter(simpleAdapter);
-            }
-        } else if (!strSpinnerItem.equals("ทั้งหมด") && strEditText.equals("")) {
-            TestList = db.SelectWhereData("vilage", "vilage_name", "\"" + strSpinnerItem + "\"");
-            HouseActive = new ArrayList<HashMap<String, String>>();
-            if (!TR14List.isEmpty()) {
-                for (int i = 0; i < TR14List.size(); i++) {
-                    String strActive = TR14List.get(i).get("ACTIVE");
-                    if (strActive.equals("Y")) {
-                        if (TR14List.get(i).get("vilage_id").equals(TestList.get(0).get("vilage_id"))) {
-                            VilleList = db.SelectWhereData("vilage", "vilage_id", TR14List.get(i).get("vilage_id"));
-                            temp = new HashMap<String, String>();
-                            temp.put(strVilleNo, TR14List.get(i).get("vilage_id"));
-                            temp.put(strHouseNo, TR14List.get(i).get("house_no"));
-                            temp.put(strVilleName, VilleList.get(0).get("vilage_name"));
-                            if (TR14List.get(i).get("survey_status").equals("0")) {
-                                survey = "รอการสำรวจ";
-                            }
-                            if (TR14List.get(i).get("survey_status").equals("1")) {
-                                survey = "กำลังสำรวจ";
-                            }
-                            if (TR14List.get(i).get("survey_status").equals("2")) {
-                                survey = "สำรวจแล้ว";
-                            }
-                            temp.put(strStatus, survey);
-                            temp.put(strHID, TR14List.get(i).get("house_id"));
-                            HouseActive.add(temp);
-                        }
-                    }
-                }
-                SimpleAdapter simpleAdapter = new SimpleAdapter(this, HouseActive, R.layout.view_household_column,
-                        new String[]{strVilleNo, strHouseNo, strVilleName, strStatus, strHID},
-                        new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvColumn4, R.id.tvHiddenColumn}
-                );
-                lvHousehold.setAdapter(simpleAdapter);
-            }
+            SimpleAdapter simpleAdapter = new SimpleAdapter(this, HouseActive, R.layout.view_household_column,
+                    new String[]{strVilleNo, strHouseNo, strVilleName, strStatus, strHID},
+                    new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvColumn4, R.id.tvHiddenColumn}
+            );
+            lvHousehold.setAdapter(simpleAdapter);
         }
     }
 
     @Override
     public void onClick(View view) {
         if (view == btnSearch) {
-            if (spVName.getSelectedItem().toString().equals("ทั้งหมด") && etSearch.getText().toString().equals("")) {
+            if (etSearch.getText().toString().equals("")) {
                 setListView();
             } else {
                 lvHousehold.setAdapter(null);

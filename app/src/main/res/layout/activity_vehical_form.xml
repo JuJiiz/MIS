@@ -60,7 +60,7 @@
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="ชื่อ-นามสกุล"
                     android:textColor="#000"
@@ -118,7 +118,7 @@
                     android:textSize="16dp" />
 
                 <EditText
-                    android:id="@+id/etPetOwner"
+                    android:id="@+id/etRegisterDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -158,12 +158,42 @@
                         android:layout_weight="1"
                         android:text="ประเภทยานพาหนะทั่วไป" />
 
+                    <LinearLayout
+                        android:id="@+id/loVehicalType1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:visibility="gone">
+
+                        <Spinner
+                            android:id="@+id/spVehicalType1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></Spinner>
+                    </LinearLayout>
+
                     <RadioButton
                         android:id="@+id/rbVehicalType2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน" />
+
+                    <LinearLayout
+                        android:id="@+id/loVehicalType2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:visibility="gone">
+
+                        <Spinner
+                            android:id="@+id/spVehicalType2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></Spinner>
+                    </LinearLayout>
 
                     <RadioButton
                         android:id="@+id/rbVehicalType3"
@@ -172,6 +202,21 @@
                         android:layout_weight="1"
                         android:text="ประเภทยานพาหนะด้านบรรเทาสาธารณภัย" />
 
+                    <LinearLayout
+                        android:id="@+id/loVehicalType3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:visibility="gone">
+
+                        <Spinner
+                            android:id="@+id/spVehicalType3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></Spinner>
+                    </LinearLayout>
+
                     <RadioButton
                         android:id="@+id/rbVehicalType4"
                         android:layout_width="wrap_content"
@@ -179,12 +224,42 @@
                         android:layout_weight="1"
                         android:text="ประเภทยานพาหนะด้านสิ่งแวดล้อม" />
 
+                    <LinearLayout
+                        android:id="@+id/loVehicalType4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:visibility="gone">
+
+                        <Spinner
+                            android:id="@+id/spVehicalType4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></Spinner>
+                    </LinearLayout>
+
                     <RadioButton
                         android:id="@+id/rbVehicalType5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="ประเภทยานพาหนะด้านการศึกษา" />
+
+                    <LinearLayout
+                        android:id="@+id/loVehicalType5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:visibility="gone">
+
+                        <Spinner
+                            android:id="@+id/spVehicalType5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></Spinner>
+                    </LinearLayout>
                 </RadioGroup>
             </LinearLayout>
 
@@ -250,7 +325,7 @@
                     android:textSize="16dp" />
 
                 <Spinner
-                    android:id="@+id/spDistributor"
+                    android:id="@+id/spContributor"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"></Spinner>
@@ -268,7 +343,7 @@
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="วันที่บันทึกข้อมูล"
                     android:textColor="#000"

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="เลือกทรัพย์สินที่ต้องการ"
+        android:textAlignment="center"
+        android:textColor="#000"
+        android:textSize="16dp"
+        android:paddingBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnLand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ที่ดิน"/>
+    <Button
+        android:id="@+id/btnVehicle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ยานพาหนะ"/>
+    <Button
+        android:id="@+id/btnPet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="สัตว์เลี้ยง"/>
+    <Button
+        android:id="@+id/btnAnimal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ปศุสัตว์"/>
+
+</LinearLayout>

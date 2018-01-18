@@ -10,11 +10,17 @@ import android.widget.RadioGroup;
  */
 
 public class ModelCheckboxCheck {
-    public static void checkboxSetCheck(Context context, CheckBox checkBox, int value){
-        if(value == 0){
+    public static void checkboxSetCheck(CheckBox checkBox, String value){
+
+        if (value.equals("")){
             checkBox.setChecked(false);
-        }if(value == 1){
-            checkBox.setChecked(true);
+        }else {
+            int val = Integer.parseInt(value);
+            if(val == 0){
+                checkBox.setChecked(false);
+            }if(val == 1){
+                checkBox.setChecked(true);
+            }
         }
     }
 

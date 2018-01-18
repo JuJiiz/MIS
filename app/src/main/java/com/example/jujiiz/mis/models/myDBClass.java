@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -26,51 +27,481 @@ public class myDBClass extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `house` (`house_id`\tINTEGER NOT NULL PRIMARY KEY,`house_no`\tINTEGER NOT NULL,`vilage_id`\tINTEGER NOT NULL,`house_location_lat`\tTEXT NOT NULL,`house_location_lng`\tTEXT NOT NULL,`house_in_registry`\tTEXT NOT NULL,`house_status`\tTEXT NOT NULL,`house_family_type`\tTEXT NOT NULL,`distributor_img`\tTEXT NOT NULL,`distributor`\tTEXT NOT NULL,`survey_status`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT NOT NULL,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `house_disaster` (`disaster_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`disaster_type`\tTEXT NOT NULL,`dis1`\tTEXT NOT NULL,`dis2`\tTEXT NOT NULL,`dis3`\tTEXT NOT NULL,`dis4`\tTEXT NOT NULL,`dis5`\tTEXT NOT NULL,`dis6`\tTEXT NOT NULL,`dis7`\tTEXT NOT NULL,`dis8`\tTEXT NOT NULL,`dis9`\tTEXT NOT NULL,`dis10`\tTEXT NOT NULL,`dis11`\tTEXT NOT NULL,`dis12`\tTEXT NOT NULL,`dis13`\tTEXT NOT NULL,`dis14`\tTEXT NOT NULL,`house_id`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `house_envyprob` (`envyprob_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`envyprob_type`\tTEXT NOT NULL,`ep1`\tTEXT NOT NULL,`ep2`\tTEXT NOT NULL,`ep3`\tTEXT NOT NULL,`ep4`\tTEXT,`ep5`\tTEXT NOT NULL,`ep6`\tTEXT NOT NULL,`ep7`\tTEXT NOT NULL,`house_id`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `house_problem` (`problem_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`prob1`\tTEXT NOT NULL,`prob2`\tTEXT NOT NULL,`prob3`\tTEXT NOT NULL,`prob4`\tTEXT NOT NULL,`prob5`\tTEXT NOT NULL,`prob6`\tTEXT NOT NULL,`prob7`\tTEXT NOT NULL,`prob8`\tTEXT NOT NULL,`prob9`\tTEXT NOT NULL,`prob10`\tTEXT NOT NULL,`problem_another`\tTEXT NOT NULL,`house_id`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tINTEGER,`ACTIVE`\tINTEGER);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `members` (`members_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`members_un`\tTEXT NOT NULL,`members_pw`\tTEXT NOT NULL,`members_status`\tTEXT NOT NULL,`vilage_id`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `nationality` (`nationality_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`nationality_detail`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `opt` (`opt_id`\tINTEGER NOT NULL PRIMARY KEY,`opt_name`\tTEXT NOT NULL,`opt_type_id`\tINTEGER NOT NULL,`opt_location_lat`\tTEXT NOT NULL,`opt_location_lng`\tTEXT NOT NULL,`opt_address_no`\tINTEGER NOT NULL,`opt_vilage_no`\tINTEGER NOT NULL,`opt_alley`\tTEXT NOT NULL,`opt_road`\tTEXT NOT NULL,`opt_province`\tTEXT NOT NULL,`opt_district`\tTEXT NOT NULL,`opt_sub_district`\tTEXT NOT NULL,`opt_postal_code`\tINTEGER NOT NULL,`opt_tel`\tINTEGER NOT NULL,`opt_fax`\tINTEGER NOT NULL,`opt_vision`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `opt_type` (`opt_type_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`opt_type_name`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population` (`population_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`population_idcard`\tINTEGER NOT NULL,`prename_id`\tINTEGER NOT NULL,`firstname`\tTEXT NOT NULL,`lastname`\tTEXT NOT NULL,`birthdate`\tTEXT NOT NULL,`height`\tINTEGER NOT NULL,`weight`\tINTEGER NOT NULL,`sex`\tTEXT NOT NULL,`bloodgroup`\tTEXT NOT NULL,`living`\tTEXT NOT NULL,`maritalstatus`\tTEXT NOT NULL,`tel`\tINTEGER NOT NULL,`nationality_id`\tINTEGER NOT NULL,`house_id`\tINTEGER NOT NULL,`currentaddr`\tTEXT NOT NULL,`currentaddr_province`\tTEXT NOT NULL,`currentaddr_country`\tTEXT NOT NULL,`dwellerstatus`\tTEXT NOT NULL,`income`\tTEXT NOT NULL,`income_money`\tINTEGER NOT NULL,`dept`\tTEXT NOT NULL,`saving`\tTEXT NOT NULL,`allergichis`\tTEXT NOT NULL,`allergichis_detail`\tTEXT NOT NULL,`disadvantage`\tTEXT NOT NULL,`sub_al`\tTEXT NOT NULL,`education`\tTEXT NOT NULL,`education_class`\tTEXT NOT NULL,`literacy`\tTEXT NOT NULL,`technology`\tTEXT NOT NULL,`expertise`\tTEXT NOT NULL,`expertise_name`\tTEXT NOT NULL,`expertise_detail`\tTEXT NOT NULL,`religion`\tTEXT NOT NULL,`religion_another`\tTEXT NOT NULL,`participation`\tTEXT NOT NULL,`election`\tTEXT NOT NULL,`residence_status`\tTEXT NOT NULL,`latentpop_province`\tTEXT NOT NULL,`latentpop_country`\tTEXT NOT NULL,`distributor`\tTEXT NOT NULL,`survey_status`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_congenitalhis` (`congh_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`congh_type`\tTEXT NOT NULL,`congh1`\tTEXT NOT NULL,`congh2`\tTEXT NOT NULL,`congh3`\tTEXT NOT NULL,`congh4`\tTEXT NOT NULL,`congh5`\tTEXT NOT NULL,`congh_another`\tTEXT NOT NULL,`population_idcard`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_contagioushis` (`conth_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`conth_type`\tTEXT NOT NULL,`conth1`\tTEXT NOT NULL,`conth2`\tTEXT NOT NULL,`conth3`\tTEXT NOT NULL,`conth4`\tTEXT NOT NULL,`conth5`\tTEXT NOT NULL,`conth6`\tTEXT NOT NULL,`conth7`\tTEXT NOT NULL,`conth8`\tTEXT NOT NULL,`conth9`\tTEXT NOT NULL,`conth10`\tTEXT NOT NULL,`conth11`\tTEXT NOT NULL,`conth_another`\tTEXT NOT NULL,`population_idcard`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_disabled` (`disabled_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`disabled_type`\tTEXT NOT NULL,`disabled1`\tTEXT NOT NULL,`disabled2`\tTEXT NOT NULL,`disabled3`\tTEXT NOT NULL,`disabled4`\tTEXT NOT NULL,`disabled5`\tTEXT NOT NULL,`disabled6`\tTEXT NOT NULL,`population_idcard`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_job_agriculture` (`agri_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`works_id`\tINTEGER NOT NULL,`agri1`\tTEXT NOT NULL,`agri2`\tTEXT NOT NULL,`agri3`\tTEXT NOT NULL,`agri4`\tTEXT NOT NULL,`agri5`\tTEXT NOT NULL,`agri6`\tTEXT NOT NULL,`agri7`\tTEXT NOT NULL,`agri8`\tTEXT NOT NULL,`agri_another`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_job_animal` (`animal_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`works_id`\tINTEGER NOT NULL,`animal1`\tTEXT NOT NULL,`animal2`\tTEXT NOT NULL,`animal3`\tTEXT NOT NULL,`animal4`\tTEXT NOT NULL,`animal5`\tTEXT NOT NULL,`animal6`\tTEXT NOT NULL,`animal7`\tTEXT NOT NULL,`animal8`\tTEXT NOT NULL,`animal9`\tTEXT NOT NULL,`animal_another`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_job_govern` (`govern_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`works_id`\tINTEGER NOT NULL,`govern1`\tTEXT NOT NULL,`govern2`\tTEXT NOT NULL,`govern3`\tTEXT NOT NULL,`govern4`\tTEXT NOT NULL,`govern_another`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_job_private` (`private_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`works_id`\tINTEGER NOT NULL,`private1`\tTEXT NOT NULL,`private2`\tTEXT NOT NULL,`private3`\tTEXT NOT NULL,`private4`\tTEXT NOT NULL,`private5`\tTEXT NOT NULL,`private6`\tTEXT NOT NULL,`private7`\tTEXT NOT NULL,`private_another`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_land` (`land_id`\tINTEGER NOT NULL,`population_idcard`\tINTEGER NOT NULL,`dimen1`\tINTEGER NOT NULL,`dimen2`\tINTEGER NOT NULL,`dimen3`\tINTEGER NOT NULL,`land_benefit`\tTEXT NOT NULL,`land_location`\tTEXT NOT NULL,`land_tax`\tTEXT NOT NULL,`land_rent`\tTEXT NOT NULL,`distributor`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_transport` (`transport_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`transport_type`\tTEXT NOT NULL,`population_idcard`\tINTEGER NOT NULL,`trans1`\tTEXT NOT NULL,`trans2`\tTEXT NOT NULL,`trans3`\tTEXT NOT NULL,`trans4`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_vehicle` (`vehicle_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`regisdate`\tTEXT NOT NULL,`vehicle_type`\tTEXT NOT NULL,`vehicle_detail`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_works` (`works_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`works_type`\tTEXT NOT NULL,`population_idcard`\tINTEGER NOT NULL,`cr_by`\tINTEGER NOT NULL,`cr_date`\tINTEGER NOT NULL,`upd_by`\tINTEGER,`upd_date`\tINTEGER,`ACTIVE`\tINTEGER NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `prename` (`prename_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`prename_detail`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `vilage` (`vilage_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`opt_id`\tINTEGER NOT NULL,`vilage_name`\tTEXT NOT NULL,`vilage_location_lat`\tTEXT NOT NULL,`vilage_location_lng`\tTEXT NOT NULL,`vilage_aor`\tINTEGER NOT NULL,`vilage_liveable`\tTEXT NOT NULL,`vilage_start`\tTEXT NOT NULL,`vilage_history`\tTEXT NOT NULL,`vilage_problem`\tTEXT NOT NULL,`vilage_sup_firstname`\tTEXT NOT NULL,`vilage_sup_lastname`\tTEXT NOT NULL,`vilage_sup_startdate`\tTEXT NOT NULL,`vilage_address_no`\tINTEGER NOT NULL,`vilage_no`\tINTEGER NOT NULL,`vilage_alley`\tTEXT NOT NULL,`vilage_road`\tTEXT NOT NULL,`vilage_province`\tTEXT NOT NULL,`vilage_district`\tTEXT NOT NULL,`vilage_sub_district`\tTEXT NOT NULL,`vilage_postal_code`\tINTEGER NOT NULL,`vilage_tel`\tINTEGER NOT NULL,`vilage_img`\tTEXT NOT NULL,`vilage_informant_firstname`\tTEXT NOT NULL,`vilage_informant_lastname`\tTEXT NOT NULL,`vilage_informant_tel`\tINTEGER NOT NULL,`survey_status`\tTEXT NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `vilage_area` (`area_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`area_river`\tTEXT NOT NULL,`area_plateau`\tTEXT NOT NULL,`area_mountain`\tTEXT NOT NULL,`area_coastal`\tTEXT NOT NULL,`vilage_id`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `vilage_slum` (`slum_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`slum_status`\tTEXT NOT NULL,`slum_address`\tTEXT NOT NULL,`vilage_id`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `vilage_soil` (`soil_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`soil_bog`\tTEXT NOT NULL,`soil_don`\tTEXT NOT NULL,`soil_clay`\tTEXT NOT NULL,`soil_mold`\tTEXT NOT NULL,`soil_sandy`\tTEXT NOT NULL,`vilage_id`\tINTEGER NOT NULL,`cr_by`\tTEXT NOT NULL,`cr_date`\tTEXT NOT NULL,`upd_by`\tTEXT,`upd_date`\tTEXT,`ACTIVE`\tTEXT NOT NULL);");
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `tr14` (`tr14_running` INTEGER NOT NULL,`house_id` INTEGER NOT NULL,`house_no` TEXT NOT NULL,`p_order` INTEGER NOT NULL,`idcard` INTEGER NOT NULL,`prename` TEXT NOT NULL,`firstname` TEXT NOT NULL,`lastname` TEXT NOT NULL,`sex` TEXT NOT NULL,`dweller` TEXT NOT NULL,`birthdate` TEXT NOT NULL,`nationality` TEXT NOT NULL,`vilage_no` INTEGER NOT NULL);");
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `tr14` (\n" +
+                "\t`tr14_running`\tINTEGER NOT NULL,\n" +
+                "\t`house_id`\tINTEGER NOT NULL,\n" +
+                "\t`house_no`\tTEXT NOT NULL,\n" +
+                "\t`p_order`\tINTEGER NOT NULL,\n" +
+                "\t`idcard`\tINTEGER NOT NULL,\n" +
+                "\t`prename`\tTEXT NOT NULL,\n" +
+                "\t`firstname`\tTEXT NOT NULL,\n" +
+                "\t`lastname`\tTEXT NOT NULL,\n" +
+                "\t`sex`\tTEXT NOT NULL,\n" +
+                "\t`dweller`\tTEXT NOT NULL,\n" +
+                "\t`birthdate`\tTEXT NOT NULL,\n" +
+                "\t`nationality`\tTEXT NOT NULL,\n" +
+                "\t`vilage_no`\tINTEGER NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `prename` (\n" +
+                "\t`prename_id`\tINTEGER NOT NULL,\n" +
+                "\t`prename_detail`\tTEXT NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_works` (\n" +
+                "\t`works_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`works_type`\tTEXT NOT NULL,\n" +
+                "\t`population_idcard`\tINTEGER NOT NULL,\n" +
+                "\t`cr_by`\tINTEGER NOT NULL,\n" +
+                "\t`cr_date`\tINTEGER NOT NULL,\n" +
+                "\t`upd_by`\tINTEGER,\n" +
+                "\t`upd_date`\tINTEGER,\n" +
+                "\t`ACTIVE`\tINTEGER NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_transport` (\n" +
+                "\t`transport_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`transport_type`\tTEXT NOT NULL,\n" +
+                "\t`population_idcard`\tINTEGER NOT NULL,\n" +
+                "\t`trans1`\tTEXT NOT NULL,\n" +
+                "\t`trans2`\tTEXT NOT NULL,\n" +
+                "\t`trans3`\tTEXT NOT NULL,\n" +
+                "\t`trans4`\tTEXT NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_job_private` (\n" +
+                "\t`private_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`works_id`\tINTEGER NOT NULL,\n" +
+                "\t`private1`\tTEXT NOT NULL,\n" +
+                "\t`private2`\tTEXT NOT NULL,\n" +
+                "\t`private3`\tTEXT NOT NULL,\n" +
+                "\t`private4`\tTEXT NOT NULL,\n" +
+                "\t`private5`\tTEXT NOT NULL,\n" +
+                "\t`private6`\tTEXT NOT NULL,\n" +
+                "\t`private7`\tTEXT NOT NULL,\n" +
+                "\t`private_another`\tTEXT NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_job_govern` (\n" +
+                "\t`govern_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`works_id`\tINTEGER NOT NULL,\n" +
+                "\t`govern1`\tTEXT NOT NULL,\n" +
+                "\t`govern2`\tTEXT NOT NULL,\n" +
+                "\t`govern3`\tTEXT NOT NULL,\n" +
+                "\t`govern4`\tTEXT NOT NULL,\n" +
+                "\t`govern_another`\tTEXT NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_job_animal` (\n" +
+                "\t`animal_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`works_id`\tINTEGER NOT NULL,\n" +
+                "\t`animal1`\tTEXT NOT NULL,\n" +
+                "\t`animal2`\tTEXT NOT NULL,\n" +
+                "\t`animal3`\tTEXT NOT NULL,\n" +
+                "\t`animal4`\tTEXT NOT NULL,\n" +
+                "\t`animal5`\tTEXT NOT NULL,\n" +
+                "\t`animal6`\tTEXT NOT NULL,\n" +
+                "\t`animal7`\tTEXT NOT NULL,\n" +
+                "\t`animal8`\tTEXT NOT NULL,\n" +
+                "\t`animal9`\tTEXT NOT NULL,\n" +
+                "\t`animal_another`\tTEXT NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_job_agriculture` (\n" +
+                "\t`agri_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`works_id`\tINTEGER NOT NULL,\n" +
+                "\t`agri1`\tTEXT NOT NULL,\n" +
+                "\t`agri2`\tTEXT NOT NULL,\n" +
+                "\t`agri3`\tTEXT NOT NULL,\n" +
+                "\t`agri4`\tTEXT NOT NULL,\n" +
+                "\t`agri5`\tTEXT NOT NULL,\n" +
+                "\t`agri6`\tTEXT NOT NULL,\n" +
+                "\t`agri7`\tTEXT NOT NULL,\n" +
+                "\t`agri8`\tTEXT NOT NULL,\n" +
+                "\t`agri_another`\tTEXT NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_disabled` (\n" +
+                "\t`disabled_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`disabled_type`\tTEXT NOT NULL,\n" +
+                "\t`disabled1`\tTEXT NOT NULL,\n" +
+                "\t`disabled2`\tTEXT NOT NULL,\n" +
+                "\t`disabled3`\tTEXT NOT NULL,\n" +
+                "\t`disabled4`\tTEXT NOT NULL,\n" +
+                "\t`disabled5`\tTEXT NOT NULL,\n" +
+                "\t`disabled6`\tTEXT NOT NULL,\n" +
+                "\t`population_idcard`\tINTEGER NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_contagioushis` (\n" +
+                "\t`conth_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`conth_type`\tTEXT NOT NULL,\n" +
+                "\t`conth1`\tTEXT NOT NULL,\n" +
+                "\t`conth2`\tTEXT NOT NULL,\n" +
+                "\t`conth3`\tTEXT NOT NULL,\n" +
+                "\t`conth4`\tTEXT NOT NULL,\n" +
+                "\t`conth5`\tTEXT NOT NULL,\n" +
+                "\t`conth6`\tTEXT NOT NULL,\n" +
+                "\t`conth7`\tTEXT NOT NULL,\n" +
+                "\t`conth8`\tTEXT NOT NULL,\n" +
+                "\t`conth9`\tTEXT NOT NULL,\n" +
+                "\t`conth10`\tTEXT NOT NULL,\n" +
+                "\t`conth11`\tTEXT NOT NULL,\n" +
+                "\t`conth_another`\tTEXT NOT NULL,\n" +
+                "\t`population_idcard`\tINTEGER NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_congenitalhis` (\n" +
+                "\t`congh_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`congh_type`\tTEXT NOT NULL,\n" +
+                "\t`congh1`\tTEXT NOT NULL,\n" +
+                "\t`congh2`\tTEXT NOT NULL,\n" +
+                "\t`congh3`\tTEXT NOT NULL,\n" +
+                "\t`congh4`\tTEXT NOT NULL,\n" +
+                "\t`congh5`\tTEXT NOT NULL,\n" +
+                "\t`congh_another`\tTEXT NOT NULL,\n" +
+                "\t`population_idcard`\tINTEGER NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_asset_vehicle` (\n" +
+                "\t`vehicle_running`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`population_idcard`\tINTEGER NOT NULL,\n" +
+                "\t`regisdate`\tTEXT NOT NULL,\n" +
+                "\t`vtype_id`\tINTEGER NOT NULL,\n" +
+                "\t`vehical_rent`\tTEXT NOT NULL,\n" +
+                "\t`distributor`\tTEXT NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_asset_pet` (\n" +
+                "\t`pet_running`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`population_idcard`\tINTEGER NOT NULL,\n" +
+                "\t`pet_regis`\tTEXT NOT NULL,\n" +
+                "\t`pet_amount`\tINTEGER NOT NULL,\n" +
+                "\t`pet_type`\tTEXT NOT NULL,\n" +
+                "\t`pet_sex`\tTEXT NOT NULL,\n" +
+                "\t`vaccine`\tTEXT NOT NULL,\n" +
+                "\t`vaccine_during`\tTEXT NOT NULL,\n" +
+                "\t`vaccine_lastest`\tTEXT NOT NULL,\n" +
+                "\t`pet_newborn`\tTEXT NOT NULL,\n" +
+                "\t`pet_newborn_number`\tINTEGER NOT NULL,\n" +
+                "\t`distributor`\tTEXT NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_asset_land` (\n" +
+                "\t`land_running`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`population_idcard`\tINTEGER NOT NULL,\n" +
+                "\t`system_id`\tINTEGER NOT NULL,\n" +
+                "\t`dimen1`\tINTEGER NOT NULL,\n" +
+                "\t`dimen2`\tINTEGER NOT NULL,\n" +
+                "\t`dimen3`\tINTEGER NOT NULL,\n" +
+                "\t`land_benefit`\tTEXT NOT NULL,\n" +
+                "\t`land_location`\tTEXT NOT NULL,\n" +
+                "\t`land_tax`\tTEXT NOT NULL,\n" +
+                "\t`land_rent`\tTEXT NOT NULL,\n" +
+                "\t`distributor`\tTEXT NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population_asset_animal` (\n" +
+                "\t`animal_running`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`population_idcard`\tINTEGER NOT NULL,\n" +
+                "\t`animal_regis`\tTEXT NOT NULL,\n" +
+                "\t`animal_amount`\tINTEGER NOT NULL,\n" +
+                "\t`atype_id`\tINTEGER NOT NULL,\n" +
+                "\t`infection`\tTEXT NOT NULL,\n" +
+                "\t`infection_detail`\tTEXT NOT NULL,\n" +
+                "\t`shelter`\tTEXT NOT NULL,\n" +
+                "\t`diseasecontrol`\tTEXT NOT NULL,\n" +
+                "\t`diseasecontrol_by`\tTEXT NOT NULL,\n" +
+                "\t`disease_shelter`\tTEXT NOT NULL,\n" +
+                "\t`market`\tTEXT NOT NULL,\n" +
+                "\t`market_place`\tTEXT NOT NULL,\n" +
+                "\t`distributor`\tTEXT NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population` (\n" +
+                "\t`population_idcard`\tINTEGER NOT NULL,\n" +
+                "\t`prename`\tTEXT NOT NULL,\n" +
+                "\t`firstname`\tTEXT NOT NULL,\n" +
+                "\t`lastname`\tTEXT NOT NULL,\n" +
+                "\t`birthdate`\tTEXT NOT NULL,\n" +
+                "\t`height`\tINTEGER NOT NULL,\n" +
+                "\t`weight`\tINTEGER NOT NULL,\n" +
+                "\t`sex`\tTEXT NOT NULL,\n" +
+                "\t`bloodgroup`\tTEXT NOT NULL,\n" +
+                "\t`living`\tTEXT NOT NULL,\n" +
+                "\t`maritalstatus`\tTEXT NOT NULL,\n" +
+                "\t`tel`\tINTEGER NOT NULL,\n" +
+                "\t`nationality`\tTEXT NOT NULL,\n" +
+                "\t`house_id`\tINTEGER NOT NULL,\n" +
+                "\t`currentaddr`\tTEXT NOT NULL,\n" +
+                "\t`currentaddr_province`\tTEXT NOT NULL,\n" +
+                "\t`currentaddr_country`\tTEXT NOT NULL,\n" +
+                "\t`dwellerstatus`\tTEXT NOT NULL,\n" +
+                "\t`income`\tTEXT NOT NULL,\n" +
+                "\t`income_money`\tINTEGER NOT NULL,\n" +
+                "\t`dept`\tTEXT NOT NULL,\n" +
+                "\t`saving`\tTEXT NOT NULL,\n" +
+                "\t`allergichis`\tTEXT NOT NULL,\n" +
+                "\t`allergichis_detail`\tTEXT NOT NULL,\n" +
+                "\t`disadvantage`\tTEXT NOT NULL,\n" +
+                "\t`sub_al`\tTEXT NOT NULL,\n" +
+                "\t`education`\tTEXT NOT NULL,\n" +
+                "\t`education_class`\tTEXT NOT NULL,\n" +
+                "\t`literacy`\tTEXT NOT NULL,\n" +
+                "\t`technology`\tTEXT NOT NULL,\n" +
+                "\t`expertise`\tTEXT NOT NULL,\n" +
+                "\t`expertise_name`\tTEXT NOT NULL,\n" +
+                "\t`expertise_detail`\tTEXT NOT NULL,\n" +
+                "\t`religion`\tTEXT NOT NULL,\n" +
+                "\t`religion_another`\tTEXT NOT NULL,\n" +
+                "\t`participation`\tTEXT NOT NULL,\n" +
+                "\t`election`\tTEXT NOT NULL,\n" +
+                "\t`residence_status`\tTEXT NOT NULL,\n" +
+                "\t`latentpop_province`\tTEXT NOT NULL,\n" +
+                "\t`latentpop_country`\tTEXT NOT NULL,\n" +
+                "\t`distributor`\tTEXT NOT NULL,\n" +
+                "\t`survey_status`\tTEXT NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `nationality` (\n" +
+                "\t`nationality_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`nationality_detail`\tTEXT NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `house_problem` (\n" +
+                "\t`problem_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`prob1`\tTEXT NOT NULL,\n" +
+                "\t`prob2`\tTEXT NOT NULL,\n" +
+                "\t`prob3`\tTEXT NOT NULL,\n" +
+                "\t`prob4`\tTEXT NOT NULL,\n" +
+                "\t`prob5`\tTEXT NOT NULL,\n" +
+                "\t`prob6`\tTEXT NOT NULL,\n" +
+                "\t`prob7`\tTEXT NOT NULL,\n" +
+                "\t`prob8`\tTEXT NOT NULL,\n" +
+                "\t`prob9`\tTEXT NOT NULL,\n" +
+                "\t`prob10`\tTEXT NOT NULL,\n" +
+                "\t`problem_another`\tTEXT NOT NULL,\n" +
+                "\t`house_id`\tINTEGER NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `house_envyprob` (\n" +
+                "\t`envyprob_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`envyprob_type`\tTEXT NOT NULL,\n" +
+                "\t`ep1`\tTEXT NOT NULL,\n" +
+                "\t`ep2`\tTEXT NOT NULL,\n" +
+                "\t`ep3`\tTEXT NOT NULL,\n" +
+                "\t`ep4`\tTEXT NOT NULL,\n" +
+                "\t`ep5`\tTEXT NOT NULL,\n" +
+                "\t`ep6`\tTEXT NOT NULL,\n" +
+                "\t`ep7`\tTEXT NOT NULL,\n" +
+                "\t`house_id`\tINTEGER NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `house_disaster` (\n" +
+                "\t`disaster_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`disaster_type`\tTEXT NOT NULL,\n" +
+                "\t`dis1`\tTEXT NOT NULL,\n" +
+                "\t`dis2`\tTEXT NOT NULL,\n" +
+                "\t`dis3`\tTEXT NOT NULL,\n" +
+                "\t`dis4`\tTEXT NOT NULL,\n" +
+                "\t`dis5`\tTEXT NOT NULL,\n" +
+                "\t`dis6`\tTEXT NOT NULL,\n" +
+                "\t`dis7`\tTEXT NOT NULL,\n" +
+                "\t`dis8`\tTEXT NOT NULL,\n" +
+                "\t`dis9`\tTEXT NOT NULL,\n" +
+                "\t`dis10`\tTEXT NOT NULL,\n" +
+                "\t`dis11`\tTEXT NOT NULL,\n" +
+                "\t`dis12`\tTEXT NOT NULL,\n" +
+                "\t`dis13`\tTEXT NOT NULL,\n" +
+                "\t`dis14`\tTEXT NOT NULL,\n" +
+                "\t`house_id`\tINTEGER NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `house` (\n" +
+                "\t`house_id`\tINTEGER NOT NULL,\n" +
+                "\t`house_no`\tINTEGER NOT NULL,\n" +
+                "\t`vilage_id`\tINTEGER NOT NULL,\n" +
+                "\t`house_location_lat`\tTEXT NOT NULL,\n" +
+                "\t`house_location_lng`\tTEXT NOT NULL,\n" +
+                "\t`house_in_registry`\tTEXT NOT NULL,\n" +
+                "\t`house_status`\tTEXT NOT NULL,\n" +
+                "\t`house_family_type`\tTEXT NOT NULL,\n" +
+                "\t`distributor`\tTEXT NOT NULL,\n" +
+                "\t`survey_status`\tTEXT NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT NOT NULL,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `house_img` (\n" +
+                "\t`house_id`\tINTEGER NOT NULL PRIMARY KEY,\n" +
+                "\t`distributor_img`\tBLOB NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `asset_vehicle` (\n" +
+                "\t`vtype_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`vtype_name`\tTEXT NOT NULL,\n" +
+                "\t`vtype_detail`\tTEXT NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `asset_animal` (\n" +
+                "\t`atype_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`atype_name`\tTEXT NOT NULL,\n" +
+                "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
+                "\t`upd_by`\tTEXT,\n" +
+                "\t`upd_date`\tTEXT,\n" +
+                "\t`ACTIVE`\tTEXT NOT NULL\n" +
+                ");");
+
         Log.d("MYLOG", "Create Table Successfully.");
 
-        sqLiteDatabase.execSQL("INSERT INTO `opt_type` VALUES (1,'อบจ.','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
-        sqLiteDatabase.execSQL("INSERT INTO `opt_type` VALUES (2,'กรุงเทพมหานครฯ','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
-        sqLiteDatabase.execSQL("INSERT INTO `opt_type` VALUES (3,'เมืองพัทยา','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
-        sqLiteDatabase.execSQL("INSERT INTO `opt_type` VALUES (4,'เทศบาลนคร','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
-        sqLiteDatabase.execSQL("INSERT INTO `opt_type` VALUES (5,'เทศบาลเมือง','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
-        sqLiteDatabase.execSQL("INSERT INTO `opt_type` VALUES (6,'เทศบาลตำบล','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
-        sqLiteDatabase.execSQL("INSERT INTO `opt_type` VALUES (7,'อบต. ขนาดใหญ่','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
-        sqLiteDatabase.execSQL("INSERT INTO `opt_type` VALUES (8,'อบต. ขนาดกลาง','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
-        sqLiteDatabase.execSQL("INSERT INTO `opt_type` VALUES (9,'อบต. ขนาดเล็ก','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
         sqLiteDatabase.execSQL("INSERT INTO `nationality` VALUES (1,'ไทย','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
-        sqLiteDatabase.execSQL("INSERT INTO `members` VALUES (1,'admin','1234','administrator','1','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
 
         sqLiteDatabase.execSQL("INSERT INTO `prename` VALUES (1,'นาย','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
         sqLiteDatabase.execSQL("INSERT INTO `prename` VALUES (2,'นาง','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
         sqLiteDatabase.execSQL("INSERT INTO `prename` VALUES (3,'นางสาว','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
         sqLiteDatabase.execSQL("INSERT INTO `prename` VALUES (4,'เด็กชาย','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
         sqLiteDatabase.execSQL("INSERT INTO `prename` VALUES (5,'เด็กหญิง','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
+
+        sqLiteDatabase.execSQL("INSERT INTO `asset_vehicle` VALUES (1,'ประเภทยานพาหนะทั่วไป','รถจักรยานยนต์','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (2,'ประเภทยานพาหนะทั่วไป','รถกะบะ รับจ้าง/ให้เช่า ','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (3,'ประเภทยานพาหนะทั่วไป','รถกะบะ ส่วนบุคคล','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (4,'ประเภทยานพาหนะทั่วไป','รถเก๋ง รับจ้าง/ให้เช่า ','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (5,'ประเภทยานพาหนะทั่วไป','รถเก๋ง ส่วนบุคคล','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (6,'ประเภทยานพาหนะทั่วไป','รถตู้ รับจ้าง/ให้เช่า','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (7,'ประเภทยานพาหนะทั่วไป','รถตู้ ส่วนบุคคล','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (8,'ประเภทยานพาหนะทั่วไป','รถโดยสาร รับจ้าง/ให้เช่า','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (9,'ประเภทยานพาหนะทั่วไป','รถโดยสาร ส่วนบุคคล','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (10,'ประเภทยานพาหนะทั่วไป','รถยนต์เพื่อการเกษตร','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (11,'ประเภทยานพาหนะทั่วไป','เรือยนต์','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (12,'ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน ','รถบรรทุกเครื่องมือ','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (13,'ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน ','รถยนต์บรรทุกเครื่องจักรแบบท้ายลาก ','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (14,'ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน ','รถยนต์บรรทุกเทท้าย','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (15,'ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน ','รถยนต์หัวลากและเทรลเลอร์หางพ่วง','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (16,'ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน ','รถขุดดินตีนตะขาบและรถขุดดินล้อยาง','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (17,'ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน ','รถแทรคเตอร์','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (18,'ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน ','รถไสผิวถนน','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (19,'ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน ','รถปูยางมะตอย   ','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (20,'ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน ','รถตักหน้าขุกหลัง','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (21,'ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน ','รถบดถนน','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (22,'ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน ','รถเกลี่ยดิน','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (23,'ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน ','รถตักตีนตะขาบและรถตักล้อยาง','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (24,'ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน ','รถกระเช้าซ่อมไฟฟ้า','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (25,'ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน ','รถกระเช้าขนาดสูง 24 เมตร','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (26,'ประเภทยานพาหนะด้านบรรเทาสาธารณภัย','รถตรวจมลพิษทางอากาศเคลื่อนที่','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (27,'ประเภทยานพาหนะด้านบรรเทาสาธารณภัย','รถสุขาเคลื่อนที่','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (28,'ประเภทยานพาหนะด้านบรรเทาสาธารณภัย','รถเก็บขยะมูลฝอย','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (29,'ประเภทยานพาหนะด้านบรรเทาสาธารณภัย','รถยนต์สูบสิ่งปฏิกูล','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (30,'ประเภทยานพาหนะด้านบรรเทาสาธารณภัย','รถยนต์บรรทุกขยะติดเชื้อ','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (31,'ประเภทยานพาหนะด้านบรรเทาสาธารณภัย','รถกระเช้าตัดต้นไม้','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (32,'ประเภทยานพาหนะด้านบรรเทาสาธารณภัย','รถดูดล้างท่อ','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (33,'ประเภทยานพาหนะด้านบรรเทาสาธารณภัย','รถกู้ชีพกู้ภัย','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (34,'ประเภทยานพาหนะด้านสิ่งแวดล้อม','รถดับเพลิง ขนาด 5,000 ล. และ 1,000 ล.','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (35,'ประเภทยานพาหนะด้านสิ่งแวดล้อม','รถยนต์บรรทุกน้ำ','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (36,'ประเภทยานพาหนะด้านสิ่งแวดล้อม','รถไฟฟ้าส่องสว่าง','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (37,'ประเภทยานพาหนะด้านสิ่งแวดล้อม','รถติดตั้งเครื่องกำเนิดไฟฟ้าเคลื่อนที่','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (38,'ประเภทยานพาหนะด้านสิ่งแวดล้อม','รถหอน้ำ','ADMIN','2018-01-04 00:00:00',NULL,NULL,''),\n" +
+                " (39,'ประเภทยานพาหนะด้านการศึกษา','รถห้องสมุดเคลื่อนที่','ADMIN','2018-01-04 00:00:00',NULL,NULL,'');");
+
+        sqLiteDatabase.execSQL("INSERT INTO `asset_animal` VALUES (1,'โค','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y'),\n" +
+                " (2,'กระบือ','ADMIN','2018-01-04 00:00:00',NULL,NULL,'Y');");
         Log.d("MYLOG", "Insert Table Successfully.");
     }
 
@@ -122,8 +553,7 @@ public class myDBClass extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
 
         try {
-            SQLiteDatabase db;
-            db = this.getWritableDatabase(); // Write Data
+            SQLiteDatabase db = this.getWritableDatabase(); // Write Data
             long rows = db.insert(TableName, null, Val);
             Log.d("MYLOG", TableName + " Insert: " + Val);
             db.close();
@@ -172,9 +602,7 @@ public class myDBClass extends SQLiteOpenHelper {
                 if (cursor.moveToFirst()) {
                     do {
                         map = new HashMap<String, String>();
-                        //arrData = new String[cursor.getColumnCount()];
                         for (int i = 0; i < cursor.getColumnCount(); i++) {
-                            //arrData[i] = cursor.getString(i);
                             map.put(cursor.getColumnName(i), cursor.getString(i));
                         }
                         MyArrList.add(map);
@@ -184,6 +612,32 @@ public class myDBClass extends SQLiteOpenHelper {
             cursor.close();
             db.close();
             return MyArrList;
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    // Select IMG
+    public byte[] SelectImg(String tableName, String strKey, String strValue) {
+        // TODO Auto-generated method stub
+
+        try {
+            byte[] image = null;
+            SQLiteDatabase db;
+            db = this.getReadableDatabase(); // Read Data
+            String strSQL = "SELECT * FROM " + tableName + " WHERE " + strKey + " = " + strValue;
+            Cursor cursor = db.rawQuery(strSQL, null);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        image = cursor.getBlob(1);
+                    } while (cursor.moveToNext());
+                }
+            }
+            cursor.close();
+            db.close();
+            return image;
 
         } catch (Exception e) {
             return null;

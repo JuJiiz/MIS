@@ -58,6 +58,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -66,7 +67,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class HouseholdFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, View.OnClickListener,AdapterView.OnItemClickListener, OnMapReadyCallback,
+public class HouseholdFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, View.OnClickListener, AdapterView.OnItemClickListener, OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
@@ -116,6 +117,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     ArrayAdapter<String> dwellerArrayAdapter;
     Boolean onDataReady = false;
     String SelectedIDItem;
+    byte[] dataBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +131,12 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         setSpinner();
         setListView();
         setField();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setListView();
     }
 
     private void init() {
@@ -316,6 +324,11 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     }
 
     private void setField() {
+        byte[] dataIMG = db.SelectImg("house_img","house_id",HouseID);
+        if (dataIMG != null){
+            Bitmap bm = BitmapFactory.decodeByteArray(dataIMG, 0, dataIMG.length);
+            ivImage.setImageBitmap(bm);
+        }
         HouseList = db.SelectWhereData("house", "house_id", HouseID);
         if (!HouseList.isEmpty()) {
             etHouseID.setText(HouseList.get(0).get("house_id"));
@@ -334,37 +347,27 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (!HouseList.get(0).get("house_family_type").equals("")) {
                 ((RadioButton) familyRadioGroup.getChildAt(Integer.parseInt(HouseList.get(0).get("house_family_type")))).setChecked(true);
             }
-            int spinnerPositionContri = dwellerArrayAdapter.getPosition(HouseList.get(0).get("distributor"));
+            DwellerList = db.SelectWhereData("population","house_id",HouseID);
+            int spinnerPositionContri = dwellerArrayAdapter.getPosition(DwellerList.get(0).get("distributor"));
             spContributor.setSelection(spinnerPositionContri);
             ModelCurrentCalendar.edittextCurrentCalendar(this, etDate);
 
             HProbList = db.SelectWhereData("house_problem", "house_id", HouseID);
             if (!HProbList.isEmpty()) {
-                int strP1 = Integer.parseInt(HProbList.get(0).get("prob1")),
-                        strP2 = Integer.parseInt(HProbList.get(0).get("prob2")),
-                        strP3 = Integer.parseInt(HProbList.get(0).get("prob3")),
-                        strP4 = Integer.parseInt(HProbList.get(0).get("prob4")),
-                        strP5 = Integer.parseInt(HProbList.get(0).get("prob5")),
-                        strP6 = Integer.parseInt(HProbList.get(0).get("prob6")),
-                        strP7 = Integer.parseInt(HProbList.get(0).get("prob7")),
-                        strP8 = Integer.parseInt(HProbList.get(0).get("prob8")),
-                        strP9 = Integer.parseInt(HProbList.get(0).get("prob9")),
-                        strP10 = Integer.parseInt(HProbList.get(0).get("prob10"));
-                ModelCheckboxCheck.checkboxSetCheck(this, cbProb1, strP1);
-                ModelCheckboxCheck.checkboxSetCheck(this, cbProb2, strP2);
-                ModelCheckboxCheck.checkboxSetCheck(this, cbProb3, strP3);
-                ModelCheckboxCheck.checkboxSetCheck(this, cbProb4, strP4);
-                ModelCheckboxCheck.checkboxSetCheck(this, cbProb5, strP5);
-                ModelCheckboxCheck.checkboxSetCheck(this, cbProb6, strP6);
-                ModelCheckboxCheck.checkboxSetCheck(this, cbProb7, strP7);
-                ModelCheckboxCheck.checkboxSetCheck(this, cbProb8, strP8);
-                ModelCheckboxCheck.checkboxSetCheck(this, cbProb9, strP9);
-                ModelCheckboxCheck.checkboxSetCheck(this, cbProb10, strP10);
+                ModelCheckboxCheck.checkboxSetCheck(cbProb1, HProbList.get(0).get("prob1"));
+                ModelCheckboxCheck.checkboxSetCheck(cbProb2, HProbList.get(0).get("prob2"));
+                ModelCheckboxCheck.checkboxSetCheck(cbProb3, HProbList.get(0).get("prob3"));
+                ModelCheckboxCheck.checkboxSetCheck(cbProb4, HProbList.get(0).get("prob4"));
+                ModelCheckboxCheck.checkboxSetCheck(cbProb5, HProbList.get(0).get("prob5"));
+                ModelCheckboxCheck.checkboxSetCheck(cbProb6, HProbList.get(0).get("prob6"));
+                ModelCheckboxCheck.checkboxSetCheck(cbProb7, HProbList.get(0).get("prob7"));
+                ModelCheckboxCheck.checkboxSetCheck(cbProb8, HProbList.get(0).get("prob8"));
+                ModelCheckboxCheck.checkboxSetCheck(cbProb9, HProbList.get(0).get("prob1"));
+                ModelCheckboxCheck.checkboxSetCheck(cbProb10, HProbList.get(0).get("prob1"));
                 etAnotherProblem.setText(HProbList.get(0).get("problem_another"));
             }
 
             HEnProbList = db.SelectWhereData("house_envyprob", "house_id", HouseID);
-            Log.d("MYLOG", "HEnProbList: "+HEnProbList);
             if (!HEnProbList.isEmpty()) {
                 ((RadioButton) probenvyRadioGroup.getChildAt(Integer.parseInt(HEnProbList.get(0).get("envyprob_type")))).setChecked(true);
                 ModelCheckboxCheck.enviProb(cbSound, soundRadioGroup, Integer.parseInt(HEnProbList.get(0).get("ep1")));
@@ -400,6 +403,20 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     private void updateData() {
         String date = df.format(Calendar.getInstance().getTime());
         Val = new ContentValues();
+        Val.put("house_id",HouseID);
+        if (ivImage.getDrawable() != null){
+            Val.put("distributor_img",dataBitmap);
+        }else {
+            Val.put("distributor_img","");
+        }
+        byte[] dataIMG = db.SelectImg("house_img", "house_id", HouseID);
+        if (dataIMG==null) {
+            db.InsertData("house_img", Val);
+        } else {
+            db.UpdateData("house_img", Val, "house_id", HouseID);
+        }
+
+        Val = new ContentValues();
         Val.put("house_id", etHouseID.getText().toString());
         Val.put("house_no", etHouseNumber.getText().toString());
         Val.put("house_location_lat", etLat.getText().toString());
@@ -416,7 +433,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         radioButton = (RadioButton) findViewById(famtype);
         int idxfamtype = familyRadioGroup.indexOfChild(radioButton);
         Val.put("house_family_type", idxfamtype);
-        Val.put("distributor_img", "");
         Val.put("distributor", spContributor.getSelectedItem().toString());
         Val.put("survey_status", "1");
         Val.put("upd_by", "");
@@ -946,7 +962,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                 Dweller.add(strDweller);
             }
             String[] spDwellerArray = Dweller.toArray(new String[0]);
-            Log.d("MYLOG", "spDwellerArray: " + spDwellerArray);
             dwellerArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spDwellerArray, spContributor);
         }
     }
@@ -982,7 +997,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                         survey = "*";
                     }
                     temp.put(strSStatus, survey);
-                    temp.put(strPopulationID, DwellerList.get(i).get("population_id"));
+                    temp.put(strPopulationID, DwellerList.get(i).get("population_idcard"));
                     DwellerActive.add(temp);
                 }
             }
@@ -1239,6 +1254,9 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                 final Uri imageUri = data.getData();
                 InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 selectedImage = BitmapFactory.decodeStream(imageStream);
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                selectedImage.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+                dataBitmap = outputStream.toByteArray();
                 ivImage.setImageBitmap(selectedImage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -1266,6 +1284,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         if (view == btnAddDweller) {
             intent = new Intent(this, PeopleFormActivity.class);
             intent.putExtra("PersonID", "Nope");
+            intent.putExtra("HouseID", HouseID);
             this.startActivity(intent);
         }
         if (view == btnImagePick) {
@@ -1278,7 +1297,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                 if (housestatusRadioGroup.getCheckedRadioButtonId() != -1) {
                     if (familyRadioGroup.getCheckedRadioButtonId() != -1) {
                         updateData();
-                        Toast.makeText(this,"บันทึกข้อมูลเรียบร้อย",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(this, "กรุณาระบุ รูปแบบครอบครัว", Toast.LENGTH_SHORT).show();
                     }
@@ -1301,6 +1320,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         SelectedIDItem = Item.get("ID").toString();
         Intent intent = new Intent(getApplicationContext(), PeopleFormActivity.class);
         intent.putExtra("PersonID", SelectedIDItem);
+        intent.putExtra("HouseID", HouseID);
         startActivity(intent);
     }
 }

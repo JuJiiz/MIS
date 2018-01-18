@@ -1,9 +1,15 @@
 package com.example.jujiiz.mis.controllers;
 
+import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,21 +18,26 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.ModelCheckboxCheck;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
 import com.example.jujiiz.mis.models.ModelShowHideLayout;
 import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
 import com.example.jujiiz.mis.models.myDBClass;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
-public class PeopleFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
-    Button btnLandForm, btnVehicalForm, btnPetForm;
-    RadioButton rbThaiNationality, rbAnotherNationality;
+public class PeopleFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
     RadioButton rbMale, rbFemale;
     RadioButton rbAlive, rbDead;
     RadioButton rbInRegister, rbNotInRegister;
@@ -50,9 +61,9 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     RadioButton rbParticipationNo, rbParticipationYes;
     RadioButton rbElectionAlway, rbElectionSometime, rbElectionNever;
     RadioButton rbTransportationNo, rbTransportationYes;
-    LinearLayout loNationality, loAnotherPrefix, loBloodType, loInRegister, loNotInRegister, loNotInHousehold, loCareer, loAgri, loAnotherAgri, loPet, loAnotherPet, loGovern, loAnotherGovern, loPrivate, loAnotherPrivate, loICMonth, loICYear, loCongenital, loContagious, loAllergic, loDisabled, loInStudy, loGraduated, loExpertise, loAnotherReligion, loTransportation;
-    Spinner spNationality, spAnotherNationality, spPrefix, spBloodType, spMaritalStatus, spVillageName, spCountry, spProvince, spIHCountry, spIHProvince, spInStudy, spGraduated, spExpertise, spContributor;
-    EditText etNationality, etFirstName, etLastName, etAnotherPrefix, etPersonalID, etBirtDate, etHeight, etWeight, etBloodType, etTel, etHNo, etHID, etAnotherAgri, etAnotherPet, etAnotherGovern, etAnotherPrivate, etICMonth, etICYear, etAllergic, etAnotherReligion, etDate;
+    LinearLayout loNationality, loAnotherPrefix, loBloodType, loInRegister, loNotInRegister, loNotInHousehold, loCareer, loAgri, loAnotherAgri, loPet, loAnotherPet, loGovern, loAnotherGovern, loPrivate, loAnotherPrivate, loICMonth, loICYear, loCongenital, loContagious, loAllergic, loDisabled, loInStudy, loGraduated, loExpertise, loAnotherReligion, loTransportation, loExpertiseText, loAnotherCong, loAnotherCont, loProperty;
+    Spinner spNationality, spPrefix, spBloodType, spMaritalStatus, spVillageName, spInStudy, spGraduated, spExpertise, spContributor;
+    EditText etNationality, etFirstName, etLastName, etAnotherPrefix, etPersonalID, etBirtDate, etHeight, etWeight, etBloodType, etTel, etHNo, etHID, etAnotherAgri, etAnotherPet, etAnotherGovern, etAnotherPrivate, etICMonth, etICYear, etAllergic, etAnotherReligion, etDate, etIHCountry, etIHProvince, etIRCountry, etIRProvince, etExpertise, etAnotherCong, etAnotherCont;
     CheckBox cbAgri, cbAgri1, cbAgri2, cbAgri3, cbAgri4, cbAgri5, cbAgri6, cbAgri7, cbAgri8;
     CheckBox cbPet, cbPet1, cbPet2, cbPet3, cbPet4, cbPet5, cbPet6, cbPet7, cbPet8, cbPet9;
     CheckBox cbGovern, cbGovern1, cbGovern2, cbGovern3, cbGovern4, cbGovern5;
@@ -61,13 +72,20 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     CheckBox cbCont1, cbCont2, cbCont3, cbCont4, cbCont5, cbCont6, cbCont7, cbCont8, cbCont9, cbCont10, cbCont11;
     CheckBox cbDisabled1, cbDisabled2, cbDisabled3, cbDisabled4, cbDisabled5, cbDisabled6;
     CheckBox cbTrans1, cbTrans2, cbTrans3, cbTrans4;
+    Button btnSavingData, btnAddProperty;
+    ListView lvProperty;
 
     myDBClass db = new myDBClass(this);
-    ArrayList<HashMap<String, String>> NationalityList, PrefixList, PersonList, TestList;
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    ContentValues Val;
+    ArrayList<HashMap<String, String>> NationalityList, PrefixList, PersonList, TestList, DwellerList, WorkList, AgriList, PetList, GovernList, PrivateList, CongList, ContList, DisabledList, TransList;
+    ArrayList<HashMap<String, String>> PropertyActive, PLandList, PVehicleList, PPetList, PAnimalList;
     ArrayList<String> Prefix = new ArrayList<String>();
     ArrayList<String> Nationality = new ArrayList<String>();
-    ArrayAdapter<String> prefixArrayAdapter, nationalityArrayAdapter;
-    String PersonID;
+    ArrayList<String> Dweller = new ArrayList<String>();
+    ArrayAdapter<String> prefixArrayAdapter, nationalityArrayAdapter, dwellerArrayAdapter, bloodArrayAdapter, maritalArrayAdapter, educationIArrayAdapter, educationGArrayAdapter, expertiseArrayAdapter;
+    String PersonID, HouseID;
+    String SelectedIDItem;
 
     String[] spBloodGroupArray = {"O", "A", "B", "AB", "อื่นๆ"};
     String[] spMaritalStatusArray = {"สมรส", "โสด", "หย่าร้าง", "หม้าย", "แยกกันอยู่"};
@@ -79,6 +97,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_people_form);
         PersonID = getIntent().getExtras().getString("PersonID");
+        HouseID = getIntent().getExtras().getString("HouseID");
 
         init();
 
@@ -88,15 +107,30 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
         setSpinner();
         setField();
+        setListView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setListView();
     }
 
     private void init() {
-        btnLandForm = (Button) findViewById(R.id.btnLandForm);
-        btnLandForm.setOnClickListener(this);
-        btnVehicalForm = (Button) findViewById(R.id.btnVehicalForm);
-        btnVehicalForm.setOnClickListener(this);
-        btnPetForm = (Button) findViewById(R.id.btnPetForm);
-        btnPetForm.setOnClickListener(this);
+        lvProperty = (ListView) findViewById(R.id.lvProperty);
+        lvProperty.setOnItemClickListener(this);
+        lvProperty.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+
+        btnSavingData = (Button) findViewById(R.id.btnSavingData);
+        btnSavingData.setOnClickListener(this);
+        btnAddProperty = (Button) findViewById(R.id.btnAddProperty);
+        btnAddProperty.setOnClickListener(this);
 
         loNationality = (LinearLayout) findViewById(R.id.loNationality);
         loAnotherPrefix = (LinearLayout) findViewById(R.id.loAnotherPrefix);
@@ -122,8 +156,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         loInStudy = (LinearLayout) findViewById(R.id.loInStudy);
         loGraduated = (LinearLayout) findViewById(R.id.loGraduated);
         loExpertise = (LinearLayout) findViewById(R.id.loExpertise);
+        loExpertiseText = (LinearLayout) findViewById(R.id.loExpertiseText);
         loAnotherReligion = (LinearLayout) findViewById(R.id.loAnotherReligion);
         loTransportation = (LinearLayout) findViewById(R.id.loTransportation);
+        loAnotherCong = (LinearLayout) findViewById(R.id.loAnotherCong);
+        loAnotherCont = (LinearLayout) findViewById(R.id.loAnotherCont);
+        loProperty = (LinearLayout) findViewById(R.id.loProperty);
 
         spNationality = (Spinner) findViewById(R.id.spNationality);
         spNationality.setOnItemSelectedListener(this);
@@ -131,10 +169,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         spBloodType = (Spinner) findViewById(R.id.spBloodType);
         spMaritalStatus = (Spinner) findViewById(R.id.spMaritalStatus);
         spVillageName = (Spinner) findViewById(R.id.spVillageName);
-        spCountry = (Spinner) findViewById(R.id.spCountry);
-        spProvince = (Spinner) findViewById(R.id.spProvince);
-        spIHCountry = (Spinner) findViewById(R.id.spIHCountry);
-        spIHProvince = (Spinner) findViewById(R.id.spIHProvince);
         spInStudy = (Spinner) findViewById(R.id.spInStudy);
         spGraduated = (Spinner) findViewById(R.id.spGraduated);
         spExpertise = (Spinner) findViewById(R.id.spExpertise);
@@ -161,6 +195,13 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         etAllergic = (EditText) findViewById(R.id.etAllergic);
         etAnotherReligion = (EditText) findViewById(R.id.etAnotherReligion);
         etDate = (EditText) findViewById(R.id.etDate);
+        etIHCountry = (EditText) findViewById(R.id.etIHCountry);
+        etIHProvince = (EditText) findViewById(R.id.etIHProvince);
+        etIRCountry = (EditText) findViewById(R.id.etIRCountry);
+        etIRProvince = (EditText) findViewById(R.id.etIRProvince);
+        etExpertise = (EditText) findViewById(R.id.etExpertise);
+        etAnotherCong = (EditText) findViewById(R.id.etAnotherCong);
+        etAnotherCont = (EditText) findViewById(R.id.etAnotherCont);
 
         cbAgri = (CheckBox) findViewById(R.id.cbAgri);
         cbAgri1 = (CheckBox) findViewById(R.id.cbAgri1);
@@ -414,25 +455,37 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             prefixArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spPrefixArray, spPrefix);
         }
 
-        ModelSpinnerAdapter.setSpinnerItem(this, spBloodGroupArray, spBloodType);
-        ModelSpinnerAdapter.setSpinnerItem(this, spMaritalStatusArray, spMaritalStatus);
-        ModelSpinnerAdapter.setSpinnerItem(this, spEducationArray, spInStudy);
-        ModelSpinnerAdapter.setSpinnerItem(this, spEducationArray, spGraduated);
-        ModelSpinnerAdapter.setSpinnerItem(this, spExpertiseArray, spExpertise);
+        DwellerList = db.SelectWhereData("population", "house_id", HouseID);
+        if (!DwellerList.isEmpty()) {
+            for (int i = 0; i < DwellerList.size(); i++) {
+                String strDweller = DwellerList.get(i).get("firstname") + " " + DwellerList.get(i).get("lastname");
+                Dweller.add(strDweller);
+            }
+            String[] spDwellerArray = Dweller.toArray(new String[0]);
+            dwellerArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spDwellerArray, spContributor);
+        }
+
+        bloodArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spBloodGroupArray, spBloodType);
+        maritalArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spMaritalStatusArray, spMaritalStatus);
+        educationIArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spEducationArray, spInStudy);
+        educationGArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spEducationArray, spGraduated);
+        expertiseArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spExpertiseArray, spExpertise);
     }
 
     private void setField() {
         if (!PersonID.equals("Nope")) {
-            PersonList = db.SelectWhereData("population", "population_id", PersonID);
+            loProperty.setVisibility(View.VISIBLE);
+            PersonList = db.SelectWhereData("population", "population_idcard", PersonID);
             if (!PersonList.isEmpty()) {
-                TestList = db.SelectWhereData("nationality", "nationality_id", PersonList.get(0).get("nationality_id"));
-                int spinnerPositionNat = nationalityArrayAdapter.getPosition(TestList.get(0).get("nationality_detail"));
+                int spinnerPositionNat = nationalityArrayAdapter.getPosition(PersonList.get(0).get("nationality"));
                 spNationality.setSelection(spinnerPositionNat);
+
                 etFirstName.setText(PersonList.get(0).get("firstname"));
                 etLastName.setText(PersonList.get(0).get("lastname"));
-                TestList = db.SelectWhereData("prename", "prename_id", PersonList.get(0).get("prename_id"));
-                int spinnerPositionPrefix = prefixArrayAdapter.getPosition(TestList.get(0).get("prename_detail"));
+
+                int spinnerPositionPrefix = prefixArrayAdapter.getPosition(PersonList.get(0).get("prename"));
                 spPrefix.setSelection(spinnerPositionPrefix);
+
                 if (PersonList.get(0).get("sex").equals("M")) {
                     rbMale.setChecked(true);
                 }
@@ -441,9 +494,1007 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 }
                 etPersonalID.setText(PersonList.get(0).get("population_idcard"));
                 etBirtDate.setText(PersonList.get(0).get("birthdate"));
+                etHeight.setText(PersonList.get(0).get("height"));
+                etWeight.setText(PersonList.get(0).get("weight"));
 
+
+                if (!PersonList.get(0).get("bloodgroup").equals("")) {
+                    int spinnerPositionBlood = bloodArrayAdapter.getPosition(PersonList.get(0).get("bloodgroup"));
+                    spBloodType.setSelection(spinnerPositionBlood);
+                }
+
+                if (PersonList.get(0).get("living").equals("0")) {
+                    rbAlive.setChecked(true);
+                } else if (PersonList.get(0).get("living").equals("1")) {
+                    rbDead.setChecked(true);
+                }
+
+                if (!PersonList.get(0).get("maritalstatus").equals("")) {
+                    int spinnerPositionMari = maritalArrayAdapter.getPosition(PersonList.get(0).get("maritalstatus"));
+                    spMaritalStatus.setSelection(spinnerPositionMari);
+                }
+
+                etTel.setText(PersonList.get(0).get("tel"));
+
+                if (PersonList.get(0).get("residence_status").equals("1")) {
+                    rbInRegister.setChecked(true);
+                } else if (PersonList.get(0).get("residence_status").equals("0")) {
+                    rbNotInRegister.setChecked(true);
+                    etIRProvince.setText(PersonList.get(0).get("latentpop_province"));
+                    etIRCountry.setText(PersonList.get(0).get("latentpop_country"));
+                }
+
+                if (PersonList.get(0).get("currentaddr").equals("0")) {
+                    rbInHousehold.setChecked(true);
+                } else if (PersonList.get(0).get("currentaddr").equals("1")) {
+                    rbNotInHousehold.setChecked(true);
+                    etIHProvince.setText(PersonList.get(0).get("currentaddr_province"));
+                    etIHCountry.setText(PersonList.get(0).get("currentaddr_country"));
+                }
+
+                if (PersonList.get(0).get("dwellerstatus").equals("0")) {
+                    rbStatusOwner.setChecked(true);
+                } else if (PersonList.get(0).get("dwellerstatus").equals("1")) {
+                    rbStatusDweller.setChecked(true);
+                }
+
+                if (PersonList.get(0).get("income").equals("0")) {
+                    rbICMonth.setChecked(true);
+                    etICMonth.setText(PersonList.get(0).get("income_money"));
+                } else if (PersonList.get(0).get("income").equals("1")) {
+                    rbICYear.setChecked(true);
+                    etICYear.setText(PersonList.get(0).get("income_money"));
+                }
+
+                if (PersonList.get(0).get("dept").equals("0")) {
+                    rbDebtNo.setChecked(true);
+                } else if (PersonList.get(0).get("dept").equals("1")) {
+                    rbDebtYes.setChecked(true);
+                }
+
+                if (PersonList.get(0).get("saving").equals("0")) {
+                    rbSavingNo.setChecked(true);
+                } else if (PersonList.get(0).get("saving").equals("1")) {
+                    rbSavingYes.setChecked(true);
+                }
+
+                if (PersonList.get(0).get("allergichis").equals("0")) {
+                    rbAllergicNo.setChecked(true);
+                } else if (PersonList.get(0).get("allergichis").equals("1")) {
+                    rbAllergicYes.setChecked(true);
+                    etAllergic.setText(PersonList.get(0).get("allergichis_detail"));
+                }
+
+                if (PersonList.get(0).get("disadvantage").equals("0")) {
+                    rbDisadvantageNo.setChecked(true);
+                } else if (PersonList.get(0).get("disadvantage").equals("1")) {
+                    rbDisadvantageYes.setChecked(true);
+                }
+
+                if (PersonList.get(0).get("sub_al").equals("0")) {
+                    rbSubAlNo.setChecked(true);
+                } else if (PersonList.get(0).get("sub_al").equals("1")) {
+                    rbSubAlYes.setChecked(true);
+                }
+
+                if (PersonList.get(0).get("education").equals("0")) {
+                    rbNoStudy.setChecked(true);
+                } else if (PersonList.get(0).get("education").equals("1")) {
+                    rbInStudy.setChecked(true);
+                    if (!PersonList.get(0).get("education_class").equals("")) {
+                        int spinnerPositionEduI = educationIArrayAdapter.getPosition(PersonList.get(0).get("education_class"));
+                        spInStudy.setSelection(spinnerPositionEduI);
+                    }
+                } else if (PersonList.get(0).get("education").equals("2")) {
+                    rbGraduated.setChecked(true);
+                    if (!PersonList.get(0).get("education_class").equals("")) {
+                        int spinnerPositionEduG = educationGArrayAdapter.getPosition(PersonList.get(0).get("education_class"));
+                        spGraduated.setSelection(spinnerPositionEduG);
+                    }
+                }
+
+                if (PersonList.get(0).get("literacy").equals("0")) {
+                    rbLiteracyYes.setChecked(true);
+                } else if (PersonList.get(0).get("literacy").equals("1")) {
+                    rbLiteracyNo.setChecked(true);
+                }
+
+                if (PersonList.get(0).get("technology").equals("0")) {
+                    rbTechnologyNo.setChecked(true);
+                } else if (PersonList.get(0).get("technology").equals("1")) {
+                    rbTechnologyYes.setChecked(true);
+                }
+
+                if (PersonList.get(0).get("expertise").equals("0")) {
+                    rbExpertiseNo.setChecked(true);
+                } else if (PersonList.get(0).get("expertise").equals("1")) {
+                    rbExpertiseYes.setChecked(true);
+                    if (!PersonList.get(0).get("expertise_name").equals("")) {
+                        int spinnerPositionExp = expertiseArrayAdapter.getPosition(PersonList.get(0).get("expertise_name"));
+                        spExpertise.setSelection(spinnerPositionExp);
+                    }
+                    etExpertise.setText(PersonList.get(0).get("expertise_detail"));
+                }
+
+                if (PersonList.get(0).get("religion").equals("0")) {
+                    rbBuddhismReligion.setChecked(true);
+                } else if (PersonList.get(0).get("religion").equals("1")) {
+                    rbChristReligion.setChecked(true);
+                } else if (PersonList.get(0).get("religion").equals("2")) {
+                    rbIslamicReligion.setChecked(true);
+                } else if (PersonList.get(0).get("religion").equals("3")) {
+                    rbAnotherReligion.setChecked(true);
+                    etAnotherReligion.setText(PersonList.get(0).get("religion_another"));
+                }
+
+                if (PersonList.get(0).get("participation").equals("0")) {
+                    rbParticipationNo.setChecked(true);
+                } else if (PersonList.get(0).get("participation").equals("1")) {
+                    rbParticipationYes.setChecked(true);
+                }
+
+                if (PersonList.get(0).get("election").equals("0")) {
+                    rbElectionAlway.setChecked(true);
+                } else if (PersonList.get(0).get("election").equals("1")) {
+                    rbElectionSometime.setChecked(true);
+                } else if (PersonList.get(0).get("election").equals("2")) {
+                    rbElectionNever.setChecked(true);
+                }
+                int spinnerPositionContri = dwellerArrayAdapter.getPosition(PersonList.get(0).get("distributor"));
+                spContributor.setSelection(spinnerPositionContri);
                 ModelCurrentCalendar.edittextCurrentCalendar(this, etDate);
+
+                WorkList = db.SelectWhereData("population_works", "population_idcard", PersonList.get(0).get("population_idcard"));
+                if (!WorkList.isEmpty()) {
+                    if (WorkList.get(0).get("works_type").equals("0")) {
+                        rbJGStudent.setChecked(true);
+                    } else if (WorkList.get(0).get("works_type").equals("1")) {
+                        rbJGCareer.setChecked(true);
+                    } else if (WorkList.get(0).get("works_type").equals("1")) {
+                        rbJGNoJob.setChecked(true);
+                    }
+                    AgriList = db.SelectWhereData("population_job_agriculture", "works_id", WorkList.get(0).get("works_id"));
+                    if (!AgriList.isEmpty()) {
+                        ModelCheckboxCheck.checkboxSetCheck(cbAgri1, AgriList.get(0).get("agri1"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbAgri2, AgriList.get(0).get("agri2"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbAgri3, AgriList.get(0).get("agri3"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbAgri4, AgriList.get(0).get("agri4"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbAgri5, AgriList.get(0).get("agri5"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbAgri6, AgriList.get(0).get("agri6"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbAgri7, AgriList.get(0).get("agri7"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbAgri8, AgriList.get(0).get("agri8"));
+                        if (AgriList.get(0).get("agri8").equals("1")) {
+                            etAnotherAgri.setText(AgriList.get(0).get("agri_another"));
+                        }
+                        if (AgriList.get(0).get("agri1").equals("1") ||
+                                AgriList.get(0).get("agri2").equals("1") ||
+                                AgriList.get(0).get("agri3").equals("1") ||
+                                AgriList.get(0).get("agri4").equals("1") ||
+                                AgriList.get(0).get("agri5").equals("1") ||
+                                AgriList.get(0).get("agri6").equals("1") ||
+                                AgriList.get(0).get("agri7").equals("1") ||
+                                AgriList.get(0).get("agri8").equals("1")) {
+                            cbAgri.setChecked(true);
+                        }
+                    }
+
+                    PetList = db.SelectWhereData("population_job_animal", "works_id", WorkList.get(0).get("works_id"));
+                    if (!PetList.isEmpty()) {
+                        ModelCheckboxCheck.checkboxSetCheck(cbPet1, PetList.get(0).get("animal1"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbPet2, PetList.get(0).get("animal2"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbPet3, PetList.get(0).get("animal3"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbPet4, PetList.get(0).get("animal4"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbPet5, PetList.get(0).get("animal5"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbPet6, PetList.get(0).get("animal6"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbPet7, PetList.get(0).get("animal7"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbPet8, PetList.get(0).get("animal8"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbPet9, PetList.get(0).get("animal9"));
+                        if (PetList.get(0).get("animal9").equals("1")) {
+                            etAnotherPet.setText(PetList.get(0).get("animal_another"));
+                        }
+                        if (PetList.get(0).get("animal1").equals("1") ||
+                                PetList.get(0).get("animal2").equals("1") ||
+                                PetList.get(0).get("animal3").equals("1") ||
+                                PetList.get(0).get("animal4").equals("1") ||
+                                PetList.get(0).get("animal5").equals("1") ||
+                                PetList.get(0).get("animal6").equals("1") ||
+                                PetList.get(0).get("animal7").equals("1") ||
+                                PetList.get(0).get("animal8").equals("1") ||
+                                PetList.get(0).get("animal9").equals("1")) {
+                            cbPet.setChecked(true);
+                        }
+                    }
+
+                    GovernList = db.SelectWhereData("population_job_govern", "works_id", WorkList.get(0).get("works_id"));
+                    if (!GovernList.isEmpty()) {
+                        ModelCheckboxCheck.checkboxSetCheck(cbGovern1, GovernList.get(0).get("govern1"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbGovern2, GovernList.get(0).get("govern2"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbGovern3, GovernList.get(0).get("govern3"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbGovern4, GovernList.get(0).get("govern4"));
+                        if (GovernList.get(0).get("govern4").equals("1")) {
+                            etAnotherGovern.setText(GovernList.get(0).get("govern_another"));
+                        }
+                        if (GovernList.get(0).get("govern1").equals("1") ||
+                                GovernList.get(0).get("govern2").equals("1") ||
+                                GovernList.get(0).get("govern3").equals("1") ||
+                                GovernList.get(0).get("govern4").equals("1")) {
+                            cbGovern.setChecked(true);
+                        }
+                    }
+
+                    PrivateList = db.SelectWhereData("population_job_private", "works_id", WorkList.get(0).get("works_id"));
+                    if (!PrivateList.isEmpty()) {
+                        ModelCheckboxCheck.checkboxSetCheck(cbPrivate1, PrivateList.get(0).get("private1"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbPrivate2, PrivateList.get(0).get("private2"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbPrivate3, PrivateList.get(0).get("private3"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbPrivate4, PrivateList.get(0).get("private4"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbPrivate5, PrivateList.get(0).get("private5"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbPrivate6, PrivateList.get(0).get("private6"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbPrivate7, PrivateList.get(0).get("private7"));
+                        if (PrivateList.get(0).get("private7").equals("1")) {
+                            etAnotherPrivate.setText(PrivateList.get(0).get("private_another"));
+                        }
+                        if (PrivateList.get(0).get("private1").equals("1") ||
+                                PrivateList.get(0).get("private2").equals("1") ||
+                                PrivateList.get(0).get("private3").equals("1") ||
+                                PrivateList.get(0).get("private4").equals("1") ||
+                                PrivateList.get(0).get("private5").equals("1") ||
+                                PrivateList.get(0).get("private6").equals("1") ||
+                                PrivateList.get(0).get("private7").equals("1")) {
+                            cbPrivate.setChecked(true);
+                        }
+                    }
+                }
+
+                CongList = db.SelectWhereData("population_congenitalhis", "population_idcard", PersonList.get(0).get("population_idcard"));
+                if (!CongList.isEmpty()) {
+                    if (CongList.get(0).get("congh_type").equals("1")) {
+                        rbCongenitalYes.setChecked(true);
+                        ModelCheckboxCheck.checkboxSetCheck(cbCong1, CongList.get(0).get("congh1"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbCong2, CongList.get(0).get("congh2"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbCong3, CongList.get(0).get("congh3"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbCong4, CongList.get(0).get("congh4"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbCong5, CongList.get(0).get("congh5"));
+                        if (CongList.get(0).get("congh5").equals("1")) {
+                            etAnotherCong.setText(CongList.get(0).get("congh_another"));
+                        }
+                    } else if (CongList.get(0).get("congh_type").equals("0")) {
+                        rbCongenitalNo.setChecked(true);
+                    }
+                }
+
+                ContList = db.SelectWhereData("population_contagioushis", "population_idcard", PersonList.get(0).get("population_idcard"));
+                if (!ContList.isEmpty()) {
+                    if (ContList.get(0).get("conth_type").equals("1")) {
+                        rbContagiousYes.setChecked(true);
+                        ModelCheckboxCheck.checkboxSetCheck(cbCont1, ContList.get(0).get("conth1"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbCont2, ContList.get(0).get("conth2"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbCont3, ContList.get(0).get("conth3"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbCont4, ContList.get(0).get("conth4"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbCont5, ContList.get(0).get("conth5"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbCont6, ContList.get(0).get("conth6"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbCont7, ContList.get(0).get("conth7"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbCont8, ContList.get(0).get("conth8"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbCont9, ContList.get(0).get("conth9"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbCont10, ContList.get(0).get("conth10"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbCont11, ContList.get(0).get("conth11"));
+                        if (ContList.get(0).get("conth11").equals("1")) {
+                            etAnotherCont.setText(ContList.get(0).get("conth_another"));
+                        }
+                    } else if (ContList.get(0).get("conth_type").equals("0")) {
+                        rbContagiousNo.setChecked(true);
+                    }
+                }
+
+                DisabledList = db.SelectWhereData("population_disabled", "population_idcard", PersonList.get(0).get("population_idcard"));
+                if (!DisabledList.isEmpty()) {
+                    if (DisabledList.get(0).get("disabled_type").equals("1")) {
+                        rbDisabledYes.setChecked(true);
+                        ModelCheckboxCheck.checkboxSetCheck(cbDisabled1, DisabledList.get(0).get("disabled1"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbDisabled2, DisabledList.get(0).get("disabled2"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbDisabled3, DisabledList.get(0).get("disabled3"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbDisabled4, DisabledList.get(0).get("disabled4"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbDisabled5, DisabledList.get(0).get("disabled5"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbDisabled6, DisabledList.get(0).get("disabled6"));
+                    } else if (DisabledList.get(0).get("disabled_type").equals("0")) {
+                        rbDisabledNo.setChecked(true);
+                    }
+                }
+
+                TransList = db.SelectWhereData("population_transport", "population_idcard", PersonList.get(0).get("population_idcard"));
+                if (!TransList.isEmpty()) {
+                    if (TransList.get(0).get("transport_type").equals("1")) {
+                        rbTransportationYes.setChecked(true);
+                        ModelCheckboxCheck.checkboxSetCheck(cbTrans1, TransList.get(0).get("trans1"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbTrans2, TransList.get(0).get("trans2"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbTrans3, TransList.get(0).get("trans3"));
+                        ModelCheckboxCheck.checkboxSetCheck(cbTrans4, TransList.get(0).get("trans4"));
+                    } else if (TransList.get(0).get("transport_type").equals("0")) {
+                        rbTransportationNo.setChecked(true);
+                    }
+                }
             }
+        } else {
+            loProperty.setVisibility(View.GONE);
+        }
+    }
+
+    private void setListView() {
+        if (!PersonID.equals("Nope")) {
+            String strOrder = "Order";
+            String strPropType = "PropType";
+            String strBenefit = "Benefit";
+            String strPropertyID = "ID";
+            String benefit = "benefit";
+            int order = 0;
+            PropertyActive = new ArrayList<HashMap<String, String>>();
+            PLandList = db.SelectWhereData("population_asset_land", "population_idcard", PersonID);
+            if (!PLandList.isEmpty()) {
+                for (int i = 0; i < PLandList.size(); i++) {
+                    if (PLandList.get(i).get("ACTIVE").equals("Y")) {
+                        HashMap<String, String> temp = new HashMap<String, String>();
+                        temp.put(strOrder, String.valueOf(++order));
+                        temp.put(strPropType, "ที่ดิน");
+                        if (PLandList.get(i).get("land_benefit").equals("0")) {
+                            benefit = "ที่พักอาศัย";
+                        } else if (PLandList.get(i).get("land_benefit").equals("1")) {
+                            benefit = "เพาะปลูก";
+                        } else if (PLandList.get(i).get("land_benefit").equals("2")) {
+                            benefit = "เลี้ยงสัตว์";
+                        } else if (PLandList.get(i).get("land_benefit").equals("3")) {
+                            benefit = "ประกอบกิจการ";
+                        } else {
+                            benefit = "ไม่ทราบ";
+                        }
+                        temp.put(strBenefit, benefit);
+                        temp.put(strPropertyID, PLandList.get(i).get("land_running"));
+                        PropertyActive.add(temp);
+                    }
+                }
+            }
+
+            PVehicleList = db.SelectWhereData("population_asset_vehicle", "population_idcard", PersonID);
+            if (!PVehicleList.isEmpty()) {
+                for (int i = 0; i < PVehicleList.size(); i++) {
+                    if (PVehicleList.get(i).get("ACTIVE").equals("Y")) {
+                        HashMap<String, String> temp = new HashMap<String, String>();
+                        temp.put(strOrder, String.valueOf(++order));
+                        temp.put(strPropType, "ยานพาหนะ");
+                        TestList = db.SelectWhereData("asset_vehicle", "vtype_id", PVehicleList.get(i).get("vtype_id"));
+                        if (!TestList.isEmpty()) {
+                            temp.put(strBenefit, TestList.get(0).get("vtype_detail"));
+                        } else {
+                            temp.put(strBenefit, "ไม่ทราบ");
+                        }
+                        temp.put(strPropertyID, PVehicleList.get(i).get("vehicle_running"));
+                        PropertyActive.add(temp);
+                    }
+                }
+            }
+
+            PPetList = db.SelectWhereData("population_asset_pet", "population_idcard", PersonID);
+            if (!PPetList.isEmpty()) {
+                for (int i = 0; i < PPetList.size(); i++) {
+                    if (PPetList.get(i).get("ACTIVE").equals("Y")) {
+                        HashMap<String, String> temp = new HashMap<String, String>();
+                        temp.put(strOrder, String.valueOf(++order));
+                        temp.put(strPropType, "สัตว์เลี้ยง");
+                        if (!PPetList.get(0).get("pet_type").equals("")) {
+                            temp.put(strBenefit, PPetList.get(0).get("pet_type"));
+                        } else {
+                            temp.put(strBenefit, "ไม่ทราบ");
+                        }
+                        temp.put(strPropertyID, PPetList.get(i).get("pet_running"));
+                        PropertyActive.add(temp);
+                    }
+                }
+            }
+
+            PAnimalList = db.SelectWhereData("population_asset_animal", "population_idcard", PersonID);
+            if (!PAnimalList.isEmpty()) {
+                for (int i = 0; i < PAnimalList.size(); i++) {
+                    if (PAnimalList.get(i).get("ACTIVE").equals("Y")) {
+                        HashMap<String, String> temp = new HashMap<String, String>();
+                        temp.put(strOrder, String.valueOf(++order));
+                        temp.put(strPropType, "ปศุสัตว์");
+                        TestList = db.SelectWhereData("asset_animal", "atype_id", PAnimalList.get(i).get("atype_id"));
+                        if (!TestList.isEmpty()) {
+                            temp.put(strBenefit, TestList.get(0).get("atype_name"));
+                        } else {
+                            temp.put(strBenefit, "ไม่ทราบ");
+                        }
+                        temp.put(strPropertyID, PAnimalList.get(i).get("animal_running"));
+                        PropertyActive.add(temp);
+                    }
+                }
+            }
+
+            SimpleAdapter simpleAdapter = new SimpleAdapter(this, PropertyActive, R.layout.view_property_column,
+                    new String[]{strOrder, strPropType, strBenefit, strPropertyID},
+                    new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvHiddenColumn}
+            );
+            lvProperty.setAdapter(simpleAdapter);
+        }
+    }
+
+    private void updateData() {
+        String date = df.format(Calendar.getInstance().getTime());
+        Boolean NatPass = false;
+        NationalityList = db.SelectData("nationality");
+        if (!NationalityList.isEmpty()) {
+            if (spNationality.getSelectedItem().toString().equals("อื่นๆ")) {
+                String strAnotherNat = etNationality.getText().toString();
+                if (!strAnotherNat.equals("")) {
+                    if (!Nationality.contains(strAnotherNat)) {
+                        Val = new ContentValues();
+                        Val.put("nationality_detail", strAnotherNat);
+                        Val.put("upd_by", "JuJiiz");
+                        Val.put("upd_date", date);
+                        Val.put("ACTIVE", "Y");
+                        NationalityList = db.SelectWhereData("nationality", "nationality_detail", "\"" + strAnotherNat + "\"");
+                        if (NationalityList.isEmpty()) {
+                            Val.put("cr_by", "JuJiiz");
+                            Val.put("cr_date", date);
+                            db.InsertData("nationality", Val);
+                            NatPass = true;
+                        } else {
+                            db.UpdateData("nationality", Val, "nationality_detail", "\"" + strAnotherNat + "\"");
+                            NatPass = true;
+                        }
+                    } else {
+                        Toast.makeText(this, "สัญชาติซ้ำ", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "กรุณาระบุสัญชาติ", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        //////////////////////////////////// Nationality Insert/Update ////////////////////////////////////
+
+        if (NatPass == true) {
+            Val = new ContentValues();
+            Val.put("population_idcard", etPersonalID.getText().toString());
+            Val.put("prename", spPrefix.getSelectedItem().toString());
+            Val.put("firstname", etFirstName.getText().toString());
+            Val.put("lastname", etLastName.getText().toString());
+            Val.put("birthdate", etBirtDate.getText().toString());
+            Val.put("height", etHeight.getText().toString());
+            Val.put("weight", etWeight.getText().toString());
+            if (rbMale.isChecked()) {
+                Val.put("sex", "M");
+            } else if (rbFemale.isChecked()) {
+                Val.put("sex", "F");
+            } else {
+                Val.put("sex", "");
+            }
+            Val.put("bloodgroup", spBloodType.getSelectedItem().toString());
+            if (rbAlive.isChecked()) {
+                Val.put("living", "0");
+            } else if (rbDead.isChecked()) {
+                Val.put("living", "1");
+            } else {
+                Val.put("living", "");
+            }
+            Val.put("maritalstatus", spMaritalStatus.getSelectedItem().toString());
+            Val.put("tel", etTel.getText().toString());
+            if (spNationality.getSelectedItem().toString().equals("อื่นๆ")) {
+                Val.put("nationality", etNationality.getText().toString());
+            } else {
+                Val.put("nationality", spNationality.getSelectedItem().toString());
+            }
+
+            Val.put("house_id", HouseID);
+            if (rbInHousehold.isChecked()) {
+                Val.put("currentaddr", "0");
+                Val.put("currentaddr_province", "");
+                Val.put("currentaddr_country", "");
+            } else if (rbNotInHousehold.isChecked()) {
+                Val.put("currentaddr", "1");
+                Val.put("currentaddr_province", etIHProvince.getText().toString());
+                Val.put("currentaddr_country", etIHCountry.getText().toString());
+            } else {
+                Val.put("currentaddr", "");
+                Val.put("currentaddr_province", "");
+                Val.put("currentaddr_country", "");
+            }
+            if (PersonID.equals("Nope")) {
+                Val.put("dwellerstatus", "1");
+            } else {
+                PersonList = db.SelectWhereData("population", "population_idcard", etPersonalID.getText().toString());
+                Val.put("dwellerstatus", PersonList.get(0).get("dwellerstatus"));
+            }
+
+            if (rbICMonth.isChecked()) {
+                Val.put("income", "0");
+                Val.put("income_money", etICMonth.getText().toString());
+            } else if (rbICYear.isChecked()) {
+                Val.put("income", "1");
+                Val.put("income_money", etICYear.getText().toString());
+            } else {
+                Val.put("income", "");
+                Val.put("income_money", "");
+            }
+
+            if (rbDebtNo.isChecked()) {
+                Val.put("dept", "0");
+            } else if (rbDebtYes.isChecked()) {
+                Val.put("dept", "1");
+            } else {
+                Val.put("dept", "");
+            }
+
+            if (rbSavingNo.isChecked()) {
+                Val.put("saving", "0");
+            } else if (rbSavingYes.isChecked()) {
+                Val.put("saving", "1");
+            } else {
+                Val.put("saving", "");
+            }
+
+            if (rbAllergicNo.isChecked()) {
+                Val.put("allergichis", "0");
+                Val.put("allergichis_detail", "");
+            } else if (rbAllergicYes.isChecked()) {
+                Val.put("allergichis", "1");
+                Val.put("allergichis_detail", etAllergic.getText().toString());
+            } else {
+                Val.put("allergichis", "");
+                Val.put("allergichis_detail", "");
+            }
+
+            if (rbDisadvantageNo.isChecked()) {
+                Val.put("disadvantage", "0");
+            } else if (rbDisadvantageYes.isChecked()) {
+                Val.put("disadvantage", "1");
+            } else {
+                Val.put("disadvantage", "");
+            }
+
+            if (rbSubAlNo.isChecked()) {
+                Val.put("sub_al", "0");
+            } else if (rbSubAlYes.isChecked()) {
+                Val.put("sub_al", "1");
+            } else {
+                Val.put("sub_al", "");
+            }
+
+            if (rbNoStudy.isChecked()) {
+                Val.put("education", "0");
+                Val.put("education_class", "");
+            } else if (rbInStudy.isChecked()) {
+                Val.put("education", "1");
+                Val.put("education_class", spInStudy.getSelectedItem().toString());
+            } else if (rbGraduated.isChecked()) {
+                Val.put("education", "2");
+                Val.put("education_class", spGraduated.getSelectedItem().toString());
+            } else {
+                Val.put("education", "");
+                Val.put("education_class", "");
+            }
+
+            if (rbLiteracyNo.isChecked()) {
+                Val.put("literacy", "0");
+            } else if (rbLiteracyYes.isChecked()) {
+                Val.put("literacy", "1");
+            } else {
+                Val.put("literacy", "");
+            }
+
+            if (rbTechnologyNo.isChecked()) {
+                Val.put("technology", "0");
+            } else if (rbTechnologyYes.isChecked()) {
+                Val.put("technology", "1");
+            } else {
+                Val.put("technology", "");
+            }
+
+            if (rbExpertiseNo.isChecked()) {
+                Val.put("expertise", "0");
+                Val.put("expertise_name", "");
+                Val.put("expertise_detail", "");
+            } else if (rbExpertiseYes.isChecked()) {
+                Val.put("expertise", "1");
+                Val.put("expertise_name", spExpertise.getSelectedItem().toString());
+                Val.put("expertise_detail", etExpertise.getText().toString());
+            } else {
+                Val.put("expertise", "");
+                Val.put("expertise_name", "");
+                Val.put("expertise_detail", "");
+            }
+
+            if (rbBuddhismReligion.isChecked()) {
+                Val.put("religion", "0");
+                Val.put("religion_another", "");
+            } else if (rbChristReligion.isChecked()) {
+                Val.put("religion", "1");
+                Val.put("religion_another", "");
+            } else if (rbIslamicReligion.isChecked()) {
+                Val.put("religion", "2");
+                Val.put("religion_another", "");
+            } else if (rbAnotherReligion.isChecked()) {
+                Val.put("religion", "3");
+                Val.put("religion_another", etAnotherReligion.getText().toString());
+            } else {
+                Val.put("religion", "");
+                Val.put("religion_another", "");
+            }
+
+            if (rbParticipationNo.isChecked()) {
+                Val.put("participation", "0");
+            } else if (rbParticipationYes.isChecked()) {
+                Val.put("participation", "1");
+            } else {
+                Val.put("participation", "");
+            }
+
+            if (rbElectionAlway.isChecked()) {
+                Val.put("election", "0");
+            } else if (rbElectionSometime.isChecked()) {
+                Val.put("election", "1");
+            } else if (rbElectionNever.isChecked()) {
+                Val.put("election", "2");
+            } else {
+                Val.put("election", "");
+            }
+
+            if (PersonID.equals("Nope")) {
+                Val.put("residence_status", "0");
+                Val.put("latentpop_province", etIRProvince.getText().toString());
+                Val.put("latentpop_country", etIRCountry.getText().toString());
+            } else {
+                if (rbInRegister.isChecked()) {
+                    Val.put("residence_status", "1");
+                    Val.put("latentpop_province", "");
+                    Val.put("latentpop_country", "");
+                } else if (rbInRegister.isChecked()) {
+                    Val.put("residence_status", "0");
+                    Val.put("latentpop_province", etIRProvince.getText().toString());
+                    Val.put("latentpop_country", etIRCountry.getText().toString());
+                }
+            }
+
+            Val.put("distributor", spContributor.getSelectedItem().toString());
+            Val.put("survey_status", "1");
+            Val.put("upd_by", "JuJiiz");
+            Val.put("upd_date", date);
+            Val.put("ACTIVE", "Y");
+            DwellerList = db.SelectWhereData("population", "population_idcard", etPersonalID.getText().toString());
+            if (DwellerList.isEmpty()) {
+                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_date", date);
+                db.InsertData("population", Val);
+            } else {
+                db.UpdateData("population", Val, "population_idcard", etPersonalID.getText().toString());
+            }
+            //////////////////////////////////// Population Insert/Update ////////////////////////////////////
+
+            Val = new ContentValues();
+            if (rbCongenitalNo.isChecked()) {
+                Val.put("congh_type", "0");
+                Val.put("congh1", "");
+                Val.put("congh2", "");
+                Val.put("congh3", "");
+                Val.put("congh4", "");
+                Val.put("congh5", "");
+                Val.put("congh_another", "");
+            } else if (rbCongenitalYes.isChecked()) {
+                Val.put("congh_type", "1");
+                Val.put("congh1", ModelCheckboxCheck.checkboxReturnCheck(cbCong1));
+                Val.put("congh2", ModelCheckboxCheck.checkboxReturnCheck(cbCong2));
+                Val.put("congh3", ModelCheckboxCheck.checkboxReturnCheck(cbCong3));
+                Val.put("congh4", ModelCheckboxCheck.checkboxReturnCheck(cbCong4));
+                Val.put("congh5", ModelCheckboxCheck.checkboxReturnCheck(cbCong5));
+                if (cbCong5.isChecked()) {
+                    Val.put("congh_another", etAnotherCong.getText().toString());
+                } else if (!cbCong5.isChecked()) {
+                    Val.put("congh_another", "");
+                }
+            }
+            Val.put("population_idcard", etPersonalID.getText().toString());
+            Val.put("upd_by", "");
+            Val.put("upd_date", date);
+            Val.put("ACTIVE", "Y");
+            DwellerList = db.SelectWhereData("population_congenitalhis", "population_idcard", etPersonalID.getText().toString());
+            if (DwellerList.isEmpty()) {
+                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_date", date);
+                db.InsertData("population_congenitalhis", Val);
+            } else {
+                db.UpdateData("population_congenitalhis", Val, "population_idcard", etPersonalID.getText().toString());
+            }
+            //////////////////////////////////// Population Congenitalhis Insert/Update ////////////////////////////////////
+
+            Val = new ContentValues();
+            if (rbContagiousNo.isChecked()) {
+                Val.put("conth_type", "0");
+                Val.put("conth1", "");
+                Val.put("conth2", "");
+                Val.put("conth3", "");
+                Val.put("conth4", "");
+                Val.put("conth5", "");
+                Val.put("conth6", "");
+                Val.put("conth7", "");
+                Val.put("conth8", "");
+                Val.put("conth9", "");
+                Val.put("conth10", "");
+                Val.put("conth11", "");
+                Val.put("conth_another", "");
+            } else if (rbContagiousYes.isChecked()) {
+                Val.put("conth_type", "1");
+                Val.put("conth1", ModelCheckboxCheck.checkboxReturnCheck(cbCont1));
+                Val.put("conth2", ModelCheckboxCheck.checkboxReturnCheck(cbCont2));
+                Val.put("conth3", ModelCheckboxCheck.checkboxReturnCheck(cbCont3));
+                Val.put("conth4", ModelCheckboxCheck.checkboxReturnCheck(cbCont4));
+                Val.put("conth5", ModelCheckboxCheck.checkboxReturnCheck(cbCont5));
+                Val.put("conth6", ModelCheckboxCheck.checkboxReturnCheck(cbCont6));
+                Val.put("conth7", ModelCheckboxCheck.checkboxReturnCheck(cbCont7));
+                Val.put("conth8", ModelCheckboxCheck.checkboxReturnCheck(cbCont8));
+                Val.put("conth9", ModelCheckboxCheck.checkboxReturnCheck(cbCont9));
+                Val.put("conth10", ModelCheckboxCheck.checkboxReturnCheck(cbCont10));
+                Val.put("conth11", ModelCheckboxCheck.checkboxReturnCheck(cbCont11));
+                if (cbCont11.isChecked()) {
+                    Val.put("conth_another", etAnotherCont.getText().toString());
+                } else if (!cbCont11.isChecked()) {
+                    Val.put("conth_another", "");
+                }
+            }
+            Val.put("population_idcard", etPersonalID.getText().toString());
+            Val.put("upd_by", "");
+            Val.put("upd_date", date);
+            Val.put("ACTIVE", "Y");
+            DwellerList = db.SelectWhereData("population_contagioushis", "population_idcard", etPersonalID.getText().toString());
+            if (DwellerList.isEmpty()) {
+                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_date", date);
+                db.InsertData("population_contagioushis", Val);
+            } else {
+                db.UpdateData("population_contagioushis", Val, "population_idcard", etPersonalID.getText().toString());
+            }
+            //////////////////////////////////// Population Contagioushis Insert/Update ////////////////////////////////////
+
+            Val = new ContentValues();
+            if (rbDisabledNo.isChecked()) {
+                Val.put("disabled_type", "0");
+                Val.put("disabled1", "");
+                Val.put("disabled2", "");
+                Val.put("disabled3", "");
+                Val.put("disabled4", "");
+                Val.put("disabled5", "");
+                Val.put("disabled6", "");
+            } else if (rbDisabledYes.isChecked()) {
+                Val.put("disabled_type", "1");
+                Val.put("disabled1", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled1));
+                Val.put("disabled2", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled2));
+                Val.put("disabled3", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled3));
+                Val.put("disabled4", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled4));
+                Val.put("disabled5", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled5));
+                Val.put("disabled6", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled6));
+            }
+            Val.put("population_idcard", etPersonalID.getText().toString());
+            Val.put("upd_by", "");
+            Val.put("upd_date", date);
+            Val.put("ACTIVE", "Y");
+            DwellerList = db.SelectWhereData("population_disabled", "population_idcard", etPersonalID.getText().toString());
+            if (DwellerList.isEmpty()) {
+                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_date", date);
+                db.InsertData("population_disabled", Val);
+            } else {
+                db.UpdateData("population_disabled", Val, "population_idcard", etPersonalID.getText().toString());
+            }
+            //////////////////////////////////// Population Disabled Insert/Update ////////////////////////////////////
+
+            Val = new ContentValues();
+            if (rbTransportationNo.isChecked()) {
+                Val.put("transport_type", "0");
+                Val.put("trans1", "");
+                Val.put("trans2", "");
+                Val.put("trans3", "");
+                Val.put("trans4", "");
+            } else if (rbTransportationYes.isChecked()) {
+                Val.put("transport_type", "1");
+                Val.put("trans1", ModelCheckboxCheck.checkboxReturnCheck(cbTrans1));
+                Val.put("trans2", ModelCheckboxCheck.checkboxReturnCheck(cbTrans2));
+                Val.put("trans3", ModelCheckboxCheck.checkboxReturnCheck(cbTrans3));
+                Val.put("trans4", ModelCheckboxCheck.checkboxReturnCheck(cbTrans4));
+            }
+            Val.put("population_idcard", etPersonalID.getText().toString());
+            Val.put("upd_by", "");
+            Val.put("upd_date", date);
+            Val.put("ACTIVE", "Y");
+            DwellerList = db.SelectWhereData("population_transport", "population_idcard", etPersonalID.getText().toString());
+            if (DwellerList.isEmpty()) {
+                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_date", date);
+                db.InsertData("population_transport", Val);
+            } else {
+                db.UpdateData("population_transport", Val, "population_idcard", etPersonalID.getText().toString());
+            }
+            //////////////////////////////////// Population Transport Insert/Update ////////////////////////////////////
+
+            Val = new ContentValues();
+            if (rbJGStudent.isChecked()) {
+                Val.put("works_type", "0");
+            } else if (rbJGCareer.isChecked()) {
+                Val.put("works_type", "1");
+            } else if (rbJGNoJob.isChecked()) {
+                Val.put("works_type", "2");
+            } else {
+                Val.put("works_type", "");
+            }
+            Val.put("population_idcard", etPersonalID.getText().toString());
+            Val.put("upd_by", "");
+            Val.put("upd_date", date);
+            Val.put("ACTIVE", "Y");
+            DwellerList = db.SelectWhereData("population_works", "population_idcard", etPersonalID.getText().toString());
+            if (DwellerList.isEmpty()) {
+                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_date", date);
+                db.InsertData("population_works", Val);
+            } else {
+                db.UpdateData("population_works", Val, "population_idcard", etPersonalID.getText().toString());
+            }
+            //////////////////////////////////// Population Work Insert/Update ////////////////////////////////////
+
+            Val = new ContentValues();
+            TestList = db.SelectWhereData("population_works", "population_idcard", etPersonalID.getText().toString());
+            Val.put("works_id", TestList.get(0).get("works_id"));
+            if (cbAgri.isChecked()) {
+                Val.put("agri1", ModelCheckboxCheck.checkboxReturnCheck(cbAgri1));
+                Val.put("agri2", ModelCheckboxCheck.checkboxReturnCheck(cbAgri2));
+                Val.put("agri3", ModelCheckboxCheck.checkboxReturnCheck(cbAgri3));
+                Val.put("agri4", ModelCheckboxCheck.checkboxReturnCheck(cbAgri4));
+                Val.put("agri5", ModelCheckboxCheck.checkboxReturnCheck(cbAgri5));
+                Val.put("agri6", ModelCheckboxCheck.checkboxReturnCheck(cbAgri6));
+                Val.put("agri7", ModelCheckboxCheck.checkboxReturnCheck(cbAgri7));
+                Val.put("agri8", ModelCheckboxCheck.checkboxReturnCheck(cbAgri8));
+                if (cbAgri8.isChecked()) {
+                    Val.put("agri_another", etAnotherAgri.getText().toString());
+                } else {
+                    Val.put("agri_another", "");
+                }
+
+            } else {
+                Val.put("agri1", "");
+                Val.put("agri2", "");
+                Val.put("agri3", "");
+                Val.put("agri4", "");
+                Val.put("agri5", "");
+                Val.put("agri6", "");
+                Val.put("agri7", "");
+                Val.put("agri8", "");
+                Val.put("agri_another", "");
+            }
+            Val.put("upd_by", "");
+            Val.put("upd_date", date);
+            Val.put("ACTIVE", "Y");
+            DwellerList = db.SelectWhereData("population_job_agriculture", "works_id", TestList.get(0).get("works_id"));
+            if (DwellerList.isEmpty()) {
+                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_date", date);
+                db.InsertData("population_job_agriculture", Val);
+            } else {
+                db.UpdateData("population_job_agriculture", Val, "works_id", TestList.get(0).get("works_id"));
+            }
+            //////////////////////////////////// Population Work Agri Insert/Update ////////////////////////////////////
+
+            Val = new ContentValues();
+            TestList = db.SelectWhereData("population_works", "population_idcard", etPersonalID.getText().toString());
+            Val.put("works_id", TestList.get(0).get("works_id"));
+            if (cbPet.isChecked()) {
+                Val.put("animal1", ModelCheckboxCheck.checkboxReturnCheck(cbPet1));
+                Val.put("animal2", ModelCheckboxCheck.checkboxReturnCheck(cbPet2));
+                Val.put("animal3", ModelCheckboxCheck.checkboxReturnCheck(cbPet3));
+                Val.put("animal4", ModelCheckboxCheck.checkboxReturnCheck(cbPet4));
+                Val.put("animal5", ModelCheckboxCheck.checkboxReturnCheck(cbPet5));
+                Val.put("animal6", ModelCheckboxCheck.checkboxReturnCheck(cbPet6));
+                Val.put("animal7", ModelCheckboxCheck.checkboxReturnCheck(cbPet7));
+                Val.put("animal8", ModelCheckboxCheck.checkboxReturnCheck(cbPet8));
+                Val.put("animal9", ModelCheckboxCheck.checkboxReturnCheck(cbPet9));
+                if (cbPet9.isChecked()) {
+                    Val.put("animal_another", etAnotherPet.getText().toString());
+                } else {
+                    Val.put("animal_another", "");
+                }
+
+            } else {
+                Val.put("animal1", "");
+                Val.put("animal2", "");
+                Val.put("animal3", "");
+                Val.put("animal4", "");
+                Val.put("animal5", "");
+                Val.put("animal6", "");
+                Val.put("animal7", "");
+                Val.put("animal8", "");
+                Val.put("animal9", "");
+                Val.put("animal_another", "");
+            }
+            Val.put("upd_by", "");
+            Val.put("upd_date", date);
+            Val.put("ACTIVE", "Y");
+            DwellerList = db.SelectWhereData("population_job_animal", "works_id", TestList.get(0).get("works_id"));
+            if (DwellerList.isEmpty()) {
+                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_date", date);
+                db.InsertData("population_job_animal", Val);
+            } else {
+                db.UpdateData("population_job_animal", Val, "works_id", TestList.get(0).get("works_id"));
+            }
+            //////////////////////////////////// Population Work Pet Insert/Update ////////////////////////////////////
+
+            Val = new ContentValues();
+            TestList = db.SelectWhereData("population_works", "population_idcard", etPersonalID.getText().toString());
+            Val.put("works_id", TestList.get(0).get("works_id"));
+            if (cbGovern.isChecked()) {
+                Val.put("govern1", ModelCheckboxCheck.checkboxReturnCheck(cbGovern1));
+                Val.put("govern2", ModelCheckboxCheck.checkboxReturnCheck(cbGovern2));
+                Val.put("govern3", ModelCheckboxCheck.checkboxReturnCheck(cbGovern3));
+                Val.put("govern4", ModelCheckboxCheck.checkboxReturnCheck(cbGovern4));
+                if (cbGovern4.isChecked()) {
+                    Val.put("govern_another", etAnotherGovern.getText().toString());
+                } else {
+                    Val.put("govern_another", "");
+                }
+
+            } else {
+                Val.put("govern1", "");
+                Val.put("govern2", "");
+                Val.put("govern3", "");
+                Val.put("govern4", "");
+                Val.put("govern_another", "");
+            }
+            Val.put("upd_by", "");
+            Val.put("upd_date", date);
+            Val.put("ACTIVE", "Y");
+            DwellerList = db.SelectWhereData("population_job_govern", "works_id", TestList.get(0).get("works_id"));
+            if (DwellerList.isEmpty()) {
+                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_date", date);
+                db.InsertData("population_job_govern", Val);
+            } else {
+                db.UpdateData("population_job_govern", Val, "works_id", TestList.get(0).get("works_id"));
+            }
+            //////////////////////////////////// Population Work Govern Insert/Update ////////////////////////////////////
+
+            Val = new ContentValues();
+            TestList = db.SelectWhereData("population_works", "population_idcard", etPersonalID.getText().toString());
+            Val.put("works_id", TestList.get(0).get("works_id"));
+            if (cbPrivate.isChecked()) {
+                Val.put("private1", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate1));
+                Val.put("private2", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate2));
+                Val.put("private3", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate3));
+                Val.put("private4", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate4));
+                Val.put("private5", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate5));
+                Val.put("private6", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate6));
+                Val.put("private7", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate7));
+                if (cbPrivate7.isChecked()) {
+                    Val.put("private_another", etAnotherPrivate.getText().toString());
+                } else {
+                    Val.put("private_another", "");
+                }
+
+            } else {
+                Val.put("private1", "");
+                Val.put("private2", "");
+                Val.put("private3", "");
+                Val.put("private4", "");
+                Val.put("private5", "");
+                Val.put("private6", "");
+                Val.put("private7", "");
+                Val.put("private_another", "");
+            }
+            Val.put("upd_by", "");
+            Val.put("upd_date", date);
+            Val.put("ACTIVE", "Y");
+            DwellerList = db.SelectWhereData("population_job_private", "works_id", TestList.get(0).get("works_id"));
+            if (DwellerList.isEmpty()) {
+                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_date", date);
+                db.InsertData("population_job_private", Val);
+            } else {
+                db.UpdateData("population_job_private", Val, "works_id", TestList.get(0).get("works_id"));
+            }
+            //////////////////////////////////// Population Work Private Insert/Update ////////////////////////////////////
         }
     }
 
@@ -457,9 +1508,22 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             ModelShowHideLayout.checkboxShowHide(cbGovern, loGovern);
         if (compoundButton == cbPrivate)
             ModelShowHideLayout.checkboxShowHide(cbPrivate, loPrivate);
+        if (compoundButton == cbCong5)
+            ModelShowHideLayout.checkboxShowHide(cbCong5, loAnotherCong);
+        if (compoundButton == cbCont11)
+            ModelShowHideLayout.checkboxShowHide(cbCont11, loAnotherCont);
+        if (compoundButton == cbAgri8)
+            ModelShowHideLayout.checkboxShowHide(cbAgri8, loAnotherAgri);
+        if (compoundButton == cbPet9)
+            ModelShowHideLayout.checkboxShowHide(cbPet9, loAnotherAgri);
+        if (compoundButton == cbGovern5)
+            ModelShowHideLayout.checkboxShowHide(cbGovern5, loAnotherAgri);
+        if (compoundButton == cbPrivate7)
+            ModelShowHideLayout.checkboxShowHide(cbPrivate7, loAnotherAgri);
 
-        if (compoundButton == rbInRegister)
-            ModelShowHideLayout.radiobuttonShowHide(rbInRegister, loInRegister);
+
+        /*if (compoundButton == rbInRegister)
+            ModelShowHideLayout.radiobuttonShowHide(rbInRegister, loInRegister);*/
         if (compoundButton == rbNotInRegister)
             ModelShowHideLayout.radiobuttonShowHide(rbNotInRegister, loNotInRegister);
         if (compoundButton == rbNotInHousehold)
@@ -484,6 +1548,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             ModelShowHideLayout.radiobuttonShowHide(rbGraduated, loGraduated);
         if (compoundButton == rbExpertiseYes)
             ModelShowHideLayout.radiobuttonShowHide(rbExpertiseYes, loExpertise);
+        ModelShowHideLayout.radiobuttonShowHide(rbExpertiseYes, loExpertiseText);
         if (compoundButton == rbAnotherReligion)
             ModelShowHideLayout.radiobuttonShowHide(rbAnotherReligion, loAnotherReligion);
         if (compoundButton == rbTransportationYes)
@@ -492,17 +1557,66 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
     @Override
     public void onClick(View view) {
-        if (view == btnLandForm) {
-            Intent intent = new Intent(getApplicationContext(), LandFormActivity.class);
-            startActivity(intent);
+        if (view == btnSavingData) {
+            if (!etPersonalID.getText().toString().equals("") && !etFirstName.getText().toString().equals("") && !etLastName.getText().toString().equals("")) {
+                updateData();
+                Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "กรุณากรอกข้อมูลประชากร", Toast.LENGTH_SHORT).show();
+            }
         }
-        if (view == btnVehicalForm) {
-            Intent intent = new Intent(getApplicationContext(), VehicalFormActivity.class);
-            startActivity(intent);
-        }
-        if (view == btnPetForm) {
-            Intent intent = new Intent(getApplicationContext(), PetFormActivity.class);
-            startActivity(intent);
+        if (view == btnAddProperty) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            LayoutInflater inflater = getLayoutInflater();
+            //inflate view for alertdialog since we are using multiple views inside a viewgroup (root = Layout top-level) (linear, relative, framelayout etc..)
+            View v = inflater.inflate(R.layout.my_alert_dialog, (ViewGroup) findViewById(R.id.root));
+
+            Button btnLand = (Button) v.findViewById(R.id.btnLand);
+            btnLand.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), LandFormActivity.class);
+                    intent.putExtra("PersonID", PersonID);
+                    intent.putExtra("LandID", "Nope");
+                    intent.putExtra("HouseID", HouseID);
+                    getApplicationContext().startActivity(intent);
+                }
+            });
+            Button btnVehicle = (Button) v.findViewById(R.id.btnVehicle);
+            btnVehicle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), VehicalFormActivity.class);
+                    intent.putExtra("PersonID", PersonID);
+                    intent.putExtra("VehicleID", "Nope");
+                    intent.putExtra("HouseID", HouseID);
+                    getApplicationContext().startActivity(intent);
+                }
+            });
+            Button btnPet = (Button) v.findViewById(R.id.btnPet);
+            btnPet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), PetFormActivity.class);
+                    intent.putExtra("PersonID", PersonID);
+                    intent.putExtra("PetID", "Nope");
+                    intent.putExtra("HouseID", HouseID);
+                    getApplicationContext().startActivity(intent);
+                }
+            });
+            Button btnAnimal = (Button) v.findViewById(R.id.btnAnimal);
+            btnAnimal.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), AnimalFormActivity.class);
+                    intent.putExtra("PersonID", PersonID);
+                    intent.putExtra("AnimalID", "Nope");
+                    intent.putExtra("HouseID", HouseID);
+                    getApplicationContext().startActivity(intent);
+                }
+            });
+            alert.setView(v);
+            alert.show();
         }
     }
 
@@ -520,5 +1634,28 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        HashMap<String, String> Item = (HashMap<String, String>) lvProperty.getItemAtPosition(position);
+        SelectedIDItem = Item.get("ID").toString();
+        Intent intent = null;
+        if (Item.get("PropType").toString().equals("ที่ดิน")) {
+            intent = new Intent(getApplicationContext(), LandFormActivity.class);
+            intent.putExtra("LandID", SelectedIDItem);
+        } else if (Item.get("PropType").toString().equals("ยานพาหนะ")) {
+            intent = new Intent(getApplicationContext(), VehicalFormActivity.class);
+            intent.putExtra("VehicleID", SelectedIDItem);
+        } else if (Item.get("PropType").toString().equals("สัตว์เลี้ยง")) {
+            intent = new Intent(getApplicationContext(), PetFormActivity.class);
+            intent.putExtra("PetID", SelectedIDItem);
+        } else if (Item.get("PropType").toString().equals("ปศุสัตว์")) {
+            intent = new Intent(getApplicationContext(), AnimalFormActivity.class);
+            intent.putExtra("AnimalID", SelectedIDItem);
+        }
+        intent.putExtra("PersonID", PersonID);
+        intent.putExtra("HouseID", HouseID);
+        startActivity(intent);
     }
 }

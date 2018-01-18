@@ -219,15 +219,6 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
         Log.d("MYLOG", "SoilList: " + SoilList);
         if (!AreaList.isEmpty() && !SlumList.isEmpty() && !SoilList.isEmpty()) {
             String strSlum = SlumList.get(0).get("slum_status");
-            int strA1 = Integer.parseInt(AreaList.get(0).get("area_river")),
-                    strA2 = Integer.parseInt(AreaList.get(0).get("area_plateau")),
-                    strA3 = Integer.parseInt(AreaList.get(0).get("area_mountain")),
-                    strA4 = Integer.parseInt(AreaList.get(0).get("area_coastal"));
-            int strS1 = Integer.parseInt(SoilList.get(0).get("soil_bog")),
-                    strS2 = Integer.parseInt(SoilList.get(0).get("soil_don")),
-                    strS3 = Integer.parseInt(SoilList.get(0).get("soil_clay")),
-                    strS4 = Integer.parseInt(SoilList.get(0).get("soil_mold")),
-                    strS5 = Integer.parseInt(SoilList.get(0).get("soil_sandy"));
             if (!strSlum.equals("")) {
                 if (strSlum.equals("0")) {
                     ((RadioButton) rgSlum.getChildAt(0)).setChecked(true);
@@ -238,16 +229,16 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
             }
             etSlum.append(SlumList.get(0).get("slum_address"));
 
-            ModelCheckboxCheck.checkboxSetCheck(this, cbSC1, strA1);
-            ModelCheckboxCheck.checkboxSetCheck(this, cbSC2, strA2);
-            ModelCheckboxCheck.checkboxSetCheck(this, cbSC3, strA3);
-            ModelCheckboxCheck.checkboxSetCheck(this, cbSC4, strA4);
+            ModelCheckboxCheck.checkboxSetCheck(cbSC1, AreaList.get(0).get("area_river"));
+            ModelCheckboxCheck.checkboxSetCheck(cbSC2, AreaList.get(0).get("area_plateau"));
+            ModelCheckboxCheck.checkboxSetCheck(cbSC3, AreaList.get(0).get("area_mountain"));
+            ModelCheckboxCheck.checkboxSetCheck(cbSC4, AreaList.get(0).get("area_coastal"));
 
-            ModelCheckboxCheck.checkboxSetCheck(this, cbSoil1, strS1);
-            ModelCheckboxCheck.checkboxSetCheck(this, cbSoil2, strS2);
-            ModelCheckboxCheck.checkboxSetCheck(this, cbSoil3, strS3);
-            ModelCheckboxCheck.checkboxSetCheck(this, cbSoil4, strS4);
-            ModelCheckboxCheck.checkboxSetCheck(this, cbSoil5, strS5);
+            ModelCheckboxCheck.checkboxSetCheck(cbSoil1, SoilList.get(0).get("soil_bog"));
+            ModelCheckboxCheck.checkboxSetCheck(cbSoil2, SoilList.get(0).get("soil_don"));
+            ModelCheckboxCheck.checkboxSetCheck(cbSoil3, SoilList.get(0).get("soil_clay"));
+            ModelCheckboxCheck.checkboxSetCheck(cbSoil4, SoilList.get(0).get("soil_mold"));
+            ModelCheckboxCheck.checkboxSetCheck(cbSoil5, SoilList.get(0).get("soil_sandy"));
         } else {
             insertAreaSoilSlum();
         }
@@ -564,7 +555,7 @@ public class OPTVillageFormActivity extends AppCompatActivity implements View.On
             //Intent intent = new Intent(getApplicationContext(), OPTActivity.class);
             //startActivity(intent);
         }
-        if (view == btnImagePick){
+        if (view == btnImagePick) {
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");
             startActivityForResult(photoPickerIntent, 1);

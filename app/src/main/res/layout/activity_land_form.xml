@@ -154,7 +154,9 @@
             <RadioGroup
                 android:id="@+id/rgLandBenefit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
 
                 <RadioButton
                     android:id="@+id/rbLB1"
@@ -191,7 +193,9 @@
             <RadioGroup
                 android:id="@+id/rgLandLocation"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
 
                 <RadioButton
                     android:id="@+id/rbLL1"
@@ -216,7 +220,9 @@
             <RadioGroup
                 android:id="@+id/rgLandTax"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
 
                 <RadioButton
                     android:id="@+id/rbLT1"
@@ -247,7 +253,9 @@
             <RadioGroup
                 android:id="@+id/rgLandRent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
 
                 <RadioButton
                     android:id="@+id/rbLR1"
