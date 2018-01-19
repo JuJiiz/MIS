@@ -556,6 +556,7 @@ public class myDBClass extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase(); // Write Data
             long rows = db.insert(TableName, null, Val);
             Log.d("MYLOG", TableName + " Insert: " + Val);
+            Log.d("MYLOG", " rows: " + rows);
             db.close();
 
             return rows; // return rows inserted.

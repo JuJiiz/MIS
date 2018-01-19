@@ -202,10 +202,11 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
 
     private void updateData() {
         String date = df.format(Calendar.getInstance().getTime());
-        Boolean NatPass = false;
+        Boolean NatPass = true;
         TypeList = db.SelectData("asset_animal");
         if (!TypeList.isEmpty()) {
             if (spAnimalType.getSelectedItem().toString().equals("อื่นๆ")) {
+                NatPass = false;
                 String strAnotherType = etAnimalType.getText().toString();
                 if (!strAnotherType.equals("")) {
                     if (!Type.contains(strAnotherType)) {
@@ -328,6 +329,8 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
                     db.UpdateData("population_asset_animal", Val, "animal_running", AnimalID);
                 }
             }
+            Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
+            this.finish();
         }
     }
 
@@ -335,8 +338,6 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         if (v == btnSavingData){
             updateData();
-            Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
-            this.finish();
         }
     }
 

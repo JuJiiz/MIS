@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="ลำดับ"
-        android:textAlignment="center" />
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/tvColumn2"
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1.5"
         android:text="ประเภททรัพย์สิน"
-        android:textAlignment="center"/>
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/tvColumn3"
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="2.5"
         android:text="สถานะทรัพย์สิน"
-        android:textAlignment="center"/>
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/tvHiddenColumn"

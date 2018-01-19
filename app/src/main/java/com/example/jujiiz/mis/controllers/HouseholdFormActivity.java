@@ -2,6 +2,7 @@ package com.example.jujiiz.mis.controllers;
 
 import android.Manifest;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,8 +11,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -58,7 +61,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -328,7 +334,11 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         if (dataIMG != null){
             Bitmap bm = BitmapFactory.decodeByteArray(dataIMG, 0, dataIMG.length);
             ivImage.setImageBitmap(bm);
+            ivImage.setVisibility(View.VISIBLE);
         }
+        HouseList = db.SelectWhereData("tr14", "house_id", HouseID);
+        JSONArray ja = new JSONArray(HouseList);
+        Log.d("MYLOG", "ja: ");
         HouseList = db.SelectWhereData("house", "house_id", HouseID);
         if (!HouseList.isEmpty()) {
             etHouseID.setText(HouseList.get(0).get("house_id"));
@@ -1254,10 +1264,13 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                 final Uri imageUri = data.getData();
                 InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 selectedImage = BitmapFactory.decodeStream(imageStream);
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                selectedImage.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-                dataBitmap = outputStream.toByteArray();
+                //ivImage.getLayoutParams().height = selectedImage.getScaledHeight(50);
+                //ivImage.getLayoutParams().width = selectedImage.getScaledWidth(50);
                 ivImage.setImageBitmap(selectedImage);
+                ivImage.setVisibility(View.VISIBLE);
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                selectedImage.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
+                dataBitmap = outputStream.toByteArray();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();

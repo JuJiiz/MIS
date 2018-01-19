@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.2"
         android:text="*"
-        android:textAlignment="center" />
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/tvColumn2"
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1.4"
         android:text="ชื่อต้น"
-        android:textAlignment="center" />
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/tvColumn3"
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:text="ชื่อสกุล"
-        android:textAlignment="center" />
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/tvColumn4"
@@ -39,14 +39,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1.4"
         android:text="การสำรวจ"
-        android:textAlignment="center" />
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/tvHiddenColumn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:textAlignment="viewEnd"
+        android:gravity="end"
         android:visibility="gone"/>
 
 </LinearLayout>

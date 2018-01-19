@@ -919,10 +919,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
     private void updateData() {
         String date = df.format(Calendar.getInstance().getTime());
-        Boolean NatPass = false;
+        Boolean NatPass = true;
         NationalityList = db.SelectData("nationality");
+
         if (!NationalityList.isEmpty()) {
             if (spNationality.getSelectedItem().toString().equals("อื่นๆ")) {
+                NatPass = false;
                 String strAnotherNat = etNationality.getText().toString();
                 if (!strAnotherNat.equals("")) {
                     if (!Nationality.contains(strAnotherNat)) {
@@ -1495,6 +1497,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 db.UpdateData("population_job_private", Val, "works_id", TestList.get(0).get("works_id"));
             }
             //////////////////////////////////// Population Work Private Insert/Update ////////////////////////////////////
+            Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1560,7 +1563,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         if (view == btnSavingData) {
             if (!etPersonalID.getText().toString().equals("") && !etFirstName.getText().toString().equals("") && !etLastName.getText().toString().equals("")) {
                 updateData();
-                Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "กรุณากรอกข้อมูลประชากร", Toast.LENGTH_SHORT).show();
             }
@@ -1568,7 +1570,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         if (view == btnAddProperty) {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             LayoutInflater inflater = getLayoutInflater();
-            //inflate view for alertdialog since we are using multiple views inside a viewgroup (root = Layout top-level) (linear, relative, framelayout etc..)
             View v = inflater.inflate(R.layout.my_alert_dialog, (ViewGroup) findViewById(R.id.root));
 
             Button btnLand = (Button) v.findViewById(R.id.btnLand);
