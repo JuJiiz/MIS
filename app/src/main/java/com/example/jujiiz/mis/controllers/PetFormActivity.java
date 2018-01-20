@@ -131,9 +131,9 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
 
             etPetAmount.setText(PetList.get(0).get("pet_amount"));
 
-            if (PetList.get(0).get("pet_type").equals("หมา")) {
+            if (PetList.get(0).get("pet_type").equals("0")) {
                 rbPetTypeDog.setChecked(true);
-            } else if (PetList.get(0).get("pet_type").equals("แมว")) {
+            } else if (PetList.get(0).get("pet_type").equals("1")) {
                 rbPetTypeCat.setChecked(true);
             }
 
@@ -182,9 +182,9 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
         Val.put("pet_amount", etPetAmount.getText().toString());
 
         if (rbPetTypeDog.isChecked()) {
-            Val.put("pet_type", "หมา");
+            Val.put("pet_type", "0");
         } else if (rbPetTypeCat.isChecked()) {
-            Val.put("pet_type", "แมว");
+            Val.put("pet_type", "1");
         } else {
             Val.put("pet_type", "");
         }

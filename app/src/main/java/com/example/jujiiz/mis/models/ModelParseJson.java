@@ -25,7 +25,8 @@ public class ModelParseJson {
         ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();
         arrayList.add(hashMap);
         JSONArray jsonArray = new JSONArray(arrayList);
-        parseHJ = jsonArray.toString();
+        String str1 = jsonArray.toString().replace("[","");
+        parseHJ = str1.replace("]","");
         Log.d("MYLOG", "parseAJ: " + parseHJ);
         return parseHJ;
     }

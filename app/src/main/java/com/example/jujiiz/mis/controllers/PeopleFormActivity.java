@@ -474,9 +474,14 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
     private void setField() {
         if (!PersonID.equals("Nope")) {
-            loProperty.setVisibility(View.VISIBLE);
+
             PersonList = db.SelectWhereData("population", "population_idcard", PersonID);
             if (!PersonList.isEmpty()) {
+                if (PersonList.get(0).get("survey_status").equals("1")){
+                    loProperty.setVisibility(View.VISIBLE);
+                }else{
+                    loProperty.setVisibility(View.GONE);
+                }
                 int spinnerPositionNat = nationalityArrayAdapter.getPosition(PersonList.get(0).get("nationality"));
                 spNationality.setSelection(spinnerPositionNat);
 

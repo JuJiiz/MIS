@@ -31,13 +31,15 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
     ArrayList<HashMap<String, String>> TestList,
             IMGList,
             DisasterList, EnProbList, ProbList,
-            HouseList,
-            HouseActive,
+            HouseList, HouseActive,
             CongList, ContList, DisList, TransList, WorkList, AgriList, AniList, GovernList, PrivateList,
-            PopulationList,
-            PopulationActive,
+            PopulationList, PopulationActive,
+            LandList, LandActive,
+            VehicleList, VehicleActive,
+            PetList, PetActive,
+            AnimalList, AnimalActive,
             DwellerList,
-            EachHouse;
+            AnimalName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -226,7 +228,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             for (int i = 0; i < PopulationList.size(); i++) {
                 if (PopulationList.get(i).get("survey_status").equals("1")) {
                     HashMap<String, String> temp = new HashMap<String, String>();
-                    temp.put("house_id", PopulationList.get(i).get("population_idcard"));
+                    temp.put("population_idcard", PopulationList.get(i).get("population_idcard"));
                     temp.put("prename_id", PopulationList.get(i).get("prename"));
                     temp.put("firstname", PopulationList.get(i).get("firstname"));
                     temp.put("lastname", PopulationList.get(i).get("lastname"));
@@ -401,6 +403,102 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    private void uploadLand() {
+        LandActive = new ArrayList<HashMap<String, String>>();
+        LandList = db.SelectData("population_asset_land");
+        if (!LandList.isEmpty()) {
+            for (int i = 0; i < LandList.size(); i++) {
+                HashMap<String, String> temp = new HashMap<String, String>();
+                temp.put("userid", "1579");
+                temp.put("username", "JuJiiz");
+
+                temp.put("population_idcard", LandList.get(i).get("population_idcard"));
+                temp.put("system_id", LandList.get(i).get("system_id"));
+                temp.put("dimen1", LandList.get(i).get("dimen1"));
+                temp.put("dimen2", LandList.get(i).get("dimen2"));
+                temp.put("dimen3", LandList.get(i).get("dimen3"));
+                temp.put("land_benefit", LandList.get(i).get("land_benefit"));
+                temp.put("land_location", LandList.get(i).get("land_location"));
+                temp.put("land_tax", LandList.get(i).get("land_tax"));
+                temp.put("land_rent", LandList.get(i).get("land_rent"));
+                temp.put("distributor", LandList.get(i).get("distributor"));
+                LandActive.add(temp);
+            }
+        }
+    }
+
+    private void uploadVehicle() {
+        VehicleActive = new ArrayList<HashMap<String, String>>();
+        VehicleList = db.SelectData("population_asset_vehicle");
+        if (!VehicleList.isEmpty()) {
+            for (int i = 0; i < VehicleList.size(); i++) {
+                HashMap<String, String> temp = new HashMap<String, String>();
+                temp.put("userid", "1579");
+                temp.put("username", "JuJiiz");
+
+                temp.put("population_idcard", VehicleList.get(i).get("population_idcard"));
+                temp.put("regisdate", VehicleList.get(i).get("regisdate"));
+                temp.put("vtype_id", VehicleList.get(i).get("vtype_id"));
+                temp.put("vehicle_rent", VehicleList.get(i).get("vehicle_rent"));
+                temp.put("distributor", VehicleList.get(i).get("distributor"));
+                VehicleActive.add(temp);
+            }
+        }
+    }
+
+    private void uploadPet() {
+        PetActive = new ArrayList<HashMap<String, String>>();
+        PetList = db.SelectData("population_asset_pet");
+        if (!PetList.isEmpty()) {
+            for (int i = 0; i < PetList.size(); i++) {
+                HashMap<String, String> temp = new HashMap<String, String>();
+                temp.put("userid", "1579");
+                temp.put("username", "JuJiiz");
+
+                temp.put("population_idcard", PetList.get(i).get("population_idcard"));
+                temp.put("pet_regis", PetList.get(i).get("pet_regis"));
+                temp.put("pet_amount", PetList.get(i).get("pet_amount"));
+                temp.put("ptype_id", PetList.get(i).get("pet_type"));
+                temp.put("pet_sex", PetList.get(i).get("pet_sex"));
+                temp.put("vaccine", PetList.get(i).get("vaccine"));
+                temp.put("vaccine_during", PetList.get(i).get("vaccine_during"));
+                temp.put("vaccine_lastest", PetList.get(i).get("vaccine_lastest"));
+                temp.put("pet_newborn", PetList.get(i).get("pet_newborn"));
+                temp.put("pet_newborn_number", PetList.get(i).get("pet_newborn_number"));
+                temp.put("distributor", PetList.get(i).get("distributor"));
+                PetActive.add(temp);
+            }
+        }
+    }
+
+    private void uploadAnimal() {
+        AnimalActive = new ArrayList<HashMap<String, String>>();
+        AnimalList = db.SelectData("population_asset_animal");
+        if (!AnimalList.isEmpty()) {
+            for (int i = 0; i < AnimalList.size(); i++) {
+                HashMap<String, String> temp = new HashMap<String, String>();
+                temp.put("userid", "1579");
+                temp.put("username", "JuJiiz");
+
+                temp.put("population_idcard", AnimalList.get(i).get("population_idcard"));
+                temp.put("animal_regis", AnimalList.get(i).get("pet_regis"));
+                temp.put("pet_amount", AnimalList.get(i).get("pet_amount"));
+                AnimalName = db.SelectWhereData("asset_animal", "atype_id", AnimalList.get(i).get("atype_id"));
+                temp.put("atype_id", AnimalName.get(0).get("atype_name"));
+                temp.put("infection", AnimalList.get(i).get("infection"));
+                temp.put("infection_detail", AnimalList.get(i).get("infection_detail"));
+                temp.put("shelter", AnimalList.get(i).get("shelter"));
+                temp.put("diseasecontrol", AnimalList.get(i).get("diseasecontrol"));
+                temp.put("diseasecontrol_by", AnimalList.get(i).get("diseasecontrol_by"));
+                temp.put("disease_shelter", AnimalList.get(i).get("disease_shelter"));
+                temp.put("market", AnimalList.get(i).get("market"));
+                temp.put("market_place", AnimalList.get(i).get("market_place"));
+                temp.put("distributor", AnimalList.get(i).get("distributor"));
+                AnimalActive.add(temp);
+            }
+        }
+    }
+
     @Override
     public void onClick(View v) {
         if (v == btnUploadData) {
@@ -412,8 +510,47 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             uploadPopulation();
             for (int i = 0; i < PopulationActive.size(); i++) {
                 ModelParseJson.HashmapToJsonlist(PopulationActive.get(i));
-            }
+                LandList = db.SelectWhereData("population_asset_land", "population_idcard", PopulationActive.get(i).get("population_idcard"));
+                if (!LandList.isEmpty()) {
+                    uploadLand();
+                    for (int j = 0; j < LandActive.size(); j++) {
+                        ModelParseJson.HashmapToJsonlist(LandActive.get(j));
+                    }
+                } else {
+                    Log.d("MYLOG", "Land No Data");
+                }
 
+                VehicleList = db.SelectWhereData("population_asset_vehicle", "population_idcard", PopulationActive.get(i).get("population_idcard"));
+                if (!VehicleList.isEmpty()) {
+                    uploadVehicle();
+                    for (int j = 0; j < VehicleActive.size(); j++) {
+                        ModelParseJson.HashmapToJsonlist(VehicleActive.get(j));
+                    }
+                } else {
+                    Log.d("MYLOG", "Vehicle No Data");
+                }
+
+                PetList = db.SelectWhereData("population_asset_pet", "population_idcard", PopulationActive.get(i).get("population_idcard"));
+                if (!PetList.isEmpty()) {
+                    uploadPet();
+                    for (int j = 0; j < PetActive.size(); j++) {
+                        ModelParseJson.HashmapToJsonlist(PetActive.get(j));
+                    }
+                } else {
+                    Log.d("MYLOG", "Pet No Data");
+                }
+
+                AnimalList = db.SelectWhereData("population_asset_animal", "population_idcard", PopulationActive.get(i).get("population_idcard"));
+                if (!AnimalList.isEmpty()) {
+                    uploadAnimal();
+                    for (int j = 0; j < AnimalActive.size(); j++) {
+                        ModelParseJson.HashmapToJsonlist(AnimalActive.get(j));
+                    }
+                } else {
+                    Log.d("MYLOG", "Animal No Data");
+                }
+            }
         }
     }
 }
+
