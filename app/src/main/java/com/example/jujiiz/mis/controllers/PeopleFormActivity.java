@@ -1191,6 +1191,14 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 } else if (!cbCong5.isChecked()) {
                     Val.put("congh_another", "");
                 }
+            }else{
+                Val.put("congh_type", "");
+                Val.put("congh1", "");
+                Val.put("congh2", "");
+                Val.put("congh3", "");
+                Val.put("congh4", "");
+                Val.put("congh5", "");
+                Val.put("congh_another", "");
             }
             Val.put("population_idcard", etPersonalID.getText().toString());
             Val.put("upd_by", "");
@@ -1239,6 +1247,20 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 } else if (!cbCont11.isChecked()) {
                     Val.put("conth_another", "");
                 }
+            }else{
+                Val.put("conth_type", "");
+                Val.put("conth1", "");
+                Val.put("conth2", "");
+                Val.put("conth3", "");
+                Val.put("conth4", "");
+                Val.put("conth5", "");
+                Val.put("conth6", "");
+                Val.put("conth7", "");
+                Val.put("conth8", "");
+                Val.put("conth9", "");
+                Val.put("conth10", "");
+                Val.put("conth11", "");
+                Val.put("conth_another", "");
             }
             Val.put("population_idcard", etPersonalID.getText().toString());
             Val.put("upd_by", "");
@@ -1271,6 +1293,14 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("disabled4", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled4));
                 Val.put("disabled5", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled5));
                 Val.put("disabled6", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled6));
+            }else{
+                Val.put("disabled_type", "");
+                Val.put("disabled1", "");
+                Val.put("disabled2", "");
+                Val.put("disabled3", "");
+                Val.put("disabled4", "");
+                Val.put("disabled5", "");
+                Val.put("disabled6", "");
             }
             Val.put("population_idcard", etPersonalID.getText().toString());
             Val.put("upd_by", "");
@@ -1299,6 +1329,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("trans2", ModelCheckboxCheck.checkboxReturnCheck(cbTrans2));
                 Val.put("trans3", ModelCheckboxCheck.checkboxReturnCheck(cbTrans3));
                 Val.put("trans4", ModelCheckboxCheck.checkboxReturnCheck(cbTrans4));
+            }else{
+                Val.put("transport_type", "");
+                Val.put("trans1", "");
+                Val.put("trans2", "");
+                Val.put("trans3", "");
+                Val.put("trans4", "");
             }
             Val.put("population_idcard", etPersonalID.getText().toString());
             Val.put("upd_by", "");
@@ -1437,7 +1473,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 } else {
                     Val.put("govern_another", "");
                 }
-
             } else {
                 Val.put("govern1", "");
                 Val.put("govern2", "");

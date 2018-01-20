@@ -3,6 +3,7 @@ package com.example.jujiiz.mis.controllers;
 import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -253,7 +254,8 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
                 TypeList = db.SelectWhereData("asset_animal","atype_name", "\"" + etAnimalType.getText().toString() + "\"");
                 Val.put("atype_id", TypeList.get(0).get("atype_id"));
             } else {
-                Val.put("atype_id", spAnimalType.getSelectedItem().toString());
+                TypeList = db.SelectWhereData("asset_animal","atype_name", "\"" + spAnimalType.getSelectedItem().toString() + "\"");
+                Val.put("atype_id", TypeList.get(0).get("atype_id"));
             }
 
             if (rbAnimalInfectionNo.isChecked()) {
@@ -316,12 +318,14 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
             if (AnimalID.equals("Nope")) {
+                Log.d("MYLOG", "AnimalID: "+AnimalID);
                 Val.put("cr_by", "JuJiiz");
                 Val.put("cr_date", date);
                 db.InsertData("population_asset_animal", Val);
             } else {
                 AnimalList = db.SelectWhereData("population_asset_animal", "animal_running", AnimalID);
                 if (AnimalList.isEmpty()) {
+                    Log.d("MYLOG", "AnimalList: "+AnimalList);
                     Val.put("cr_by", "JuJiiz");
                     Val.put("cr_date", date);
                     db.InsertData("population_asset_animal", Val);
@@ -330,7 +334,7 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
                 }
             }
             Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
-            this.finish();
+            //this.finish();
         }
     }
 

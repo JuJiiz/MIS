@@ -19,4 +19,14 @@ public class ModelParseJson {
         Log.d("MYLOG", "parseAJ: " + parseAJ);
         return parseAJ;
     }
+
+    public static String HashmapToJsonlist(HashMap<String, String> hashMap) {
+        String parseHJ = "parseHJ";
+        ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();
+        arrayList.add(hashMap);
+        JSONArray jsonArray = new JSONArray(arrayList);
+        parseHJ = jsonArray.toString();
+        Log.d("MYLOG", "parseAJ: " + parseHJ);
+        return parseHJ;
+    }
 }

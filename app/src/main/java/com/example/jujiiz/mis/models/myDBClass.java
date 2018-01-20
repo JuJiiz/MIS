@@ -106,6 +106,7 @@ public class myDBClass extends SQLiteOpenHelper {
                 "\t`govern4`\tTEXT NOT NULL,\n" +
                 "\t`govern_another`\tTEXT NOT NULL,\n" +
                 "\t`cr_by`\tTEXT NOT NULL,\n" +
+                "\t`cr_date`\tTEXT NOT NULL,\n" +
                 "\t`upd_by`\tTEXT,\n" +
                 "\t`upd_date`\tTEXT,\n" +
                 "\t`ACTIVE`\tTEXT NOT NULL\n" +
@@ -557,7 +558,7 @@ public class myDBClass extends SQLiteOpenHelper {
             long rows = db.insert(TableName, null, Val);
             Log.d("MYLOG", TableName + " Insert: " + Val);
             Log.d("MYLOG", " rows: " + rows);
-            db.close();
+            //db.close();
 
             return rows; // return rows inserted.
 
