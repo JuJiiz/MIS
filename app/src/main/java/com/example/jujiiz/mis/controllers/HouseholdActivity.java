@@ -90,7 +90,7 @@ public class HouseholdActivity extends AppCompatActivity
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
-                            if (isConnectedToServer(apiURL, 10) == true){
+                            if (isConnectedToServer(apiURL, 10000) == true){
                                 downloadJson();
                                 setListView();
                                 Toast.makeText(getApplicationContext(), "ดาวน์โหลดสำเร็จแล้ว", Toast.LENGTH_SHORT).show();

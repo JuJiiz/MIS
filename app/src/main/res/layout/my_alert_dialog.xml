@@ -32,11 +32,11 @@
         android:id="@+id/btnPet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="สัตว์เลี้ยง"/>
+        android:text="สัตว์เลี้ยงในครัวเรือน"/>
     <Button
         android:id="@+id/btnAnimal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ปศุสัตว์"/>
+        android:text="สัตว์เลี้ยงเพื่อการเกษตร"/>
 
 </LinearLayout>

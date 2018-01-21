@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -87,7 +89,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     String PersonID, HouseID;
     String SelectedIDItem;
 
-    String[] spBloodGroupArray = {"O", "A", "B", "AB", "อื่นๆ"};
+    String[] spBloodGroupArray = {"O", "A", "B", "AB", "ไม่ทราบ", "อื่นๆ"};
     String[] spMaritalStatusArray = {"สมรส", "โสด", "หย่าร้าง", "หม้าย", "แยกกันอยู่"};
     String[] spEducationArray = {"ระดับก่อนประถมศึกษา", "ระดับประถมศึกษา", "ระดับมัธยมศึกษาตอนต้น", "ระดับมัธยมศึกษาตอนปลาย", "ระดับอนุปริญญา", "ระดับปริญญาตรี", "ระดับปริญญาโท", "ระดับปริญญาเอก"};
     String[] spExpertiseArray = {"สาขาการเกษตรและพัฒนาชนบท", "สาขาอุตสาหกรรมก่อสร้าง", "สาขาการศึกษา", "สาขาพลังงาน", "สาขาสิ่งแวดล้อม", "สาขาการเงิน", "สาขาสาธารณสุข", "สาขาอุตสาหกรรม", "สาขาเบ็ดเตล็ด", "สาขาประชากร", "สาขาเทคโนโลยีสารสนเทศและการสื่อสาร", "สาขาการท่องเที่ยว", "สาขาการขนส่ง", "สาขาการพัฒนาเมือง", "สาขาการประปาและสุขาภิบาล", "สาขาภาษาต่างประเทศ"};
@@ -115,6 +117,68 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         super.onResume();
         setListView();
     }
+
+    TextWatcher tw = new TextWatcher() {
+        private String current = "";
+        private String ddmmyyyy = "DDMMYYYY";
+        private Calendar cal = Calendar.getInstance();
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (!s.toString().equals(current)) {
+                String clean = s.toString().replaceAll("[^\\d.]|\\.", "");
+                String cleanC = current.replaceAll("[^\\d.]|\\.", "");
+
+                int cl = clean.length();
+                int sel = cl;
+                for (int i = 2; i <= cl && i < 6; i += 2) {
+                    sel++;
+                }
+                //Fix for pressing delete next to a forward slash
+                if (clean.equals(cleanC)) sel--;
+
+                if (clean.length() < 8) {
+                    clean = clean + ddmmyyyy.substring(clean.length());
+                } else {
+                    //This part makes sure that when we finish entering numbers
+                    //the date is correct, fixing it otherwise
+                    int day = Integer.parseInt(clean.substring(0, 2));
+                    int mon = Integer.parseInt(clean.substring(2, 4));
+                    int year = Integer.parseInt(clean.substring(4, 8));
+
+                    mon = mon < 1 ? 1 : mon > 12 ? 12 : mon;
+                    cal.set(Calendar.MONTH, mon - 1);
+                    year = (year < 1900) ? 1900 : (year > 2100) ? 2100 : year;
+                    cal.set(Calendar.YEAR, year);
+                    // ^ first set year for the line below to work correctly
+                    //with leap years - otherwise, date e.g. 29/02/2012
+                    //would be automatically corrected to 28/02/2012
+
+                    day = (day > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum(Calendar.DATE) : day;
+                    clean = String.format("%02d%02d%02d", day, mon, year);
+                }
+
+                clean = String.format("%s/%s/%s", clean.substring(0, 2),
+                        clean.substring(2, 4),
+                        clean.substring(4, 8));
+
+                sel = sel < 0 ? 0 : sel;
+                current = clean;
+                etBirtDate.setText(current);
+                etBirtDate.setSelection(sel < current.length() ? sel : current.length());
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 
     private void init() {
         lvProperty = (ListView) findViewById(R.id.lvProperty);
@@ -180,6 +244,9 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         etAnotherPrefix = (EditText) findViewById(R.id.etAnotherPrefix);
         etPersonalID = (EditText) findViewById(R.id.etPersonalID);
         etBirtDate = (EditText) findViewById(R.id.etBirtDate);
+        etBirtDate.addTextChangedListener(tw);
+
+
         etHeight = (EditText) findViewById(R.id.etHeight);
         etWeight = (EditText) findViewById(R.id.etWeight);
         etBloodType = (EditText) findViewById(R.id.etBloodType);
@@ -477,9 +544,9 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
             PersonList = db.SelectWhereData("population", "population_idcard", PersonID);
             if (!PersonList.isEmpty()) {
-                if (PersonList.get(0).get("survey_status").equals("1")){
+                if (PersonList.get(0).get("survey_status").equals("1")) {
                     loProperty.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     loProperty.setVisibility(View.GONE);
                 }
                 int spinnerPositionNat = nationalityArrayAdapter.getPosition(PersonList.get(0).get("nationality"));
@@ -883,9 +950,13 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     if (PPetList.get(i).get("ACTIVE").equals("Y")) {
                         HashMap<String, String> temp = new HashMap<String, String>();
                         temp.put(strOrder, String.valueOf(++order));
-                        temp.put(strPropType, "สัตว์เลี้ยง");
+                        temp.put(strPropType, "สัตว์เลี้ยงในครัวเรือน");
                         if (!PPetList.get(0).get("pet_type").equals("")) {
-                            temp.put(strBenefit, PPetList.get(0).get("pet_type"));
+                            if (PPetList.get(0).get("pet_type").equals("0")){
+                                temp.put(strBenefit, "หมา");
+                            }else if (PPetList.get(0).get("pet_type").equals("1")){
+                                temp.put(strBenefit, "แมว");
+                            }
                         } else {
                             temp.put(strBenefit, "ไม่ทราบ");
                         }
@@ -901,7 +972,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     if (PAnimalList.get(i).get("ACTIVE").equals("Y")) {
                         HashMap<String, String> temp = new HashMap<String, String>();
                         temp.put(strOrder, String.valueOf(++order));
-                        temp.put(strPropType, "ปศุสัตว์");
+                        temp.put(strPropType, "สัตว์เลี้ยงเพื่อการเกษตร");
                         TestList = db.SelectWhereData("asset_animal", "atype_id", PAnimalList.get(i).get("atype_id"));
                         if (!TestList.isEmpty()) {
                             temp.put(strBenefit, TestList.get(0).get("atype_name"));
@@ -1196,7 +1267,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 } else if (!cbCong5.isChecked()) {
                     Val.put("congh_another", "");
                 }
-            }else{
+            } else {
                 Val.put("congh_type", "");
                 Val.put("congh1", "");
                 Val.put("congh2", "");
@@ -1252,7 +1323,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 } else if (!cbCont11.isChecked()) {
                     Val.put("conth_another", "");
                 }
-            }else{
+            } else {
                 Val.put("conth_type", "");
                 Val.put("conth1", "");
                 Val.put("conth2", "");
@@ -1298,7 +1369,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("disabled4", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled4));
                 Val.put("disabled5", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled5));
                 Val.put("disabled6", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled6));
-            }else{
+            } else {
                 Val.put("disabled_type", "");
                 Val.put("disabled1", "");
                 Val.put("disabled2", "");
@@ -1334,7 +1405,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("trans2", ModelCheckboxCheck.checkboxReturnCheck(cbTrans2));
                 Val.put("trans3", ModelCheckboxCheck.checkboxReturnCheck(cbTrans3));
                 Val.put("trans4", ModelCheckboxCheck.checkboxReturnCheck(cbTrans4));
-            }else{
+            } else {
                 Val.put("transport_type", "");
                 Val.put("trans1", "");
                 Val.put("trans2", "");
@@ -1603,6 +1674,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         if (view == btnSavingData) {
             if (!etPersonalID.getText().toString().equals("") && !etFirstName.getText().toString().equals("") && !etLastName.getText().toString().equals("")) {
                 updateData();
+                loProperty.setVisibility(View.VISIBLE);
             } else {
                 Toast.makeText(this, "กรุณากรอกข้อมูลประชากร", Toast.LENGTH_SHORT).show();
             }

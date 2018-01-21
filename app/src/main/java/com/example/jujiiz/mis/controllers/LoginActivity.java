@@ -26,6 +26,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
@@ -46,7 +48,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 1);
-
         init();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //Important!! (Form)
     }
@@ -61,9 +62,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (view == btnLogin) {
-            ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo netInfo = manager.getActiveNetworkInfo();
-            if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            /*ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = manager.getActiveNetworkInfo();*/
+            if (isConnectedToServer("http://203.154.54.229/chklogin", 10) == true) {
                 try {
                     pUsername = etUsername.getText().toString();
                     pPassword = etPassword.getText().toString();
@@ -96,16 +97,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     } else {
                         Toast.makeText(this, "ชื่อผู้ใช้หรือรหัสผ่าน ไม่ถูกต้อง", Toast.LENGTH_SHORT).show();
                     }
-                }/* catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }*/ catch (JSONException e) {
+                }catch (JSONException e) {
                     e.printStackTrace();
                 }
             } else {
                 Toast.makeText(this, "การเชื่อมต่อมีปัญหา", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    public boolean isConnectedToServer(String url, int timeout) {
+        try {
+            URL myUrl = new URL(url);
+            URLConnection connection = myUrl.openConnection();
+            connection.setConnectTimeout(timeout);
+            connection.connect();
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }
