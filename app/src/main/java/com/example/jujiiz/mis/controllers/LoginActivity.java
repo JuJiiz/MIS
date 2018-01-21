@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (view == btnLogin) {
             /*ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = manager.getActiveNetworkInfo();*/
-            if (isConnectedToServer("http://203.154.54.229/chklogin", 10) == true) {
+            //if (isConnectedToServer("http://203.154.54.229/chklogin", 10000) == true) {
                 try {
                     pUsername = etUsername.getText().toString();
                     pPassword = etPassword.getText().toString();
@@ -100,9 +100,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } else {
+            /*} else {
                 Toast.makeText(this, "การเชื่อมต่อมีปัญหา", Toast.LENGTH_SHORT).show();
-            }
+            }*/
         }
     }
 

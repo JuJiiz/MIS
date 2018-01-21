@@ -61,7 +61,7 @@ public class HouseholdActivity extends AppCompatActivity
     String survey = " survey";
     String SelectedIDItem;
     JSONArray STRING_JSONDATA;
-    String apiURL = "http://203.154.54.229/qry_tr14byall";
+    String apiURL = "http://203.154.54.229/gettr14";
     String JKey = "data";
 
     @Override
@@ -90,13 +90,14 @@ public class HouseholdActivity extends AppCompatActivity
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
-                            if (isConnectedToServer(apiURL, 10000) == true){
+                            //Log.d("MYLOG", "isConnectedToServer(apiURL, 10000): " + isConnectedToServer(apiURL, 10000));
+                            //if (isConnectedToServer(apiURL, 10000) == true) {
                                 downloadJson();
                                 setListView();
                                 Toast.makeText(getApplicationContext(), "ดาวน์โหลดสำเร็จแล้ว", Toast.LENGTH_SHORT).show();
-                            }else{
+                            /*} else {
                                 Toast.makeText(getApplicationContext(), "การเชื่อมต่อขัดข้อง", Toast.LENGTH_SHORT).show();
-                            }
+                            }*/
                             break;
                         case DialogInterface.BUTTON_NEGATIVE:
                             break;
@@ -113,7 +114,7 @@ public class HouseholdActivity extends AppCompatActivity
     }
 
     public boolean isConnectedToServer(String url, int timeout) {
-        try{
+        try {
             URL myUrl = new URL(url);
             URLConnection connection = myUrl.openConnection();
             connection.setConnectTimeout(timeout);
@@ -198,126 +199,131 @@ public class HouseholdActivity extends AppCompatActivity
         DateFormat targetFormat;
         Date odate = null;
         STRING_JSONDATA = ModelGetData.getJsonArray(this, apiURL, JKey);
-        List = ModelGetJson.JsonArraytoArrayList(STRING_JSONDATA);
-        if (!List.isEmpty()) {
-            for (int i = 0; i < List.size(); i++) {
-                Val = new ContentValues();
-                Val.put("tr14_running", List.get(i).get("tr14_running"));
-                Val.put("house_id", List.get(i).get("house_id"));
-                Val.put("house_no", List.get(i).get("house_no"));
-                Val.put("p_order", List.get(i).get("p_order"));
-                Val.put("idcard", List.get(i).get("idcard"));
-                Val.put("prename", List.get(i).get("prename"));
-                Val.put("firstname", List.get(i).get("firstname"));
-                Val.put("lastname", List.get(i).get("lastname"));
-                Val.put("sex", List.get(i).get("sex"));
-                Val.put("dweller", List.get(i).get("dweller"));
-
-                originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
-                targetFormat = new SimpleDateFormat("dd/MM/yyyy");
-                try {
-                    odate = originalFormat.parse(List.get(i).get("birthdate"));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                if (odate != null) {
-                    formattedDate = targetFormat.format(odate);
-                } else {
-                    formattedDate = "";
-                }
-
-                Val.put("birthdate", formattedDate);
-                Val.put("nationality", List.get(i).get("nationality"));
-                Val.put("vilage_no", List.get(i).get("vilage_no"));
-                db.InsertData("tr14", Val);
-
-                HouseList = new ArrayList<HashMap<String, String>>();
-                HouseList = db.SelectWhereData("house", "house_id", List.get(i).get("house_id"));
-                if (HouseList.isEmpty()) {
+        if (STRING_JSONDATA!=null){
+            List = ModelGetJson.JsonArraytoArrayList(STRING_JSONDATA);
+            if (!List.isEmpty()) {
+                for (int i = 0; i < List.size(); i++) {
                     Val = new ContentValues();
+                    Val.put("tr14_running", List.get(i).get("tr14_running"));
                     Val.put("house_id", List.get(i).get("house_id"));
                     Val.put("house_no", List.get(i).get("house_no"));
-                    Val.put("vilage_id", "");
-                    Val.put("house_location_lat", "");
-                    Val.put("house_location_lng", "");
-                    Val.put("house_in_registry", "");
-                    Val.put("house_status", "");
-                    Val.put("house_family_type", "");
-                    Val.put("distributor", "");
-                    Val.put("survey_status", "0");
-                    Val.put("cr_by", "ADMIN");
-                    Val.put("cr_date", date);
-                    Val.put("upd_by", "");
-                    Val.put("upd_date", date);
-                    Val.put("ACTIVE", "Y");
-                    db.InsertData("house", Val);
-                }
-
-                DwellerList = new ArrayList<HashMap<String, String>>();
-                DwellerList = db.SelectWhereData("population", "population_idcard", List.get(i).get("idcard"));
-                if (DwellerList.isEmpty()) {
-                    Val = new ContentValues();
-                    Val.put("population_idcard", List.get(i).get("idcard"));
+                    Val.put("p_order", List.get(i).get("p_order"));
+                    Val.put("idcard", List.get(i).get("idcard"));
                     Val.put("prename", List.get(i).get("prename"));
                     Val.put("firstname", List.get(i).get("firstname"));
                     Val.put("lastname", List.get(i).get("lastname"));
-                    Val.put("birthdate", formattedDate);
-                    Val.put("height", "");
-                    Val.put("weight", "");
-                    if (List.get(i).get("sex").equals("ชาย")) {
-                        Val.put("sex", "M");
-                    } else if (List.get(i).get("sex").equals("หญิง")) {
-                        Val.put("sex", "F");
+                    Val.put("sex", List.get(i).get("sex"));
+                    Val.put("dweller", List.get(i).get("dweller"));
+
+                    originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
+                    targetFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    try {
+                        odate = originalFormat.parse(List.get(i).get("birthdate"));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    if (odate != null) {
+                        formattedDate = targetFormat.format(odate);
                     } else {
-                        Val.put("sex", "");
+                        formattedDate = "";
                     }
-                    Val.put("bloodgroup", "");
-                    Val.put("living", "");
-                    Val.put("maritalstatus", "");
-                    Val.put("tel", "");
+
+                    Val.put("birthdate", formattedDate);
                     Val.put("nationality", List.get(i).get("nationality"));
-                    Val.put("house_id", List.get(i).get("house_id"));
-                    Val.put("currentaddr", "");
-                    Val.put("currentaddr_province", "");
-                    Val.put("currentaddr_country", "");
-                    if (List.get(i).get("dweller").equals("เจ้าบ้าน")) {
-                        Val.put("dwellerstatus", "0");
-                    } else if (List.get(i).get("dweller").equals("ผู้อาศัย")) {
-                        Val.put("dwellerstatus", "1");
+                    Val.put("vilage_no", List.get(i).get("vilage_no"));
+                    db.InsertData("tr14", Val);
+
+                    HouseList = new ArrayList<HashMap<String, String>>();
+                    HouseList = db.SelectWhereData("house", "house_id", List.get(i).get("house_id"));
+                    if (HouseList.isEmpty()) {
+                        Val = new ContentValues();
+                        Val.put("house_id", List.get(i).get("house_id"));
+                        Val.put("house_no", List.get(i).get("house_no"));
+                        Val.put("vilage_id", "");
+                        Val.put("house_location_lat", "");
+                        Val.put("house_location_lng", "");
+                        Val.put("house_in_registry", "");
+                        Val.put("house_status", "");
+                        Val.put("house_family_type", "");
+                        Val.put("distributor", "");
+                        Val.put("survey_status", "0");
+                        Val.put("cr_by", "ADMIN");
+                        Val.put("cr_date", date);
+                        Val.put("upd_by", "");
+                        Val.put("upd_date", date);
+                        Val.put("ACTIVE", "Y");
+                        db.InsertData("house", Val);
                     }
-                    Val.put("income", "");
-                    Val.put("income_money", "");
-                    Val.put("dept", "");
-                    Val.put("saving", "");
-                    Val.put("allergichis", "");
-                    Val.put("allergichis_detail", "");
-                    Val.put("disadvantage", "");
-                    Val.put("sub_al", "");
-                    Val.put("education", "");
-                    Val.put("education_class", "");
-                    Val.put("literacy", "");
-                    Val.put("technology", "");
-                    Val.put("expertise", "");
-                    Val.put("expertise_name", "");
-                    Val.put("expertise_detail", "");
-                    Val.put("religion", "");
-                    Val.put("religion_another", "");
-                    Val.put("participation", "");
-                    Val.put("election", "");
-                    Val.put("residence_status", "1");
-                    Val.put("latentpop_province", "");
-                    Val.put("latentpop_country", "");
-                    Val.put("distributor", "");
-                    Val.put("survey_status", "0");
-                    Val.put("cr_by", "ADMIN");
-                    Val.put("cr_date", date);
-                    Val.put("upd_by", "");
-                    Val.put("upd_date", date);
-                    Val.put("ACTIVE", "Y");
-                    db.InsertData("population", Val);
+
+                    DwellerList = new ArrayList<HashMap<String, String>>();
+                    DwellerList = db.SelectWhereData("population", "population_idcard", List.get(i).get("idcard"));
+                    if (DwellerList.isEmpty()) {
+                        Val = new ContentValues();
+                        Val.put("population_idcard", List.get(i).get("idcard"));
+                        Val.put("prename", List.get(i).get("prename"));
+                        Val.put("firstname", List.get(i).get("firstname"));
+                        Val.put("lastname", List.get(i).get("lastname"));
+                        Val.put("birthdate", formattedDate);
+                        Val.put("height", "");
+                        Val.put("weight", "");
+                        if (List.get(i).get("sex").equals("ชาย")) {
+                            Val.put("sex", "M");
+                        } else if (List.get(i).get("sex").equals("หญิง")) {
+                            Val.put("sex", "F");
+                        } else {
+                            Val.put("sex", "");
+                        }
+                        Val.put("bloodgroup", "");
+                        Val.put("living", "");
+                        Val.put("maritalstatus", "");
+                        Val.put("tel", "");
+                        Val.put("nationality", List.get(i).get("nationality"));
+                        Val.put("house_id", List.get(i).get("house_id"));
+                        Val.put("currentaddr", "");
+                        Val.put("currentaddr_province", "");
+                        Val.put("currentaddr_country", "");
+                        if (List.get(i).get("dweller").equals("เจ้าบ้าน")) {
+                            Val.put("dwellerstatus", "0");
+                        } else if (List.get(i).get("dweller").equals("ผู้อาศัย")) {
+                            Val.put("dwellerstatus", "1");
+                        }
+                        Val.put("income", "");
+                        Val.put("income_money", "");
+                        Val.put("dept", "");
+                        Val.put("saving", "");
+                        Val.put("allergichis", "");
+                        Val.put("allergichis_detail", "");
+                        Val.put("disadvantage", "");
+                        Val.put("sub_al", "");
+                        Val.put("education", "");
+                        Val.put("education_class", "");
+                        Val.put("literacy", "");
+                        Val.put("technology", "");
+                        Val.put("expertise", "");
+                        Val.put("expertise_name", "");
+                        Val.put("expertise_detail", "");
+                        Val.put("religion", "");
+                        Val.put("religion_another", "");
+                        Val.put("participation", "");
+                        Val.put("election", "");
+                        Val.put("residence_status", "1");
+                        Val.put("latentpop_province", "");
+                        Val.put("latentpop_country", "");
+                        Val.put("distributor", "");
+                        Val.put("survey_status", "0");
+                        Val.put("cr_by", "ADMIN");
+                        Val.put("cr_date", date);
+                        Val.put("upd_by", "");
+                        Val.put("upd_date", date);
+                        Val.put("ACTIVE", "Y");
+                        db.InsertData("population", Val);
+                    }
                 }
             }
+        }else {
+            Toast.makeText(this,"ไม่มีข้อมูล",Toast.LENGTH_SHORT).show();
         }
+
     }
 
     private void searchEvent() {

@@ -22,10 +22,15 @@ public class ModelGetData {
         try {
             String url = apiURL;
             String strGetJson = new CallApi().execute(url).get();
-            JSONObject jsonObject = new JSONObject(strGetJson);
-            result = new String(jsonObject.getString(pname).getBytes("ISO-8859-1"), "UTF-8");
-            //result = jsonObject.getString(pname);
-            jsonArray = new JSONArray(result);
+            if (strGetJson!=null){
+                JSONObject jsonObject = new JSONObject(strGetJson);
+                result = new String(jsonObject.getString(pname).getBytes("ISO-8859-1"), "UTF-8");
+                //result = jsonObject.getString(pname);
+                jsonArray = new JSONArray(result);
+            }else {
+                jsonArray = null;
+            }
+
 
         } catch (InterruptedException e) {
             e.printStackTrace();
