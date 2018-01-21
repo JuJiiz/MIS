@@ -1,7 +1,9 @@
 package com.example.jujiiz.mis.controllers;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,10 +12,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
 import com.example.jujiiz.mis.models.ModelParseJson;
+import com.example.jujiiz.mis.models.ModelSendApi;
 import com.example.jujiiz.mis.models.myDBClass;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,6 +47,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             AnimalList, AnimalActive,
             DwellerList,
             AnimalName;
+    String parseJson = "", jsonResult = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -504,10 +512,26 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         if (v == btnUploadData) {
             uploadHouse();
             for (int i = 0; i < HouseActive.size(); i++) {
-                ModelParseJson.HashmapToJsonlist(HouseActive.get(i));
+                parseJson = ModelParseJson.HashmapToJsonlist(HouseActive.get(i));
+                jsonResult = ModelSendApi.send("http://203.154.54.229/inserthouse", parseJson);
+                Log.d("MYLOG", "jsonResult: " + jsonResult);
+                try {
+                    JSONObject jsonObject = new JSONObject(jsonResult);
+                    String returnStatus = jsonObject.getString("status");
+                    if (returnStatus.equals("ok")) {
+                        Val = new ContentValues();
+                        Val.put("survey_status","0");
+                        db.UpdateData("house",Val,"house_id",HouseActive.get(i).get("house_id"));
+                    } else {
+                        Toast.makeText(this, "ข้อมูลผิดพลาด", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                setHouseListView();
             }
 
-            uploadPopulation();
+            /*uploadPopulation();
             for (int i = 0; i < PopulationActive.size(); i++) {
                 ModelParseJson.HashmapToJsonlist(PopulationActive.get(i));
                 LandList = db.SelectWhereData("population_asset_land", "population_idcard", PopulationActive.get(i).get("population_idcard"));
@@ -549,7 +573,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 } else {
                     Log.d("MYLOG", "Animal No Data");
                 }
-            }
+            }*/
         }
     }
 }

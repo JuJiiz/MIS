@@ -27,6 +27,8 @@ import com.example.jujiiz.mis.models.ModelGetJson;
 import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
 import com.example.jujiiz.mis.models.myDBClass;
 
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -88,11 +90,14 @@ public class HouseholdActivity extends AppCompatActivity
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {
                         case DialogInterface.BUTTON_POSITIVE:
-                            downloadJson();
-                            setListView();
-                            Toast.makeText(getApplicationContext(), "ดาวน์โหลดสำเร็จแล้ว", Toast.LENGTH_SHORT).show();
+                            if (isConnectedToServer(apiURL, 10) == true){
+                                downloadJson();
+                                setListView();
+                                Toast.makeText(getApplicationContext(), "ดาวน์โหลดสำเร็จแล้ว", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(getApplicationContext(), "การเชื่อมต่อขัดข้อง", Toast.LENGTH_SHORT).show();
+                            }
                             break;
-
                         case DialogInterface.BUTTON_NEGATIVE:
                             break;
                     }
@@ -104,6 +109,18 @@ public class HouseholdActivity extends AppCompatActivity
                     .setNegativeButton("ไม่ใช่", dialogClickListener).show();
         } else {
             setListView();
+        }
+    }
+
+    public boolean isConnectedToServer(String url, int timeout) {
+        try{
+            URL myUrl = new URL(url);
+            URLConnection connection = myUrl.openConnection();
+            connection.setConnectTimeout(timeout);
+            connection.connect();
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 

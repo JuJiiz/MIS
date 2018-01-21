@@ -27,14 +27,12 @@
             android:id="@+id/etUsername"
             android:layout_width="250dp"
             android:hint="ชื่อผู้ใช้"
-            android:layout_height="wrap_content"
-            android:text="900001"/>
+            android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="250dp"
             android:hint="รหัสผ่าน"
-            android:text="asdqwe123"
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
 
@@ -43,6 +41,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
             android:text="เข้าสู่ระบบ" />
     </LinearLayout>
 

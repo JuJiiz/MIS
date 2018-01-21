@@ -284,6 +284,7 @@ public class myDBClass extends SQLiteOpenHelper {
                 ");");
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `population` (\n" +
+                "\t`population_running`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
                 "\t`population_idcard`\tINTEGER NOT NULL,\n" +
                 "\t`prename`\tTEXT NOT NULL,\n" +
                 "\t`firstname`\tTEXT NOT NULL,\n" +
