@@ -19,24 +19,27 @@ public class CallApiPost extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
 
         try {
-            JSONArray jsonArrayToSend = new JSONArray(params[1]);
             URL url = new URL(params[0]);
-            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+           /* HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
             httpCon.setDoOutput(true);
             httpCon.setDoInput(true);
             httpCon.setUseCaches(false);
             httpCon.setRequestProperty( "Content-Type", "application/json" );
             httpCon.setRequestProperty("Accept", "application/json");
             httpCon.setRequestMethod("POST");
-            httpCon.connect();
-            OutputStream os = httpCon.getOutputStream();
-            OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
+            httpCon.connect();*/
+            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setRequestMethod("POST"); // here you are telling that it is a POST request, which can be changed into "PUT", "GET", "DELETE" etc.
+            httpURLConnection.setRequestProperty("Content-Type", "application/json"); // here you are setting the `Content-Type` for the data you are sending which is `application/json`
+            httpURLConnection.connect();
+
+            OutputStreamWriter osw = new OutputStreamWriter(httpURLConnection.getOutputStream(), "UTF-8");
             osw.write(params[1]);
             osw.flush();
             osw.close();
-            os.close();
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader( httpCon.getInputStream(),"utf-8"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader( httpURLConnection.getInputStream(),"UTF-8"));
             StringBuilder stringBuilder = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {
@@ -49,9 +52,9 @@ public class CallApiPost extends AsyncTask<String, Void, String> {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
+        } /*catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
 
         return null;
     }

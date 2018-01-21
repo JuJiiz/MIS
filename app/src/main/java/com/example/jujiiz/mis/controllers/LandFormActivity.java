@@ -199,14 +199,23 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
             Val.put("cr_by", "JuJiiz");
             Val.put("cr_date", date);
             db.InsertData("population_asset_land", Val);
+            Val = new ContentValues();
+            Val.put("survey_status","1");
+            db.UpdateData("population",Val,"population_idcard",PersonID);
         } else {
             LandList = db.SelectWhereData("population_asset_land", "land_running", LandID);
             if (LandList.isEmpty()) {
                 Val.put("cr_by", "JuJiiz");
                 Val.put("cr_date", date);
                 db.InsertData("population_asset_land", Val);
+                Val = new ContentValues();
+                Val.put("survey_status","1");
+                db.UpdateData("population",Val,"population_idcard",PersonID);
             } else {
                 db.UpdateData("population_asset_land", Val, "land_running", LandID);
+                Val = new ContentValues();
+                Val.put("survey_status","1");
+                db.UpdateData("population",Val,"population_idcard",PersonID);
             }
         }
     }

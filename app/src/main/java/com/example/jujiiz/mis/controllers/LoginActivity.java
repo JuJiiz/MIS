@@ -1,47 +1,61 @@
 package com.example.jujiiz.mis.controllers;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
-import com.example.jujiiz.mis.models.ModelLogin;
+import com.example.jujiiz.mis.models.ModelParseJson;
+import com.example.jujiiz.mis.models.ModelSendApi;
 import com.example.jujiiz.mis.models.ModelToken;
 import com.example.jujiiz.mis.models.Sha1Hash;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     Button btnLogin;
     EditText etUsername, etPassword;
     String pUsername, pPassword;
-    ModelLogin modelLogin;
-    ModelToken modelToken;
     Intent intent = null;
+    String jsonResult = "";
+    HashMap<String, String> loginTemp = new HashMap<String, String>();
+    String parseJSON = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        init();
-        modelLogin = new ModelLogin();
-        modelToken = new ModelToken();
 
-        btnLogin.setOnClickListener(this);
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                1);
+
+        init();
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //Important!! (Form)
     }
 
     private void init() {
         etUsername = (EditText) findViewById(R.id.etUsername);
         etPassword = (EditText) findViewById(R.id.etPassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(this);
     }
 
     @Override
@@ -49,35 +63,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (view == btnLogin) {
             ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = manager.getActiveNetworkInfo();
-            if(netInfo != null && netInfo.isConnectedOrConnecting()){
+            if (netInfo != null && netInfo.isConnectedOrConnecting()) {
                 try {
                     pUsername = etUsername.getText().toString();
-                    pPassword = Sha1Hash.SHA1(etPassword.getText().toString());;
+                    pPassword = etPassword.getText().toString();
 
-                    String loginStatus = ModelLogin.getByName(pUsername, pPassword,"status");
-                    String loginToken = ModelLogin.getByName(pUsername, pPassword,"token");
+                    loginTemp.put("username", pUsername);
+                    loginTemp.put("password", pPassword);
+                    parseJSON = ModelParseJson.HashmapToJsonlist(loginTemp);
 
-                    SharedPreferences sp = getSharedPreferences("myStorage", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putString("token", loginToken);
-                    editor.commit();
+                    jsonResult = ModelSendApi.send("http://203.154.54.229/chklogin", parseJSON);
 
-                    //Toast.makeText(this,"Login Token: " + sp.getString("strToken", "NoData"), Toast.LENGTH_SHORT).show();
+                    JSONObject jsonObject = new JSONObject(jsonResult);
+                    //Log.d("MYLOG", "jsonResult: " + jsonResult);
 
-                    if(loginStatus.equals("OK")){
+                    String loginStatus = jsonObject.getString("status");
+
+                    if (loginStatus.equals("ok")) {
+                        String loginUserName = jsonObject.getString("username");
+                        String loginUserStatus = jsonObject.getString("userstatus");
+                        String loginUserID = jsonObject.getString("userid");
+
+                        SharedPreferences sp = getSharedPreferences("UserMemo", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString("username", loginUserName);
+                        editor.putString("userstatus", loginUserStatus);
+                        editor.putString("userid", loginUserID);
+                        editor.commit();
+
                         intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
-                    }else{
-                        Toast.makeText(this,"ชื่อผู้ใช้หรือรหัสผ่าน ไม่ถูกต้อง", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "ชื่อผู้ใช้หรือรหัสผ่าน ไม่ถูกต้อง", Toast.LENGTH_SHORT).show();
                     }
-                } catch (NoSuchAlgorithmException e) {
+                }/* catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
+                }*/ catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                //Toast.makeText(this,"Connected", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(this,"การเชื่อมต่อมีปัญหา", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "การเชื่อมต่อมีปัญหา", Toast.LENGTH_SHORT).show();
             }
         }
     }

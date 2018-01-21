@@ -30,4 +30,15 @@ public class ModelParseJson {
         Log.d("MYLOG", "parseAJ: " + parseHJ);
         return parseHJ;
     }
+
+    public static String HashmapToJsonobject(HashMap<String, String> hashMap) {
+        String parseHJ = "parseHJ";
+        ArrayList<HashMap<String, String>> arrayList = new ArrayList<HashMap<String, String>>();
+        arrayList.add(hashMap);
+        JSONArray jsonArray = new JSONArray(arrayList);
+        String str1 = jsonArray.toString().replace("[","");
+        parseHJ = str1.replace("]","");
+        Log.d("MYLOG", "parseAJ: " + parseHJ);
+        return parseHJ;
+    }
 }

@@ -236,14 +236,23 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
             Val.put("cr_by", "JuJiiz");
             Val.put("cr_date", date);
             db.InsertData("population_asset_pet", Val);
+            Val = new ContentValues();
+            Val.put("survey_status","1");
+            db.UpdateData("population",Val,"population_idcard",PersonID);
         } else {
             PetList = db.SelectWhereData("population_asset_pet", "pet_running", PetID);
             if (PetList.isEmpty()) {
                 Val.put("cr_by", "JuJiiz");
                 Val.put("cr_date", date);
                 db.InsertData("population_asset_pet", Val);
+                Val = new ContentValues();
+                Val.put("survey_status","1");
+                db.UpdateData("population",Val,"population_idcard",PersonID);
             } else {
                 db.UpdateData("population_asset_pet", Val, "pet_running", PetID);
+                Val = new ContentValues();
+                Val.put("survey_status","1");
+                db.UpdateData("population",Val,"population_idcard",PersonID);
             }
         }
     }
