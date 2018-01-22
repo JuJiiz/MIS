@@ -73,7 +73,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class HouseholdFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, View.OnClickListener, AdapterView.OnItemClickListener, OnMapReadyCallback,
+public class HouseholdFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
@@ -118,11 +118,11 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     String HouseID;
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     ContentValues Val;
-    ArrayList<HashMap<String, String>> HouseList, DwellerList, DwellerActive, HProbList, HEnProbList, HDisasList;
+    ArrayList<HashMap<String, String>> HouseList, DwellerList, DwellerActive, HProbList, HEnProbList, HDisasList, TestList;
     ArrayList<String> Dweller = new ArrayList<String>();
     ArrayAdapter<String> dwellerArrayAdapter;
     Boolean onDataReady = false;
-    String SelectedIDItem;
+    String SelectedIDItem, SelectedFNameItem, SelectedLNameItem;
     byte[] dataBitmap = null;
 
     @Override
@@ -157,6 +157,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
 
         listHousehold = (ListView) findViewById(R.id.listHousehold);
         listHousehold.setOnItemClickListener(this);
+        listHousehold.setOnItemLongClickListener(this);
         listHousehold.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -330,8 +331,8 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     }
 
     private void setField() {
-        byte[] dataIMG = db.SelectImg("house_img","house_id",HouseID);
-        if (dataIMG != null){
+        byte[] dataIMG = db.SelectImg("house_img", "house_id", HouseID);
+        if (dataIMG != null) {
             Bitmap bm = BitmapFactory.decodeByteArray(dataIMG, 0, dataIMG.length);
             ivImage.setImageBitmap(bm);
             ivImage.setVisibility(View.VISIBLE);
@@ -357,7 +358,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (!HouseList.get(0).get("house_family_type").equals("")) {
                 ((RadioButton) familyRadioGroup.getChildAt(Integer.parseInt(HouseList.get(0).get("house_family_type")))).setChecked(true);
             }
-            DwellerList = db.SelectWhereData("population","house_id",HouseID);
+            DwellerList = db.SelectWhereData("population", "house_id", HouseID);
             int spinnerPositionContri = dwellerArrayAdapter.getPosition(DwellerList.get(0).get("distributor"));
             spContributor.setSelection(spinnerPositionContri);
             ModelCurrentCalendar.edittextCurrentCalendar(this, etDate);
@@ -413,14 +414,14 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     private void updateData() {
         String date = df.format(Calendar.getInstance().getTime());
         Val = new ContentValues();
-        Val.put("house_id",HouseID);
-        if (ivImage.getDrawable() != null){
-            Val.put("distributor_img",dataBitmap);
-        }else {
-            Val.put("distributor_img","");
+        Val.put("house_id", HouseID);
+        if (ivImage.getDrawable() != null) {
+            Val.put("distributor_img", dataBitmap);
+        } else {
+            Val.put("distributor_img", "");
         }
         byte[] dataIMG = db.SelectImg("house_img", "house_id", HouseID);
-        if (dataIMG==null) {
+        if (dataIMG == null) {
             db.InsertData("house_img", Val);
         } else {
             db.UpdateData("house_img", Val, "house_id", HouseID);
@@ -429,20 +430,41 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         Val = new ContentValues();
         Val.put("house_id", etHouseID.getText().toString());
         Val.put("house_no", etHouseNumber.getText().toString());
-        Val.put("house_location_lat", etLat.getText().toString());
-        Val.put("house_location_lng", etLong.getText().toString());
+        if (!etLat.getText().toString().equals("")) {
+            Val.put("house_location_lat", etLat.getText().toString());
+        } else {
+            Val.put("house_location_lat", "0");
+        }
+        if (!etLong.getText().toString().equals("")) {
+            Val.put("house_location_lng", etLong.getText().toString());
+        } else {
+            Val.put("house_location_lng", "0");
+        }
         int register = registerRadioGroup.getCheckedRadioButtonId();
         radioButton = (RadioButton) findViewById(register);
         int idxregister = registerRadioGroup.indexOfChild(radioButton);
-        Val.put("house_in_registry", idxregister);
+        if (idxregister<=0){
+            Val.put("house_in_registry", idxregister);
+        }else {
+            Val.put("house_in_registry", "0");
+        }
+
         int hStatus = housestatusRadioGroup.getCheckedRadioButtonId();
         radioButton = (RadioButton) findViewById(hStatus);
         int idxhStatus = housestatusRadioGroup.indexOfChild(radioButton);
-        Val.put("house_status", idxhStatus);
+        if (idxhStatus<=0){
+            Val.put("house_status", idxhStatus);
+        }else {
+            Val.put("house_status", "0");
+        }
         int famtype = familyRadioGroup.getCheckedRadioButtonId();
         radioButton = (RadioButton) findViewById(famtype);
         int idxfamtype = familyRadioGroup.indexOfChild(radioButton);
-        Val.put("house_family_type", idxfamtype);
+        if (idxfamtype<=0){
+            Val.put("house_family_type", idxfamtype);
+        }else {
+            Val.put("house_family_type", "0");
+        }
         Val.put("distributor", spContributor.getSelectedItem().toString());
         Val.put("survey_status", "1");
         Val.put("upd_by", "");
@@ -1335,5 +1357,190 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         intent.putExtra("PersonID", SelectedIDItem);
         intent.putExtra("HouseID", HouseID);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        HashMap<String, String> Item = (HashMap<String, String>) listHousehold.getItemAtPosition(position);
+        SelectedIDItem = Item.get("ID").toString();
+        SelectedFNameItem = Item.get("FName").toString();
+        SelectedLNameItem = Item.get("LName").toString();
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        DwellerList = db.SelectWhereData("population", "population_idcard", SelectedIDItem);
+                        String residenceStatus = DwellerList.get(0).get("residence_status");
+
+                        if (residenceStatus.equals("0")) { //ประชากรแฝง
+                            Val = new ContentValues();
+                            Val.put("survey_status", "1");
+                            Val.put("ACTIVE", "N");
+                            db.UpdateData("population", Val, "population_idcard", SelectedIDItem);
+
+                            Val = new ContentValues();
+                            Val.put("ACTIVE", "N");
+                            db.UpdateData("population_asset_animal", Val, "population_idcard", SelectedIDItem);
+                            db.UpdateData("population_asset_land", Val, "population_idcard", SelectedIDItem);
+                            db.UpdateData("population_asset_pet", Val, "population_idcard", SelectedIDItem);
+                            db.UpdateData("population_asset_vehicle", Val, "population_idcard", SelectedIDItem);
+                            Toast.makeText(getApplicationContext(), "ลบข้อมูล " + SelectedFNameItem + " " + SelectedLNameItem + " เรียบร้อย", Toast.LENGTH_SHORT).show();
+
+                        } else if (residenceStatus.equals("1")) { //มีชื่อในทร.14
+                            Val = new ContentValues();
+                            Val.put("height", "");
+                            Val.put("weight", "");
+                            Val.put("bloodgroup", "");
+                            Val.put("living", "");
+                            Val.put("maritalstatus", "");
+                            Val.put("tel", "");
+                            Val.put("currentaddr", "");
+                            Val.put("currentaddr_province", "");
+                            Val.put("currentaddr_country", "");
+                            Val.put("income", "");
+                            Val.put("income_money", "");
+                            Val.put("dept", "");
+                            Val.put("saving", "");
+                            Val.put("allergichis", "");
+                            Val.put("allergichis_detail", "");
+                            Val.put("disadvantage", "");
+                            Val.put("sub_al", "");
+                            Val.put("education", "");
+                            Val.put("education_class", "");
+                            Val.put("literacy", "");
+                            Val.put("technology", "");
+                            Val.put("expertise", "");
+                            Val.put("expertise_name", "");
+                            Val.put("expertise_detail", "");
+                            Val.put("religion", "");
+                            Val.put("religion_another", "");
+                            Val.put("participation", "");
+                            Val.put("election", "");
+                            Val.put("residence_status", "1");
+                            Val.put("latentpop_province", "");
+                            Val.put("latentpop_country", "");
+                            Val.put("distributor", "");
+                            Val.put("survey_status", "0");
+                            db.UpdateData("population", Val, "population_idcard", SelectedIDItem);
+
+                            Val = new ContentValues();
+                            Val.put("congh_type", "");
+                            Val.put("congh1", "");
+                            Val.put("congh2", "");
+                            Val.put("congh3", "");
+                            Val.put("congh4", "");
+                            Val.put("congh5", "");
+                            Val.put("congh_another", "");
+                            db.UpdateData("population_congenitalhis", Val, "population_idcard", SelectedIDItem);
+
+                            Val = new ContentValues();
+                            Val.put("conth_type", "");
+                            Val.put("conth1", "");
+                            Val.put("conth2", "");
+                            Val.put("conth3", "");
+                            Val.put("conth4", "");
+                            Val.put("conth5", "");
+                            Val.put("conth6", "");
+                            Val.put("conth7", "");
+                            Val.put("conth8", "");
+                            Val.put("conth9", "");
+                            Val.put("conth10", "");
+                            Val.put("conth11", "");
+                            Val.put("conth_another", "");
+                            db.UpdateData("population_contagioushis", Val, "population_idcard", SelectedIDItem);
+
+                            Val = new ContentValues();
+                            Val.put("disabled_type", "");
+                            Val.put("disabled1", "");
+                            Val.put("disabled2", "");
+                            Val.put("disabled3", "");
+                            Val.put("disabled4", "");
+                            Val.put("disabled5", "");
+                            Val.put("disabled6", "");
+                            db.UpdateData("population_disabled", Val, "population_idcard", SelectedIDItem);
+
+                            Val = new ContentValues();
+                            Val.put("transport_type", "");
+                            Val.put("trans1", "");
+                            Val.put("trans2", "");
+                            Val.put("trans3", "");
+                            Val.put("trans4", "");
+                            db.UpdateData("population_transport", Val, "population_idcard", SelectedIDItem);
+
+                            Val = new ContentValues();
+                            Val.put("works_type", "");
+                            db.UpdateData("population_works", Val, "population_idcard", SelectedIDItem);
+
+                            TestList = db.SelectWhereData("population_works", "population_idcard", SelectedIDItem);
+
+                            if (!TestList.isEmpty()){
+                                Val = new ContentValues();
+                                Val.put("agri1", "");
+                                Val.put("agri2", "");
+                                Val.put("agri3", "");
+                                Val.put("agri4", "");
+                                Val.put("agri5", "");
+                                Val.put("agri6", "");
+                                Val.put("agri7", "");
+                                Val.put("agri8", "");
+                                Val.put("agri_another", "");
+                                db.UpdateData("population_job_agriculture", Val, "works_id", TestList.get(0).get("works_id"));
+
+                                Val = new ContentValues();
+                                Val.put("animal1", "");
+                                Val.put("animal2", "");
+                                Val.put("animal3", "");
+                                Val.put("animal4", "");
+                                Val.put("animal5", "");
+                                Val.put("animal6", "");
+                                Val.put("animal7", "");
+                                Val.put("animal8", "");
+                                Val.put("animal9", "");
+                                Val.put("animal_another", "");
+                                db.UpdateData("population_job_animal", Val, "works_id", TestList.get(0).get("works_id"));
+
+                                Val = new ContentValues();
+                                Val.put("govern1", "");
+                                Val.put("govern2", "");
+                                Val.put("govern3", "");
+                                Val.put("govern4", "");
+                                Val.put("govern_another", "");
+                                db.UpdateData("population_job_govern", Val, "works_id", TestList.get(0).get("works_id"));
+
+                                Val = new ContentValues();
+                                Val.put("private1", "");
+                                Val.put("private2", "");
+                                Val.put("private3", "");
+                                Val.put("private4", "");
+                                Val.put("private5", "");
+                                Val.put("private6", "");
+                                Val.put("private7", "");
+                                Val.put("private_another", "");
+                                db.UpdateData("population_job_private", Val, "works_id", TestList.get(0).get("works_id"));
+                            }
+
+                            Val = new ContentValues();
+                            Val.put("ACTIVE", "N");
+                            db.UpdateData("population_asset_animal", Val, "population_idcard", SelectedIDItem);
+                            db.UpdateData("population_asset_land", Val, "population_idcard", SelectedIDItem);
+                            db.UpdateData("population_asset_pet", Val, "population_idcard", SelectedIDItem);
+                            db.UpdateData("population_asset_vehicle", Val, "population_idcard", SelectedIDItem);
+
+                            Toast.makeText(getApplicationContext(), "ลบข้อมูล " + SelectedFNameItem + " " + SelectedLNameItem + " เรียบร้อย", Toast.LENGTH_SHORT).show();
+                        }
+                        setListView();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            }
+        };
+
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setMessage("ท่านต้องการลบข้อมูล " + SelectedFNameItem + " " + SelectedLNameItem + " ?").setPositiveButton("ใช่", dialogClickListener)
+                .setNegativeButton("ไม่ใช่", dialogClickListener).show();
+        return false;
     }
 }

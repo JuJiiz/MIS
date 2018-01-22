@@ -177,16 +177,16 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
         } else if (rbPetRegisterYes.isChecked()) {
             Val.put("pet_regis", "1");
         } else {
-            Val.put("pet_regis", "");
+            Val.put("pet_regis", "0");
         }
         Val.put("pet_amount", etPetAmount.getText().toString());
 
         if (rbPetTypeDog.isChecked()) {
-            Val.put("pet_type", "0");
-        } else if (rbPetTypeCat.isChecked()) {
             Val.put("pet_type", "1");
+        } else if (rbPetTypeCat.isChecked()) {
+            Val.put("pet_type", "2");
         } else {
-            Val.put("pet_type", "");
+            Val.put("pet_type", "1");
         }
 
         if (rbPetSexMale.isChecked()) {
@@ -194,12 +194,12 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
         } else if (rbPetSexFemale.isChecked()) {
             Val.put("pet_sex", "F");
         } else {
-            Val.put("pet_sex", "");
+            Val.put("pet_sex", "M");
         }
 
         if (rbPetVaccineNo.isChecked()) {
             Val.put("vaccine", "0");
-            Val.put("vaccine_during", "");
+            Val.put("vaccine_during", "0");
             Val.put("vaccine_lastest", "");
         } else if (rbPetVaccineYes.isChecked()) {
             Val.put("vaccine", "1");
@@ -208,24 +208,24 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
             } else if (rbVaccineContinueYes.isChecked()) {
                 Val.put("vaccine_during", "1");
             } else {
-                Val.put("vaccine_during", "");
+                Val.put("vaccine_during", "0");
             }
             Val.put("vaccine_lastest", spLastVaccine.getSelectedItem().toString());
         } else {
-            Val.put("vaccine", "");
-            Val.put("vaccine_during", "");
+            Val.put("vaccine", "0");
+            Val.put("vaccine_during", "0");
             Val.put("vaccine_lastest", "");
         }
 
         if (rbPetBornNo.isChecked()) {
             Val.put("pet_newborn", "0");
-            Val.put("pet_newborn_number", "");
+            Val.put("pet_newborn_number", "0");
         } else if (rbPetBornYes.isChecked()) {
             Val.put("pet_newborn", "1");
             Val.put("pet_newborn_number", etPetBorn.getText().toString());
         } else {
-            Val.put("pet_newborn", "");
-            Val.put("pet_newborn_number", "");
+            Val.put("pet_newborn", "0");
+            Val.put("pet_newborn_number", "0");
         }
 
         Val.put("distributor", spContributor.getSelectedItem().toString());

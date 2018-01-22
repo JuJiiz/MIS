@@ -1,7 +1,9 @@
 package com.example.jujiiz.mis.controllers;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -34,12 +38,14 @@ import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
 import com.example.jujiiz.mis.models.myDBClass;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
-public class PeopleFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
+public class PeopleFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     RadioButton rbMale, rbFemale;
     RadioButton rbAlive, rbDead;
     RadioButton rbInRegister, rbNotInRegister;
@@ -74,11 +80,13 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     CheckBox cbCont1, cbCont2, cbCont3, cbCont4, cbCont5, cbCont6, cbCont7, cbCont8, cbCont9, cbCont10, cbCont11;
     CheckBox cbDisabled1, cbDisabled2, cbDisabled3, cbDisabled4, cbDisabled5, cbDisabled6;
     CheckBox cbTrans1, cbTrans2, cbTrans3, cbTrans4;
-    Button btnSavingData, btnAddProperty;
+    Button btnSavingData, btnAddProperty, btnDatePick;
     ListView lvProperty;
 
     myDBClass db = new myDBClass(this);
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+
     ContentValues Val;
     ArrayList<HashMap<String, String>> NationalityList, PrefixList, PersonList, TestList, DwellerList, WorkList, AgriList, PetList, GovernList, PrivateList, CongList, ContList, DisabledList, TransList;
     ArrayList<HashMap<String, String>> PropertyActive, PLandList, PVehicleList, PPetList, PAnimalList;
@@ -87,7 +95,9 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     ArrayList<String> Dweller = new ArrayList<String>();
     ArrayAdapter<String> prefixArrayAdapter, nationalityArrayAdapter, dwellerArrayAdapter, bloodArrayAdapter, maritalArrayAdapter, educationIArrayAdapter, educationGArrayAdapter, expertiseArrayAdapter;
     String PersonID, HouseID;
-    String SelectedIDItem;
+    String SelectedIDItem, SelectedNameItem;
+
+    private DatePickerDialog fromDatePickerDialog;
 
     String[] spBloodGroupArray = {"O", "A", "B", "AB", "ไม่ทราบ", "อื่นๆ"};
     String[] spMaritalStatusArray = {"สมรส", "โสด", "หย่าร้าง", "หม้าย", "แยกกันอยู่"};
@@ -110,6 +120,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         setSpinner();
         setField();
         setListView();
+        setDateTimeField();
     }
 
     @Override
@@ -118,71 +129,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         setListView();
     }
 
-    TextWatcher tw = new TextWatcher() {
-        private String current = "";
-        private String ddmmyyyy = "DDMMYYYY";
-        private Calendar cal = Calendar.getInstance();
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (!s.toString().equals(current)) {
-                String clean = s.toString().replaceAll("[^\\d.]|\\.", "");
-                String cleanC = current.replaceAll("[^\\d.]|\\.", "");
-
-                int cl = clean.length();
-                int sel = cl;
-                for (int i = 2; i <= cl && i < 6; i += 2) {
-                    sel++;
-                }
-                //Fix for pressing delete next to a forward slash
-                if (clean.equals(cleanC)) sel--;
-
-                if (clean.length() < 8) {
-                    clean = clean + ddmmyyyy.substring(clean.length());
-                } else {
-                    //This part makes sure that when we finish entering numbers
-                    //the date is correct, fixing it otherwise
-                    int day = Integer.parseInt(clean.substring(0, 2));
-                    int mon = Integer.parseInt(clean.substring(2, 4));
-                    int year = Integer.parseInt(clean.substring(4, 8));
-
-                    mon = mon < 1 ? 1 : mon > 12 ? 12 : mon;
-                    cal.set(Calendar.MONTH, mon - 1);
-                    year = (year < 1900) ? 1900 : (year > 2100) ? 2100 : year;
-                    cal.set(Calendar.YEAR, year);
-                    // ^ first set year for the line below to work correctly
-                    //with leap years - otherwise, date e.g. 29/02/2012
-                    //would be automatically corrected to 28/02/2012
-
-                    day = (day > cal.getActualMaximum(Calendar.DATE)) ? cal.getActualMaximum(Calendar.DATE) : day;
-                    clean = String.format("%02d%02d%02d", day, mon, year);
-                }
-
-                clean = String.format("%s/%s/%s", clean.substring(0, 2),
-                        clean.substring(2, 4),
-                        clean.substring(4, 8));
-
-                sel = sel < 0 ? 0 : sel;
-                current = clean;
-                etBirtDate.setText(current);
-                etBirtDate.setSelection(sel < current.length() ? sel : current.length());
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-    };
-
     private void init() {
         lvProperty = (ListView) findViewById(R.id.lvProperty);
         lvProperty.setOnItemClickListener(this);
+        lvProperty.setOnItemLongClickListener(this);
         lvProperty.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -195,6 +145,8 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         btnSavingData.setOnClickListener(this);
         btnAddProperty = (Button) findViewById(R.id.btnAddProperty);
         btnAddProperty.setOnClickListener(this);
+        btnDatePick = (Button) findViewById(R.id.btnDatePick);
+        btnDatePick.setOnClickListener(this);
 
         loNationality = (LinearLayout) findViewById(R.id.loNationality);
         loAnotherPrefix = (LinearLayout) findViewById(R.id.loAnotherPrefix);
@@ -244,8 +196,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         etAnotherPrefix = (EditText) findViewById(R.id.etAnotherPrefix);
         etPersonalID = (EditText) findViewById(R.id.etPersonalID);
         etBirtDate = (EditText) findViewById(R.id.etBirtDate);
-        etBirtDate.addTextChangedListener(tw);
-
 
         etHeight = (EditText) findViewById(R.id.etHeight);
         etWeight = (EditText) findViewById(R.id.etWeight);
@@ -495,6 +445,20 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         rbTransportationYes.setOnCheckedChangeListener(this);
     }
 
+    private void setDateTimeField() {
+        Calendar newCalendar = Calendar.getInstance();
+        fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year + 543, monthOfYear, dayOfMonth);
+                etBirtDate.setText(dateFormatter.format(newDate.getTime()));
+            }
+
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+    }
+
     private void setSpinner() {
         NationalityList = db.SelectData("nationality");
         if (!NationalityList.isEmpty()) {
@@ -540,8 +504,11 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     }
 
     private void setField() {
+        DateFormat originalFormat;
+        DateFormat targetFormat;
+        Date odate = null;
+        String formattedDate = "0001-01-01";
         if (!PersonID.equals("Nope")) {
-
             PersonList = db.SelectWhereData("population", "population_idcard", PersonID);
             if (!PersonList.isEmpty()) {
                 if (PersonList.get(0).get("survey_status").equals("1")) {
@@ -565,7 +532,21 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     rbFemale.setChecked(true);
                 }
                 etPersonalID.setText(PersonList.get(0).get("population_idcard"));
-                etBirtDate.setText(PersonList.get(0).get("birthdate"));
+
+                originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+                targetFormat = new SimpleDateFormat("dd/MM/yyy");
+                try {
+                    odate = originalFormat.parse(PersonList.get(0).get("birthdate"));
+                    if (odate != null) {
+                        formattedDate = targetFormat.format(odate);
+                    } else {
+                        formattedDate = "01/01/0001";
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                etBirtDate.setText(formattedDate);
                 etHeight.setText(PersonList.get(0).get("height"));
                 etWeight.setText(PersonList.get(0).get("weight"));
 
@@ -952,9 +933,9 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                         temp.put(strOrder, String.valueOf(++order));
                         temp.put(strPropType, "สัตว์เลี้ยงในครัวเรือน");
                         if (!PPetList.get(0).get("pet_type").equals("")) {
-                            if (PPetList.get(0).get("pet_type").equals("0")){
+                            if (PPetList.get(0).get("pet_type").equals("0")) {
                                 temp.put(strBenefit, "หมา");
-                            }else if (PPetList.get(0).get("pet_type").equals("1")){
+                            } else if (PPetList.get(0).get("pet_type").equals("1")) {
                                 temp.put(strBenefit, "แมว");
                             }
                         } else {
@@ -994,6 +975,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     }
 
     private void updateData() {
+        DateFormat originalFormat;
+        DateFormat targetFormat;
+        Date odate = null;
+        String formattedDate = "0001-01-01";
         String date = df.format(Calendar.getInstance().getTime());
         Boolean NatPass = true;
         NationalityList = db.SelectData("nationality");
@@ -1035,15 +1020,35 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             Val.put("prename", spPrefix.getSelectedItem().toString());
             Val.put("firstname", etFirstName.getText().toString());
             Val.put("lastname", etLastName.getText().toString());
-            Val.put("birthdate", etBirtDate.getText().toString());
-            Val.put("height", etHeight.getText().toString());
-            Val.put("weight", etWeight.getText().toString());
+            originalFormat = new SimpleDateFormat("dd/MM/yyy");
+            targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                odate = originalFormat.parse(etBirtDate.getText().toString());
+                if (odate != null) {
+                    formattedDate = targetFormat.format(odate);
+                } else {
+                    formattedDate = "0001-01-01";
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Val.put("birthdate", formattedDate);
+            if (!etHeight.getText().toString().equals("")) {
+                Val.put("height", etHeight.getText().toString());
+            } else {
+                Val.put("height", "1");
+            }
+            if (!etWeight.getText().toString().equals("")) {
+                Val.put("weight", etWeight.getText().toString());
+            } else {
+                Val.put("weight", "1");
+            }
             if (rbMale.isChecked()) {
                 Val.put("sex", "M");
             } else if (rbFemale.isChecked()) {
                 Val.put("sex", "F");
             } else {
-                Val.put("sex", "");
+                Val.put("sex", "M");
             }
             Val.put("bloodgroup", spBloodType.getSelectedItem().toString());
             if (rbAlive.isChecked()) {
@@ -1051,10 +1056,14 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             } else if (rbDead.isChecked()) {
                 Val.put("living", "1");
             } else {
-                Val.put("living", "");
+                Val.put("living", "0");
             }
             Val.put("maritalstatus", spMaritalStatus.getSelectedItem().toString());
-            Val.put("tel", etTel.getText().toString());
+            if (!etTel.getText().toString().equals("")) {
+                Val.put("tel", etTel.getText().toString());
+            } else {
+                Val.put("tel", "1");
+            }
             if (spNationality.getSelectedItem().toString().equals("อื่นๆ")) {
                 Val.put("nationality", etNationality.getText().toString());
             } else {
@@ -1071,7 +1080,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("currentaddr_province", etIHProvince.getText().toString());
                 Val.put("currentaddr_country", etIHCountry.getText().toString());
             } else {
-                Val.put("currentaddr", "");
+                Val.put("currentaddr", "0");
                 Val.put("currentaddr_province", "");
                 Val.put("currentaddr_country", "");
             }
@@ -1084,13 +1093,21 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
             if (rbICMonth.isChecked()) {
                 Val.put("income", "0");
-                Val.put("income_money", etICMonth.getText().toString());
+                if (!etICMonth.getText().toString().equals("")) {
+                    Val.put("income_money", etICMonth.getText().toString());
+                } else {
+                    Val.put("income_money", "0");
+                }
             } else if (rbICYear.isChecked()) {
                 Val.put("income", "1");
-                Val.put("income_money", etICYear.getText().toString());
+                if (!etICYear.getText().toString().equals("")) {
+                    Val.put("income_money", etICYear.getText().toString());
+                } else {
+                    Val.put("income_money", "0");
+                }
             } else {
-                Val.put("income", "");
-                Val.put("income_money", "");
+                Val.put("income", "0");
+                Val.put("income_money", "0");
             }
 
             if (rbDebtNo.isChecked()) {
@@ -1098,7 +1115,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             } else if (rbDebtYes.isChecked()) {
                 Val.put("dept", "1");
             } else {
-                Val.put("dept", "");
+                Val.put("dept", "0");
             }
 
             if (rbSavingNo.isChecked()) {
@@ -1106,7 +1123,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             } else if (rbSavingYes.isChecked()) {
                 Val.put("saving", "1");
             } else {
-                Val.put("saving", "");
+                Val.put("saving", "0");
             }
 
             if (rbAllergicNo.isChecked()) {
@@ -1116,7 +1133,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("allergichis", "1");
                 Val.put("allergichis_detail", etAllergic.getText().toString());
             } else {
-                Val.put("allergichis", "");
+                Val.put("allergichis", "0");
                 Val.put("allergichis_detail", "");
             }
 
@@ -1125,7 +1142,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             } else if (rbDisadvantageYes.isChecked()) {
                 Val.put("disadvantage", "1");
             } else {
-                Val.put("disadvantage", "");
+                Val.put("disadvantage", "0");
             }
 
             if (rbSubAlNo.isChecked()) {
@@ -1133,12 +1150,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             } else if (rbSubAlYes.isChecked()) {
                 Val.put("sub_al", "1");
             } else {
-                Val.put("sub_al", "");
+                Val.put("sub_al", "0");
             }
 
             if (rbNoStudy.isChecked()) {
                 Val.put("education", "0");
-                Val.put("education_class", "");
+                Val.put("education_class", "0");
             } else if (rbInStudy.isChecked()) {
                 Val.put("education", "1");
                 Val.put("education_class", spInStudy.getSelectedItem().toString());
@@ -1146,8 +1163,8 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("education", "2");
                 Val.put("education_class", spGraduated.getSelectedItem().toString());
             } else {
-                Val.put("education", "");
-                Val.put("education_class", "");
+                Val.put("education", "0");
+                Val.put("education_class", "0");
             }
 
             if (rbLiteracyNo.isChecked()) {
@@ -1155,7 +1172,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             } else if (rbLiteracyYes.isChecked()) {
                 Val.put("literacy", "1");
             } else {
-                Val.put("literacy", "");
+                Val.put("literacy", "0");
             }
 
             if (rbTechnologyNo.isChecked()) {
@@ -1163,20 +1180,20 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             } else if (rbTechnologyYes.isChecked()) {
                 Val.put("technology", "1");
             } else {
-                Val.put("technology", "");
+                Val.put("technology", "0");
             }
 
             if (rbExpertiseNo.isChecked()) {
                 Val.put("expertise", "0");
-                Val.put("expertise_name", "");
+                Val.put("expertise_name", "0");
                 Val.put("expertise_detail", "");
             } else if (rbExpertiseYes.isChecked()) {
                 Val.put("expertise", "1");
                 Val.put("expertise_name", spExpertise.getSelectedItem().toString());
                 Val.put("expertise_detail", etExpertise.getText().toString());
             } else {
-                Val.put("expertise", "");
-                Val.put("expertise_name", "");
+                Val.put("expertise", "0");
+                Val.put("expertise_name", "0");
                 Val.put("expertise_detail", "");
             }
 
@@ -1193,7 +1210,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("religion", "3");
                 Val.put("religion_another", etAnotherReligion.getText().toString());
             } else {
-                Val.put("religion", "");
+                Val.put("religion", "0");
                 Val.put("religion_another", "");
             }
 
@@ -1202,7 +1219,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             } else if (rbParticipationYes.isChecked()) {
                 Val.put("participation", "1");
             } else {
-                Val.put("participation", "");
+                Val.put("participation", "0");
             }
 
             if (rbElectionAlway.isChecked()) {
@@ -1212,7 +1229,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             } else if (rbElectionNever.isChecked()) {
                 Val.put("election", "2");
             } else {
-                Val.put("election", "");
+                Val.put("election", "0");
             }
 
             if (PersonID.equals("Nope")) {
@@ -1249,11 +1266,11 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             Val = new ContentValues();
             if (rbCongenitalNo.isChecked()) {
                 Val.put("congh_type", "0");
-                Val.put("congh1", "");
-                Val.put("congh2", "");
-                Val.put("congh3", "");
-                Val.put("congh4", "");
-                Val.put("congh5", "");
+                Val.put("congh1", "0");
+                Val.put("congh2", "0");
+                Val.put("congh3", "0");
+                Val.put("congh4", "0");
+                Val.put("congh5", "0");
                 Val.put("congh_another", "");
             } else if (rbCongenitalYes.isChecked()) {
                 Val.put("congh_type", "1");
@@ -1268,12 +1285,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     Val.put("congh_another", "");
                 }
             } else {
-                Val.put("congh_type", "");
-                Val.put("congh1", "");
-                Val.put("congh2", "");
-                Val.put("congh3", "");
-                Val.put("congh4", "");
-                Val.put("congh5", "");
+                Val.put("congh_type", "0");
+                Val.put("congh1", "0");
+                Val.put("congh2", "0");
+                Val.put("congh3", "0");
+                Val.put("congh4", "0");
+                Val.put("congh5", "0");
                 Val.put("congh_another", "");
             }
             Val.put("population_idcard", etPersonalID.getText().toString());
@@ -1293,17 +1310,17 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             Val = new ContentValues();
             if (rbContagiousNo.isChecked()) {
                 Val.put("conth_type", "0");
-                Val.put("conth1", "");
-                Val.put("conth2", "");
-                Val.put("conth3", "");
-                Val.put("conth4", "");
-                Val.put("conth5", "");
-                Val.put("conth6", "");
-                Val.put("conth7", "");
-                Val.put("conth8", "");
-                Val.put("conth9", "");
-                Val.put("conth10", "");
-                Val.put("conth11", "");
+                Val.put("conth1", "0");
+                Val.put("conth2", "0");
+                Val.put("conth3", "0");
+                Val.put("conth4", "0");
+                Val.put("conth5", "0");
+                Val.put("conth6", "0");
+                Val.put("conth7", "0");
+                Val.put("conth8", "0");
+                Val.put("conth9", "0");
+                Val.put("conth10", "0");
+                Val.put("conth11", "0");
                 Val.put("conth_another", "");
             } else if (rbContagiousYes.isChecked()) {
                 Val.put("conth_type", "1");
@@ -1324,18 +1341,18 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     Val.put("conth_another", "");
                 }
             } else {
-                Val.put("conth_type", "");
-                Val.put("conth1", "");
-                Val.put("conth2", "");
-                Val.put("conth3", "");
-                Val.put("conth4", "");
-                Val.put("conth5", "");
-                Val.put("conth6", "");
-                Val.put("conth7", "");
-                Val.put("conth8", "");
-                Val.put("conth9", "");
-                Val.put("conth10", "");
-                Val.put("conth11", "");
+                Val.put("conth_type", "0");
+                Val.put("conth1", "0");
+                Val.put("conth2", "0");
+                Val.put("conth3", "0");
+                Val.put("conth4", "0");
+                Val.put("conth5", "0");
+                Val.put("conth6", "0");
+                Val.put("conth7", "0");
+                Val.put("conth8", "0");
+                Val.put("conth9", "0");
+                Val.put("conth10", "0");
+                Val.put("conth11", "0");
                 Val.put("conth_another", "");
             }
             Val.put("population_idcard", etPersonalID.getText().toString());
@@ -1355,12 +1372,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             Val = new ContentValues();
             if (rbDisabledNo.isChecked()) {
                 Val.put("disabled_type", "0");
-                Val.put("disabled1", "");
-                Val.put("disabled2", "");
-                Val.put("disabled3", "");
-                Val.put("disabled4", "");
-                Val.put("disabled5", "");
-                Val.put("disabled6", "");
+                Val.put("disabled1", "0");
+                Val.put("disabled2", "0");
+                Val.put("disabled3", "0");
+                Val.put("disabled4", "0");
+                Val.put("disabled5", "0");
+                Val.put("disabled6", "0");
             } else if (rbDisabledYes.isChecked()) {
                 Val.put("disabled_type", "1");
                 Val.put("disabled1", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled1));
@@ -1370,13 +1387,13 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("disabled5", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled5));
                 Val.put("disabled6", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled6));
             } else {
-                Val.put("disabled_type", "");
-                Val.put("disabled1", "");
-                Val.put("disabled2", "");
-                Val.put("disabled3", "");
-                Val.put("disabled4", "");
-                Val.put("disabled5", "");
-                Val.put("disabled6", "");
+                Val.put("disabled_type", "0");
+                Val.put("disabled1", "0");
+                Val.put("disabled2", "0");
+                Val.put("disabled3", "0");
+                Val.put("disabled4", "0");
+                Val.put("disabled5", "0");
+                Val.put("disabled6", "0");
             }
             Val.put("population_idcard", etPersonalID.getText().toString());
             Val.put("upd_by", "");
@@ -1395,10 +1412,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             Val = new ContentValues();
             if (rbTransportationNo.isChecked()) {
                 Val.put("transport_type", "0");
-                Val.put("trans1", "");
-                Val.put("trans2", "");
-                Val.put("trans3", "");
-                Val.put("trans4", "");
+                Val.put("trans1", "0");
+                Val.put("trans2", "0");
+                Val.put("trans3", "0");
+                Val.put("trans4", "0");
             } else if (rbTransportationYes.isChecked()) {
                 Val.put("transport_type", "1");
                 Val.put("trans1", ModelCheckboxCheck.checkboxReturnCheck(cbTrans1));
@@ -1406,11 +1423,11 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("trans3", ModelCheckboxCheck.checkboxReturnCheck(cbTrans3));
                 Val.put("trans4", ModelCheckboxCheck.checkboxReturnCheck(cbTrans4));
             } else {
-                Val.put("transport_type", "");
-                Val.put("trans1", "");
-                Val.put("trans2", "");
-                Val.put("trans3", "");
-                Val.put("trans4", "");
+                Val.put("transport_type", "0");
+                Val.put("trans1", "0");
+                Val.put("trans2", "0");
+                Val.put("trans3", "0");
+                Val.put("trans4", "0");
             }
             Val.put("population_idcard", etPersonalID.getText().toString());
             Val.put("upd_by", "");
@@ -1434,7 +1451,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             } else if (rbJGNoJob.isChecked()) {
                 Val.put("works_type", "2");
             } else {
-                Val.put("works_type", "");
+                Val.put("works_type", "0");
             }
             Val.put("population_idcard", etPersonalID.getText().toString());
             Val.put("upd_by", "");
@@ -1469,14 +1486,14 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 }
 
             } else {
-                Val.put("agri1", "");
-                Val.put("agri2", "");
-                Val.put("agri3", "");
-                Val.put("agri4", "");
-                Val.put("agri5", "");
-                Val.put("agri6", "");
-                Val.put("agri7", "");
-                Val.put("agri8", "");
+                Val.put("agri1", "0");
+                Val.put("agri2", "0");
+                Val.put("agri3", "0");
+                Val.put("agri4", "0");
+                Val.put("agri5", "0");
+                Val.put("agri6", "0");
+                Val.put("agri7", "0");
+                Val.put("agri8", "0");
                 Val.put("agri_another", "");
             }
             Val.put("upd_by", "");
@@ -1512,15 +1529,15 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 }
 
             } else {
-                Val.put("animal1", "");
-                Val.put("animal2", "");
-                Val.put("animal3", "");
-                Val.put("animal4", "");
-                Val.put("animal5", "");
-                Val.put("animal6", "");
-                Val.put("animal7", "");
-                Val.put("animal8", "");
-                Val.put("animal9", "");
+                Val.put("animal1", "0");
+                Val.put("animal2", "0");
+                Val.put("animal3", "0");
+                Val.put("animal4", "0");
+                Val.put("animal5", "0");
+                Val.put("animal6", "0");
+                Val.put("animal7", "0");
+                Val.put("animal8", "0");
+                Val.put("animal9", "0");
                 Val.put("animal_another", "");
             }
             Val.put("upd_by", "");
@@ -1550,10 +1567,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     Val.put("govern_another", "");
                 }
             } else {
-                Val.put("govern1", "");
-                Val.put("govern2", "");
-                Val.put("govern3", "");
-                Val.put("govern4", "");
+                Val.put("govern1", "0");
+                Val.put("govern2", "0");
+                Val.put("govern3", "0");
+                Val.put("govern4", "0");
                 Val.put("govern_another", "");
             }
             Val.put("upd_by", "");
@@ -1587,13 +1604,13 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 }
 
             } else {
-                Val.put("private1", "");
-                Val.put("private2", "");
-                Val.put("private3", "");
-                Val.put("private4", "");
-                Val.put("private5", "");
-                Val.put("private6", "");
-                Val.put("private7", "");
+                Val.put("private1", "0");
+                Val.put("private2", "0");
+                Val.put("private3", "0");
+                Val.put("private4", "0");
+                Val.put("private5", "0");
+                Val.put("private6", "0");
+                Val.put("private7", "0");
                 Val.put("private_another", "");
             }
             Val.put("upd_by", "");
@@ -1671,9 +1688,13 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
     @Override
     public void onClick(View view) {
+        if (view == btnDatePick) {
+            fromDatePickerDialog.show();
+        }
         if (view == btnSavingData) {
             if (!etPersonalID.getText().toString().equals("") && !etFirstName.getText().toString().equals("") && !etLastName.getText().toString().equals("")) {
                 updateData();
+                this.finish();
                 loProperty.setVisibility(View.VISIBLE);
             } else {
                 Toast.makeText(this, "กรุณากรอกข้อมูลประชากร", Toast.LENGTH_SHORT).show();
@@ -1757,18 +1778,83 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         if (Item.get("PropType").toString().equals("ที่ดิน")) {
             intent = new Intent(getApplicationContext(), LandFormActivity.class);
             intent.putExtra("LandID", SelectedIDItem);
+            intent.putExtra("PersonID", PersonID);
+            intent.putExtra("HouseID", HouseID);
+            startActivity(intent);
         } else if (Item.get("PropType").toString().equals("ยานพาหนะ")) {
             intent = new Intent(getApplicationContext(), VehicalFormActivity.class);
             intent.putExtra("VehicleID", SelectedIDItem);
-        } else if (Item.get("PropType").toString().equals("สัตว์เลี้ยง")) {
+            intent.putExtra("PersonID", PersonID);
+            intent.putExtra("HouseID", HouseID);
+            startActivity(intent);
+        } else if (Item.get("PropType").toString().equals("สัตว์เลี้ยงในครัวเรือน")) {
             intent = new Intent(getApplicationContext(), PetFormActivity.class);
             intent.putExtra("PetID", SelectedIDItem);
-        } else if (Item.get("PropType").toString().equals("ปศุสัตว์")) {
+            intent.putExtra("PersonID", PersonID);
+            intent.putExtra("HouseID", HouseID);
+            startActivity(intent);
+        } else if (Item.get("PropType").toString().equals("สัตว์เลี้ยงเพื่อการเกษตร")) {
             intent = new Intent(getApplicationContext(), AnimalFormActivity.class);
             intent.putExtra("AnimalID", SelectedIDItem);
+            intent.putExtra("PersonID", PersonID);
+            intent.putExtra("HouseID", HouseID);
+            startActivity(intent);
         }
-        intent.putExtra("PersonID", PersonID);
-        intent.putExtra("HouseID", HouseID);
-        startActivity(intent);
+    }
+
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        HashMap<String, String> Item = (HashMap<String, String>) lvProperty.getItemAtPosition(position);
+        SelectedIDItem = Item.get("ID").toString();
+        SelectedNameItem = Item.get("PropType").toString();
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        ContentValues Val = new ContentValues();
+                        if (SelectedNameItem.equals("ที่ดิน")) {
+                            Val.put("ACTIVE", "N");
+                            db.UpdateData("population_asset_land", Val, "land_running", SelectedIDItem);
+                            Val = new ContentValues();
+                            Val.put("survey_status", "1");
+                            db.UpdateData("population", Val, "population_idcard", etPersonalID.getText().toString());
+                            Toast.makeText(getApplicationContext(), "ลบข้อมูล " + SelectedNameItem + " เรียบร้อย", Toast.LENGTH_SHORT).show();
+                        } else if (SelectedNameItem.equals("ยานพาหนะ")) {
+                            Val.put("ACTIVE", "N");
+                            db.UpdateData("population_asset_vehicle", Val, "vehicle_running", SelectedIDItem);
+                            Val = new ContentValues();
+                            Val.put("survey_status", "1");
+                            db.UpdateData("population", Val, "population_idcard", etPersonalID.getText().toString());
+                            Toast.makeText(getApplicationContext(), "ลบข้อมูล " + SelectedNameItem + " เรียบร้อย", Toast.LENGTH_SHORT).show();
+                        } else if (SelectedNameItem.equals("สัตว์เลี้ยงในครัวเรือน")) {
+                            Val.put("ACTIVE", "N");
+                            db.UpdateData("population_asset_pet", Val, "pet_running", SelectedIDItem);
+                            Val = new ContentValues();
+                            Val.put("survey_status", "1");
+                            db.UpdateData("population", Val, "population_idcard", etPersonalID.getText().toString());
+                            Toast.makeText(getApplicationContext(), "ลบข้อมูล " + SelectedNameItem + " เรียบร้อย", Toast.LENGTH_SHORT).show();
+                        } else if (SelectedNameItem.equals("สัตว์เลี้ยงเพื่อการเกษตร")) {
+                            Val.put("ACTIVE", "N");
+                            db.UpdateData("population_asset_animal", Val, "animal_running", SelectedIDItem);
+                            Val = new ContentValues();
+                            Val.put("survey_status", "1");
+                            db.UpdateData("population", Val, "population_idcard", etPersonalID.getText().toString());
+                            Toast.makeText(getApplicationContext(), "ลบข้อมูล " + SelectedNameItem + " เรียบร้อย", Toast.LENGTH_SHORT).show();
+                        }
+                        setListView();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("ท่านต้องการลบข้อมูล " + SelectedNameItem + " ?").setPositiveButton("ใช่", dialogClickListener)
+                .setNegativeButton("ไม่ใช่", dialogClickListener).show();
+        return false;
     }
 }

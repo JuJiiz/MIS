@@ -149,10 +149,26 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
         String date = df.format(Calendar.getInstance().getTime());
         Val = new ContentValues();
         Val.put("population_idcard", PersonID);
-        Val.put("system_id", etSystemID.getText().toString());
-        Val.put("dimen1", etDimenA.getText().toString());
-        Val.put("dimen2", etDimenB.getText().toString());
-        Val.put("dimen3", etDimenC.getText().toString());
+        if (!etSystemID.getText().toString().equals("")){
+            Val.put("system_id", etSystemID.getText().toString());
+        }else {
+            Val.put("system_id", "0");
+        }
+        if (!etDimenA.getText().toString().equals("")){
+            Val.put("dimen1", etDimenA.getText().toString());
+        }else {
+            Val.put("dimen1", "0");
+        }
+        if (!etDimenA.getText().toString().equals("")){
+            Val.put("dimen2", etDimenB.getText().toString());
+        }else {
+            Val.put("dimen2", "0");
+        }
+        if (!etDimenA.getText().toString().equals("")){
+            Val.put("dimen3", etDimenC.getText().toString());
+        }else {
+            Val.put("dimen3", "0");
+        }
         if (rbLB1.isChecked()) {
             Val.put("land_benefit", "0");
         } else if (rbLB2.isChecked()) {
@@ -162,7 +178,7 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
         } else if (rbLB4.isChecked()) {
             Val.put("land_benefit", "3");
         } else {
-            Val.put("land_benefit", "");
+            Val.put("land_benefit", "0");
         }
 
         if (rbLL1.isChecked()) {
@@ -170,7 +186,7 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
         } else if (rbLL2.isChecked()) {
             Val.put("land_location", "1");
         } else {
-            Val.put("land_location", "");
+            Val.put("land_location", "0");
         }
 
         if (rbLT1.isChecked()) {
@@ -180,7 +196,7 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
         } else if (rbLT3.isChecked()) {
             Val.put("land_tax", "2");
         } else {
-            Val.put("land_tax", "");
+            Val.put("land_tax", "0");
         }
 
         if (rbLR1.isChecked()) {
@@ -188,7 +204,7 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
         } else if (rbLR2.isChecked()) {
             Val.put("land_rent", "1");
         } else {
-            Val.put("land_rent", "");
+            Val.put("land_rent", "0");
         }
 
         Val.put("distributor", spContributor.getSelectedItem().toString());

@@ -193,7 +193,7 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
             } else if (AnimalList.get(0).get("market").equals("1")) {
                 rbAnimalMarketYes.setChecked(true);
                 int spinnerPositionMarket = marketArrayAdapter.getPosition(AnimalList.get(0).get("market_place"));
-                spAnimalMarket.setSelection(spinnerPositionType);
+                spAnimalMarket.setSelection(spinnerPositionMarket);
             }
 
             int spinnerPositionContri = dwellerArrayAdapter.getPosition(AnimalList.get(0).get("distributor"));
@@ -245,10 +245,15 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
             } else if (rbAnimalRegisterYes.isChecked()) {
                 Val.put("animal_regis", "1");
             }else {
-                Val.put("animal_regis", "");
+                Val.put("animal_regis", "0");
             }
 
-            Val.put("animal_amount", etAnimalAmount.getText().toString());
+            if (!etAnimalAmount.getText().toString().equals("")){
+                Val.put("animal_amount", etAnimalAmount.getText().toString());
+            }else {
+                Val.put("animal_amount", "0");
+            }
+
 
             if (spAnimalType.getSelectedItem().toString().equals("อื่นๆ")) {
                 TypeList = db.SelectWhereData("asset_animal","atype_name", "\"" + etAnimalType.getText().toString() + "\"");
@@ -265,7 +270,7 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
                 Val.put("infection", "1");
                 Val.put("infection_detail", etAnimalInfection.getText().toString());
             }else {
-                Val.put("infection", "");
+                Val.put("infection", "0");
                 Val.put("infection_detail", "");
             }
 
@@ -274,12 +279,12 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
             } else if (rbAnimalShelterOut.isChecked()) {
                 Val.put("shelter", "1");
             }else {
-                Val.put("shelter", "");
+                Val.put("shelter", "0");
             }
 
             if (rbAnimalShelterIn.isChecked()) {
                 Val.put("diseasecontrol", "0");
-                Val.put("diseasecontrol_by", "");
+                Val.put("diseasecontrol_by", "0");
             } else if (rbAnimalShelterOut.isChecked()) {
                 Val.put("diseasecontrol", "1");
                 if (rbCtrlBySelf.isChecked()) {
@@ -287,11 +292,11 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
                 } else if (rbCtrlByGovern.isChecked()) {
                     Val.put("diseasecontrol_by", "1");
                 }else {
-                    Val.put("diseasecontrol_by", "");
+                    Val.put("diseasecontrol_by", "0");
                 }
             }else {
-                Val.put("diseasecontrol", "");
-                Val.put("diseasecontrol_by", "");
+                Val.put("diseasecontrol", "0");
+                Val.put("diseasecontrol_by", "0");
             }
 
             if (rbDiseaseFreeNo.isChecked()) {
@@ -299,18 +304,18 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
             } else if (rbDiseaseFreeYes.isChecked()) {
                 Val.put("disease_shelter", "1");
             }else {
-                Val.put("disease_shelter", "");
+                Val.put("disease_shelter", "0");
             }
 
             if (rbAnimalMarketNo.isChecked()) {
                 Val.put("market", "0");
-                Val.put("market_place", "");
+                Val.put("market_place", "0");
             } else if (rbAnimalMarketYes.isChecked()) {
                 Val.put("market", "1");
-                Val.put("market_place", spAnimalMarket.getSelectedItem().toString());
+                Val.put("market_place", spAnimalMarket.getSelectedItemPosition());
             }else {
-                Val.put("market", "");
-                Val.put("market_place", "");
+                Val.put("market", "0");
+                Val.put("market_place", "0");
             }
 
             Val.put("distributor", spContributor.getSelectedItem().toString());
@@ -343,7 +348,7 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
                 }
             }
             Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
-            //this.finish();
+            this.finish();
         }
     }
 

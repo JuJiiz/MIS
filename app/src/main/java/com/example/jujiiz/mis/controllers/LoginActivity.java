@@ -31,6 +31,8 @@ import java.net.URLConnection;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
+import javax.net.ssl.HttpsURLConnection;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     Button btnLogin;
     EditText etUsername, etPassword;
@@ -62,9 +64,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if (view == btnLogin) {
-            /*ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo netInfo = manager.getActiveNetworkInfo();*/
-            //if (isConnectedToServer("http://203.154.54.229/chklogin", 10000) == true) {
+            ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = manager.getActiveNetworkInfo();
+            if (netInfo != null && netInfo.isConnectedOrConnecting()) {
                 try {
                     pUsername = etUsername.getText().toString();
                     pPassword = etPassword.getText().toString();
@@ -73,43 +75,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     loginTemp.put("password", pPassword);
                     parseJSON = ModelParseJson.HashmapToJsonlist(loginTemp);
 
-                    jsonResult = ModelSendApi.send("http://203.154.54.229/chklogin", parseJSON);
+                    jsonResult = ModelSendApi.send("https://bayclouds.com/chklogin", parseJSON);
 
-                    JSONObject jsonObject = new JSONObject(jsonResult);
-                    //Log.d("MYLOG", "jsonResult: " + jsonResult);
-
-                    String loginStatus = jsonObject.getString("status");
-
-                    if (loginStatus.equals("ok")) {
-                        String loginUserName = jsonObject.getString("username");
-                        String loginUserStatus = jsonObject.getString("userstatus");
-                        String loginUserID = jsonObject.getString("userid");
-
-                        SharedPreferences sp = getSharedPreferences("UserMemo", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sp.edit();
-                        editor.putString("username", loginUserName);
-                        editor.putString("userstatus", loginUserStatus);
-                        editor.putString("userid", loginUserID);
-                        editor.commit();
-
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
+                    if (jsonResult != null) {
+                        JSONObject jsonObject = new JSONObject(jsonResult);
+                        String loginStatus = jsonObject.getString("status");
+                        if (loginStatus.equals("ok")) {
+                            String loginUserName = jsonObject.getString("username");
+                            String loginUserStatus = jsonObject.getString("userstatus");
+                            String loginUserID = jsonObject.getString("userid");
+                            SharedPreferences sp = getSharedPreferences("UserMemo", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putString("username", loginUserName);
+                            editor.putString("userstatus", loginUserStatus);
+                            editor.putString("userid", loginUserID);
+                            editor.commit();
+                            intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(this, "ชื่อผู้ใช้หรือรหัสผ่าน ไม่ถูกต้อง", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(this, "ชื่อผู้ใช้หรือรหัสผ่าน ไม่ถูกต้อง", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "ข้อผิดพลาดในการเชื่อมต่อ", Toast.LENGTH_SHORT).show();
                     }
-                }catch (JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            /*} else {
-                Toast.makeText(this, "การเชื่อมต่อมีปัญหา", Toast.LENGTH_SHORT).show();
-            }*/
+            } else {
+                Toast.makeText(this, "การเชื่อมต่อขัดข้อง", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     public boolean isConnectedToServer(String url, int timeout) {
         try {
             URL myUrl = new URL(url);
-            URLConnection connection = myUrl.openConnection();
+            HttpsURLConnection connection = (HttpsURLConnection) myUrl.openConnection();
+            connection.setInstanceFollowRedirects(false);
             connection.setConnectTimeout(timeout);
             connection.connect();
             return true;

@@ -109,20 +109,22 @@
                 android:paddingRight="16dp"
                 android:paddingTop="8dp">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="จดทะเบียนเมื่อวันที่"
-                    android:textColor="#000"
-                    android:textSize="16dp" />
-
                 <EditText
                     android:id="@+id/etRegisterDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
                     android:layout_weight="2"
+                    android:enabled="false"
+                    android:hint="จดทะเบียนเมื่อวันที่"
                     android:inputType="date" />
+
+                <Button
+                    android:id="@+id/btnDatePick"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="เลือกวันที่" />
             </LinearLayout>
 
             <LinearLayout

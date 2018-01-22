@@ -1,5 +1,6 @@
 package com.example.jujiiz.mis.controllers;
 
+import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -22,9 +24,11 @@ import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
 import com.example.jujiiz.mis.models.myDBClass;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class VehicalFormActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
@@ -33,10 +37,11 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
     RadioButton rbVehicalType1, rbVehicalType2, rbVehicalType3, rbVehicalType4, rbVehicalType5, rbRentNo, rbRentYes;
     LinearLayout loVehicalType1, loVehicalType2, loVehicalType3, loVehicalType4, loVehicalType5;
     Spinner spVehicalType1, spVehicalType2, spVehicalType3, spVehicalType4, spVehicalType5, spContributor;
-    Button btnSavingData;
+    Button btnSavingData,btnDatePick;
 
     myDBClass db = new myDBClass(this);
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
     ContentValues Val;
     ArrayList<HashMap<String, String>> DwellerList, OwnerList, VehicleList, VTypeList, TestList;
     ArrayList<String> Dweller = new ArrayList<String>();
@@ -47,6 +52,8 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
     ArrayList<String> Type5 = new ArrayList<String>();
     ArrayAdapter<String> dwellerArrayAdapter, AdapterType1, AdapterType2, AdapterType3, AdapterType4, AdapterType5;
     String PersonID, HouseID, VehicleID;
+
+    private DatePickerDialog fromDatePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,7 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
 
         setSpinner();
         setField();
+        setDateTimeField();
     }
 
     private void init() {
@@ -103,6 +111,22 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
 
         btnSavingData = (Button) findViewById(R.id.btnSavingData);
         btnSavingData.setOnClickListener(this);
+        btnDatePick = (Button) findViewById(R.id.btnDatePick);
+        btnDatePick.setOnClickListener(this);
+    }
+
+    private void setDateTimeField() {
+        Calendar newCalendar = Calendar.getInstance();
+        fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year + 543, monthOfYear, dayOfMonth);
+                etRegisterDate.setText(dateFormatter.format(newDate.getTime()));
+            }
+
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
     }
 
     private void setSpinner() {
@@ -163,13 +187,29 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void setField() {
+        DateFormat originalFormat;
+        DateFormat targetFormat;
+        Date odate = null;
+        String formattedDate = "0001-01-01";
         OwnerList = db.SelectWhereData("population", "population_idcard", PersonID);
         etOwnerName.setText(OwnerList.get(0).get("firstname") + " " + OwnerList.get(0).get("lastname"));
         etOwnerPersonalID.setText(OwnerList.get(0).get("population_idcard"));
         if (!VehicleID.equals("Nope")) {
             VehicleList = db.SelectWhereData("population_asset_vehicle", "vehicle_running", VehicleID);
-            etRegisterDate.setText(VehicleList.get(0).get("regisdate"));
+            originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+            targetFormat = new SimpleDateFormat("dd/MM/yyy");
+            try {
+                odate = originalFormat.parse(VehicleList.get(0).get("regisdate"));
+                if (odate != null) {
+                    formattedDate = targetFormat.format(odate);
+                } else {
+                    formattedDate = "01/01/0001";
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
+            etRegisterDate.setText(formattedDate);
             VTypeList = db.SelectWhereData("asset_vehicle", "vtype_id", VehicleList.get(0).get("vtype_id"));
             if (VTypeList.get(0).get("vtype_name").equals("ประเภทยานพาหนะทั่วไป")){
                 rbVehicalType1.setChecked(true);
@@ -204,10 +244,27 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void updateData() {
+        DateFormat originalFormat;
+        DateFormat targetFormat;
+        Date odate = null;
+        String formattedDate = "0001-01-01";
         String date = df.format(Calendar.getInstance().getTime());
         Val = new ContentValues();
         Val.put("population_idcard", PersonID);
-        Val.put("regisdate", etRegisterDate.getText().toString());
+        originalFormat = new SimpleDateFormat("dd/MM/yyy");
+        targetFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            odate = originalFormat.parse(etRegisterDate.getText().toString());
+            if (odate != null) {
+                formattedDate = targetFormat.format(odate);
+            } else {
+                formattedDate = "0001-01-01";
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Val.put("regisdate", formattedDate);
         if (rbVehicalType1.isChecked()) {
             TestList = db.SelectWhereData("asset_vehicle", "vtype_detail", "\"" + spVehicalType1.getSelectedItem() + "\"");
             Val.put("vtype_id", TestList.get(0).get("vtype_id"));
@@ -224,7 +281,7 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
             TestList = db.SelectWhereData("asset_vehicle", "vtype_detail", "\"" + spVehicalType5.getSelectedItem() + "\"");
             Val.put("vtype_id", TestList.get(0).get("vtype_id"));
         } else {
-            Val.put("vtype_id", "");
+            Val.put("vtype_id", "1");
         }
 
         if (rbRentYes.isChecked()) {
@@ -232,7 +289,7 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
         } else if (rbRentNo.isChecked()) {
             Val.put("vehical_rent", "0");
         } else {
-            Val.put("vehical_rent", "");
+            Val.put("vehical_rent", "0");
         }
         Val.put("distributor", spContributor.getSelectedItem().toString());
         Val.put("upd_by", "");
@@ -269,6 +326,9 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
             updateData();
             Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
             this.finish();
+        }
+        if (v == btnDatePick) {
+            fromDatePickerDialog.show();
         }
     }
 

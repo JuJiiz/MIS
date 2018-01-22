@@ -1,6 +1,7 @@
 package com.example.jujiiz.mis.models;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,13 +14,17 @@ import java.net.URLConnection;
 
 public class CallApi extends AsyncTask<String, Void, String> {
     @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+
+    @Override
     protected String doInBackground(String... urls) {
 
         try {
             URL url = new URL(urls[0]);
 
             URLConnection urlConnection = url.openConnection();
-
             HttpURLConnection httpURLConnection = (HttpURLConnection) urlConnection;
             httpURLConnection.setAllowUserInteraction(false);
             httpURLConnection.setInstanceFollowRedirects(true);
@@ -37,7 +42,8 @@ public class CallApi extends AsyncTask<String, Void, String> {
             String line = null;
 
             while ((line=reader.readLine()) != null){
-                stringBuilder.append(line + "\n");
+                Log.d("MYLOG", "doInBackground: ");
+                stringBuilder.append(line);
             }
             inputStream.close();
             return stringBuilder.toString();

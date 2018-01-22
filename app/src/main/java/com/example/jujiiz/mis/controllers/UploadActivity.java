@@ -260,7 +260,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     temp.put("saving", PopulationList.get(i).get("saving"));
                     temp.put("allergichis", PopulationList.get(i).get("allergichis"));
                     temp.put("allergichis_detail", PopulationList.get(i).get("allergichis_detail"));
-                    temp.put("survey_stadisadvantagetus", PopulationList.get(i).get("disadvantage"));
+                    temp.put("disadvantage", PopulationList.get(i).get("disadvantage"));
                     temp.put("sub_al", PopulationList.get(i).get("sub_al"));
                     temp.put("education", PopulationList.get(i).get("education"));
                     temp.put("education_class", PopulationList.get(i).get("education_class"));
@@ -277,6 +277,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     temp.put("latentpop_province", PopulationList.get(i).get("latentpop_province"));
                     temp.put("latentpop_country", PopulationList.get(i).get("latentpop_country"));
                     temp.put("distributor", PopulationList.get(i).get("distributor"));
+                    temp.put("survey_status", PopulationList.get(i).get("survey_status"));
 
                     temp.put("userid", "1579");
                     temp.put("username", "JuJiiz");
@@ -413,8 +414,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
     private void uploadLand() {
         LandActive = new ArrayList<HashMap<String, String>>();
-        LandList = db.SelectData("population_asset_land");
-        if (!LandList.isEmpty()) {
+        //LandList = db.SelectData("population_asset_land");
+        //if (!LandList.isEmpty()) {
             for (int i = 0; i < LandList.size(); i++) {
                 HashMap<String, String> temp = new HashMap<String, String>();
                 temp.put("userid", "1579");
@@ -432,13 +433,13 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 temp.put("distributor", LandList.get(i).get("distributor"));
                 LandActive.add(temp);
             }
-        }
+        //}
     }
 
     private void uploadVehicle() {
         VehicleActive = new ArrayList<HashMap<String, String>>();
-        VehicleList = db.SelectData("population_asset_vehicle");
-        if (!VehicleList.isEmpty()) {
+        //VehicleList = db.SelectData("population_asset_vehicle");
+        //if (!VehicleList.isEmpty()) {
             for (int i = 0; i < VehicleList.size(); i++) {
                 HashMap<String, String> temp = new HashMap<String, String>();
                 temp.put("userid", "1579");
@@ -447,17 +448,17 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 temp.put("population_idcard", VehicleList.get(i).get("population_idcard"));
                 temp.put("regisdate", VehicleList.get(i).get("regisdate"));
                 temp.put("vtype_id", VehicleList.get(i).get("vtype_id"));
-                temp.put("vehicle_rent", VehicleList.get(i).get("vehicle_rent"));
+                temp.put("vehicle_rent", VehicleList.get(i).get("vehical_rent"));
                 temp.put("distributor", VehicleList.get(i).get("distributor"));
                 VehicleActive.add(temp);
             }
-        }
+        //}
     }
 
     private void uploadPet() {
         PetActive = new ArrayList<HashMap<String, String>>();
-        PetList = db.SelectData("population_asset_pet");
-        if (!PetList.isEmpty()) {
+        //PetList = db.SelectData("population_asset_pet");
+        //if (!PetList.isEmpty()) {
             for (int i = 0; i < PetList.size(); i++) {
                 HashMap<String, String> temp = new HashMap<String, String>();
                 temp.put("userid", "1579");
@@ -476,23 +477,22 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 temp.put("distributor", PetList.get(i).get("distributor"));
                 PetActive.add(temp);
             }
-        }
+        //}
     }
 
     private void uploadAnimal() {
         AnimalActive = new ArrayList<HashMap<String, String>>();
-        AnimalList = db.SelectData("population_asset_animal");
-        if (!AnimalList.isEmpty()) {
+        //AnimalList = db.SelectData("population_asset_animal");
+        //if (!AnimalList.isEmpty()) {
             for (int i = 0; i < AnimalList.size(); i++) {
                 HashMap<String, String> temp = new HashMap<String, String>();
                 temp.put("userid", "1579");
                 temp.put("username", "JuJiiz");
 
                 temp.put("population_idcard", AnimalList.get(i).get("population_idcard"));
-                temp.put("animal_regis", AnimalList.get(i).get("pet_regis"));
-                temp.put("pet_amount", AnimalList.get(i).get("pet_amount"));
-                AnimalName = db.SelectWhereData("asset_animal", "atype_id", AnimalList.get(i).get("atype_id"));
-                temp.put("atype_id", AnimalName.get(0).get("atype_name"));
+                temp.put("animal_regis", AnimalList.get(i).get("animal_regis"));
+                temp.put("animal_amount", AnimalList.get(i).get("animal_amount"));
+                temp.put("atype_id", AnimalList.get(0).get("atype_id"));
                 temp.put("infection", AnimalList.get(i).get("infection"));
                 temp.put("infection_detail", AnimalList.get(i).get("infection_detail"));
                 temp.put("shelter", AnimalList.get(i).get("shelter"));
@@ -504,26 +504,31 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 temp.put("distributor", AnimalList.get(i).get("distributor"));
                 AnimalActive.add(temp);
             }
-        }
+        //}
     }
 
     @Override
     public void onClick(View v) {
         if (v == btnUploadData) {
+            Boolean AllInPopulation = false;
+
             uploadHouse();
             for (int i = 0; i < HouseActive.size(); i++) {
                 parseJson = ModelParseJson.HashmapToJsonlist(HouseActive.get(i));
                 jsonResult = ModelSendApi.send("http://203.154.54.229/inserthouse", parseJson);
-                Log.d("MYLOG", "jsonResult: " + jsonResult);
                 try {
-                    JSONObject jsonObject = new JSONObject(jsonResult);
-                    String returnStatus = jsonObject.getString("status");
-                    if (returnStatus.equals("ok")) {
-                        Val = new ContentValues();
-                        Val.put("survey_status","0");
-                        db.UpdateData("house",Val,"house_id",HouseActive.get(i).get("house_id"));
+                    if (jsonResult != null) {
+                        JSONObject jsonObject = new JSONObject(jsonResult);
+                        String returnStatus = jsonObject.getString("status");
+                        if (returnStatus.equals("ok")) {
+                            Val = new ContentValues();
+                            Val.put("survey_status", "0");
+                            db.UpdateData("house", Val, "house_id", HouseActive.get(i).get("house_id"));
+                        } else {
+                            Toast.makeText(this, "ข้อมูลผิดพลาด", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(this, "ข้อมูลผิดพลาด", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "ข้อผิดพลาดในการเชื่อมต่อ", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -531,14 +536,42 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 setHouseListView();
             }
 
-            /*uploadPopulation();
+            uploadPopulation();
             for (int i = 0; i < PopulationActive.size(); i++) {
-                ModelParseJson.HashmapToJsonlist(PopulationActive.get(i));
+                //for (int h = 0; h < PopulationActive.size(); h++) {
+                    parseJson = ModelParseJson.HashmapToJsonlist(PopulationActive.get(i));
+                    jsonResult = ModelSendApi.send("http://203.154.54.229/insertpopulation", parseJson);
+                    try {
+                        if (jsonResult != null) {
+                            JSONObject jsonObject = new JSONObject(jsonResult);
+                            String returnStatus = jsonObject.getString("status");
+                            if (returnStatus.equals("ok")) {
+                                AllInPopulation = true;
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                //}
+
                 LandList = db.SelectWhereData("population_asset_land", "population_idcard", PopulationActive.get(i).get("population_idcard"));
                 if (!LandList.isEmpty()) {
+                    AllInPopulation = false;
                     uploadLand();
                     for (int j = 0; j < LandActive.size(); j++) {
-                        ModelParseJson.HashmapToJsonlist(LandActive.get(j));
+                        parseJson = ModelParseJson.HashmapToJsonlist(LandActive.get(j));
+                        jsonResult = ModelSendApi.send("http://203.154.54.229/insertassetland", parseJson);
+                        try {
+                            if (jsonResult != null) {
+                                JSONObject jsonObject = new JSONObject(jsonResult);
+                                String returnStatus = jsonObject.getString("status");
+                                if (returnStatus.equals("ok")) {
+                                    AllInPopulation = true;
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 } else {
                     Log.d("MYLOG", "Land No Data");
@@ -546,9 +579,21 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
                 VehicleList = db.SelectWhereData("population_asset_vehicle", "population_idcard", PopulationActive.get(i).get("population_idcard"));
                 if (!VehicleList.isEmpty()) {
+                    AllInPopulation = false;
                     uploadVehicle();
                     for (int j = 0; j < VehicleActive.size(); j++) {
-                        ModelParseJson.HashmapToJsonlist(VehicleActive.get(j));
+                        parseJson = ModelParseJson.HashmapToJsonlist(VehicleActive.get(j));
+                        jsonResult = ModelSendApi.send("http://203.154.54.229/insertassetvehicle", parseJson);try {
+                            if (jsonResult != null) {
+                                JSONObject jsonObject = new JSONObject(jsonResult);
+                                String returnStatus = jsonObject.getString("status");
+                                if (returnStatus.equals("ok")) {
+                                    AllInPopulation = true;
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 } else {
                     Log.d("MYLOG", "Vehicle No Data");
@@ -556,9 +601,21 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
                 PetList = db.SelectWhereData("population_asset_pet", "population_idcard", PopulationActive.get(i).get("population_idcard"));
                 if (!PetList.isEmpty()) {
+                    AllInPopulation = false;
                     uploadPet();
                     for (int j = 0; j < PetActive.size(); j++) {
-                        ModelParseJson.HashmapToJsonlist(PetActive.get(j));
+                        parseJson = ModelParseJson.HashmapToJsonlist(PetActive.get(j));
+                        jsonResult = ModelSendApi.send("http://203.154.54.229/insertassetpet", parseJson);try {
+                            if (jsonResult != null) {
+                                JSONObject jsonObject = new JSONObject(jsonResult);
+                                String returnStatus = jsonObject.getString("status");
+                                if (returnStatus.equals("ok")) {
+                                    AllInPopulation = true;
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 } else {
                     Log.d("MYLOG", "Pet No Data");
@@ -566,14 +623,37 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
                 AnimalList = db.SelectWhereData("population_asset_animal", "population_idcard", PopulationActive.get(i).get("population_idcard"));
                 if (!AnimalList.isEmpty()) {
+                    AllInPopulation = false;
                     uploadAnimal();
                     for (int j = 0; j < AnimalActive.size(); j++) {
-                        ModelParseJson.HashmapToJsonlist(AnimalActive.get(j));
+                        parseJson = ModelParseJson.HashmapToJsonlist(AnimalActive.get(j));
+                        jsonResult = ModelSendApi.send("http://203.154.54.229/insertassetanimal", parseJson);
+                        Log.d("MYLOG", "jsonResult: "+jsonResult);
+                        try {
+                            if (jsonResult != null) {
+                                JSONObject jsonObject = new JSONObject(jsonResult);
+                                String returnStatus = jsonObject.getString("status");
+                                if (returnStatus.equals("ok")) {
+                                    AllInPopulation = true;
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 } else {
                     Log.d("MYLOG", "Animal No Data");
                 }
-            }*/
+
+                //if (AllInPopulation == true){
+                    Val = new ContentValues();
+                    Val.put("survey_status", "0");
+                    db.UpdateData("population", Val, "population_idcard", PopulationActive.get(i).get("population_idcard"));
+                /*}else {
+                    Toast.makeText(this,"อัพโหลดผิดพลาด",Toast.LENGTH_SHORT).show();
+                }*/
+                setPopulationListView();
+            }
         }
     }
 }
