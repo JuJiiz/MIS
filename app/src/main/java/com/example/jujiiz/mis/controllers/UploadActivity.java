@@ -492,7 +492,9 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 temp.put("population_idcard", AnimalList.get(i).get("population_idcard"));
                 temp.put("animal_regis", AnimalList.get(i).get("animal_regis"));
                 temp.put("animal_amount", AnimalList.get(i).get("animal_amount"));
-                temp.put("atype_id", AnimalList.get(0).get("atype_id"));
+                AnimalName = db.SelectWhereData("asset_animal","atype_id",AnimalList.get(0).get("atype_id"));
+                Log.d("MYLOG", "AnimalName: " + AnimalName.get(0).get("atype_name"));
+                temp.put("atype_name", AnimalName.get(0).get("atype_name"));
                 temp.put("infection", AnimalList.get(i).get("infection"));
                 temp.put("infection_detail", AnimalList.get(i).get("infection_detail"));
                 temp.put("shelter", AnimalList.get(i).get("shelter"));
@@ -516,6 +518,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             for (int i = 0; i < HouseActive.size(); i++) {
                 parseJson = ModelParseJson.HashmapToJsonlist(HouseActive.get(i));
                 jsonResult = ModelSendApi.send("http://203.154.54.229/inserthouse", parseJson);
+                Log.d("MYLOG", "jsonResult (House): "+jsonResult);
                 try {
                     if (jsonResult != null) {
                         JSONObject jsonObject = new JSONObject(jsonResult);
@@ -524,6 +527,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                             Val = new ContentValues();
                             Val.put("survey_status", "0");
                             db.UpdateData("house", Val, "house_id", HouseActive.get(i).get("house_id"));
+                            Toast.makeText(this, "ส่งข้อมูล \"ครัวเรือน\" สำเร็จ", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(this, "ข้อมูลผิดพลาด", Toast.LENGTH_SHORT).show();
                         }
@@ -541,6 +545,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 //for (int h = 0; h < PopulationActive.size(); h++) {
                     parseJson = ModelParseJson.HashmapToJsonlist(PopulationActive.get(i));
                     jsonResult = ModelSendApi.send("http://203.154.54.229/insertpopulation", parseJson);
+                Log.d("MYLOG", "jsonResult (Population): "+jsonResult);
                     try {
                         if (jsonResult != null) {
                             JSONObject jsonObject = new JSONObject(jsonResult);
@@ -561,6 +566,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     for (int j = 0; j < LandActive.size(); j++) {
                         parseJson = ModelParseJson.HashmapToJsonlist(LandActive.get(j));
                         jsonResult = ModelSendApi.send("http://203.154.54.229/insertassetland", parseJson);
+                        Log.d("MYLOG", "jsonResult (Land): "+jsonResult);
                         try {
                             if (jsonResult != null) {
                                 JSONObject jsonObject = new JSONObject(jsonResult);
@@ -583,7 +589,9 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     uploadVehicle();
                     for (int j = 0; j < VehicleActive.size(); j++) {
                         parseJson = ModelParseJson.HashmapToJsonlist(VehicleActive.get(j));
-                        jsonResult = ModelSendApi.send("http://203.154.54.229/insertassetvehicle", parseJson);try {
+                        jsonResult = ModelSendApi.send("http://203.154.54.229/insertassetvehicle", parseJson);
+                        Log.d("MYLOG", "jsonResult (Vehicle): "+jsonResult);
+                        try {
                             if (jsonResult != null) {
                                 JSONObject jsonObject = new JSONObject(jsonResult);
                                 String returnStatus = jsonObject.getString("status");
@@ -605,7 +613,9 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     uploadPet();
                     for (int j = 0; j < PetActive.size(); j++) {
                         parseJson = ModelParseJson.HashmapToJsonlist(PetActive.get(j));
-                        jsonResult = ModelSendApi.send("http://203.154.54.229/insertassetpet", parseJson);try {
+                        jsonResult = ModelSendApi.send("http://203.154.54.229/insertassetpet", parseJson);
+                        Log.d("MYLOG", "jsonResult (Pet): "+jsonResult);
+                        try {
                             if (jsonResult != null) {
                                 JSONObject jsonObject = new JSONObject(jsonResult);
                                 String returnStatus = jsonObject.getString("status");
@@ -628,7 +638,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     for (int j = 0; j < AnimalActive.size(); j++) {
                         parseJson = ModelParseJson.HashmapToJsonlist(AnimalActive.get(j));
                         jsonResult = ModelSendApi.send("http://203.154.54.229/insertassetanimal", parseJson);
-                        Log.d("MYLOG", "jsonResult: "+jsonResult);
+                        Log.d("MYLOG", "jsonResult (Animal): "+jsonResult);
                         try {
                             if (jsonResult != null) {
                                 JSONObject jsonObject = new JSONObject(jsonResult);
@@ -645,13 +655,14 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     Log.d("MYLOG", "Animal No Data");
                 }
 
-                //if (AllInPopulation == true){
+                if (AllInPopulation == true){
                     Val = new ContentValues();
                     Val.put("survey_status", "0");
                     db.UpdateData("population", Val, "population_idcard", PopulationActive.get(i).get("population_idcard"));
-                /*}else {
+                    Toast.makeText(this, "ส่งข้อมูล \"ประชากร\" สำเร็จ", Toast.LENGTH_SHORT).show();
+                }else {
                     Toast.makeText(this,"อัพโหลดผิดพลาด",Toast.LENGTH_SHORT).show();
-                }*/
+                }
                 setPopulationListView();
             }
         }

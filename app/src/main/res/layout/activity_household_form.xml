@@ -294,9 +294,18 @@
 
                 </LinearLayout>
 
-                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:map="http://schemas.android.com/apk/res-auto"
-                    xmlns:tools="http://schemas.android.com/tools"
+                <Button
+                    android:id="@+id/btnCurrentLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="พิกัดปัจจุบัน"
+                    android:visibility="gone" />
+                <RelativeLayout
+                    android:id="@+id/map_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp">
+
+                <fragment
                     android:id="@+id/googleMap"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
@@ -304,12 +313,18 @@
                     android:background="#c5c5c5"
                     tools:context=".controllers.HouseholdFormActivity" />
 
-                <Button
-                    android:id="@+id/btnCurrentLocation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="พิกัดปัจจุบัน"
-                    android:visibility="gone" />
+                    <ImageView
+                        android:id="@+id/transparent_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignTop="@+id/googleMap"
+                        android:layout_alignBottom="@+id/googleMap"
+                        android:layout_alignEnd="@+id/googleMap"
+                        android:layout_alignRight="@+id/googleMap"
+                        android:layout_alignLeft="@+id/googleMap"
+                        android:layout_alignStart="@+id/googleMap"
+                        android:src="@color/transparent" />
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout

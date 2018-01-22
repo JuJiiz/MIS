@@ -152,22 +152,22 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
         if (!etSystemID.getText().toString().equals("")){
             Val.put("system_id", etSystemID.getText().toString());
         }else {
-            Val.put("system_id", "0");
+            Val.put("system_id", "1");
         }
         if (!etDimenA.getText().toString().equals("")){
             Val.put("dimen1", etDimenA.getText().toString());
         }else {
-            Val.put("dimen1", "0");
+            Val.put("dimen1", "1");
         }
         if (!etDimenA.getText().toString().equals("")){
             Val.put("dimen2", etDimenB.getText().toString());
         }else {
-            Val.put("dimen2", "0");
+            Val.put("dimen2", "1");
         }
         if (!etDimenA.getText().toString().equals("")){
             Val.put("dimen3", etDimenC.getText().toString());
         }else {
-            Val.put("dimen3", "0");
+            Val.put("dimen3", "1");
         }
         if (rbLB1.isChecked()) {
             Val.put("land_benefit", "0");

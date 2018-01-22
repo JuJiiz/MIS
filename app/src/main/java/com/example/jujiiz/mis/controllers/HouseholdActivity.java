@@ -65,7 +65,7 @@ public class HouseholdActivity extends AppCompatActivity
     String survey = " survey";
     String SelectedIDItem;
     JSONArray STRING_JSONDATA;
-    String apiURL = "http://203.154.54.229/qry_tr14byall";
+    String apiURL = "https://bayclouds.com/gettr14";
     String JKey = "data";
     boolean RESUME = false;
 
@@ -90,29 +90,29 @@ public class HouseholdActivity extends AppCompatActivity
 
         TR14List = db.SelectData("tr14");
         if (TR14List.isEmpty()) {
-            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
-                        case DialogInterface.BUTTON_POSITIVE:
-                            ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-                            NetworkInfo netInfo = manager.getActiveNetworkInfo();
-                            if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-                                new AsynTaskDownload().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                                RESUME = true;
-                            } else {
-                                Toast.makeText(getApplicationContext(), "การเชื่อมต่อขัดข้อง", Toast.LENGTH_SHORT).show();
-                            }
-                            break;
-                        case DialogInterface.BUTTON_NEGATIVE:
-                            break;
+            AlertDialog.Builder builder =
+                    new AlertDialog.Builder(HouseholdActivity.this);
+            builder.setMessage("ไม่มีข้อมูล ทร.14\nท่านต้องการดาวน์โหลดข้อมูลหรือไม่? (ใช้Internet)");
+            builder.setPositiveButton("ใช่", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo netInfo = manager.getActiveNetworkInfo();
+                    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+                        dialog.cancel();
+                        new AsynTaskDownload().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                        RESUME = true;
+                    } else {
+                        Toast.makeText(getApplicationContext(), "การเชื่อมต่อขัดข้อง", Toast.LENGTH_SHORT).show();
                     }
                 }
-            };
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("ไม่มีข้อมูล ทร.14\nท่านต้องการดาวน์โหลดข้อมูลหรือไม่? (ใช้Internet)").setPositiveButton("ใช่", dialogClickListener)
-                    .setNegativeButton("ไม่ใช่", dialogClickListener).show();
+            });
+            builder.setNegativeButton("ไม่ใช่", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.show();
         } else {
             setListView();
             RESUME = true;
@@ -134,7 +134,7 @@ public class HouseholdActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (RESUME == true){
+        if (RESUME == true) {
             setListView();
         }
     }
@@ -180,9 +180,10 @@ public class HouseholdActivity extends AppCompatActivity
             for (int i = 0; i < HouseList.size(); i++) {
                 HashMap<String, String> temp = new HashMap<String, String>();
                 //TR14List = db.SelectWhereData("tr14", "house_id", HouseList.get(i).get("house_id"));
-                for (int j = 0; j < TR14List.size() ; j++) {
-                    if (TR14List.get(j).get("house_id").contains(HouseList.get(i).get("house_id"))) {
-                        temp.put(strVilleNo, TR14List.get(0).get("vilage_no"));
+                for (int j = 0; j < TR14List.size(); j++) {
+                    if (TR14List.get(j).get("house_id").equals(HouseList.get(i).get("house_id"))) {
+                        temp.put(strVilleNo, TR14List.get(j).get("vilage_no"));
+                        //Log.d("MYLOG", "TR14List: "+TR14List.get(j).get("vilage_no"));
                     }
                 }
                 temp.put(strHouseNo, HouseList.get(i).get("house_no"));
@@ -205,9 +206,10 @@ public class HouseholdActivity extends AppCompatActivity
         lvHousehold.setAdapter(simpleAdapter);
     }
 
-    class AsynTaskDownload extends AsyncTask<Void, Void, Void> {
+    class AsynTaskDownload extends AsyncTask<Void, TaskProgress, Void> {
         private final ProgressDialog dialog = new ProgressDialog(HouseholdActivity.this);
         private String HNoDialogMessage = "";
+        private String DialogMessage = "กำลังดาวน์โหลด...\nบ้านเลขที่ " + HNoDialogMessage;
 
         // can use UI thread here
         protected void onPreExecute() {
@@ -220,7 +222,7 @@ public class HouseholdActivity extends AppCompatActivity
         @Override
         protected Void doInBackground(Void... voids) {
             String date = df.format(Calendar.getInstance().getTime());
-            String formattedDate;
+            String formattedDate = "01/01/0001";
             DateFormat originalFormat;
             DateFormat targetFormat;
             Date odate = null;
@@ -252,14 +254,15 @@ public class HouseholdActivity extends AppCompatActivity
                         if (odate != null) {
                             formattedDate = targetFormat.format(odate);
                         } else {
-                            formattedDate = "";
+                            formattedDate = "01/01/0001";
                         }
 
                         Val.put("birthdate", formattedDate);
                         Val.put("nationality", List.get(i).get("nationality"));
                         Val.put("vilage_no", List.get(i).get("vilage_no"));
                         db.InsertData("tr14", Val);
-                        this.dialog.setMessage("กำลังดาวน์โหลด... " + HNoDialogMessage);
+                        //publishProgress(new TaskProgress(DialogMessage));
+                        //this.dialog.setMessage("กำลังดาวน์โหลด... \nบ้านเลขที่ " + HNoDialogMessage);
 
                         HouseList = new ArrayList<HashMap<String, String>>();
                         HouseList = db.SelectWhereData("house", "house_id", List.get(i).get("house_id"));
@@ -361,6 +364,16 @@ public class HouseholdActivity extends AppCompatActivity
             }
             setListView();
             Toast.makeText(getApplicationContext(), "ดาวน์โหลดสำเร็จแล้ว", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private static class TaskProgress {
+        //final int percentage;
+        final String message;
+
+        TaskProgress(/*int percentage,*/ String message) {
+            //this.percentage = percentage;
+            this.message = message;
         }
     }
 

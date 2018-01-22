@@ -37,6 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -76,6 +77,7 @@ import java.util.HashMap;
 public class HouseholdFormActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, View.OnClickListener, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
+        /*GoogleMap.OnMarkerDragListener,*/
         LocationListener {
 
     GoogleMap mGoogleMap;
@@ -97,7 +99,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     CheckBox cbProb1, cbProb2, cbProb3, cbProb4, cbProb5, cbProb6, cbProb7, cbProb8, cbProb9, cbProb10;
 
     Button btnSavingData, btnCurrentLocation, btnAddDweller, btnImagePick;
-    ImageView ivImage;
+    ImageView ivImage, transparent_image;
 
     LinearLayout loAnotherProblem;
     ListView listHousehold;
@@ -111,6 +113,8 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     CheckBox cbStorm, cbFlood, cbMud, cbEarthquake, cbBuilding, cbDrought, cbCold, cbRoad, cbFire, cbFireForest, cbSmoke, cbChemical, cbPlague, cbWeed;
     LinearLayout loDisaster, loStorm, loFlood, loMud, loEarthquake, loBuilding, loDrought, loCold, loRoad, loFire, loFireForest, loSmoke, loChemical, loPlague, loWeed;
     //RadioButton rbStormHigh,rbStormMid,rbStormLow,rbFloodHigh,rbFloodMid,rbFloodLow,rbMudHigh,rbMudMid,rbMudLow,rbEarthquakeHigh,rbEarthquakeMid,rbEarthquakeLow,rbBuildingHigh,rbBuildingMid,rbBuildingLow,rbDroughtHigh,rbDroughtMid,rbDroughtLow,rbColdHigh,rbColdMid,rbColdLow,rbRoadHigh,rbRoadMid,rbRoadLow,rbFireHigh,rbFireMid,rbFireLow,rbFireForestHigh,rbFireForestMid,rbFireForestLow,rbSmokeHigh,rbSmokeMid,rbSmokeLow,rbChemicalHigh,rbChemicalMid,rbChemicalLow,rbPlagueHigh,rbPlagueMid,rbPlagueLow,rbWeedHigh,rbWeedMid,rbWeedLow;
+
+    ScrollView svHouse;
 
     Intent intent;
     Bitmap selectedImage;
@@ -152,6 +156,8 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         btnCurrentLocation.setOnClickListener(this);
         etLat = (EditText) findViewById(R.id.etLat);
         etLong = (EditText) findViewById(R.id.etLong);
+
+        svHouse = (ScrollView) findViewById(R.id.svHouse);
 
         spContributor = (Spinner) findViewById(R.id.spContributor);
 
@@ -236,6 +242,32 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         etAnotherProblem = (EditText) findViewById(R.id.etAnotherProblem);
 
         ivImage = (ImageView) findViewById(R.id.ivImage);
+        transparent_image = (ImageView) findViewById(R.id.ivImage);
+        transparent_image.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        svHouse.requestDisallowInterceptTouchEvent(true);
+                        // Disable touch on transparent view
+                        return false;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        svHouse.requestDisallowInterceptTouchEvent(false);
+                        return true;
+
+                    case MotionEvent.ACTION_MOVE:
+                        svHouse.requestDisallowInterceptTouchEvent(true);
+                        return false;
+
+                    default:
+                        return true;
+                }
+            }
+        });
 
         rbProbEnvyYes = (RadioButton) findViewById(R.id.rbProbEnvyYes);
         rbProbEnvyNo = (RadioButton) findViewById(R.id.rbProbEnvyNo);
@@ -339,9 +371,9 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         }
         HouseList = db.SelectWhereData("tr14", "house_id", HouseID);
         JSONArray ja = new JSONArray(HouseList);
-        Log.d("MYLOG", "ja: ");
         HouseList = db.SelectWhereData("house", "house_id", HouseID);
         if (!HouseList.isEmpty()) {
+            ((RadioButton) registerRadioGroup.getChildAt(0)).setChecked(true);
             etHouseID.setText(HouseList.get(0).get("house_id"));
             etHouseNumber.setText(HouseList.get(0).get("house_no"));
             etLat.setText(HouseList.get(0).get("house_location_lat"));
@@ -443,26 +475,26 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         int register = registerRadioGroup.getCheckedRadioButtonId();
         radioButton = (RadioButton) findViewById(register);
         int idxregister = registerRadioGroup.indexOfChild(radioButton);
-        if (idxregister<=0){
+        if (idxregister <= 0) {
             Val.put("house_in_registry", idxregister);
-        }else {
+        } else {
             Val.put("house_in_registry", "0");
         }
 
         int hStatus = housestatusRadioGroup.getCheckedRadioButtonId();
         radioButton = (RadioButton) findViewById(hStatus);
         int idxhStatus = housestatusRadioGroup.indexOfChild(radioButton);
-        if (idxhStatus<=0){
+        if (idxhStatus <= 0) {
             Val.put("house_status", idxhStatus);
-        }else {
+        } else {
             Val.put("house_status", "0");
         }
         int famtype = familyRadioGroup.getCheckedRadioButtonId();
         radioButton = (RadioButton) findViewById(famtype);
         int idxfamtype = familyRadioGroup.indexOfChild(radioButton);
-        if (idxfamtype<=0){
+        if (idxfamtype <= 0) {
             Val.put("house_family_type", idxfamtype);
-        }else {
+        } else {
             Val.put("house_family_type", "0");
         }
         Val.put("distributor", spContributor.getSelectedItem().toString());
@@ -986,8 +1018,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
 
     private void setSpinner() {
         DwellerList = db.SelectWhereData("population", "house_id", HouseID);
-        Log.d("MYLOG", "DwellerList: " + DwellerList);
-
         if (!DwellerList.isEmpty()) {
             for (int i = 0; i < DwellerList.size(); i++) {
                 String strDweller = DwellerList.get(i).get("firstname") + " " + DwellerList.get(i).get("lastname");
@@ -1128,6 +1158,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         //stop location updates when Activity is no longer active
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+
         }
     }
 
@@ -1143,14 +1174,14 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                     == PackageManager.PERMISSION_GRANTED) {
                 //Location Permission already granted
                 buildGoogleApiClient();
-                mGoogleMap.setMyLocationEnabled(true);
+                //mGoogleMap.setMyLocationEnabled(true);
             } else {
                 //Request Location Permission
                 checkLocationPermission();
             }
         } else {
             buildGoogleApiClient();
-            mGoogleMap.setMyLocationEnabled(true);
+            //mGoogleMap.setMyLocationEnabled(true);
         }
     }
 
@@ -1193,10 +1224,11 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             markerOptions = new MarkerOptions();
             markerOptions.position(NewLatlng);
             markerOptions.title("Current Position");
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+            //markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
             if (mCurrLocationMarker != null)
                 mCurrLocationMarker.remove();
-            mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+            mGoogleMap.clear();
+            mGoogleMap.addMarker(markerOptions).setDraggable(true);
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(NewLatlng, 16));
             onDataReady = false;
         }
@@ -1205,7 +1237,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             markerOptions = new MarkerOptions();
             markerOptions.position(latLng);
             markerOptions.title("Current Position");
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+            //markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         }
 
         btnCurrentLocation.setVisibility(View.VISIBLE);
@@ -1264,7 +1296,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                         if (mGoogleApiClient == null) {
                             buildGoogleApiClient();
                         }
-                        mGoogleMap.setMyLocationEnabled(true);
+                        //mGoogleMap.setMyLocationEnabled(true);
                     }
 
                 } else {
@@ -1310,8 +1342,39 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (mCurrLocationMarker != null) {
                 mCurrLocationMarker.remove();
             }
-            mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+            mGoogleMap.clear();
+            mGoogleMap.addMarker(markerOptions).setDraggable(true);
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+            mGoogleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                @Override
+                public void onMapLongClick(LatLng latLng) {
+                    mGoogleMap.clear();
+                    mGoogleMap.addMarker(new MarkerOptions()
+                            .position(latLng)/*.draggable(true)*/);
+                    etLat.setText(String.format( "%.5f", latLng.latitude ));
+                    etLong.setText(String.format( "%.5f", latLng.longitude ));
+                }
+            });
+            /*mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+                @Override
+                public void onMarkerDragStart(Marker marker) {
+                    etLat.setText(String.format( "%.5f", marker.getPosition().latitude ));
+                    etLong.setText(String.format( "%.5f", marker.getPosition().longitude ));
+                }
+
+                @Override
+                public void onMarkerDrag(Marker marker) {
+                    etLat.setText(String.format( "%.5f", marker.getPosition().latitude ));
+                    etLong.setText(String.format( "%.5f", marker.getPosition().longitude ));
+                }
+
+                @Override
+                public void onMarkerDragEnd(Marker marker) {
+                    etLat.setText(String.format( "%.5f", marker.getPosition().latitude ));
+                    etLong.setText(String.format( "%.5f", marker.getPosition().longitude ));
+                    etLong.setText(String.format( "%.5f", marker.getPosition().longitude ));
+                }
+            });*/
 
             etLat.setText(mLastLocation.convert(mLastLocation.getLatitude(), mLastLocation.FORMAT_DEGREES));
             etLong.setText(mLastLocation.convert(mLastLocation.getLongitude(), mLastLocation.FORMAT_DEGREES));
@@ -1474,7 +1537,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
 
                             TestList = db.SelectWhereData("population_works", "population_idcard", SelectedIDItem);
 
-                            if (!TestList.isEmpty()){
+                            if (!TestList.isEmpty()) {
                                 Val = new ContentValues();
                                 Val.put("agri1", "");
                                 Val.put("agri2", "");
