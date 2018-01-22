@@ -27,14 +27,12 @@
             android:id="@+id/etUsername"
             android:layout_width="250dp"
             android:hint="ชื่อผู้ใช้"
-            android:text="admin"
             android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="250dp"
             android:hint="รหัสผ่าน"
-            android:text="1234"
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
 
