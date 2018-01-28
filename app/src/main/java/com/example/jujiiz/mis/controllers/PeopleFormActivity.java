@@ -69,7 +69,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     RadioButton rbParticipationNo, rbParticipationYes;
     RadioButton rbElectionAlway, rbElectionSometime, rbElectionNever;
     RadioButton rbTransportationNo, rbTransportationYes;
-    LinearLayout loNationality, loAnotherPrefix, loBloodType, loInRegister, loNotInRegister, loNotInHousehold, loCareer, loAgri, loAnotherAgri, loPet, loAnotherPet, loGovern, loAnotherGovern, loPrivate, loAnotherPrivate, loICMonth, loICYear, loCongenital, loContagious, loAllergic, loDisabled, loInStudy, loGraduated, loExpertise, loAnotherReligion, loTransportation, loExpertiseText, loAnotherCong, loAnotherCont, loProperty,loLiveHere;
+    LinearLayout loNationality, loAnotherPrefix, loBloodType, loInRegister, loNotInRegister, loNotInHousehold, loCareer, loAgri, loAnotherAgri, loPet, loAnotherPet, loGovern, loAnotherGovern, loPrivate, loAnotherPrivate, loICMonth, loICYear, loCongenital, loContagious, loAllergic, loDisabled, loInStudy, loGraduated, loExpertise, loAnotherReligion, loTransportation, loExpertiseText, loAnotherCong, loAnotherCont, loProperty, loLiveHere;
     Spinner spNationality, spPrefix, spBloodType, spMaritalStatus, spVillageName, spInStudy, spGraduated, spExpertise, spContributor;
     EditText etNationality, etFirstName, etLastName, etAnotherPrefix, etPersonalID, etBirtDate, etHeight, etWeight, etBloodType, etTel, etHNo, etHID, etAnotherAgri, etAnotherPet, etAnotherGovern, etAnotherPrivate, etICMonth, etICYear, etAllergic, etAnotherReligion, etDate, etIHCountry, etIHProvince, etIRCountry, etIRProvince, etExpertise, etAnotherCong, etAnotherCont;
     CheckBox cbAgri, cbAgri1, cbAgri2, cbAgri3, cbAgri4, cbAgri5, cbAgri6, cbAgri7, cbAgri8;
@@ -557,7 +557,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 if (!PersonList.get(0).get("bloodgroup").equals("")) {
                     int spinnerPositionBlood = bloodArrayAdapter.getPosition(PersonList.get(0).get("bloodgroup"));
                     spBloodType.setSelection(spinnerPositionBlood);
-                }else {
+                } else {
                     int spinnerPositionBlood = bloodArrayAdapter.getPosition("ไม่ทราบ");
                     spBloodType.setSelection(spinnerPositionBlood);
                 }
@@ -699,8 +699,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 } else if (PersonList.get(0).get("election").equals("2")) {
                     rbElectionNever.setChecked(true);
                 }
-                int spinnerPositionContri = dwellerArrayAdapter.getPosition(PersonList.get(0).get("distributor"));
-                spContributor.setSelection(spinnerPositionContri);
+                if (!DwellerList.get(0).get("distributor").equals("")) {
+                    int spinnerPositionContri = dwellerArrayAdapter.getPosition(PersonList.get(0).get("distributor"));
+                    spContributor.setSelection(spinnerPositionContri);
+                }
                 ModelCurrentCalendar.edittextCurrentCalendar(this, etDate);
 
                 WorkList = db.SelectWhereData("population_works", "population_idcard", PersonList.get(0).get("population_idcard"));
@@ -1663,10 +1665,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             ModelShowHideLayout.radiobuttonShowHide(rbInRegister, loInRegister);*/
         if (compoundButton == rbNotInRegister)
             ModelShowHideLayout.radiobuttonShowHide(rbNotInRegister, loNotInRegister);
-        if (compoundButton == rbNotInHousehold){
+        if (compoundButton == rbInHousehold)
+            ModelShowHideLayout.radiobuttonShowHide(rbInHousehold, loLiveHere);
+        if (compoundButton == rbNotInHousehold)
             ModelShowHideLayout.radiobuttonShowHide(rbNotInHousehold, loNotInHousehold);
-            ModelShowHideLayout.radiobuttonShowHide(rbNotInHousehold, loLiveHere);
-        }
         if (compoundButton == rbJGCareer)
             ModelShowHideLayout.radiobuttonShowHide(rbJGCareer, loCareer);
         if (compoundButton == rbICMonth)
@@ -1702,9 +1704,9 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         if (view == btnSavingData) {
             if (!etPersonalID.getText().toString().equals("") && !etFirstName.getText().toString().equals("") && !etLastName.getText().toString().equals("")) {
                 updateData();
-                if (!PersonID.equals("Nope")){
+                if (!PersonID.equals("Nope")) {
                     loProperty.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     this.finish();
                 }
             } else {

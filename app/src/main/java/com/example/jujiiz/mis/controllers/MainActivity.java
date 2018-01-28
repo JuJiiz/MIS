@@ -16,15 +16,22 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 
 import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.ModelGetData;
 import com.example.jujiiz.mis.models.ModelNavClick;
 import com.example.jujiiz.mis.models.ModelToken;
 import com.example.jujiiz.mis.models.myDBClass;
+
+import org.json.JSONArray;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     boolean searchVisibility = false;
     myDBClass db = new myDBClass(this);
+    JSONArray STRING_JSONDATA;
+    //String apiURL = "https://bayclouds.com/gettr14";
+    String apiURL = "http://203.154.54.229/qry_tr14byall";
+    String JKey = "data";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

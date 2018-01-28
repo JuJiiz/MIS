@@ -13,7 +13,7 @@ import java.util.Calendar;
 public class ModelCurrentCalendar {
     public static void edittextCurrentCalendar(Context context, EditText editText) {
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/YYYY ");
+        SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy ");
         editText.setText(mdformat.format(calendar.getTime()));
     }
 }

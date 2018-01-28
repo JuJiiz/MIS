@@ -391,8 +391,11 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                 ((RadioButton) familyRadioGroup.getChildAt(Integer.parseInt(HouseList.get(0).get("house_family_type")))).setChecked(true);
             }
             DwellerList = db.SelectWhereData("population", "house_id", HouseID);
-            int spinnerPositionContri = dwellerArrayAdapter.getPosition(DwellerList.get(0).get("distributor"));
-            spContributor.setSelection(spinnerPositionContri);
+            Log.d("MYLOG", "DwellerList setField: " + DwellerList);
+            if (!DwellerList.get(0).get("distributor").equals("")){
+                int spinnerPositionContri = dwellerArrayAdapter.getPosition(DwellerList.get(0).get("distributor"));
+                spContributor.setSelection(spinnerPositionContri);
+            }
             ModelCurrentCalendar.edittextCurrentCalendar(this, etDate);
 
             HProbList = db.SelectWhereData("house_problem", "house_id", HouseID);

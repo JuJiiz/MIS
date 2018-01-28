@@ -232,6 +232,7 @@ public class myDBClass extends SQLiteOpenHelper {
                 "\t`vaccine`\tTEXT NOT NULL,\n" +
                 "\t`vaccine_during`\tTEXT NOT NULL,\n" +
                 "\t`vaccine_lastest`\tTEXT NOT NULL,\n" +
+                "\t`sterile`\tTEXT NOT NULL,\n" +
                 "\t`pet_newborn`\tTEXT NOT NULL,\n" +
                 "\t`pet_newborn_number`\tINTEGER NOT NULL,\n" +
                 "\t`distributor`\tTEXT NOT NULL,\n" +

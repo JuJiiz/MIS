@@ -114,20 +114,8 @@ public class HouseholdActivity extends AppCompatActivity
             });
             builder.show();
         } else {
-            setListView();
+            new AsynTaskSetListView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             RESUME = true;
-        }
-    }
-
-    public boolean isConnectedToServer(String url, int timeout) {
-        try {
-            URL myUrl = new URL(url);
-            URLConnection connection = myUrl.openConnection();
-            connection.setConnectTimeout(timeout);
-            connection.connect();
-            return true;
-        } catch (Exception e) {
-            return false;
         }
     }
 
@@ -135,7 +123,7 @@ public class HouseholdActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         if (RESUME == true) {
-            setListView();
+            new AsynTaskSetListView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 
@@ -173,7 +161,7 @@ public class HouseholdActivity extends AppCompatActivity
     }
 
     private void setListView() {
-        HouseActive = new ArrayList<HashMap<String, String>>();
+        /*HouseActive = new ArrayList<HashMap<String, String>>();
         HouseList = db.SelectData("house");
         TR14List = db.SelectData("tr14");
         if (!HouseList.isEmpty()) {
@@ -203,10 +191,10 @@ public class HouseholdActivity extends AppCompatActivity
                 new String[]{strVilleNo, strHouseNo, strVilleName, strStatus, strHID},
                 new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvColumn4, R.id.tvHiddenColumn}
         );
-        lvHousehold.setAdapter(simpleAdapter);
+        lvHousehold.setAdapter(simpleAdapter);*/
     }
 
-    class AsynTaskDownload extends AsyncTask<Void, TaskProgress, Void> {
+    class AsynTaskDownload extends AsyncTask<Void, Void, Void> {
         private final ProgressDialog dialog = new ProgressDialog(HouseholdActivity.this);
         private String HNoDialogMessage = "";
         private String DialogMessage = "กำลังดาวน์โหลด...\nบ้านเลขที่ " + HNoDialogMessage;
@@ -214,7 +202,7 @@ public class HouseholdActivity extends AppCompatActivity
         // can use UI thread here
         protected void onPreExecute() {
             super.onPreExecute();
-            this.dialog.setMessage("กำลังดาวน์โหลด...");
+            this.dialog.setMessage("กรุณารอซักครู่...");
             this.dialog.setCancelable(false);
             this.dialog.show();
         }
@@ -261,6 +249,12 @@ public class HouseholdActivity extends AppCompatActivity
                         Val.put("nationality", List.get(i).get("nationality"));
                         Val.put("vilage_no", List.get(i).get("vilage_no"));
                         db.InsertData("tr14", Val);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialog.setMessage("กำลังดาวน์โหลด... \nบ้านเลขที่ " + HNoDialogMessage);
+                            }
+                        });;
                         //publishProgress(new TaskProgress(DialogMessage));
                         //this.dialog.setMessage("กำลังดาวน์โหลด... \nบ้านเลขที่ " + HNoDialogMessage);
 
@@ -362,18 +356,63 @@ public class HouseholdActivity extends AppCompatActivity
             if (this.dialog.isShowing()) {
                 this.dialog.dismiss();
             }
-            setListView();
             Toast.makeText(getApplicationContext(), "ดาวน์โหลดสำเร็จแล้ว", Toast.LENGTH_SHORT).show();
+            new AsynTaskSetListView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 
-    private static class TaskProgress {
-        //final int percentage;
-        final String message;
+    class AsynTaskSetListView extends AsyncTask<Void, Void, Void> {
+        private final ProgressDialog dialogList = new ProgressDialog(HouseholdActivity.this);
 
-        TaskProgress(/*int percentage,*/ String message) {
-            //this.percentage = percentage;
-            this.message = message;
+        // can use UI thread here
+        protected void onPreExecute() {
+            super.onPreExecute();
+            this.dialogList.setMessage("กรุณารอซักครู่...");
+            this.dialogList.setCancelable(false);
+            this.dialogList.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            HouseActive = new ArrayList<HashMap<String, String>>();
+            HouseList = db.SelectData("house");
+            TR14List = db.SelectData("tr14");
+            if (!HouseList.isEmpty()) {
+                for (int i = 0; i < HouseList.size(); i++) {
+                    HashMap<String, String> temp = new HashMap<String, String>();
+                    //TR14List = db.SelectWhereData("tr14", "house_id", HouseList.get(i).get("house_id"));
+                    for (int j = 0; j < TR14List.size(); j++) {
+                        if (TR14List.get(j).get("house_id").equals(HouseList.get(i).get("house_id"))) {
+                            temp.put(strVilleNo, TR14List.get(j).get("vilage_no"));
+                            //Log.d("MYLOG", "TR14List: "+TR14List.get(j).get("vilage_no"));
+                        }
+                    }
+                    temp.put(strHouseNo, HouseList.get(i).get("house_no"));
+                    temp.put(strVilleName, " ");
+                    if (HouseList.get(i).get("survey_status").equals("0")) {
+                        survey = "";
+                    }
+                    if (HouseList.get(i).get("survey_status").equals("1")) {
+                        survey = "*";
+                    }
+                    temp.put(strStatus, survey);
+                    temp.put(strHID, HouseList.get(i).get("house_id"));
+                    HouseActive.add(temp);
+                }
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) {
+            SimpleAdapter simpleAdapter = new SimpleAdapter(HouseholdActivity.this, HouseActive, R.layout.view_household_column,
+                    new String[]{strVilleNo, strHouseNo, strVilleName, strStatus, strHID},
+                    new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvColumn4, R.id.tvHiddenColumn}
+            );
+            lvHousehold.setAdapter(simpleAdapter);
+
+            if (this.dialogList.isShowing()) {
+                this.dialogList.dismiss();
+            }
         }
     }
 
@@ -416,7 +455,7 @@ public class HouseholdActivity extends AppCompatActivity
     public void onClick(View view) {
         if (view == btnSearch) {
             if (etSearch.getText().toString().equals("")) {
-                setListView();
+                new AsynTaskSetListView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             } else {
                 lvHousehold.setAdapter(null);
                 searchEvent();

@@ -156,6 +156,9 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
                 spLastVaccine.setSelection(spinnerPositionMonth);
             }
 
+            int spinnerPositionSterile = sterileArrayAdapter.getPosition(PetList.get(0).get("sterile"));
+            spSterile.setSelection(spinnerPositionSterile);
+
             if (PetList.get(0).get("pet_newborn").equals("0")) {
                 rbPetBornNo.setChecked(true);
             } else if (PetList.get(0).get("pet_newborn").equals("1")) {
@@ -216,6 +219,8 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
             Val.put("vaccine_during", "0");
             Val.put("vaccine_lastest", "");
         }
+
+        Val.put("sterile", spSterile.getSelectedItem().toString());
 
         if (rbPetBornNo.isChecked()) {
             Val.put("pet_newborn", "0");

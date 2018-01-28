@@ -1,11 +1,13 @@
 package com.example.jujiiz.mis.controllers;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
@@ -29,6 +32,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -61,9 +65,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin.setOnClickListener(this);
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view == btnLogin) {
+    class AsynTaskLogin extends AsyncTask<Void, Void, Void> {
+        private final ProgressDialog dialogLogin = new ProgressDialog(LoginActivity.this);
+
+        // can use UI thread here
+        protected void onPreExecute() {
+            super.onPreExecute();
+            this.dialogLogin.setMessage("กำลังเชื่อมต่อ...");
+            this.dialogLogin.setCancelable(false);
+            this.dialogLogin.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
             ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = manager.getActiveNetworkInfo();
             if (netInfo != null && netInfo.isConnectedOrConnecting()) {
@@ -93,17 +107,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(this, "ชื่อผู้ใช้หรือรหัสผ่าน ไม่ถูกต้อง", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "ชื่อผู้ใช้หรือรหัสผ่าน ไม่ถูกต้อง", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(this, "ข้อผิดพลาดในการเชื่อมต่อ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "ข้อผิดพลาดในการเชื่อมต่อ", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(this, "การเชื่อมต่อขัดข้อง", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "การเชื่อมต่อขัดข้อง", Toast.LENGTH_SHORT).show();
             }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) {
+
+            if (this.dialogLogin.isShowing()) {
+                this.dialogLogin.dismiss();
+            }
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == btnLogin) {
+            new AsynTaskLogin().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
 

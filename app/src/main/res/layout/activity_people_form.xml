@@ -1242,6 +1242,7 @@
                             android:id="@+id/rbCongenitalNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="ไม่มี" />
 
                         <RadioButton
@@ -1323,6 +1324,7 @@
                             android:id="@+id/rbContagiousNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="ไม่มี" />
 
                         <RadioButton
@@ -1439,6 +1441,7 @@
                             android:id="@+id/rbAllergicNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="ไม่มี" />
 
                         <RadioButton
@@ -1497,6 +1500,7 @@
                             android:id="@+id/rbDisabledNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="ไม่มี" />
 
                         <RadioButton
@@ -1569,6 +1573,7 @@
                             android:id="@+id/rbDisadvantageNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="ไม่ด้อยโอกาส" />
 
                         <RadioButton
@@ -1610,6 +1615,7 @@
                             android:id="@+id/rbSubAlNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="ไม่ได้รับ" />
 
                         <RadioButton
@@ -1646,6 +1652,7 @@
                             android:id="@+id/rbNoStudy"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="ไม่เคยเข้ารับการศึกษา" />
 
                         <RadioButton
@@ -1717,6 +1724,7 @@
                             android:id="@+id/rbLiteracyYes"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="อ่านออกเขียนได้" />
 
                         <RadioButton
@@ -1744,6 +1752,7 @@
                             android:id="@+id/rbTechnologyNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="ไม่มี" />
 
                         <RadioButton
@@ -1771,6 +1780,7 @@
                             android:id="@+id/rbExpertiseNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="ไม่มี" />
 
                         <RadioButton
@@ -1853,6 +1863,7 @@
                             android:id="@+id/rbBuddhismReligion"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="พุทธ" />
 
                         <RadioButton
@@ -1915,6 +1926,7 @@
                             android:id="@+id/rbParticipationNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="ไม่มีการมีส่วนรวม" />
 
                         <RadioButton
@@ -1940,6 +1952,7 @@
                             android:id="@+id/rbElectionAlway"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="ทุกครั้ง" />
 
                         <RadioButton
@@ -1971,6 +1984,7 @@
                             android:id="@+id/rbTransportationNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:checked="true"
                             android:text="ไม่ได้ใช้" />
 
                         <RadioButton
