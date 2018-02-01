@@ -202,7 +202,7 @@ public class HouseholdActivity extends AppCompatActivity
         // can use UI thread here
         protected void onPreExecute() {
             super.onPreExecute();
-            this.dialog.setMessage("กรุณารอซักครู่...");
+            this.dialog.setMessage("กรุณารอสักครู่...");
             this.dialog.setCancelable(false);
             this.dialog.show();
         }
@@ -367,7 +367,7 @@ public class HouseholdActivity extends AppCompatActivity
         // can use UI thread here
         protected void onPreExecute() {
             super.onPreExecute();
-            this.dialogList.setMessage("กรุณารอซักครู่...");
+            this.dialogList.setMessage("กรุณารอสักครู่...");
             this.dialogList.setCancelable(false);
             this.dialogList.show();
         }
