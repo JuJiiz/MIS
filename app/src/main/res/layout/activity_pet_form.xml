@@ -9,17 +9,19 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="15dp"
-            android:text="ข้อมูลสัตว์เลี้ยง"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="8dp"
+            android:text="สัตว์เลี้ยงในครัวเรือน"
             android:textAlignment="center"
-            android:textColor="#000"
-            android:textSize="26dp" />
+            android:textColor="@color/topicColor"
+            android:textSize="24dp" />
 
         <Button
             android:id="@+id/btnSavingData"
@@ -53,13 +55,15 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="ชื่อ-นามสกุล"
-                    android:textColor="#000"
+                    android:textColor="@color/topicColor"
+                    android:textStyle="bold"
                     android:textSize="16dp" />
 
                 <EditText
                     android:id="@+id/etPetOwner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:layout_weight="2" />
             </LinearLayout>
 
@@ -78,7 +82,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="ประเภทสัตว์เลี้ยง"
-                    android:textColor="#000"
+                    android:textColor="@color/topicColor"
+                    android:textStyle="bold"
                     android:textSize="16dp" />
 
                 <Spinner
@@ -103,7 +108,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="การขึ้นทะเบียนสัตว์เลี้ยง"
-                    android:textColor="#000"
+                    android:textColor="@color/topicColor"
+                    android:textStyle="bold"
                     android:textSize="16dp" />
 
                 <RadioGroup
@@ -147,7 +153,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="จำนวนสัตว์เลี้ยง"
-                    android:textColor="#000"
+                    android:textColor="@color/topicColor"
+                    android:textStyle="bold"
                     android:textSize="16dp" />
 
                 <EditText
@@ -164,7 +171,8 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="8dp"
                 android:text="การป้องกันโรค"
-                android:textColor="#000"
+                android:textColor="@color/topicColor"
+                android:textStyle="bold"
                 android:textSize="20dp" />
 
             <TextView
@@ -172,7 +180,8 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
                 android:text="สัตว์เลี้ยงในครัวเรือน"
-                android:textColor="#000"
+                android:textColor="@color/topicColor"
+                android:textStyle="bold"
                 android:textSize="16dp" />
 
             <LinearLayout
@@ -190,7 +199,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="ประเภทสัตว์เลี้ยงในครัวเรือน"
-                    android:textColor="#000"
+                    android:textColor="@color/topicColor"
+                    android:textStyle="bold"
                     android:textSize="16dp" />
 
                 <RadioGroup
@@ -233,7 +243,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="เพศ"
-                    android:textColor="#000"
+                    android:textColor="@color/topicColor"
+                    android:textStyle="bold"
                     android:textSize="16dp" />
 
                 <RadioGroup
@@ -350,7 +361,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="เดือนที่ฉีดวัคซีนล่าสุด"
-                    android:textColor="#000"
+                    android:textColor="@color/topicColor"
+                    android:textStyle="bold"
                     android:textSize="16dp"/>
 
                 <Spinner
@@ -375,7 +387,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="การทำหมัน"
-                    android:textColor="#000"
+                    android:textColor="@color/topicColor"
+                    android:textStyle="bold"
                     android:textSize="16dp" />
 
                 <Spinner
@@ -400,7 +413,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="จำนวนสัตว์เกิดใหม่ต่อปี"
-                    android:textColor="#000"
+                    android:textColor="@color/topicColor"
+                    android:textStyle="bold"
                     android:textSize="16dp" />
 
                 <RadioGroup
@@ -456,7 +470,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ชื่อผู้ให้ข้อมูล"
-                    android:textColor="#000"
+                    android:textColor="@color/topicColor"
+                    android:textStyle="bold"
                     android:textSize="16dp" />
 
                 <Spinner
@@ -478,7 +493,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="วันที่บันทึกข้อมูล"
-                    android:textColor="#000"
+                    android:textColor="@color/topicColor"
+                    android:textStyle="bold"
                     android:textSize="16dp" />
 
                 <EditText

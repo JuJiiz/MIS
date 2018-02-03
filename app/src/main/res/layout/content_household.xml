@@ -8,8 +8,29 @@
     tools:context="com.example.jujiiz.mis.controllers.HouseholdActivity"
     tools:showIn="@layout/app_bar_household">
 
+    <RelativeLayout
+        android:id="@+id/AppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="8dp"
+            android:text="เลือกครัวเรือนที่ต้องการสำรวจ"
+            android:textAlignment="center"
+            android:textColor="@color/topicColor"
+            android:textSize="24dp" />
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/householdheaderLayout"
+        android:layout_below="@+id/AppBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#f2f2f2"

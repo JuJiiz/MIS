@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -156,6 +157,8 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
             }
             String[] spArrayType2 = Type2.toArray(new String[0]);
             AdapterType2 = ModelSpinnerAdapter.setSpinnerItem(this, spArrayType2, spVehicalType2);
+        }else {
+            Log.d("MYLOG", "No");
         }
 
         VTypeList = db.SelectWhereData("asset_vehicle", "vtype_name", "\"" + "ประเภทยานพาหนะด้านบรรเทาสาธารณภัย" + "\"");

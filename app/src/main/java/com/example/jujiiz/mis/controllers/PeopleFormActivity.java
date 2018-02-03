@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -82,6 +83,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     CheckBox cbTrans1, cbTrans2, cbTrans3, cbTrans4;
     Button btnSavingData, btnAddProperty, btnDatePick;
     ListView lvProperty;
+    ScrollView svPopulation;
 
     myDBClass db = new myDBClass(this);
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -140,6 +142,8 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 return false;
             }
         });
+
+        svPopulation = (ScrollView) findViewById(R.id.svPopulation);
 
         btnSavingData = (Button) findViewById(R.id.btnSavingData);
         btnSavingData.setOnClickListener(this);
@@ -875,8 +879,20 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     }
                 }
             }
+
+            etFirstName.setEnabled(false);
+            etLastName.setEnabled(false);
+            etPersonalID.setEnabled(false);
+            rbMale.setEnabled(false);
+            rbFemale.setEnabled(false);
+            rbInRegister.setChecked(true);
+            rbInRegister.setEnabled(false);
+            rbNotInRegister.setEnabled(false);
         } else {
             loProperty.setVisibility(View.GONE);
+            rbNotInRegister.setChecked(true);
+            rbInRegister.setEnabled(false);
+            rbNotInRegister.setEnabled(false);
         }
     }
 
@@ -979,6 +995,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvHiddenColumn}
             );
             lvProperty.setAdapter(simpleAdapter);
+            lvProperty.getAdapter().getCount();
+            ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) lvProperty.getLayoutParams();
+            lp.height = lvProperty.getAdapter().getCount()*92;
+            lvProperty.setLayoutParams(lp);
         }
     }
 
@@ -1706,6 +1726,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 updateData();
                 if (!PersonID.equals("Nope")) {
                     loProperty.setVisibility(View.VISIBLE);
+                    svPopulation.post(new Runnable() {
+                        public void run() {
+                            svPopulation.fullScroll(View.FOCUS_DOWN);
+                        }
+                    });
+
                 } else {
                     this.finish();
                 }

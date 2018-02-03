@@ -10,10 +10,10 @@
             android:title="ข้อมูล อปท." />-->
         <item
             android:id="@+id/nav_Household"
-            android:title="ฟอร์ม" />
+            android:title="แบบฟอร์มสำรวจ" />
         <item
             android:id="@+id/nav_Upload"
-            android:title="อัพโหลด" />
+            android:title="จัดเก็บข้อมูลออนไลน์" />
         <!--<item
             android:id="@+id/nav_TR14"
             android:title="จัดการ ทร.14" />-->

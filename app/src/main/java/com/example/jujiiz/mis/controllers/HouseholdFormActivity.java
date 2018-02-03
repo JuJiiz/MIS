@@ -1,6 +1,7 @@
 package com.example.jujiiz.mis.controllers;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,6 +26,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,6 +34,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -99,7 +102,8 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     CheckBox cbProb1, cbProb2, cbProb3, cbProb4, cbProb5, cbProb6, cbProb7, cbProb8, cbProb9, cbProb10;
 
     Button btnSavingData, btnCurrentLocation, btnAddDweller, btnImagePick;
-    ImageView ivImage, transparent_image;
+    ImageView ivImage;
+    ImageButton btnCameraPick;
 
     LinearLayout loAnotherProblem;
     ListView listHousehold;
@@ -114,8 +118,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     LinearLayout loDisaster, loStorm, loFlood, loMud, loEarthquake, loBuilding, loDrought, loCold, loRoad, loFire, loFireForest, loSmoke, loChemical, loPlague, loWeed;
     //RadioButton rbStormHigh,rbStormMid,rbStormLow,rbFloodHigh,rbFloodMid,rbFloodLow,rbMudHigh,rbMudMid,rbMudLow,rbEarthquakeHigh,rbEarthquakeMid,rbEarthquakeLow,rbBuildingHigh,rbBuildingMid,rbBuildingLow,rbDroughtHigh,rbDroughtMid,rbDroughtLow,rbColdHigh,rbColdMid,rbColdLow,rbRoadHigh,rbRoadMid,rbRoadLow,rbFireHigh,rbFireMid,rbFireLow,rbFireForestHigh,rbFireForestMid,rbFireForestLow,rbSmokeHigh,rbSmokeMid,rbSmokeLow,rbChemicalHigh,rbChemicalMid,rbChemicalLow,rbPlagueHigh,rbPlagueMid,rbPlagueLow,rbWeedHigh,rbWeedMid,rbWeedLow;
 
-    ScrollView svHouse;
-
     Intent intent;
     Bitmap selectedImage;
     myDBClass db = new myDBClass(this);
@@ -128,6 +130,8 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     Boolean onDataReady = false;
     String SelectedIDItem, SelectedFNameItem, SelectedLNameItem;
     byte[] dataBitmap = null;
+
+    private static final int CAMERA_REQUEST = 1888;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,8 +160,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         btnCurrentLocation.setOnClickListener(this);
         etLat = (EditText) findViewById(R.id.etLat);
         etLong = (EditText) findViewById(R.id.etLong);
-
-        svHouse = (ScrollView) findViewById(R.id.svHouse);
 
         spContributor = (Spinner) findViewById(R.id.spContributor);
 
@@ -235,6 +237,8 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
 
         btnImagePick = (Button) findViewById(R.id.btnImagePick);
         btnImagePick.setOnClickListener(this);
+        btnCameraPick = (ImageButton) findViewById(R.id.btnCameraPick);
+        btnCameraPick.setOnClickListener(this);
 
         etDate = (EditText) findViewById(R.id.etDate);
         etHouseID = (EditText) findViewById(R.id.etHouseID);
@@ -242,32 +246,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         etAnotherProblem = (EditText) findViewById(R.id.etAnotherProblem);
 
         ivImage = (ImageView) findViewById(R.id.ivImage);
-        transparent_image = (ImageView) findViewById(R.id.ivImage);
-        transparent_image.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Disallow ScrollView to intercept touch events.
-                        svHouse.requestDisallowInterceptTouchEvent(true);
-                        // Disable touch on transparent view
-                        return false;
-
-                    case MotionEvent.ACTION_UP:
-                        // Allow ScrollView to intercept touch events.
-                        svHouse.requestDisallowInterceptTouchEvent(false);
-                        return true;
-
-                    case MotionEvent.ACTION_MOVE:
-                        svHouse.requestDisallowInterceptTouchEvent(true);
-                        return false;
-
-                    default:
-                        return true;
-                }
-            }
-        });
 
         rbProbEnvyYes = (RadioButton) findViewById(R.id.rbProbEnvyYes);
         rbProbEnvyNo = (RadioButton) findViewById(R.id.rbProbEnvyNo);
@@ -1071,6 +1049,10 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                     new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvColumn4, R.id.tvHiddenColumn}
             );
             listHousehold.setAdapter(simpleAdapter);
+            listHousehold.getAdapter().getCount();
+            ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) listHousehold.getLayoutParams();
+            lp.height = listHousehold.getAdapter().getCount()*92;
+            listHousehold.setLayoutParams(lp);
         }
     }
 
@@ -1321,8 +1303,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                 final Uri imageUri = data.getData();
                 InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 selectedImage = BitmapFactory.decodeStream(imageStream);
-                //ivImage.getLayoutParams().height = selectedImage.getScaledHeight(50);
-                //ivImage.getLayoutParams().width = selectedImage.getScaledWidth(50);
                 ivImage.setImageBitmap(selectedImage);
                 ivImage.setVisibility(View.VISIBLE);
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -1333,8 +1313,14 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
 
-        } else {
-            Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
+        }
+        if (reqCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            ivImage.setImageBitmap(photo);
+            ivImage.setVisibility(View.VISIBLE);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
+            dataBitmap = outputStream.toByteArray();
         }
     }
 
@@ -1358,27 +1344,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                     etLong.setText(String.format( "%.5f", latLng.longitude ));
                 }
             });
-            /*mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
-                @Override
-                public void onMarkerDragStart(Marker marker) {
-                    etLat.setText(String.format( "%.5f", marker.getPosition().latitude ));
-                    etLong.setText(String.format( "%.5f", marker.getPosition().longitude ));
-                }
-
-                @Override
-                public void onMarkerDrag(Marker marker) {
-                    etLat.setText(String.format( "%.5f", marker.getPosition().latitude ));
-                    etLong.setText(String.format( "%.5f", marker.getPosition().longitude ));
-                }
-
-                @Override
-                public void onMarkerDragEnd(Marker marker) {
-                    etLat.setText(String.format( "%.5f", marker.getPosition().latitude ));
-                    etLong.setText(String.format( "%.5f", marker.getPosition().longitude ));
-                    etLong.setText(String.format( "%.5f", marker.getPosition().longitude ));
-                }
-            });*/
-
             etLat.setText(mLastLocation.convert(mLastLocation.getLatitude(), mLastLocation.FORMAT_DEGREES));
             etLong.setText(mLastLocation.convert(mLastLocation.getLongitude(), mLastLocation.FORMAT_DEGREES));
         }
@@ -1392,6 +1357,10 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");
             startActivityForResult(photoPickerIntent, 1);
+        }
+        if (view == btnCameraPick) {
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, CAMERA_REQUEST);
         }
         if (view == btnSavingData) {
             if (registerRadioGroup.getCheckedRadioButtonId() != -1) {

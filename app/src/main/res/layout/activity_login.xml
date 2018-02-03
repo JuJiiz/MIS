@@ -12,9 +12,8 @@
         android:id="@+id/headMainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="1">
-    </LinearLayout>
+        android:layout_weight="1"
+        android:orientation="vertical"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/midMainLayout"
@@ -23,18 +22,28 @@
         android:layout_weight="1"
         android:gravity="center_vertical|center_horizontal"
         android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/opt_logo"
+            android:paddingBottom="18dp"/>
+
         <EditText
             android:id="@+id/etUsername"
             android:layout_width="250dp"
+            android:layout_height="wrap_content"
             android:hint="ชื่อผู้ใช้"
-            android:layout_height="wrap_content"/>
+            android:inputType="text"
+            android:maxLines="1"/>
 
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="250dp"
-            android:hint="รหัสผ่าน"
             android:layout_height="wrap_content"
-            android:inputType="textPassword" />
+            android:hint="รหัสผ่าน"
+            android:inputType="textPassword"
+            android:maxLines="1" />
 
         <Button
             android:id="@+id/btnLogin"
@@ -50,7 +59,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:orientation="vertical"></LinearLayout>
 
 </LinearLayout>

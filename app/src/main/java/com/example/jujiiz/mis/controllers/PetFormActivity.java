@@ -36,7 +36,7 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
     Button btnSavingData;
 
     String[] spMonthArray = {"มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"};
-    String[] spSterileArray = {"ทำหมันแล้ว", "ทำหมันแล้ว", "ไม่ทราบ", "ฉีดยาคุม"};
+    String[] spSterileArray = {"ทำหมันแล้ว", "ยังไม่ทำหมัน", "ไม่ทราบ", "ฉีดยาคุม"};
 
     myDBClass db = new myDBClass(this);
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

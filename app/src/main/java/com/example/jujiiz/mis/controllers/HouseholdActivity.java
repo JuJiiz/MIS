@@ -13,11 +13,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
@@ -100,7 +102,6 @@ public class HouseholdActivity extends AppCompatActivity
                     if (netInfo != null && netInfo.isConnectedOrConnecting()) {
                         dialog.cancel();
                         new AsynTaskDownload().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-                        RESUME = true;
                     } else {
                         Toast.makeText(getApplicationContext(), "การเชื่อมต่อขัดข้อง", Toast.LENGTH_SHORT).show();
                     }
@@ -114,15 +115,6 @@ public class HouseholdActivity extends AppCompatActivity
             });
             builder.show();
         } else {
-            new AsynTaskSetListView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            RESUME = true;
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (RESUME == true) {
             new AsynTaskSetListView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     }
@@ -202,6 +194,9 @@ public class HouseholdActivity extends AppCompatActivity
         // can use UI thread here
         protected void onPreExecute() {
             super.onPreExecute();
+            if (this.dialog.isShowing()) {
+                this.dialog.dismiss();
+            }
             this.dialog.setMessage("กรุณารอสักครู่...");
             this.dialog.setCancelable(false);
             this.dialog.show();
@@ -367,6 +362,9 @@ public class HouseholdActivity extends AppCompatActivity
         // can use UI thread here
         protected void onPreExecute() {
             super.onPreExecute();
+            if (this.dialogList.isShowing()) {
+                this.dialogList.dismiss();
+            }
             this.dialogList.setMessage("กรุณารอสักครู่...");
             this.dialogList.setCancelable(false);
             this.dialogList.show();
