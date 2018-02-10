@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.ModelCheckForm;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
 import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
 import com.example.jujiiz.mis.models.myDBClass;
@@ -93,6 +94,7 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
     private void setSpinner() {
         DwellerList = db.SelectWhereData("population", "house_id", HouseID);
         if (!DwellerList.isEmpty()) {
+            Dweller.add("กรุณาเลือก");
             for (int i = 0; i < DwellerList.size(); i++) {
                 String strDweller = DwellerList.get(i).get("firstname") + " " + DwellerList.get(i).get("lastname");
                 Dweller.add(strDweller);
@@ -152,24 +154,24 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
         String date = df.format(Calendar.getInstance().getTime());
         Val = new ContentValues();
         Val.put("population_idcard", PersonID);
-        if (!etSystemID.getText().toString().equals("")){
+        if (!etSystemID.getText().toString().equals("")) {
             Val.put("system_id", etSystemID.getText().toString());
-        }else {
+        } else {
             Val.put("system_id", "1");
         }
-        if (!etDimenA.getText().toString().equals("")){
+        if (!etDimenA.getText().toString().equals("")) {
             Val.put("dimen1", etDimenA.getText().toString());
-        }else {
+        } else {
             Val.put("dimen1", "1");
         }
-        if (!etDimenA.getText().toString().equals("")){
+        if (!etDimenA.getText().toString().equals("")) {
             Val.put("dimen2", etDimenB.getText().toString());
-        }else {
+        } else {
             Val.put("dimen2", "1");
         }
-        if (!etDimenA.getText().toString().equals("")){
+        if (!etDimenA.getText().toString().equals("")) {
             Val.put("dimen3", etDimenC.getText().toString());
-        }else {
+        } else {
             Val.put("dimen3", "1");
         }
         if (rbLB1.isChecked()) {
@@ -222,7 +224,7 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
             db.InsertData("population_asset_land", Val);
             Val = new ContentValues();
             Val.put("upload_status", "1");
-            db.UpdateData("population",Val,"population_idcard",PersonID);
+            db.UpdateData("population", Val, "population_idcard", PersonID);
         } else {
             LandList = db.SelectWhereData("population_asset_land", "land_running", LandID);
             if (LandList.isEmpty()) {
@@ -231,12 +233,12 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
                 db.InsertData("population_asset_land", Val);
                 Val = new ContentValues();
                 Val.put("upload_status", "1");
-                db.UpdateData("population",Val,"population_idcard",PersonID);
+                db.UpdateData("population", Val, "population_idcard", PersonID);
             } else {
                 db.UpdateData("population_asset_land", Val, "land_running", LandID);
                 Val = new ContentValues();
                 Val.put("upload_status", "1");
-                db.UpdateData("population",Val,"population_idcard",PersonID);
+                db.UpdateData("population", Val, "population_idcard", PersonID);
             }
         }
     }
@@ -244,9 +246,38 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         if (v == btnSavingData) {
-            updateData();
-            Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
-            this.finish();
+            if (fieldCheck() == true){
+                updateData();
+                Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
+                this.finish();
+            } else {
+                Toast.makeText(this, "ข้อมูลไม่สมบูรณ์", Toast.LENGTH_SHORT).show();
+            }
         }
+    }
+
+    private Boolean fieldCheck() {
+        Boolean formPass = false,
+                dimenPass = true,
+                benefitPass = true,
+                conPass = true;
+
+        if (ModelCheckForm.checkEditText(etDimenA) != true || ModelCheckForm.checkEditText(etDimenB) != true || ModelCheckForm.checkEditText(etDimenC) != true) {
+            dimenPass = false;
+        }
+
+        if (!rbLB1.isChecked() || !rbLB2.isChecked() || !rbLB3.isChecked() || !rbLB4.isChecked() || !rbLB5.isChecked()) {
+            benefitPass = false;
+        }
+
+        conPass = ModelCheckForm.checkSpinner(spContributor);
+
+        if (dimenPass == true && benefitPass == true && conPass == true) {
+            formPass = true;
+        } else {
+            formPass = false;
+        }
+
+        return formPass;
     }
 }

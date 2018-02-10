@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.ModelCheckForm;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
 import com.example.jujiiz.mis.models.ModelShowHideLayout;
 import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
@@ -37,7 +38,7 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
     Spinner spAnimalType, spAnimalMarket, spContributor;
     Button btnSavingData;
 
-    String[] spMarketArray = {"ตลาดในหมู่บ้าน", "ตลาดนอกหมู่บ้าน", "พ่อค้าคนกลาง"};
+    String[] spMarketArray = {"กรุณาเลือก","ตลาดในหมู่บ้าน", "ตลาดนอกหมู่บ้าน", "พ่อค้าคนกลาง"};
 
     myDBClass db = new myDBClass(this);
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -115,6 +116,7 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
     private void setSpinner() {
         TypeList = db.SelectData("asset_animal");
         if (!TypeList.isEmpty()) {
+            Type.add("กรุณาเลือก");
             for (int i = 0; i < TypeList.size(); i++) {
                 if (TypeList.get(i).get("ACTIVE").equals("Y")) {
                     String strNat = TypeList.get(i).get("atype_name");
@@ -175,9 +177,9 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
                 rbInfectionCtrlNo.setChecked(true);
             } else if (AnimalList.get(0).get("diseasecontrol").equals("1")) {
                 rbInfectionCtrlYes.setChecked(true);
-                if (AnimalList.get(0).get("diseasecontrol_by").equals("0")) {
+                if (AnimalList.get(0).get("diseasecontrol_by").equals("1")) {
                     rbCtrlBySelf.setChecked(true);
-                } else if (AnimalList.get(0).get("diseasecontrol_by").equals("1")) {
+                } else if (AnimalList.get(0).get("diseasecontrol_by").equals("2")) {
                     rbCtrlByGovern.setChecked(true);
                 }
             }
@@ -203,11 +205,11 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
 
     private void updateData() {
         String date = df.format(Calendar.getInstance().getTime());
-        Boolean NatPass = true;
+        Boolean TypePass = true;
         TypeList = db.SelectData("asset_animal");
         if (!TypeList.isEmpty()) {
             if (spAnimalType.getSelectedItem().toString().equals("อื่นๆ")) {
-                NatPass = false;
+                TypePass = false;
                 String strAnotherType = etAnimalType.getText().toString();
                 if (!strAnotherType.equals("")) {
                     if (!Type.contains(strAnotherType)) {
@@ -221,10 +223,10 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
                             Val.put("cr_by", "JuJiiz");
                             Val.put("cr_date", date);
                             db.InsertData("asset_animal", Val);
-                            NatPass = true;
+                            TypePass = true;
                         } else {
                             db.UpdateData("asset_animal", Val, "atype_name", "\"" + strAnotherType + "\"");
-                            NatPass = true;
+                            TypePass = true;
                         }
                     } else {
                         Toast.makeText(this, "ประเภทซ้ำ", Toast.LENGTH_SHORT).show();
@@ -236,7 +238,7 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
         }
         //////////////////////////////////// Type Insert/Update ////////////////////////////////////
 
-        if (NatPass == true){
+        if (TypePass == true){
             Val = new ContentValues();
             Val.put("population_idcard", PersonID);
 
@@ -282,15 +284,15 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
                 Val.put("shelter", "0");
             }
 
-            if (rbAnimalShelterIn.isChecked()) {
+            if (rbInfectionCtrlNo.isChecked()) {
                 Val.put("diseasecontrol", "0");
                 Val.put("diseasecontrol_by", "0");
-            } else if (rbAnimalShelterOut.isChecked()) {
+            } else if (rbInfectionCtrlYes.isChecked()) {
                 Val.put("diseasecontrol", "1");
                 if (rbCtrlBySelf.isChecked()) {
-                    Val.put("diseasecontrol_by", "0");
-                } else if (rbCtrlByGovern.isChecked()) {
                     Val.put("diseasecontrol_by", "1");
+                } else if (rbCtrlByGovern.isChecked()) {
+                    Val.put("diseasecontrol_by", "2");
                 }else {
                     Val.put("diseasecontrol_by", "0");
                 }
@@ -355,8 +357,48 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         if (v == btnSavingData){
-            updateData();
+            if (fieldCheck() == true){
+                updateData();
+                Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
+                this.finish();
+            } else {
+                Toast.makeText(this, "ข้อมูลไม่สมบูรณ์", Toast.LENGTH_SHORT).show();
+            }
         }
+    }
+
+    private Boolean fieldCheck(){
+        Boolean formPass = false,
+                typePass = true,
+                infectctrlPass = true,
+                infectPass = true,
+                marketPass = true,
+                conPass = true;
+
+        typePass = ModelCheckForm.checkSpinner(spAnimalType);
+        conPass = ModelCheckForm.checkSpinner(spContributor);
+
+        if(rbInfectionCtrlYes.isChecked()){
+            if (!rbCtrlBySelf.isChecked() || !rbCtrlByGovern.isChecked()){
+                infectctrlPass = false;
+            }
+        }
+
+        if (rbAnimalInfectionYes.isChecked()){
+            infectPass = ModelCheckForm.checkEditText(etAnimalInfection);
+        }
+
+        if (rbAnimalMarketYes.isChecked()){
+            marketPass = ModelCheckForm.checkSpinner(spAnimalMarket);
+        }
+
+        if (typePass == true && infectctrlPass == true && infectPass == true && marketPass == true && conPass == true){
+            formPass = true;
+        }else{
+            formPass = false;
+        }
+
+        return formPass;
     }
 
     @Override

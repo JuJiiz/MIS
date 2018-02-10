@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.ModelCheckForm;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
 import com.example.jujiiz.mis.models.ModelShowHideLayout;
 import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
@@ -133,6 +134,7 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
     private void setSpinner() {
         DwellerList = db.SelectWhereData("population", "house_id", HouseID);
         if (!DwellerList.isEmpty()) {
+            Dweller.add("กรุณาเลือก");
             for (int i = 0; i < DwellerList.size(); i++) {
                 String strDweller = DwellerList.get(i).get("firstname") + " " + DwellerList.get(i).get("lastname");
                 Dweller.add(strDweller);
@@ -143,6 +145,7 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
 
         VTypeList = db.SelectWhereData("asset_vehicle", "vtype_name", "\"" + "ประเภทยานพาหนะทั่วไป" + "\"");
         if (!VTypeList.isEmpty()) {
+            Type1.add("กรุณาเลือก");
             for (int i = 0; i < VTypeList.size(); i++) {
                 Type1.add(VTypeList.get(i).get("vtype_detail"));
             }
@@ -152,17 +155,17 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
 
         VTypeList = db.SelectWhereData("asset_vehicle", "vtype_name", "\"" + "ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน" + "\"");
         if (!VTypeList.isEmpty()) {
+            Type2.add("กรุณาเลือก");
             for (int i = 0; i < VTypeList.size(); i++) {
                 Type2.add(VTypeList.get(i).get("vtype_detail"));
             }
             String[] spArrayType2 = Type2.toArray(new String[0]);
             AdapterType2 = ModelSpinnerAdapter.setSpinnerItem(this, spArrayType2, spVehicalType2);
-        }else {
-            Log.d("MYLOG", "No");
         }
 
         VTypeList = db.SelectWhereData("asset_vehicle", "vtype_name", "\"" + "ประเภทยานพาหนะด้านบรรเทาสาธารณภัย" + "\"");
         if (!VTypeList.isEmpty()) {
+            Type3.add("กรุณาเลือก");
             for (int i = 0; i < VTypeList.size(); i++) {
                 Type3.add(VTypeList.get(i).get("vtype_detail"));
             }
@@ -172,6 +175,7 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
 
         VTypeList = db.SelectWhereData("asset_vehicle", "vtype_name", "\"" + "ประเภทยานพาหนะด้านสิ่งแวดล้อม" + "\"");
         if (!VTypeList.isEmpty()) {
+            Type4.add("กรุณาเลือก");
             for (int i = 0; i < VTypeList.size(); i++) {
                 Type4.add(VTypeList.get(i).get("vtype_detail"));
             }
@@ -181,6 +185,7 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
 
         VTypeList = db.SelectWhereData("asset_vehicle", "vtype_name", "\"" + "ประเภทยานพาหนะด้านการศึกษา" + "\"");
         if (!VTypeList.isEmpty()) {
+            Type5.add("กรุณาเลือก");
             for (int i = 0; i < VTypeList.size(); i++) {
                 Type5.add(VTypeList.get(i).get("vtype_detail"));
             }
@@ -326,13 +331,65 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         if (v == btnSavingData) {
-            updateData();
-            Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
-            this.finish();
+            if (fieldCheck() == true){
+                updateData();
+                Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
+                this.finish();
+            } else {
+                Toast.makeText(this, "ข้อมูลไม่สมบูรณ์", Toast.LENGTH_SHORT).show();
+            }
         }
         if (v == btnDatePick) {
             fromDatePickerDialog.show();
         }
+    }
+
+    private Boolean fieldCheck(){
+        Boolean formPass = false,
+                typePass = true,
+                type1Pass = true,
+                type2Pass = true,
+                type3Pass = true,
+                type4Pass = true,
+                type5Pass = true,
+                datePass = true,
+                conPass = true;
+
+        if (!rbVehicalType1.isChecked() || !rbVehicalType2.isChecked() || !rbVehicalType3.isChecked() || !rbVehicalType4.isChecked() || !rbVehicalType5.isChecked()){
+            typePass = false;
+        }
+
+        if (rbVehicalType1.isChecked()){
+            type1Pass = ModelCheckForm.checkSpinner(spVehicalType1);
+        }
+
+        if (rbVehicalType2.isChecked()){
+            type2Pass = ModelCheckForm.checkSpinner(spVehicalType2);
+        }
+
+        if (rbVehicalType3.isChecked()){
+            type3Pass = ModelCheckForm.checkSpinner(spVehicalType3);
+        }
+
+        if (rbVehicalType4.isChecked()){
+            type4Pass = ModelCheckForm.checkSpinner(spVehicalType4);
+        }
+
+        if (rbVehicalType5.isChecked()){
+            type5Pass = ModelCheckForm.checkSpinner(spVehicalType5);
+        }
+
+        datePass = ModelCheckForm.checkEditText(etDate);
+
+        conPass = ModelCheckForm.checkSpinner(spContributor);
+
+        if (typePass == true && type1Pass == true && type2Pass == true && type3Pass == true && type4Pass == true && type5Pass == true && datePass == true && conPass == true){
+            formPass = true;
+        }else{
+            formPass = false;
+        }
+
+        return formPass;
     }
 
     @Override

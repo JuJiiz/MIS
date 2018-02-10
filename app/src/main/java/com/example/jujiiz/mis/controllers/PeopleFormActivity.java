@@ -2310,21 +2310,20 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         }
         if (view == btnSavingData) {
             if (fieldCheck() == true) {
-                Toast.makeText(this, "ครบ", Toast.LENGTH_SHORT).show();
-                //updateData();
-                /*if (!PersonID.equals("Nope")) {
+                updateData();
+                Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
+                if (!PersonID.equals("Nope")) {
                     loProperty.setVisibility(View.VISIBLE);
                     svPopulation.post(new Runnable() {
                         public void run() {
                             svPopulation.fullScroll(View.FOCUS_DOWN);
                         }
                     });
-
                 } else {
                     this.finish();
-                }*/
+                }
             } else {
-                Toast.makeText(this, "ไม่ครบ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "ข้อมูลไม่สมบูรณ์", Toast.LENGTH_SHORT).show();
             }
         }
         if (view == btnAddProperty) {
@@ -2424,7 +2423,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             dwellerPass = false;
         }
 
-        //, , , , , , , , , spIRProvince, spIHProvince, spIHCountry, spIRCountry;
         if (rbInHousehold.isChecked()){
             if (rbInStudy.isChecked()){
                 graduatePass = ModelCheckForm.checkSpinner(spInStudy);
@@ -2458,6 +2456,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         bloodPass = ModelCheckForm.checkSpinner(spBloodType);
         maritalPass = ModelCheckForm.checkSpinner(spMaritalStatus);
         conPass = ModelCheckForm.checkSpinner(spContributor);
+
+        if (nationPass == true && fnamePass == true && lnamePass == true && prefixPass == true && sexPass == true && personidPass == true && birthPass == true && bloodPass == true && livingPass == true && maritalPass == true && inregisPass == true && inhousePass == true && dwellerPass == true && graduatePass == true && expertSPass == true && irPPass == true && irCPass == true && ihPPass == true && ihCPass == true && conPass == true){
+            formPass = true;
+        }else{
+            formPass = false;
+        }
 
         return formPass;
     }

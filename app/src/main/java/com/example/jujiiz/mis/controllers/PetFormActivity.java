@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.ModelCheckForm;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
 import com.example.jujiiz.mis.models.ModelShowHideLayout;
 import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
@@ -35,8 +36,8 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
     Spinner spSterile, spLastVaccine, spContributor;
     Button btnSavingData;
 
-    String[] spMonthArray = {"มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"};
-    String[] spSterileArray = {"ทำหมันแล้ว", "ยังไม่ทำหมัน", "ไม่ทราบ", "ฉีดยาคุม"};
+    String[] spMonthArray = {"กรุณาเลือก","มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"};
+    String[] spSterileArray = {"กรุณาเลือก","ทำหมันแล้ว", "ยังไม่ทำหมัน", "ไม่ทราบ", "ฉีดยาคุม"};
 
     myDBClass db = new myDBClass(this);
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -106,6 +107,7 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
     private void setSpinner() {
         DwellerList = db.SelectWhereData("population", "house_id", HouseID);
         if (!DwellerList.isEmpty()) {
+            Dweller.add("กรุณาเลือก");
             for (int i = 0; i < DwellerList.size(); i++) {
                 String strDweller = DwellerList.get(i).get("firstname") + " " + DwellerList.get(i).get("lastname");
                 Dweller.add(strDweller);
@@ -147,9 +149,9 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
                 rbPetVaccineNo.setChecked(true);
             } else if (PetList.get(0).get("vaccine").equals("1")) {
                 rbPetVaccineYes.setChecked(true);
-                if (PetList.get(0).get("vaccine_during").equals("0")) {
+                if (PetList.get(0).get("vaccine_during").equals("1")) {
                     rbVaccineContinueNo.setChecked(true);
-                } else if (PetList.get(0).get("vaccine_during").equals("1")) {
+                } else if (PetList.get(0).get("vaccine_during").equals("2")) {
                     rbVaccineContinueYes.setChecked(true);
                 }
                 int spinnerPositionMonth = monthArrayAdapter.getPosition(PetList.get(0).get("vaccine_lastest"));
@@ -182,6 +184,7 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
         } else {
             Val.put("pet_regis", "0");
         }
+
         Val.put("pet_amount", etPetAmount.getText().toString());
 
         if (rbPetTypeDog.isChecked()) {
@@ -207,9 +210,9 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
         } else if (rbPetVaccineYes.isChecked()) {
             Val.put("vaccine", "1");
             if (rbVaccineContinueNo.isChecked()) {
-                Val.put("vaccine_during", "0");
-            } else if (rbVaccineContinueYes.isChecked()) {
                 Val.put("vaccine_during", "1");
+            } else if (rbVaccineContinueYes.isChecked()) {
+                Val.put("vaccine_during", "2");
             } else {
                 Val.put("vaccine_during", "0");
             }
@@ -265,17 +268,69 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (v == btnSavingData) {
-            updateData();
-            Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
-            this.finish();
+            if (fieldCheck() == true){
+                updateData();
+                Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
+                this.finish();
+            } else {
+                Toast.makeText(this, "ข้อมูลไม่สมบูรณ์", Toast.LENGTH_SHORT).show();
+            }
         }
+    }
+
+    private Boolean fieldCheck(){
+        Boolean formPass = false,
+                typePass = true,
+                sexPass = true,
+                vacconPass = true,
+                bornPass = true,
+                sterilePass = true,
+                conPass = true;
+
+        if (!rbPetTypeDog.isChecked() || !rbPetTypeCat.isChecked()){
+            typePass = false;
+        }
+
+        if (!rbPetSexMale.isChecked() || !rbPetSexFemale.isChecked()){
+            sexPass = false;
+        }
+
+        if(rbPetVaccineYes.isChecked()){
+            if (!rbVaccineContinueNo.isChecked() || !rbVaccineContinueYes.isChecked()){
+                vacconPass = false;
+            }
+        }
+
+        if(rbPetVaccineYes.isChecked()){
+            if (ModelCheckForm.checkSpinner(spLastVaccine) != true){
+                vacconPass = false;
+            }
+        }
+
+        if(rbPetBornYes.isChecked()){
+            if (ModelCheckForm.checkEditText(etPetBorn) != true){
+                bornPass = false;
+            }
+        }
+
+        sterilePass = ModelCheckForm.checkSpinner(spSterile);
+        conPass = ModelCheckForm.checkSpinner(spContributor);
+
+        if (typePass == true && sexPass == true && vacconPass == true && bornPass == true && sterilePass == true && conPass == true){
+            formPass = true;
+        }else{
+            formPass = false;
+        }
+
+        return formPass;
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (buttonView == rbPetVaccineYes)
+        if (buttonView == rbPetVaccineYes){
             ModelShowHideLayout.radiobuttonShowHide(rbPetVaccineYes, loVaccineContinue);
-        ModelShowHideLayout.radiobuttonShowHide(rbPetVaccineYes, loLastVaccine);
+            ModelShowHideLayout.radiobuttonShowHide(rbPetVaccineYes, loLastVaccine);
+        }
         if (buttonView == rbPetBornYes)
             ModelShowHideLayout.radiobuttonShowHide(rbPetBornYes, loPetBorn);
     }
