@@ -22,8 +22,6 @@ import android.widget.Toast;
 import com.example.jujiiz.mis.R;
 import com.example.jujiiz.mis.models.ModelParseJson;
 import com.example.jujiiz.mis.models.ModelSendApi;
-import com.example.jujiiz.mis.models.ModelToken;
-import com.example.jujiiz.mis.models.Sha1Hash;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#4eb510</color>
+    <color name="colorPrimary">#0e8a96</color>
+    <!--<color name="colorPrimary">#4eb510</color>-->
     <!--<color name="colorPrimary">#3F51B5</color>-->
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF4081</color>
     <color name="background">#f2f2f2</color>
     <color name="transparent">#27000000</color>
     <color name="topicColor">#111111</color>
+    <color name="appbarTextColor">#fdfdfd</color>
+    <color name="greenButton">#4CAF50</color>
+    <color name="redButton">#f44336</color>
     <color name="listHeadColor">#b1d488</color>
     <color name="listItemColor">#DCEDC8</color>
 </resources>

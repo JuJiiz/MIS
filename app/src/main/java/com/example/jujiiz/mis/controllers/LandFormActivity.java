@@ -28,7 +28,7 @@ import java.util.HashMap;
 public class LandFormActivity extends AppCompatActivity implements View.OnClickListener {
     EditText etOwnertName, etOwnerPersonalID, etSystemID, etDimenA, etDimenB, etDimenC, etDate;
     RadioGroup rgLandBenefit, rgLandLocation, rgLandTax, rgLandRent;
-    RadioButton rbLB1, rbLB2, rbLB3, rbLB4, rbLL1, rbLL2, rbLT1, rbLT2, rbLT3, rbLR1, rbLR2;
+    RadioButton rbLB1, rbLB2, rbLB3, rbLB4, rbLB5, rbLL1, rbLL2, rbLT1, rbLT2, rbLT3, rbLR1, rbLR2;
     Spinner spContributor;
     Button btnSavingData;
 
@@ -75,6 +75,7 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
         rbLB2 = (RadioButton) findViewById(R.id.rbLB2);
         rbLB3 = (RadioButton) findViewById(R.id.rbLB3);
         rbLB4 = (RadioButton) findViewById(R.id.rbLB4);
+        rbLB5 = (RadioButton) findViewById(R.id.rbLB5);
         rbLL1 = (RadioButton) findViewById(R.id.rbLL1);
         rbLL2 = (RadioButton) findViewById(R.id.rbLL2);
         rbLT1 = (RadioButton) findViewById(R.id.rbLT1);
@@ -119,6 +120,8 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
                 rbLB3.setChecked(true);
             } else if (LandList.get(0).get("land_benefit").equals("3")) {
                 rbLB4.setChecked(true);
+            } else if (LandList.get(0).get("land_benefit").equals("4")) {
+                rbLB5.setChecked(true);
             }
 
             if (LandList.get(0).get("land_location").equals("0")) {
@@ -177,6 +180,8 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
             Val.put("land_benefit", "2");
         } else if (rbLB4.isChecked()) {
             Val.put("land_benefit", "3");
+        } else if (rbLB5.isChecked()) {
+            Val.put("land_benefit", "4");
         } else {
             Val.put("land_benefit", "0");
         }
@@ -216,7 +221,7 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
             Val.put("cr_date", date);
             db.InsertData("population_asset_land", Val);
             Val = new ContentValues();
-            Val.put("survey_status","1");
+            Val.put("upload_status", "1");
             db.UpdateData("population",Val,"population_idcard",PersonID);
         } else {
             LandList = db.SelectWhereData("population_asset_land", "land_running", LandID);
@@ -225,12 +230,12 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
                 Val.put("cr_date", date);
                 db.InsertData("population_asset_land", Val);
                 Val = new ContentValues();
-                Val.put("survey_status","1");
+                Val.put("upload_status", "1");
                 db.UpdateData("population",Val,"population_idcard",PersonID);
             } else {
                 db.UpdateData("population_asset_land", Val, "land_running", LandID);
                 Val = new ContentValues();
-                Val.put("survey_status","1");
+                Val.put("upload_status", "1");
                 db.UpdateData("population",Val,"population_idcard",PersonID);
             }
         }

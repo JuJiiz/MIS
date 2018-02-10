@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="3"
+    android:background="@drawable/login_bg"
     tools:context="com.example.jujiiz.mis.controllers.LoginActivity">
 
     <LinearLayout

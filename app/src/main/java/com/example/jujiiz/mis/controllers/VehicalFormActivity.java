@@ -303,7 +303,7 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
             Val.put("cr_date", date);
             db.InsertData("population_asset_vehicle", Val);
             Val = new ContentValues();
-            Val.put("survey_status","1");
+            Val.put("upload_status", "1");
             db.UpdateData("population",Val,"population_idcard",PersonID);
         } else {
             VehicleList = db.SelectWhereData("population_asset_vehicle", "vehicle_running", VehicleID);
@@ -312,12 +312,12 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
                 Val.put("cr_date", date);
                 db.InsertData("population_asset_vehicle", Val);
                 Val = new ContentValues();
-                Val.put("survey_status","1");
+                Val.put("upload_status", "1");
                 db.UpdateData("population",Val,"population_idcard",PersonID);
             } else {
                 db.UpdateData("population_asset_vehicle", Val, "vehicle_running", VehicleID);
                 Val = new ContentValues();
-                Val.put("survey_status","1");
+                Val.put("upload_status", "1");
                 db.UpdateData("population",Val,"population_idcard",PersonID);
             }
         }

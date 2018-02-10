@@ -89,7 +89,11 @@ public class HouseholdActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);*/
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         TR14List = db.SelectData("tr14");
         if (TR14List.isEmpty()) {
             AlertDialog.Builder builder =
@@ -133,8 +137,7 @@ public class HouseholdActivity extends AppCompatActivity
     }
 
     private void setSpinner() {
-
-        VilleList = db.SelectData("vilage");
+        /*VilleList = db.SelectData("vilage");
         if (!VilleList.isEmpty()) {
             Village.add("ทั้งหมด");
             for (int i = 0; i < VilleList.size(); i++) {
@@ -149,41 +152,7 @@ public class HouseholdActivity extends AppCompatActivity
             }
             String[] spVillageArray = Village.toArray(new String[0]);
             villeArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spVillageArray, spVName);
-        }
-    }
-
-    private void setListView() {
-        /*HouseActive = new ArrayList<HashMap<String, String>>();
-        HouseList = db.SelectData("house");
-        TR14List = db.SelectData("tr14");
-        if (!HouseList.isEmpty()) {
-            for (int i = 0; i < HouseList.size(); i++) {
-                HashMap<String, String> temp = new HashMap<String, String>();
-                //TR14List = db.SelectWhereData("tr14", "house_id", HouseList.get(i).get("house_id"));
-                for (int j = 0; j < TR14List.size(); j++) {
-                    if (TR14List.get(j).get("house_id").equals(HouseList.get(i).get("house_id"))) {
-                        temp.put(strVilleNo, TR14List.get(j).get("vilage_no"));
-                        //Log.d("MYLOG", "TR14List: "+TR14List.get(j).get("vilage_no"));
-                    }
-                }
-                temp.put(strHouseNo, HouseList.get(i).get("house_no"));
-                temp.put(strVilleName, " ");
-                if (HouseList.get(i).get("survey_status").equals("0")) {
-                    survey = "";
-                }
-                if (HouseList.get(i).get("survey_status").equals("1")) {
-                    survey = "*";
-                }
-                temp.put(strStatus, survey);
-                temp.put(strHID, HouseList.get(i).get("house_id"));
-                HouseActive.add(temp);
-            }
-        }
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this, HouseActive, R.layout.view_household_column,
-                new String[]{strVilleNo, strHouseNo, strVilleName, strStatus, strHID},
-                new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvColumn4, R.id.tvHiddenColumn}
-        );
-        lvHousehold.setAdapter(simpleAdapter);*/
+        }*/
     }
 
     class AsynTaskDownload extends AsyncTask<Void, Void, Void> {
@@ -267,6 +236,7 @@ public class HouseholdActivity extends AppCompatActivity
                             Val.put("house_family_type", "");
                             Val.put("distributor", "");
                             Val.put("survey_status", "0");
+                            Val.put("upload_status", "0");
                             Val.put("cr_by", "ADMIN");
                             Val.put("cr_date", date);
                             Val.put("upd_by", "");
@@ -331,6 +301,7 @@ public class HouseholdActivity extends AppCompatActivity
                             Val.put("latentpop_country", "");
                             Val.put("distributor", "");
                             Val.put("survey_status", "0");
+                            Val.put("upload_status", "0");
                             Val.put("cr_by", "ADMIN");
                             Val.put("cr_date", date);
                             Val.put("upd_by", "");
@@ -375,6 +346,7 @@ public class HouseholdActivity extends AppCompatActivity
             HouseActive = new ArrayList<HashMap<String, String>>();
             HouseList = db.SelectData("house");
             TR14List = db.SelectData("tr14");
+            String VName = "";
             if (!HouseList.isEmpty()) {
                 for (int i = 0; i < HouseList.size(); i++) {
                     HashMap<String, String> temp = new HashMap<String, String>();
@@ -382,16 +354,16 @@ public class HouseholdActivity extends AppCompatActivity
                     for (int j = 0; j < TR14List.size(); j++) {
                         if (TR14List.get(j).get("house_id").equals(HouseList.get(i).get("house_id"))) {
                             temp.put(strVilleNo, TR14List.get(j).get("vilage_no"));
-                            //Log.d("MYLOG", "TR14List: "+TR14List.get(j).get("vilage_no"));
+                            VName = "หมู่บ้านที่ " + TR14List.get(j).get("vilage_no");
                         }
                     }
                     temp.put(strHouseNo, HouseList.get(i).get("house_no"));
-                    temp.put(strVilleName, " ");
+                    temp.put(strVilleName, VName);
                     if (HouseList.get(i).get("survey_status").equals("0")) {
-                        survey = "";
+                        survey = "ยังไม่สำรวจ";
                     }
                     if (HouseList.get(i).get("survey_status").equals("1")) {
-                        survey = "*";
+                        survey = "สำรวจแล้ว";
                     }
                     temp.put(strStatus, survey);
                     temp.put(strHID, HouseList.get(i).get("house_id"));

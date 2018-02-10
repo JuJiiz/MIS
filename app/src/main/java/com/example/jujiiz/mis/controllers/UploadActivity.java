@@ -90,12 +90,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         HouseList = db.SelectData("house");
         if (!HouseList.isEmpty()) {
             for (int i = 0; i < HouseList.size(); i++) {
-                if (HouseList.get(i).get("survey_status").equals("1")) {
-
-                    //EachHouse = new ArrayList<HashMap<String, String>>();
-                    //EachHouse.add(HouseList.get(i));
-                    //ModelParseJson.ArraylistToJsonlist(EachHouse); // check on log
-
+                if (HouseList.get(i).get("upload_status").equals("1")) {
                     HashMap<String, String> temp = new HashMap<String, String>();
 
                     TestList = db.SelectWhereData("tr14", "house_id", HouseList.get(i).get("house_id"));
@@ -124,7 +119,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         PopulationList = db.SelectData("population");
         if (!PopulationList.isEmpty()) {
             for (int i = 0; i < PopulationList.size(); i++) {
-                if (PopulationList.get(i).get("survey_status").equals("1")) {
+                if (PopulationList.get(i).get("upload_status").equals("1")) {
                     HashMap<String, String> temp = new HashMap<String, String>();
                     TestList = db.SelectWhereData("house", "house_id", PopulationList.get(i).get("house_id"));
                     temp.put(strHouseNo, TestList.get(0).get("house_no"));
@@ -149,7 +144,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         HouseList = db.SelectData("house");
         if (!HouseList.isEmpty()) {
             for (int i = 0; i < HouseList.size(); i++) {
-                if (HouseList.get(i).get("survey_status").equals("1")) {
+                if (HouseList.get(i).get("upload_status").equals("1")) {
                     HashMap<String, String> temp = new HashMap<String, String>();
                     temp.put("house_id", HouseList.get(i).get("house_id"));
                     temp.put("house_no", HouseList.get(i).get("house_no"));
@@ -234,7 +229,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         PopulationList = db.SelectData("population");
         if (!PopulationList.isEmpty()) {
             for (int i = 0; i < PopulationList.size(); i++) {
-                if (PopulationList.get(i).get("survey_status").equals("1")) {
+                if (PopulationList.get(i).get("upload_status").equals("1")) {
                     HashMap<String, String> temp = new HashMap<String, String>();
                     temp.put("population_idcard", PopulationList.get(i).get("population_idcard"));
                     temp.put("prename_id", PopulationList.get(i).get("prename"));
@@ -526,7 +521,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                         String returnStatus = jsonObject.getString("status");
                         if (returnStatus.equals("ok")) {
                             Val = new ContentValues();
-                            Val.put("survey_status", "0");
+                            Val.put("upload_status", "0");
                             db.UpdateData("house", Val, "house_id", HouseActive.get(i).get("house_id"));
                             Toast.makeText(this, "ส่งข้อมูล \"ครัวเรือน\" สำเร็จ", Toast.LENGTH_SHORT).show();
                         } else {
@@ -658,7 +653,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
                 if (AllInPopulation == true) {
                     Val = new ContentValues();
-                    Val.put("survey_status", "0");
+                    Val.put("upload_status", "0");
                     db.UpdateData("population", Val, "population_idcard", PopulationActive.get(i).get("population_idcard"));
                     Toast.makeText(this, "ส่งข้อมูล \"ประชากร\" สำเร็จ", Toast.LENGTH_SHORT).show();
                 } else {

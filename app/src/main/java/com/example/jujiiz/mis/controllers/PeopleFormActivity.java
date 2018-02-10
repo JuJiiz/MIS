@@ -7,12 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -32,12 +27,18 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.ModelCheckForm;
 import com.example.jujiiz.mis.models.ModelCheckboxCheck;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
+import com.example.jujiiz.mis.models.ModelGetJson;
+import com.example.jujiiz.mis.models.ModelLoadJsonRaw;
 import com.example.jujiiz.mis.models.ModelShowHideLayout;
 import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
 import com.example.jujiiz.mis.models.myDBClass;
 
+import org.json.JSONArray;
+
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -70,15 +71,16 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     RadioButton rbParticipationNo, rbParticipationYes;
     RadioButton rbElectionAlway, rbElectionSometime, rbElectionNever;
     RadioButton rbTransportationNo, rbTransportationYes;
+    RadioButton rbIHProvince, rbIRProvince, rbIRCountry, rbIHCountry;
     LinearLayout loNationality, loAnotherPrefix, loBloodType, loInRegister, loNotInRegister, loNotInHousehold, loCareer, loAgri, loAnotherAgri, loPet, loAnotherPet, loGovern, loAnotherGovern, loPrivate, loAnotherPrivate, loICMonth, loICYear, loCongenital, loContagious, loAllergic, loDisabled, loInStudy, loGraduated, loExpertise, loAnotherReligion, loTransportation, loExpertiseText, loAnotherCong, loAnotherCont, loProperty, loLiveHere;
-    Spinner spNationality, spPrefix, spBloodType, spMaritalStatus, spVillageName, spInStudy, spGraduated, spExpertise, spContributor;
-    EditText etNationality, etFirstName, etLastName, etAnotherPrefix, etPersonalID, etBirtDate, etHeight, etWeight, etBloodType, etTel, etHNo, etHID, etAnotherAgri, etAnotherPet, etAnotherGovern, etAnotherPrivate, etICMonth, etICYear, etAllergic, etAnotherReligion, etDate, etIHCountry, etIHProvince, etIRCountry, etIRProvince, etExpertise, etAnotherCong, etAnotherCont;
+    Spinner spNationality, spPrefix, spBloodType, spMaritalStatus, spVillageName, spInStudy, spGraduated, spExpertise, spContributor, spIRProvince, spIHProvince, spIHCountry, spIRCountry;
+    EditText etNationality, etFirstName, etLastName, etAnotherPrefix, etPersonalID, etBirtDate, etHeight, etWeight, etBloodType, etTel, etHNo, etHID, etAnotherAgri, etAnotherPet, etAnotherGovern, etAnotherPrivate, etICMonth, etICYear, etAllergic, etAnotherReligion, etDate, etExpertise, etAnotherCong, etAnotherCont;
     CheckBox cbAgri, cbAgri1, cbAgri2, cbAgri3, cbAgri4, cbAgri5, cbAgri6, cbAgri7, cbAgri8;
     CheckBox cbPet, cbPet1, cbPet2, cbPet3, cbPet4, cbPet5, cbPet6, cbPet7, cbPet8, cbPet9;
     CheckBox cbGovern, cbGovern1, cbGovern2, cbGovern3, cbGovern4, cbGovern5;
     CheckBox cbPrivate, cbPrivate1, cbPrivate2, cbPrivate3, cbPrivate4, cbPrivate5, cbPrivate6, cbPrivate7;
-    CheckBox cbCong1, cbCong2, cbCong3, cbCong4, cbCong5;
-    CheckBox cbCont1, cbCont2, cbCont3, cbCont4, cbCont5, cbCont6, cbCont7, cbCont8, cbCont9, cbCont10, cbCont11;
+    CheckBox cbCong1, cbCong2, cbCong3, cbCong4, cbCong5, cbCong6, cbCong7, cbCong8, cbCong9, cbCong10, cbCong11, cbCong12, cbCong13, cbCong14, cbCong15, cbCong16, cbCong17, cbCong18, cbCong19, cbCong20, cbCong21, cbCong22, cbCong23, cbCong24, cbCong25, cbCong26;
+    CheckBox cbCont1, cbCont2, cbCont3, cbCont4, cbCont5, cbCont6, cbCont7, cbCont8, cbCont9, cbCont10, cbCont11, cbCont12, cbCont13, cbCont14, cbCont15, cbCont16, cbCont17, cbCont18, cbCont19, cbCont20, cbCont21, cbCont22, cbCont23, cbCont24, cbCont25, cbCont26, cbCont27, cbCont28, cbCont29, cbCont30, cbCont31, cbCont32, cbCont33, cbCont34, cbCont35, cbCont36, cbCont37, cbCont38, cbCont39, cbCont40, cbCont41, cbCont42, cbCont43, cbCont44, cbCont45, cbCont46, cbCont47, cbCont48, cbCont49, cbCont50, cbCont51;
     CheckBox cbDisabled1, cbDisabled2, cbDisabled3, cbDisabled4, cbDisabled5, cbDisabled6;
     CheckBox cbTrans1, cbTrans2, cbTrans3, cbTrans4;
     Button btnSavingData, btnAddProperty, btnDatePick;
@@ -92,19 +94,22 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     ContentValues Val;
     ArrayList<HashMap<String, String>> NationalityList, PrefixList, PersonList, TestList, DwellerList, WorkList, AgriList, PetList, GovernList, PrivateList, CongList, ContList, DisabledList, TransList;
     ArrayList<HashMap<String, String>> PropertyActive, PLandList, PVehicleList, PPetList, PAnimalList;
+    ArrayList<HashMap<String, String>> ProvinceList, CountryList;
     ArrayList<String> Prefix = new ArrayList<String>();
     ArrayList<String> Nationality = new ArrayList<String>();
     ArrayList<String> Dweller = new ArrayList<String>();
-    ArrayAdapter<String> prefixArrayAdapter, nationalityArrayAdapter, dwellerArrayAdapter, bloodArrayAdapter, maritalArrayAdapter, educationIArrayAdapter, educationGArrayAdapter, expertiseArrayAdapter;
+    ArrayList<String> Province = new ArrayList<String>();
+    ArrayList<String> Country = new ArrayList<String>();
+    ArrayAdapter<String> prefixArrayAdapter, nationalityArrayAdapter, dwellerArrayAdapter, bloodArrayAdapter, maritalArrayAdapter, educationIArrayAdapter, educationGArrayAdapter, expertiseArrayAdapter, provinceArrayAdapter, countryArrayAdapter;
     String PersonID, HouseID;
     String SelectedIDItem, SelectedNameItem;
 
     private DatePickerDialog fromDatePickerDialog;
 
-    String[] spBloodGroupArray = {"O", "A", "B", "AB", "ไม่ทราบ", "อื่นๆ"};
-    String[] spMaritalStatusArray = {"สมรส", "โสด", "หย่าร้าง", "หม้าย", "แยกกันอยู่"};
-    String[] spEducationArray = {"ระดับก่อนประถมศึกษา", "ระดับประถมศึกษา", "ระดับมัธยมศึกษาตอนต้น", "ระดับมัธยมศึกษาตอนปลาย", "ระดับอนุปริญญา", "ระดับปริญญาตรี", "ระดับปริญญาโท", "ระดับปริญญาเอก"};
-    String[] spExpertiseArray = {"สาขาการเกษตรและพัฒนาชนบท", "สาขาอุตสาหกรรมก่อสร้าง", "สาขาการศึกษา", "สาขาพลังงาน", "สาขาสิ่งแวดล้อม", "สาขาการเงิน", "สาขาสาธารณสุข", "สาขาอุตสาหกรรม", "สาขาเบ็ดเตล็ด", "สาขาประชากร", "สาขาเทคโนโลยีสารสนเทศและการสื่อสาร", "สาขาการท่องเที่ยว", "สาขาการขนส่ง", "สาขาการพัฒนาเมือง", "สาขาการประปาและสุขาภิบาล", "สาขาภาษาต่างประเทศ"};
+    String[] spBloodGroupArray = {"กรุณาเลือก", "ไม่ทราบ", "A", "B", "AB", "O", "A Rh+", "B Rh+", "B Rh-", "AB Rh+", "AB Rh-", "O Rh+", "O Rh+-"};
+    String[] spMaritalStatusArray = {"กรุณาเลือก", "สมรส", "โสด", "หย่าร้าง", "หม้าย", "แยกกันอยู่"};
+    String[] spEducationArray = {"กรุณาเลือก", "ระดับก่อนประถมศึกษา", "ระดับประถมศึกษา", "ระดับมัธยมศึกษาตอนต้น", "ระดับมัธยมศึกษาตอนปลาย", "ระดับอนุปริญญา", "ระดับปริญญาตรี", "ระดับปริญญาโท", "ระดับปริญญาเอก"};
+    String[] spExpertiseArray = {"กรุณาเลือก", "สาขาการเกษตรและพัฒนาชนบท", "สาขาอุตสาหกรรมก่อสร้าง", "สาขาการศึกษา", "สาขาพลังงาน", "สาขาสิ่งแวดล้อม", "สาขาการเงิน", "สาขาสาธารณสุข", "สาขาอุตสาหกรรม", "สาขาเบ็ดเตล็ด", "สาขาประชากร", "สาขาเทคโนโลยีสารสนเทศและการสื่อสาร", "สาขาการท่องเที่ยว", "สาขาการขนส่ง", "สาขาการพัฒนาเมือง", "สาขาการประปาและสุขาภิบาล", "สาขาภาษาต่างประเทศ"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +126,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
         setSpinner();
         setField();
-        setListView();
         setDateTimeField();
     }
 
@@ -135,13 +139,13 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         lvProperty = (ListView) findViewById(R.id.lvProperty);
         lvProperty.setOnItemClickListener(this);
         lvProperty.setOnItemLongClickListener(this);
-        lvProperty.setOnTouchListener(new View.OnTouchListener() {
+        /*lvProperty.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 v.getParent().requestDisallowInterceptTouchEvent(true);
                 return false;
             }
-        });
+        });*/
 
         svPopulation = (ScrollView) findViewById(R.id.svPopulation);
 
@@ -217,10 +221,16 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         etAllergic = (EditText) findViewById(R.id.etAllergic);
         etAnotherReligion = (EditText) findViewById(R.id.etAnotherReligion);
         etDate = (EditText) findViewById(R.id.etDate);
-        etIHCountry = (EditText) findViewById(R.id.etIHCountry);
-        etIHProvince = (EditText) findViewById(R.id.etIHProvince);
-        etIRCountry = (EditText) findViewById(R.id.etIRCountry);
-        etIRProvince = (EditText) findViewById(R.id.etIRProvince);
+
+        spIHCountry = (Spinner) findViewById(R.id.spIHCountry);
+        spIHCountry.setEnabled(false);
+        spIHProvince = (Spinner) findViewById(R.id.spIHProvince);
+        spIHProvince.setEnabled(false);
+        spIRCountry = (Spinner) findViewById(R.id.spIRCountry);
+        spIRCountry.setEnabled(false);
+        spIRProvince = (Spinner) findViewById(R.id.spIRProvince);
+        spIRProvince.setEnabled(false);
+
         etExpertise = (EditText) findViewById(R.id.etExpertise);
         etAnotherCong = (EditText) findViewById(R.id.etAnotherCong);
         etAnotherCont = (EditText) findViewById(R.id.etAnotherCont);
@@ -263,6 +273,27 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         cbCong3 = (CheckBox) findViewById(R.id.cbCong3);
         cbCong4 = (CheckBox) findViewById(R.id.cbCong4);
         cbCong5 = (CheckBox) findViewById(R.id.cbCong5);
+        cbCong6 = (CheckBox) findViewById(R.id.cbCong6);
+        cbCong7 = (CheckBox) findViewById(R.id.cbCong7);
+        cbCong8 = (CheckBox) findViewById(R.id.cbCong8);
+        cbCong9 = (CheckBox) findViewById(R.id.cbCong9);
+        cbCong10 = (CheckBox) findViewById(R.id.cbCong10);
+        cbCong11 = (CheckBox) findViewById(R.id.cbCong11);
+        cbCong12 = (CheckBox) findViewById(R.id.cbCong12);
+        cbCong13 = (CheckBox) findViewById(R.id.cbCong13);
+        cbCong14 = (CheckBox) findViewById(R.id.cbCong14);
+        cbCong15 = (CheckBox) findViewById(R.id.cbCong15);
+        cbCong16 = (CheckBox) findViewById(R.id.cbCong17);
+        cbCong17 = (CheckBox) findViewById(R.id.cbCong18);
+        cbCong18 = (CheckBox) findViewById(R.id.cbCong18);
+        cbCong19 = (CheckBox) findViewById(R.id.cbCong19);
+        cbCong20 = (CheckBox) findViewById(R.id.cbCong20);
+        cbCong21 = (CheckBox) findViewById(R.id.cbCong21);
+        cbCong22 = (CheckBox) findViewById(R.id.cbCong22);
+        cbCong23 = (CheckBox) findViewById(R.id.cbCong23);
+        cbCong24 = (CheckBox) findViewById(R.id.cbCong24);
+        cbCong25 = (CheckBox) findViewById(R.id.cbCong25);
+        cbCong26 = (CheckBox) findViewById(R.id.cbCong26);
         cbCont1 = (CheckBox) findViewById(R.id.cbCont1);
         cbCont2 = (CheckBox) findViewById(R.id.cbCont2);
         cbCont3 = (CheckBox) findViewById(R.id.cbCont3);
@@ -274,6 +305,46 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         cbCont9 = (CheckBox) findViewById(R.id.cbCont9);
         cbCont10 = (CheckBox) findViewById(R.id.cbCont10);
         cbCont11 = (CheckBox) findViewById(R.id.cbCont11);
+        cbCont12 = (CheckBox) findViewById(R.id.cbCont12);
+        cbCont13 = (CheckBox) findViewById(R.id.cbCont13);
+        cbCont14 = (CheckBox) findViewById(R.id.cbCont14);
+        cbCont15 = (CheckBox) findViewById(R.id.cbCont15);
+        cbCont16 = (CheckBox) findViewById(R.id.cbCont16);
+        cbCont17 = (CheckBox) findViewById(R.id.cbCont17);
+        cbCont18 = (CheckBox) findViewById(R.id.cbCont18);
+        cbCont19 = (CheckBox) findViewById(R.id.cbCont19);
+        cbCont20 = (CheckBox) findViewById(R.id.cbCont20);
+        cbCont21 = (CheckBox) findViewById(R.id.cbCont21);
+        cbCont22 = (CheckBox) findViewById(R.id.cbCont22);
+        cbCont23 = (CheckBox) findViewById(R.id.cbCont23);
+        cbCont24 = (CheckBox) findViewById(R.id.cbCont24);
+        cbCont25 = (CheckBox) findViewById(R.id.cbCont25);
+        cbCont26 = (CheckBox) findViewById(R.id.cbCont26);
+        cbCont27 = (CheckBox) findViewById(R.id.cbCont27);
+        cbCont28 = (CheckBox) findViewById(R.id.cbCont28);
+        cbCont29 = (CheckBox) findViewById(R.id.cbCont29);
+        cbCont30 = (CheckBox) findViewById(R.id.cbCont30);
+        cbCont31 = (CheckBox) findViewById(R.id.cbCont31);
+        cbCont32 = (CheckBox) findViewById(R.id.cbCont32);
+        cbCont33 = (CheckBox) findViewById(R.id.cbCont33);
+        cbCont34 = (CheckBox) findViewById(R.id.cbCont34);
+        cbCont35 = (CheckBox) findViewById(R.id.cbCont35);
+        cbCont36 = (CheckBox) findViewById(R.id.cbCont36);
+        cbCont37 = (CheckBox) findViewById(R.id.cbCont37);
+        cbCont38 = (CheckBox) findViewById(R.id.cbCont38);
+        cbCont39 = (CheckBox) findViewById(R.id.cbCont39);
+        cbCont40 = (CheckBox) findViewById(R.id.cbCont40);
+        cbCont41 = (CheckBox) findViewById(R.id.cbCont41);
+        cbCont42 = (CheckBox) findViewById(R.id.cbCont42);
+        cbCont43 = (CheckBox) findViewById(R.id.cbCont43);
+        cbCont44 = (CheckBox) findViewById(R.id.cbCont44);
+        cbCont45 = (CheckBox) findViewById(R.id.cbCont45);
+        cbCont46 = (CheckBox) findViewById(R.id.cbCont46);
+        cbCont47 = (CheckBox) findViewById(R.id.cbCont47);
+        cbCont48 = (CheckBox) findViewById(R.id.cbCont48);
+        cbCont49 = (CheckBox) findViewById(R.id.cbCont49);
+        cbCont50 = (CheckBox) findViewById(R.id.cbCont50);
+        cbCont51 = (CheckBox) findViewById(R.id.cbCont51);
         cbDisabled1 = (CheckBox) findViewById(R.id.cbDisabled1);
         cbDisabled2 = (CheckBox) findViewById(R.id.cbDisabled2);
         cbDisabled3 = (CheckBox) findViewById(R.id.cbDisabled3);
@@ -336,6 +407,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         rbElectionNever = (RadioButton) findViewById(R.id.rbElectionNever);
         rbTransportationNo = (RadioButton) findViewById(R.id.rbTransportationNo);
         rbTransportationYes = (RadioButton) findViewById(R.id.rbTransportationYes);
+        rbIHProvince = (RadioButton) findViewById(R.id.rbIHProvince);
+        rbIRProvince = (RadioButton) findViewById(R.id.rbIRProvince);
+        rbIHCountry = (RadioButton) findViewById(R.id.rbIHCountry);
+        rbIRCountry = (RadioButton) findViewById(R.id.rbIRCountry);
 
         cbAgri.setOnCheckedChangeListener(this);
         cbAgri1.setOnCheckedChangeListener(this);
@@ -374,7 +449,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         cbCong2.setOnCheckedChangeListener(this);
         cbCong3.setOnCheckedChangeListener(this);
         cbCong4.setOnCheckedChangeListener(this);
-        cbCong5.setOnCheckedChangeListener(this);
+        cbCong26.setOnCheckedChangeListener(this);
         cbCont1.setOnCheckedChangeListener(this);
         cbCont2.setOnCheckedChangeListener(this);
         cbCont3.setOnCheckedChangeListener(this);
@@ -385,7 +460,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         cbCont8.setOnCheckedChangeListener(this);
         cbCont9.setOnCheckedChangeListener(this);
         cbCont10.setOnCheckedChangeListener(this);
-        cbCont11.setOnCheckedChangeListener(this);
+        cbCont51.setOnCheckedChangeListener(this);
         cbDisabled1.setOnCheckedChangeListener(this);
         cbDisabled2.setOnCheckedChangeListener(this);
         cbDisabled3.setOnCheckedChangeListener(this);
@@ -448,6 +523,11 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         rbElectionNever.setOnCheckedChangeListener(this);
         rbTransportationNo.setOnCheckedChangeListener(this);
         rbTransportationYes.setOnCheckedChangeListener(this);
+
+        rbIHProvince.setOnCheckedChangeListener(this);
+        rbIRProvince.setOnCheckedChangeListener(this);
+        rbIHCountry.setOnCheckedChangeListener(this);
+        rbIRCountry.setOnCheckedChangeListener(this);
     }
 
     private void setDateTimeField() {
@@ -465,8 +545,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     }
 
     private void setSpinner() {
+
         NationalityList = db.SelectData("nationality");
         if (!NationalityList.isEmpty()) {
+            Nationality.add("กรุณาเลือก");
             for (int i = 0; i < NationalityList.size(); i++) {
                 String strActive = NationalityList.get(i).get("ACTIVE");
                 if (strActive.equals("Y")) {
@@ -483,6 +565,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
         PrefixList = db.SelectData("prename");
         if (!PrefixList.isEmpty()) {
+            Prefix.add("กรุณาเลือก");
             for (int i = 0; i < PrefixList.size(); i++) {
                 String strPrefix = PrefixList.get(i).get("prename_detail");
                 Prefix.add(strPrefix);
@@ -491,8 +574,37 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             prefixArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spPrefixArray, spPrefix);
         }
 
+        InputStream inputStreamCountry = getResources().openRawResource(R.raw.country_en);
+        JSONArray countryArray = ModelLoadJsonRaw.loadJsonFile(inputStreamCountry, "countries", "country");
+        CountryList = ModelGetJson.JsonArraytoArrayList(countryArray);
+        if (!CountryList.isEmpty()) {
+            Country.add("กรุณาเลือก");
+            for (int i = 0; i < CountryList.size(); i++) {
+                String strProvince = CountryList.get(i).get("countryName");
+                Country.add(strProvince);
+            }
+            String[] spCountryArray = Country.toArray(new String[0]);
+            countryArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spCountryArray, spIHCountry);
+            countryArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spCountryArray, spIRCountry);
+        }
+
+        InputStream inputStreamProvince = getResources().openRawResource(R.raw.province_th);
+        JSONArray provinceArray = ModelLoadJsonRaw.loadJsonFile(inputStreamProvince, "th", "changwats");
+        ProvinceList = ModelGetJson.JsonArraytoArrayList(provinceArray);
+        if (!ProvinceList.isEmpty()) {
+            Province.add("กรุณาเลือก");
+            for (int i = 0; i < ProvinceList.size(); i++) {
+                String strProvince = ProvinceList.get(i).get("name");
+                Province.add(strProvince);
+            }
+            String[] spProvinceArray = Province.toArray(new String[0]);
+            provinceArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spProvinceArray, spIHProvince);
+            provinceArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spProvinceArray, spIRProvince);
+        }
+
         DwellerList = db.SelectWhereData("population", "house_id", HouseID);
         if (!DwellerList.isEmpty()) {
+            Dweller.add("กรุณาเลือก");
             for (int i = 0; i < DwellerList.size(); i++) {
                 String strDweller = DwellerList.get(i).get("firstname") + " " + DwellerList.get(i).get("lastname");
                 Dweller.add(strDweller);
@@ -516,370 +628,436 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         if (!PersonID.equals("Nope")) {
             PersonList = db.SelectWhereData("population", "population_idcard", PersonID);
             if (!PersonList.isEmpty()) {
-                if (PersonList.get(0).get("survey_status").equals("1")) {
-                    loProperty.setVisibility(View.VISIBLE);
-                } else {
-                    loProperty.setVisibility(View.GONE);
-                }
-                int spinnerPositionNat = nationalityArrayAdapter.getPosition(PersonList.get(0).get("nationality"));
-                spNationality.setSelection(spinnerPositionNat);
-
-                etFirstName.setText(PersonList.get(0).get("firstname"));
-                etLastName.setText(PersonList.get(0).get("lastname"));
-
-                int spinnerPositionPrefix = prefixArrayAdapter.getPosition(PersonList.get(0).get("prename"));
-                spPrefix.setSelection(spinnerPositionPrefix);
-
-                if (PersonList.get(0).get("sex").equals("M")) {
-                    rbMale.setChecked(true);
-                }
-                if (PersonList.get(0).get("sex").equals("F")) {
-                    rbFemale.setChecked(true);
-                }
-                etPersonalID.setText(PersonList.get(0).get("population_idcard"));
-
-                originalFormat = new SimpleDateFormat("yyyy-MM-dd");
-                targetFormat = new SimpleDateFormat("dd/MM/yyy");
-                try {
-                    odate = originalFormat.parse(PersonList.get(0).get("birthdate"));
-
-                    if (odate != null) {
-                        formattedDate = targetFormat.format(odate);
-                    } else {
-                        formattedDate = "01/01/0001";
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    formattedDate = PersonList.get(0).get("birthdate");
-                }
-
-                etBirtDate.setText(formattedDate);
-                etHeight.setText(PersonList.get(0).get("height"));
-                etWeight.setText(PersonList.get(0).get("weight"));
-
-
-                if (!PersonList.get(0).get("bloodgroup").equals("")) {
-                    int spinnerPositionBlood = bloodArrayAdapter.getPosition(PersonList.get(0).get("bloodgroup"));
-                    spBloodType.setSelection(spinnerPositionBlood);
-                } else {
-                    int spinnerPositionBlood = bloodArrayAdapter.getPosition("ไม่ทราบ");
-                    spBloodType.setSelection(spinnerPositionBlood);
-                }
-
-                if (PersonList.get(0).get("living").equals("0")) {
-                    rbAlive.setChecked(true);
-                } else if (PersonList.get(0).get("living").equals("1")) {
-                    rbDead.setChecked(true);
-                }
-
-                if (!PersonList.get(0).get("maritalstatus").equals("")) {
-                    int spinnerPositionMari = maritalArrayAdapter.getPosition(PersonList.get(0).get("maritalstatus"));
-                    spMaritalStatus.setSelection(spinnerPositionMari);
-                }
-
-                etTel.setText(PersonList.get(0).get("tel"));
-
-                if (PersonList.get(0).get("residence_status").equals("1")) {
-                    rbInRegister.setChecked(true);
-                } else if (PersonList.get(0).get("residence_status").equals("0")) {
-                    rbNotInRegister.setChecked(true);
-                    etIRProvince.setText(PersonList.get(0).get("latentpop_province"));
-                    etIRCountry.setText(PersonList.get(0).get("latentpop_country"));
-                }
-
-                if (PersonList.get(0).get("currentaddr").equals("0")) {
-                    rbInHousehold.setChecked(true);
-                } else if (PersonList.get(0).get("currentaddr").equals("1")) {
-                    rbNotInHousehold.setChecked(true);
-                    etIHProvince.setText(PersonList.get(0).get("currentaddr_province"));
-                    etIHCountry.setText(PersonList.get(0).get("currentaddr_country"));
-                }
-
-                if (PersonList.get(0).get("dwellerstatus").equals("0")) {
-                    rbStatusOwner.setChecked(true);
-                } else if (PersonList.get(0).get("dwellerstatus").equals("1")) {
-                    rbStatusDweller.setChecked(true);
-                }
-
-                if (PersonList.get(0).get("income").equals("0")) {
-                    rbICMonth.setChecked(true);
-                    etICMonth.setText(PersonList.get(0).get("income_money"));
-                } else if (PersonList.get(0).get("income").equals("1")) {
-                    rbICYear.setChecked(true);
-                    etICYear.setText(PersonList.get(0).get("income_money"));
-                }
-
-                if (PersonList.get(0).get("dept").equals("0")) {
-                    rbDebtNo.setChecked(true);
-                } else if (PersonList.get(0).get("dept").equals("1")) {
-                    rbDebtYes.setChecked(true);
-                }
-
-                if (PersonList.get(0).get("saving").equals("0")) {
-                    rbSavingNo.setChecked(true);
-                } else if (PersonList.get(0).get("saving").equals("1")) {
-                    rbSavingYes.setChecked(true);
-                }
-
-                if (PersonList.get(0).get("allergichis").equals("0")) {
-                    rbAllergicNo.setChecked(true);
-                } else if (PersonList.get(0).get("allergichis").equals("1")) {
-                    rbAllergicYes.setChecked(true);
-                    etAllergic.setText(PersonList.get(0).get("allergichis_detail"));
-                }
-
-                if (PersonList.get(0).get("disadvantage").equals("0")) {
-                    rbDisadvantageNo.setChecked(true);
-                } else if (PersonList.get(0).get("disadvantage").equals("1")) {
-                    rbDisadvantageYes.setChecked(true);
-                }
-
-                if (PersonList.get(0).get("sub_al").equals("0")) {
-                    rbSubAlNo.setChecked(true);
-                } else if (PersonList.get(0).get("sub_al").equals("1")) {
-                    rbSubAlYes.setChecked(true);
-                }
-
-                if (PersonList.get(0).get("education").equals("0")) {
-                    rbNoStudy.setChecked(true);
-                } else if (PersonList.get(0).get("education").equals("1")) {
-                    rbInStudy.setChecked(true);
-                    if (!PersonList.get(0).get("education_class").equals("")) {
-                        int spinnerPositionEduI = educationIArrayAdapter.getPosition(PersonList.get(0).get("education_class"));
-                        spInStudy.setSelection(spinnerPositionEduI);
-                    }
-                } else if (PersonList.get(0).get("education").equals("2")) {
-                    rbGraduated.setChecked(true);
-                    if (!PersonList.get(0).get("education_class").equals("")) {
-                        int spinnerPositionEduG = educationGArrayAdapter.getPosition(PersonList.get(0).get("education_class"));
-                        spGraduated.setSelection(spinnerPositionEduG);
-                    }
-                }
-
-                if (PersonList.get(0).get("literacy").equals("0")) {
-                    rbLiteracyYes.setChecked(true);
-                } else if (PersonList.get(0).get("literacy").equals("1")) {
-                    rbLiteracyNo.setChecked(true);
-                }
-
-                if (PersonList.get(0).get("technology").equals("0")) {
-                    rbTechnologyNo.setChecked(true);
-                } else if (PersonList.get(0).get("technology").equals("1")) {
-                    rbTechnologyYes.setChecked(true);
-                }
-
-                if (PersonList.get(0).get("expertise").equals("0")) {
-                    rbExpertiseNo.setChecked(true);
-                } else if (PersonList.get(0).get("expertise").equals("1")) {
-                    rbExpertiseYes.setChecked(true);
-                    if (!PersonList.get(0).get("expertise_name").equals("")) {
-                        int spinnerPositionExp = expertiseArrayAdapter.getPosition(PersonList.get(0).get("expertise_name"));
-                        spExpertise.setSelection(spinnerPositionExp);
-                    }
-                    etExpertise.setText(PersonList.get(0).get("expertise_detail"));
-                }
-
-                if (PersonList.get(0).get("religion").equals("0")) {
-                    rbBuddhismReligion.setChecked(true);
-                } else if (PersonList.get(0).get("religion").equals("1")) {
-                    rbChristReligion.setChecked(true);
-                } else if (PersonList.get(0).get("religion").equals("2")) {
-                    rbIslamicReligion.setChecked(true);
-                } else if (PersonList.get(0).get("religion").equals("3")) {
-                    rbAnotherReligion.setChecked(true);
-                    etAnotherReligion.setText(PersonList.get(0).get("religion_another"));
-                }
-
-                if (PersonList.get(0).get("participation").equals("0")) {
-                    rbParticipationNo.setChecked(true);
-                } else if (PersonList.get(0).get("participation").equals("1")) {
-                    rbParticipationYes.setChecked(true);
-                }
-
-                if (PersonList.get(0).get("election").equals("0")) {
-                    rbElectionAlway.setChecked(true);
-                } else if (PersonList.get(0).get("election").equals("1")) {
-                    rbElectionSometime.setChecked(true);
-                } else if (PersonList.get(0).get("election").equals("2")) {
-                    rbElectionNever.setChecked(true);
-                }
-                if (!DwellerList.get(0).get("distributor").equals("")) {
-                    int spinnerPositionContri = dwellerArrayAdapter.getPosition(PersonList.get(0).get("distributor"));
-                    spContributor.setSelection(spinnerPositionContri);
-                }
-                ModelCurrentCalendar.edittextCurrentCalendar(this, etDate);
-
-                WorkList = db.SelectWhereData("population_works", "population_idcard", PersonList.get(0).get("population_idcard"));
-                if (!WorkList.isEmpty()) {
-                    if (WorkList.get(0).get("works_type").equals("0")) {
-                        rbJGStudent.setChecked(true);
-                    } else if (WorkList.get(0).get("works_type").equals("1")) {
-                        rbJGCareer.setChecked(true);
-                    } else if (WorkList.get(0).get("works_type").equals("1")) {
-                        rbJGNoJob.setChecked(true);
-                    }
-                    AgriList = db.SelectWhereData("population_job_agriculture", "works_id", WorkList.get(0).get("works_id"));
-                    if (!AgriList.isEmpty()) {
-                        ModelCheckboxCheck.checkboxSetCheck(cbAgri1, AgriList.get(0).get("agri1"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbAgri2, AgriList.get(0).get("agri2"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbAgri3, AgriList.get(0).get("agri3"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbAgri4, AgriList.get(0).get("agri4"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbAgri5, AgriList.get(0).get("agri5"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbAgri6, AgriList.get(0).get("agri6"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbAgri7, AgriList.get(0).get("agri7"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbAgri8, AgriList.get(0).get("agri8"));
-                        if (AgriList.get(0).get("agri8").equals("1")) {
-                            etAnotherAgri.setText(AgriList.get(0).get("agri_another"));
+                for (int i = 0; i < PersonList.size(); i++) {
+                    if (PersonList.get(i).get("house_id").equals(HouseID)) {
+                        if (PersonList.get(i).get("survey_status").equals("1")) {
+                            loProperty.setVisibility(View.VISIBLE);
+                        } else {
+                            loProperty.setVisibility(View.GONE);
                         }
-                        if (AgriList.get(0).get("agri1").equals("1") ||
-                                AgriList.get(0).get("agri2").equals("1") ||
-                                AgriList.get(0).get("agri3").equals("1") ||
-                                AgriList.get(0).get("agri4").equals("1") ||
-                                AgriList.get(0).get("agri5").equals("1") ||
-                                AgriList.get(0).get("agri6").equals("1") ||
-                                AgriList.get(0).get("agri7").equals("1") ||
-                                AgriList.get(0).get("agri8").equals("1")) {
-                            cbAgri.setChecked(true);
-                        }
-                    }
+                        int spinnerPositionNat = nationalityArrayAdapter.getPosition(PersonList.get(i).get("nationality"));
+                        spNationality.setSelection(spinnerPositionNat);
 
-                    PetList = db.SelectWhereData("population_job_animal", "works_id", WorkList.get(0).get("works_id"));
-                    if (!PetList.isEmpty()) {
-                        ModelCheckboxCheck.checkboxSetCheck(cbPet1, PetList.get(0).get("animal1"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbPet2, PetList.get(0).get("animal2"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbPet3, PetList.get(0).get("animal3"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbPet4, PetList.get(0).get("animal4"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbPet5, PetList.get(0).get("animal5"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbPet6, PetList.get(0).get("animal6"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbPet7, PetList.get(0).get("animal7"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbPet8, PetList.get(0).get("animal8"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbPet9, PetList.get(0).get("animal9"));
-                        if (PetList.get(0).get("animal9").equals("1")) {
-                            etAnotherPet.setText(PetList.get(0).get("animal_another"));
-                        }
-                        if (PetList.get(0).get("animal1").equals("1") ||
-                                PetList.get(0).get("animal2").equals("1") ||
-                                PetList.get(0).get("animal3").equals("1") ||
-                                PetList.get(0).get("animal4").equals("1") ||
-                                PetList.get(0).get("animal5").equals("1") ||
-                                PetList.get(0).get("animal6").equals("1") ||
-                                PetList.get(0).get("animal7").equals("1") ||
-                                PetList.get(0).get("animal8").equals("1") ||
-                                PetList.get(0).get("animal9").equals("1")) {
-                            cbPet.setChecked(true);
-                        }
-                    }
+                        etFirstName.setText(PersonList.get(i).get("firstname"));
+                        etLastName.setText(PersonList.get(i).get("lastname"));
 
-                    GovernList = db.SelectWhereData("population_job_govern", "works_id", WorkList.get(0).get("works_id"));
-                    if (!GovernList.isEmpty()) {
-                        ModelCheckboxCheck.checkboxSetCheck(cbGovern1, GovernList.get(0).get("govern1"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbGovern2, GovernList.get(0).get("govern2"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbGovern3, GovernList.get(0).get("govern3"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbGovern4, GovernList.get(0).get("govern4"));
-                        if (GovernList.get(0).get("govern4").equals("1")) {
-                            etAnotherGovern.setText(GovernList.get(0).get("govern_another"));
-                        }
-                        if (GovernList.get(0).get("govern1").equals("1") ||
-                                GovernList.get(0).get("govern2").equals("1") ||
-                                GovernList.get(0).get("govern3").equals("1") ||
-                                GovernList.get(0).get("govern4").equals("1")) {
-                            cbGovern.setChecked(true);
-                        }
-                    }
+                        int spinnerPositionPrefix = prefixArrayAdapter.getPosition(PersonList.get(i).get("prename"));
+                        spPrefix.setSelection(spinnerPositionPrefix);
 
-                    PrivateList = db.SelectWhereData("population_job_private", "works_id", WorkList.get(0).get("works_id"));
-                    if (!PrivateList.isEmpty()) {
-                        ModelCheckboxCheck.checkboxSetCheck(cbPrivate1, PrivateList.get(0).get("private1"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbPrivate2, PrivateList.get(0).get("private2"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbPrivate3, PrivateList.get(0).get("private3"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbPrivate4, PrivateList.get(0).get("private4"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbPrivate5, PrivateList.get(0).get("private5"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbPrivate6, PrivateList.get(0).get("private6"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbPrivate7, PrivateList.get(0).get("private7"));
-                        if (PrivateList.get(0).get("private7").equals("1")) {
-                            etAnotherPrivate.setText(PrivateList.get(0).get("private_another"));
+                        if (PersonList.get(i).get("sex").equals("M")) {
+                            rbMale.setChecked(true);
                         }
-                        if (PrivateList.get(0).get("private1").equals("1") ||
-                                PrivateList.get(0).get("private2").equals("1") ||
-                                PrivateList.get(0).get("private3").equals("1") ||
-                                PrivateList.get(0).get("private4").equals("1") ||
-                                PrivateList.get(0).get("private5").equals("1") ||
-                                PrivateList.get(0).get("private6").equals("1") ||
-                                PrivateList.get(0).get("private7").equals("1")) {
-                            cbPrivate.setChecked(true);
+                        if (PersonList.get(i).get("sex").equals("F")) {
+                            rbFemale.setChecked(true);
+                        }
+                        etPersonalID.setText(PersonList.get(i).get("population_idcard"));
+
+                        originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        targetFormat = new SimpleDateFormat("dd/MM/yyy");
+                        try {
+                            odate = originalFormat.parse(PersonList.get(i).get("birthdate"));
+
+                            if (odate != null) {
+                                formattedDate = targetFormat.format(odate);
+                            } else {
+                                formattedDate = "01/01/0001";
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            formattedDate = PersonList.get(i).get("birthdate");
+                        }
+
+                        etBirtDate.setText(formattedDate);
+                        etHeight.setText(PersonList.get(i).get("height"));
+                        etWeight.setText(PersonList.get(i).get("weight"));
+
+
+                        if (!PersonList.get(i).get("bloodgroup").equals("")) {
+                            int spinnerPositionBlood = bloodArrayAdapter.getPosition(PersonList.get(i).get("bloodgroup"));
+                            spBloodType.setSelection(spinnerPositionBlood);
+                        }
+
+                        if (PersonList.get(i).get("living").equals("0")) {
+                            rbAlive.setChecked(true);
+                        } else if (PersonList.get(i).get("living").equals("1")) {
+                            rbDead.setChecked(true);
+                        }
+
+                        if (!PersonList.get(i).get("maritalstatus").equals("")) {
+                            int spinnerPositionMari = maritalArrayAdapter.getPosition(PersonList.get(i).get("maritalstatus"));
+                            spMaritalStatus.setSelection(spinnerPositionMari);
+                        }
+
+                        etTel.setText(PersonList.get(i).get("tel"));
+
+                        if (PersonList.get(i).get("residence_status").equals("1")) {
+                            rbInRegister.setChecked(true);
+                        } else if (PersonList.get(i).get("residence_status").equals("0")) {
+                            rbNotInRegister.setChecked(true);
+                            int spinnerPositionIRProvince = provinceArrayAdapter.getPosition(PersonList.get(i).get("latentpop_province"));
+                            spIRProvince.setSelection(spinnerPositionIRProvince);
+                            int spinnerPositionIRCountry = countryArrayAdapter.getPosition(PersonList.get(i).get("latentpop_country"));
+                            spIRCountry.setSelection(spinnerPositionIRCountry);
+                        }
+
+                        if (PersonList.get(i).get("currentaddr").equals("0")) {
+                            rbInHousehold.setChecked(true);
+                        } else if (PersonList.get(i).get("currentaddr").equals("1")) {
+                            rbNotInHousehold.setChecked(true);
+                            int spinnerPositionIHProvince = provinceArrayAdapter.getPosition(PersonList.get(i).get("currentaddr_province"));
+                            spIHProvince.setSelection(spinnerPositionIHProvince);
+                            int spinnerPositionIHCountry = countryArrayAdapter.getPosition(PersonList.get(i).get("currentaddr_country"));
+                            spIHCountry.setSelection(spinnerPositionIHCountry);
+                        }
+
+                        if (PersonList.get(i).get("dwellerstatus").equals("0")) {
+                            rbStatusOwner.setChecked(true);
+                        } else if (PersonList.get(i).get("dwellerstatus").equals("1")) {
+                            rbStatusDweller.setChecked(true);
+                        }
+
+                        if (PersonList.get(i).get("income").equals("1")) {
+                            rbICMonth.setChecked(true);
+                            etICMonth.setText(PersonList.get(i).get("income_money"));
+                        } else if (PersonList.get(i).get("income").equals("2")) {
+                            rbICYear.setChecked(true);
+                            etICYear.setText(PersonList.get(i).get("income_money"));
+                        }
+
+                        if (PersonList.get(i).get("dept").equals("1")) {
+                            rbDebtNo.setChecked(true);
+                        } else if (PersonList.get(i).get("dept").equals("2")) {
+                            rbDebtYes.setChecked(true);
+                        }
+
+                        if (PersonList.get(i).get("saving").equals("1")) {
+                            rbSavingNo.setChecked(true);
+                        } else if (PersonList.get(i).get("saving").equals("2")) {
+                            rbSavingYes.setChecked(true);
+                        }
+
+                        if (PersonList.get(i).get("allergichis").equals("1")) {
+                            rbAllergicNo.setChecked(true);
+                        } else if (PersonList.get(i).get("allergichis").equals("2")) {
+                            rbAllergicYes.setChecked(true);
+                            etAllergic.setText(PersonList.get(i).get("allergichis_detail"));
+                        }
+
+                        if (PersonList.get(i).get("disadvantage").equals("1")) {
+                            rbDisadvantageNo.setChecked(true);
+                        } else if (PersonList.get(i).get("disadvantage").equals("2")) {
+                            rbDisadvantageYes.setChecked(true);
+                        }
+
+                        if (PersonList.get(i).get("sub_al").equals("1")) {
+                            rbSubAlNo.setChecked(true);
+                        } else if (PersonList.get(i).get("sub_al").equals("2")) {
+                            rbSubAlYes.setChecked(true);
+                        }
+
+                        if (PersonList.get(i).get("education").equals("1")) {
+                            rbNoStudy.setChecked(true);
+                        } else if (PersonList.get(i).get("education").equals("2")) {
+                            rbInStudy.setChecked(true);
+                            if (!PersonList.get(i).get("education_class").equals("")) {
+                                int spinnerPositionEduI = educationIArrayAdapter.getPosition(PersonList.get(i).get("education_class"));
+                                spInStudy.setSelection(spinnerPositionEduI);
+                            }
+                        } else if (PersonList.get(i).get("education").equals("3")) {
+                            rbGraduated.setChecked(true);
+                            if (!PersonList.get(i).get("education_class").equals("")) {
+                                int spinnerPositionEduG = educationGArrayAdapter.getPosition(PersonList.get(i).get("education_class"));
+                                spGraduated.setSelection(spinnerPositionEduG);
+                            }
+                        }
+
+                        if (PersonList.get(i).get("literacy").equals("1")) {
+                            rbLiteracyYes.setChecked(true);
+                        } else if (PersonList.get(i).get("literacy").equals("2")) {
+                            rbLiteracyNo.setChecked(true);
+                        }
+
+                        if (PersonList.get(i).get("technology").equals("1")) {
+                            rbTechnologyNo.setChecked(true);
+                        } else if (PersonList.get(i).get("technology").equals("2")) {
+                            rbTechnologyYes.setChecked(true);
+                        }
+
+                        if (PersonList.get(i).get("expertise").equals("1")) {
+                            rbExpertiseNo.setChecked(true);
+                        } else if (PersonList.get(i).get("expertise").equals("2")) {
+                            rbExpertiseYes.setChecked(true);
+                            if (!PersonList.get(i).get("expertise_name").equals("")) {
+                                int spinnerPositionExp = expertiseArrayAdapter.getPosition(PersonList.get(i).get("expertise_name"));
+                                spExpertise.setSelection(spinnerPositionExp);
+                            }
+                            etExpertise.setText(PersonList.get(i).get("expertise_detail"));
+                        }
+
+                        if (PersonList.get(i).get("religion").equals("1")) {
+                            rbBuddhismReligion.setChecked(true);
+                        } else if (PersonList.get(i).get("religion").equals("2")) {
+                            rbChristReligion.setChecked(true);
+                        } else if (PersonList.get(i).get("religion").equals("3")) {
+                            rbIslamicReligion.setChecked(true);
+                        } else if (PersonList.get(i).get("religion").equals("4")) {
+                            rbAnotherReligion.setChecked(true);
+                            etAnotherReligion.setText(PersonList.get(i).get("religion_another"));
+                        }
+
+                        if (PersonList.get(i).get("participation").equals("1")) {
+                            rbParticipationNo.setChecked(true);
+                        } else if (PersonList.get(i).get("participation").equals("2")) {
+                            rbParticipationYes.setChecked(true);
+                        }
+
+                        if (PersonList.get(i).get("election").equals("1")) {
+                            rbElectionAlway.setChecked(true);
+                        } else if (PersonList.get(i).get("election").equals("2")) {
+                            rbElectionSometime.setChecked(true);
+                        } else if (PersonList.get(i).get("election").equals("3")) {
+                            rbElectionNever.setChecked(true);
+                        }
+                        if (!DwellerList.get(0).get("distributor").equals("")) {
+                            int spinnerPositionContri = dwellerArrayAdapter.getPosition(PersonList.get(i).get("distributor"));
+                            spContributor.setSelection(spinnerPositionContri);
+                        }
+                        ModelCurrentCalendar.edittextCurrentCalendar(this, etDate);
+
+                        WorkList = db.SelectWhereData("population_works", "population_idcard", PersonList.get(i).get("population_idcard"));
+                        if (!WorkList.isEmpty()) {
+                            if (WorkList.get(0).get("works_type").equals("1")) {
+                                rbJGStudent.setChecked(true);
+                            } else if (WorkList.get(0).get("works_type").equals("2")) {
+                                rbJGCareer.setChecked(true);
+                            } else if (WorkList.get(0).get("works_type").equals("3")) {
+                                rbJGNoJob.setChecked(true);
+                            }
+                            AgriList = db.SelectWhereData("population_job_agriculture", "works_id", WorkList.get(0).get("works_id"));
+                            if (!AgriList.isEmpty()) {
+                                ModelCheckboxCheck.checkboxSetCheck(cbAgri1, AgriList.get(0).get("agri1"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbAgri2, AgriList.get(0).get("agri2"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbAgri3, AgriList.get(0).get("agri3"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbAgri4, AgriList.get(0).get("agri4"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbAgri5, AgriList.get(0).get("agri5"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbAgri6, AgriList.get(0).get("agri6"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbAgri7, AgriList.get(0).get("agri7"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbAgri8, AgriList.get(0).get("agri8"));
+                                if (AgriList.get(0).get("agri8").equals("1")) {
+                                    etAnotherAgri.setText(AgriList.get(0).get("agri_another"));
+                                }
+                                if (AgriList.get(0).get("agri1").equals("1") ||
+                                        AgriList.get(0).get("agri2").equals("1") ||
+                                        AgriList.get(0).get("agri3").equals("1") ||
+                                        AgriList.get(0).get("agri4").equals("1") ||
+                                        AgriList.get(0).get("agri5").equals("1") ||
+                                        AgriList.get(0).get("agri6").equals("1") ||
+                                        AgriList.get(0).get("agri7").equals("1") ||
+                                        AgriList.get(0).get("agri8").equals("1")) {
+                                    cbAgri.setChecked(true);
+                                }
+                            }
+
+                            PetList = db.SelectWhereData("population_job_animal", "works_id", WorkList.get(0).get("works_id"));
+                            if (!PetList.isEmpty()) {
+                                ModelCheckboxCheck.checkboxSetCheck(cbPet1, PetList.get(0).get("animal1"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbPet2, PetList.get(0).get("animal2"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbPet3, PetList.get(0).get("animal3"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbPet4, PetList.get(0).get("animal4"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbPet5, PetList.get(0).get("animal5"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbPet6, PetList.get(0).get("animal6"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbPet7, PetList.get(0).get("animal7"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbPet8, PetList.get(0).get("animal8"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbPet9, PetList.get(0).get("animal9"));
+                                if (PetList.get(0).get("animal9").equals("1")) {
+                                    etAnotherPet.setText(PetList.get(0).get("animal_another"));
+                                }
+                                if (PetList.get(0).get("animal1").equals("1") ||
+                                        PetList.get(0).get("animal2").equals("1") ||
+                                        PetList.get(0).get("animal3").equals("1") ||
+                                        PetList.get(0).get("animal4").equals("1") ||
+                                        PetList.get(0).get("animal5").equals("1") ||
+                                        PetList.get(0).get("animal6").equals("1") ||
+                                        PetList.get(0).get("animal7").equals("1") ||
+                                        PetList.get(0).get("animal8").equals("1") ||
+                                        PetList.get(0).get("animal9").equals("1")) {
+                                    cbPet.setChecked(true);
+                                }
+                            }
+
+                            GovernList = db.SelectWhereData("population_job_govern", "works_id", WorkList.get(0).get("works_id"));
+                            if (!GovernList.isEmpty()) {
+                                ModelCheckboxCheck.checkboxSetCheck(cbGovern1, GovernList.get(0).get("govern1"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbGovern2, GovernList.get(0).get("govern2"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbGovern3, GovernList.get(0).get("govern3"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbGovern4, GovernList.get(0).get("govern4"));
+                                if (GovernList.get(0).get("govern4").equals("1")) {
+                                    etAnotherGovern.setText(GovernList.get(0).get("govern_another"));
+                                }
+                                if (GovernList.get(0).get("govern1").equals("1") ||
+                                        GovernList.get(0).get("govern2").equals("1") ||
+                                        GovernList.get(0).get("govern3").equals("1") ||
+                                        GovernList.get(0).get("govern4").equals("1")) {
+                                    cbGovern.setChecked(true);
+                                }
+                            }
+
+                            PrivateList = db.SelectWhereData("population_job_private", "works_id", WorkList.get(0).get("works_id"));
+                            if (!PrivateList.isEmpty()) {
+                                ModelCheckboxCheck.checkboxSetCheck(cbPrivate1, PrivateList.get(0).get("private1"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbPrivate2, PrivateList.get(0).get("private2"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbPrivate3, PrivateList.get(0).get("private3"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbPrivate4, PrivateList.get(0).get("private4"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbPrivate5, PrivateList.get(0).get("private5"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbPrivate6, PrivateList.get(0).get("private6"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbPrivate7, PrivateList.get(0).get("private7"));
+                                if (PrivateList.get(0).get("private7").equals("1")) {
+                                    etAnotherPrivate.setText(PrivateList.get(0).get("private_another"));
+                                }
+                                if (PrivateList.get(0).get("private1").equals("1") ||
+                                        PrivateList.get(0).get("private2").equals("1") ||
+                                        PrivateList.get(0).get("private3").equals("1") ||
+                                        PrivateList.get(0).get("private4").equals("1") ||
+                                        PrivateList.get(0).get("private5").equals("1") ||
+                                        PrivateList.get(0).get("private6").equals("1") ||
+                                        PrivateList.get(0).get("private7").equals("1")) {
+                                    cbPrivate.setChecked(true);
+                                }
+                            }
+                        }
+
+                        CongList = db.SelectWhereData("population_congenitalhis", "population_idcard", PersonList.get(i).get("population_idcard"));
+                        if (!CongList.isEmpty()) {
+                            if (CongList.get(0).get("congh_type").equals("2")) {
+                                rbCongenitalYes.setChecked(true);
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong1, CongList.get(0).get("congh1"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong2, CongList.get(0).get("congh2"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong3, CongList.get(0).get("congh3"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong4, CongList.get(0).get("congh4"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong5, CongList.get(0).get("congh5"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong6, CongList.get(0).get("congh6"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong7, CongList.get(0).get("congh7"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong8, CongList.get(0).get("congh8"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong9, CongList.get(0).get("congh9"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong10, CongList.get(0).get("congh10"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong11, CongList.get(0).get("congh11"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong12, CongList.get(0).get("congh12"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong13, CongList.get(0).get("congh13"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong14, CongList.get(0).get("congh14"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong15, CongList.get(0).get("congh15"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong16, CongList.get(0).get("congh16"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong17, CongList.get(0).get("congh17"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong18, CongList.get(0).get("congh18"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong19, CongList.get(0).get("congh19"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong20, CongList.get(0).get("congh20"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong21, CongList.get(0).get("congh21"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong22, CongList.get(0).get("congh22"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong23, CongList.get(0).get("congh23"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong24, CongList.get(0).get("congh24"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong25, CongList.get(0).get("congh25"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCong26, CongList.get(0).get("congh26"));
+                                if (CongList.get(0).get("congh26").equals("1")) {
+                                    etAnotherCong.setText(CongList.get(0).get("congh_another"));
+                                }
+                            } else if (CongList.get(0).get("congh_type").equals("1")) {
+                                rbCongenitalNo.setChecked(true);
+                            }
+                        }
+
+                        ContList = db.SelectWhereData("population_contagioushis", "population_idcard", PersonList.get(i).get("population_idcard"));
+                        if (!ContList.isEmpty()) {
+                            if (ContList.get(0).get("conth_type").equals("2")) {
+                                rbContagiousYes.setChecked(true);
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont1, ContList.get(0).get("conth1"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont2, ContList.get(0).get("conth2"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont3, ContList.get(0).get("conth3"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont4, ContList.get(0).get("conth4"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont5, ContList.get(0).get("conth5"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont6, ContList.get(0).get("conth6"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont7, ContList.get(0).get("conth7"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont8, ContList.get(0).get("conth8"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont9, ContList.get(0).get("conth9"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont10, ContList.get(0).get("conth10"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont11, ContList.get(0).get("conth11"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont12, ContList.get(0).get("conth12"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont13, ContList.get(0).get("conth13"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont14, ContList.get(0).get("conth14"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont15, ContList.get(0).get("conth15"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont16, ContList.get(0).get("conth16"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont17, ContList.get(0).get("conth17"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont18, ContList.get(0).get("conth18"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont19, ContList.get(0).get("conth19"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont20, ContList.get(0).get("conth20"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont21, ContList.get(0).get("conth21"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont22, ContList.get(0).get("conth22"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont23, ContList.get(0).get("conth23"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont24, ContList.get(0).get("conth24"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont25, ContList.get(0).get("conth25"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont26, ContList.get(0).get("conth26"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont27, ContList.get(0).get("conth27"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont28, ContList.get(0).get("conth28"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont29, ContList.get(0).get("conth29"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont30, ContList.get(0).get("conth30"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont31, ContList.get(0).get("conth31"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont32, ContList.get(0).get("conth32"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont33, ContList.get(0).get("conth33"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont34, ContList.get(0).get("conth34"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont35, ContList.get(0).get("conth35"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont36, ContList.get(0).get("conth36"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont37, ContList.get(0).get("conth37"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont38, ContList.get(0).get("conth38"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont39, ContList.get(0).get("conth39"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont40, ContList.get(0).get("conth40"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont41, ContList.get(0).get("conth41"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont42, ContList.get(0).get("conth42"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont43, ContList.get(0).get("conth43"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont44, ContList.get(0).get("conth44"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont45, ContList.get(0).get("conth45"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont46, ContList.get(0).get("conth46"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont47, ContList.get(0).get("conth47"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont48, ContList.get(0).get("conth48"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont49, ContList.get(0).get("conth49"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont50, ContList.get(0).get("conth50"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbCont51, ContList.get(0).get("conth51"));
+                                if (ContList.get(0).get("conth51").equals("1")) {
+                                    etAnotherCont.setText(ContList.get(0).get("conth_another"));
+                                }
+                            } else if (ContList.get(0).get("conth_type").equals("1")) {
+                                rbContagiousNo.setChecked(true);
+                            }
+                        }
+
+                        DisabledList = db.SelectWhereData("population_disabled", "population_idcard", PersonList.get(i).get("population_idcard"));
+                        if (!DisabledList.isEmpty()) {
+                            if (DisabledList.get(0).get("disabled_type").equals("2")) {
+                                rbDisabledYes.setChecked(true);
+                                ModelCheckboxCheck.checkboxSetCheck(cbDisabled1, DisabledList.get(0).get("disabled1"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbDisabled2, DisabledList.get(0).get("disabled2"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbDisabled3, DisabledList.get(0).get("disabled3"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbDisabled4, DisabledList.get(0).get("disabled4"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbDisabled5, DisabledList.get(0).get("disabled5"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbDisabled6, DisabledList.get(0).get("disabled6"));
+                            } else if (DisabledList.get(0).get("disabled_type").equals("1")) {
+                                rbDisabledNo.setChecked(true);
+                            }
+                        }
+
+                        TransList = db.SelectWhereData("population_transport", "population_idcard", PersonList.get(i).get("population_idcard"));
+                        if (!TransList.isEmpty()) {
+                            if (TransList.get(0).get("transport_type").equals("2")) {
+                                rbTransportationYes.setChecked(true);
+                                ModelCheckboxCheck.checkboxSetCheck(cbTrans1, TransList.get(0).get("trans1"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbTrans2, TransList.get(0).get("trans2"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbTrans3, TransList.get(0).get("trans3"));
+                                ModelCheckboxCheck.checkboxSetCheck(cbTrans4, TransList.get(0).get("trans4"));
+                            } else if (TransList.get(0).get("transport_type").equals("1")) {
+                                rbTransportationNo.setChecked(true);
+                            }
                         }
                     }
                 }
 
-                CongList = db.SelectWhereData("population_congenitalhis", "population_idcard", PersonList.get(0).get("population_idcard"));
-                if (!CongList.isEmpty()) {
-                    if (CongList.get(0).get("congh_type").equals("1")) {
-                        rbCongenitalYes.setChecked(true);
-                        ModelCheckboxCheck.checkboxSetCheck(cbCong1, CongList.get(0).get("congh1"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbCong2, CongList.get(0).get("congh2"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbCong3, CongList.get(0).get("congh3"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbCong4, CongList.get(0).get("congh4"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbCong5, CongList.get(0).get("congh5"));
-                        if (CongList.get(0).get("congh5").equals("1")) {
-                            etAnotherCong.setText(CongList.get(0).get("congh_another"));
-                        }
-                    } else if (CongList.get(0).get("congh_type").equals("0")) {
-                        rbCongenitalNo.setChecked(true);
-                    }
-                }
-
-                ContList = db.SelectWhereData("population_contagioushis", "population_idcard", PersonList.get(0).get("population_idcard"));
-                if (!ContList.isEmpty()) {
-                    if (ContList.get(0).get("conth_type").equals("1")) {
-                        rbContagiousYes.setChecked(true);
-                        ModelCheckboxCheck.checkboxSetCheck(cbCont1, ContList.get(0).get("conth1"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbCont2, ContList.get(0).get("conth2"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbCont3, ContList.get(0).get("conth3"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbCont4, ContList.get(0).get("conth4"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbCont5, ContList.get(0).get("conth5"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbCont6, ContList.get(0).get("conth6"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbCont7, ContList.get(0).get("conth7"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbCont8, ContList.get(0).get("conth8"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbCont9, ContList.get(0).get("conth9"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbCont10, ContList.get(0).get("conth10"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbCont11, ContList.get(0).get("conth11"));
-                        if (ContList.get(0).get("conth11").equals("1")) {
-                            etAnotherCont.setText(ContList.get(0).get("conth_another"));
-                        }
-                    } else if (ContList.get(0).get("conth_type").equals("0")) {
-                        rbContagiousNo.setChecked(true);
-                    }
-                }
-
-                DisabledList = db.SelectWhereData("population_disabled", "population_idcard", PersonList.get(0).get("population_idcard"));
-                if (!DisabledList.isEmpty()) {
-                    if (DisabledList.get(0).get("disabled_type").equals("1")) {
-                        rbDisabledYes.setChecked(true);
-                        ModelCheckboxCheck.checkboxSetCheck(cbDisabled1, DisabledList.get(0).get("disabled1"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbDisabled2, DisabledList.get(0).get("disabled2"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbDisabled3, DisabledList.get(0).get("disabled3"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbDisabled4, DisabledList.get(0).get("disabled4"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbDisabled5, DisabledList.get(0).get("disabled5"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbDisabled6, DisabledList.get(0).get("disabled6"));
-                    } else if (DisabledList.get(0).get("disabled_type").equals("0")) {
-                        rbDisabledNo.setChecked(true);
-                    }
-                }
-
-                TransList = db.SelectWhereData("population_transport", "population_idcard", PersonList.get(0).get("population_idcard"));
-                if (!TransList.isEmpty()) {
-                    if (TransList.get(0).get("transport_type").equals("1")) {
-                        rbTransportationYes.setChecked(true);
-                        ModelCheckboxCheck.checkboxSetCheck(cbTrans1, TransList.get(0).get("trans1"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbTrans2, TransList.get(0).get("trans2"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbTrans3, TransList.get(0).get("trans3"));
-                        ModelCheckboxCheck.checkboxSetCheck(cbTrans4, TransList.get(0).get("trans4"));
-                    } else if (TransList.get(0).get("transport_type").equals("0")) {
-                        rbTransportationNo.setChecked(true);
-                    }
-                }
             }
-
             etFirstName.setEnabled(false);
             etLastName.setEnabled(false);
             etPersonalID.setEnabled(false);
@@ -920,6 +1098,8 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                             benefit = "เลี้ยงสัตว์";
                         } else if (PLandList.get(i).get("land_benefit").equals("3")) {
                             benefit = "ประกอบกิจการ";
+                        } else if (PLandList.get(i).get("land_benefit").equals("4")) {
+                            benefit = "พื้นที่ว่างเปล่า";
                         } else {
                             benefit = "ไม่ทราบ";
                         }
@@ -997,7 +1177,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             lvProperty.setAdapter(simpleAdapter);
             lvProperty.getAdapter().getCount();
             ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) lvProperty.getLayoutParams();
-            lp.height = lvProperty.getAdapter().getCount()*92;
+            lp.height = lvProperty.getAdapter().getCount() * 92;
             lvProperty.setLayoutParams(lp);
         }
     }
@@ -1061,16 +1241,19 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 e.printStackTrace();
             }
             Val.put("birthdate", formattedDate);
+
             if (!etHeight.getText().toString().equals("")) {
                 Val.put("height", etHeight.getText().toString());
             } else {
                 Val.put("height", "1");
             }
+
             if (!etWeight.getText().toString().equals("")) {
                 Val.put("weight", etWeight.getText().toString());
             } else {
                 Val.put("weight", "1");
             }
+
             if (rbMale.isChecked()) {
                 Val.put("sex", "M");
             } else if (rbFemale.isChecked()) {
@@ -1078,7 +1261,9 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             } else {
                 Val.put("sex", "M");
             }
+
             Val.put("bloodgroup", spBloodType.getSelectedItem().toString());
+
             if (rbAlive.isChecked()) {
                 Val.put("living", "0");
             } else if (rbDead.isChecked()) {
@@ -1086,7 +1271,9 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             } else {
                 Val.put("living", "0");
             }
+
             Val.put("maritalstatus", spMaritalStatus.getSelectedItem().toString());
+
             if (!etTel.getText().toString().equals("")) {
                 Val.put("tel", etTel.getText().toString());
             } else {
@@ -1099,19 +1286,21 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             }
 
             Val.put("house_id", HouseID);
+
             if (rbInHousehold.isChecked()) {
                 Val.put("currentaddr", "0");
                 Val.put("currentaddr_province", "");
                 Val.put("currentaddr_country", "");
             } else if (rbNotInHousehold.isChecked()) {
                 Val.put("currentaddr", "1");
-                Val.put("currentaddr_province", etIHProvince.getText().toString());
-                Val.put("currentaddr_country", etIHCountry.getText().toString());
+                Val.put("currentaddr_province", spIHProvince.getSelectedItem().toString());
+                Val.put("currentaddr_country", spIHProvince.getSelectedItem().toString());
             } else {
                 Val.put("currentaddr", "0");
                 Val.put("currentaddr_province", "");
                 Val.put("currentaddr_country", "");
             }
+
             if (PersonID.equals("Nope")) {
                 Val.put("dwellerstatus", "1");
             } else {
@@ -1119,151 +1308,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("dwellerstatus", PersonList.get(0).get("dwellerstatus"));
             }
 
-            if (rbICMonth.isChecked()) {
-                Val.put("income", "0");
-                if (!etICMonth.getText().toString().equals("")) {
-                    Val.put("income_money", etICMonth.getText().toString());
-                } else {
-                    Val.put("income_money", "0");
-                }
-            } else if (rbICYear.isChecked()) {
-                Val.put("income", "1");
-                if (!etICYear.getText().toString().equals("")) {
-                    Val.put("income_money", etICYear.getText().toString());
-                } else {
-                    Val.put("income_money", "0");
-                }
-            } else {
-                Val.put("income", "0");
-                Val.put("income_money", "0");
-            }
-
-            if (rbDebtNo.isChecked()) {
-                Val.put("dept", "0");
-            } else if (rbDebtYes.isChecked()) {
-                Val.put("dept", "1");
-            } else {
-                Val.put("dept", "0");
-            }
-
-            if (rbSavingNo.isChecked()) {
-                Val.put("saving", "0");
-            } else if (rbSavingYes.isChecked()) {
-                Val.put("saving", "1");
-            } else {
-                Val.put("saving", "0");
-            }
-
-            if (rbAllergicNo.isChecked()) {
-                Val.put("allergichis", "0");
-                Val.put("allergichis_detail", "");
-            } else if (rbAllergicYes.isChecked()) {
-                Val.put("allergichis", "1");
-                Val.put("allergichis_detail", etAllergic.getText().toString());
-            } else {
-                Val.put("allergichis", "0");
-                Val.put("allergichis_detail", "");
-            }
-
-            if (rbDisadvantageNo.isChecked()) {
-                Val.put("disadvantage", "0");
-            } else if (rbDisadvantageYes.isChecked()) {
-                Val.put("disadvantage", "1");
-            } else {
-                Val.put("disadvantage", "0");
-            }
-
-            if (rbSubAlNo.isChecked()) {
-                Val.put("sub_al", "0");
-            } else if (rbSubAlYes.isChecked()) {
-                Val.put("sub_al", "1");
-            } else {
-                Val.put("sub_al", "0");
-            }
-
-            if (rbNoStudy.isChecked()) {
-                Val.put("education", "0");
-                Val.put("education_class", "0");
-            } else if (rbInStudy.isChecked()) {
-                Val.put("education", "1");
-                Val.put("education_class", spInStudy.getSelectedItem().toString());
-            } else if (rbGraduated.isChecked()) {
-                Val.put("education", "2");
-                Val.put("education_class", spGraduated.getSelectedItem().toString());
-            } else {
-                Val.put("education", "0");
-                Val.put("education_class", "0");
-            }
-
-            if (rbLiteracyNo.isChecked()) {
-                Val.put("literacy", "0");
-            } else if (rbLiteracyYes.isChecked()) {
-                Val.put("literacy", "1");
-            } else {
-                Val.put("literacy", "0");
-            }
-
-            if (rbTechnologyNo.isChecked()) {
-                Val.put("technology", "0");
-            } else if (rbTechnologyYes.isChecked()) {
-                Val.put("technology", "1");
-            } else {
-                Val.put("technology", "0");
-            }
-
-            if (rbExpertiseNo.isChecked()) {
-                Val.put("expertise", "0");
-                Val.put("expertise_name", "0");
-                Val.put("expertise_detail", "");
-            } else if (rbExpertiseYes.isChecked()) {
-                Val.put("expertise", "1");
-                Val.put("expertise_name", spExpertise.getSelectedItem().toString());
-                Val.put("expertise_detail", etExpertise.getText().toString());
-            } else {
-                Val.put("expertise", "0");
-                Val.put("expertise_name", "0");
-                Val.put("expertise_detail", "");
-            }
-
-            if (rbBuddhismReligion.isChecked()) {
-                Val.put("religion", "0");
-                Val.put("religion_another", "");
-            } else if (rbChristReligion.isChecked()) {
-                Val.put("religion", "1");
-                Val.put("religion_another", "");
-            } else if (rbIslamicReligion.isChecked()) {
-                Val.put("religion", "2");
-                Val.put("religion_another", "");
-            } else if (rbAnotherReligion.isChecked()) {
-                Val.put("religion", "3");
-                Val.put("religion_another", etAnotherReligion.getText().toString());
-            } else {
-                Val.put("religion", "0");
-                Val.put("religion_another", "");
-            }
-
-            if (rbParticipationNo.isChecked()) {
-                Val.put("participation", "0");
-            } else if (rbParticipationYes.isChecked()) {
-                Val.put("participation", "1");
-            } else {
-                Val.put("participation", "0");
-            }
-
-            if (rbElectionAlway.isChecked()) {
-                Val.put("election", "0");
-            } else if (rbElectionSometime.isChecked()) {
-                Val.put("election", "1");
-            } else if (rbElectionNever.isChecked()) {
-                Val.put("election", "2");
-            } else {
-                Val.put("election", "0");
-            }
-
             if (PersonID.equals("Nope")) {
                 Val.put("residence_status", "0");
-                Val.put("latentpop_province", etIRProvince.getText().toString());
-                Val.put("latentpop_country", etIRCountry.getText().toString());
+                Val.put("latentpop_province", spIRProvince.getSelectedItem().toString());
+                Val.put("latentpop_country", spIRCountry.getSelectedItem().toString());
             } else {
                 if (rbInRegister.isChecked()) {
                     Val.put("residence_status", "1");
@@ -1271,13 +1319,180 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     Val.put("latentpop_country", "");
                 } else if (rbInRegister.isChecked()) {
                     Val.put("residence_status", "0");
-                    Val.put("latentpop_province", etIRProvince.getText().toString());
-                    Val.put("latentpop_country", etIRCountry.getText().toString());
+                    Val.put("latentpop_province", spIRProvince.getSelectedItem().toString());
+                    Val.put("latentpop_country", spIRCountry.getSelectedItem().toString());
                 }
             }
 
+            if (rbInHousehold.isChecked()) {
+
+                Val.put("income", "0");
+                Val.put("income_money", "0");
+                Val.put("dept", "0");
+                Val.put("saving", "0");
+                Val.put("allergichis", "0");
+                Val.put("allergichis_detail", "");
+                Val.put("disadvantage", "0");
+                Val.put("sub_al", "0");
+                Val.put("education", "0");
+                Val.put("education_class", "");
+                Val.put("literacy", "0");
+                Val.put("technology", "0");
+                Val.put("expertise", "0");
+                Val.put("expertise_name", "");
+                Val.put("expertise_detail", "");
+                Val.put("religion", "0");
+                Val.put("religion_another", "");
+                Val.put("participation", "0");
+                Val.put("election", "0");
+
+            } else if (rbNotInHousehold.isChecked()) {
+                if (rbICMonth.isChecked()) {
+                    Val.put("income", "1");
+                    if (!etICMonth.getText().toString().equals("")) {
+                        Val.put("income_money", etICMonth.getText().toString());
+                    } else {
+                        Val.put("income_money", "0");
+                    }
+                } else if (rbICYear.isChecked()) {
+                    Val.put("income", "2");
+                    if (!etICYear.getText().toString().equals("")) {
+                        Val.put("income_money", etICYear.getText().toString());
+                    } else {
+                        Val.put("income_money", "0");
+                    }
+                } else {
+                    Val.put("income", "0");
+                    Val.put("income_money", "0");
+                }
+
+                if (rbDebtNo.isChecked()) {
+                    Val.put("dept", "1");
+                } else if (rbDebtYes.isChecked()) {
+                    Val.put("dept", "2");
+                } else {
+                    Val.put("dept", "0");
+                }
+
+                if (rbSavingNo.isChecked()) {
+                    Val.put("saving", "1");
+                } else if (rbSavingYes.isChecked()) {
+                    Val.put("saving", "2");
+                } else {
+                    Val.put("saving", "0");
+                }
+
+                if (rbAllergicNo.isChecked()) {
+                    Val.put("allergichis", "1");
+                    Val.put("allergichis_detail", "");
+                } else if (rbAllergicYes.isChecked()) {
+                    Val.put("allergichis", "2");
+                    Val.put("allergichis_detail", etAllergic.getText().toString());
+                } else {
+                    Val.put("allergichis", "0");
+                    Val.put("allergichis_detail", "");
+                }
+
+                if (rbDisadvantageNo.isChecked()) {
+                    Val.put("disadvantage", "1");
+                } else if (rbDisadvantageYes.isChecked()) {
+                    Val.put("disadvantage", "2");
+                } else {
+                    Val.put("disadvantage", "0");
+                }
+
+                if (rbSubAlNo.isChecked()) {
+                    Val.put("sub_al", "1");
+                } else if (rbSubAlYes.isChecked()) {
+                    Val.put("sub_al", "2");
+                } else {
+                    Val.put("sub_al", "0");
+                }
+
+                if (rbNoStudy.isChecked()) {
+                    Val.put("education", "1");
+                    Val.put("education_class", "");
+                } else if (rbInStudy.isChecked()) {
+                    Val.put("education", "2");
+                    Val.put("education_class", spInStudy.getSelectedItem().toString());
+                } else if (rbGraduated.isChecked()) {
+                    Val.put("education", "3");
+                    Val.put("education_class", spGraduated.getSelectedItem().toString());
+                } else {
+                    Val.put("education", "0");
+                    Val.put("education_class", "");
+                }
+
+                if (rbLiteracyNo.isChecked()) {
+                    Val.put("literacy", "1");
+                } else if (rbLiteracyYes.isChecked()) {
+                    Val.put("literacy", "2");
+                } else {
+                    Val.put("literacy", "0");
+                }
+
+                if (rbTechnologyNo.isChecked()) {
+                    Val.put("technology", "1");
+                } else if (rbTechnologyYes.isChecked()) {
+                    Val.put("technology", "2");
+                } else {
+                    Val.put("technology", "0");
+                }
+
+                if (rbExpertiseNo.isChecked()) {
+                    Val.put("expertise", "1");
+                    Val.put("expertise_name", "");
+                    Val.put("expertise_detail", "");
+                } else if (rbExpertiseYes.isChecked()) {
+                    Val.put("expertise", "2");
+                    Val.put("expertise_name", spExpertise.getSelectedItem().toString());
+                    Val.put("expertise_detail", etExpertise.getText().toString());
+                } else {
+                    Val.put("expertise", "0");
+                    Val.put("expertise_name", "");
+                    Val.put("expertise_detail", "");
+                }
+
+                if (rbBuddhismReligion.isChecked()) {
+                    Val.put("religion", "1");
+                    Val.put("religion_another", "");
+                } else if (rbChristReligion.isChecked()) {
+                    Val.put("religion", "2");
+                    Val.put("religion_another", "");
+                } else if (rbIslamicReligion.isChecked()) {
+                    Val.put("religion", "3");
+                    Val.put("religion_another", "");
+                } else if (rbAnotherReligion.isChecked()) {
+                    Val.put("religion", "4");
+                    Val.put("religion_another", etAnotherReligion.getText().toString());
+                } else {
+                    Val.put("religion", "0");
+                    Val.put("religion_another", "");
+                }
+
+                if (rbParticipationNo.isChecked()) {
+                    Val.put("participation", "1");
+                } else if (rbParticipationYes.isChecked()) {
+                    Val.put("participation", "2");
+                } else {
+                    Val.put("participation", "0");
+                }
+
+                if (rbElectionAlway.isChecked()) {
+                    Val.put("election", "1");
+                } else if (rbElectionSometime.isChecked()) {
+                    Val.put("election", "2");
+                } else if (rbElectionNever.isChecked()) {
+                    Val.put("election", "3");
+                } else {
+                    Val.put("election", "0");
+                }
+
+            }//In house radio
+
             Val.put("distributor", spContributor.getSelectedItem().toString());
             Val.put("survey_status", "1");
+            Val.put("upload_status", "1");
             Val.put("upd_by", "JuJiiz");
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
@@ -1292,35 +1507,133 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             //////////////////////////////////// Population Insert/Update ////////////////////////////////////
 
             Val = new ContentValues();
-            if (rbCongenitalNo.isChecked()) {
+
+            if (rbInHousehold.isChecked()) {
+
                 Val.put("congh_type", "0");
                 Val.put("congh1", "0");
                 Val.put("congh2", "0");
                 Val.put("congh3", "0");
                 Val.put("congh4", "0");
                 Val.put("congh5", "0");
+                Val.put("congh6", "0");
+                Val.put("congh7", "0");
+                Val.put("congh8", "0");
+                Val.put("congh9", "0");
+                Val.put("congh10", "0");
+                Val.put("congh11", "0");
+                Val.put("congh12", "0");
+                Val.put("congh13", "0");
+                Val.put("congh14", "0");
+                Val.put("congh15", "0");
+                Val.put("congh16", "0");
+                Val.put("congh17", "0");
+                Val.put("congh18", "0");
+                Val.put("congh19", "0");
+                Val.put("congh20", "0");
+                Val.put("congh21", "0");
+                Val.put("congh22", "0");
+                Val.put("congh23", "0");
+                Val.put("congh24", "0");
+                Val.put("congh25", "0");
+                Val.put("congh26", "0");
                 Val.put("congh_another", "");
-            } else if (rbCongenitalYes.isChecked()) {
-                Val.put("congh_type", "1");
-                Val.put("congh1", ModelCheckboxCheck.checkboxReturnCheck(cbCong1));
-                Val.put("congh2", ModelCheckboxCheck.checkboxReturnCheck(cbCong2));
-                Val.put("congh3", ModelCheckboxCheck.checkboxReturnCheck(cbCong3));
-                Val.put("congh4", ModelCheckboxCheck.checkboxReturnCheck(cbCong4));
-                Val.put("congh5", ModelCheckboxCheck.checkboxReturnCheck(cbCong5));
-                if (cbCong5.isChecked()) {
-                    Val.put("congh_another", etAnotherCong.getText().toString());
-                } else if (!cbCong5.isChecked()) {
+
+            } else if (rbNotInHousehold.isChecked()) {
+                if (rbCongenitalNo.isChecked()) {
+                    Val.put("congh_type", "1");
+                    Val.put("congh1", "0");
+                    Val.put("congh2", "0");
+                    Val.put("congh3", "0");
+                    Val.put("congh4", "0");
+                    Val.put("congh5", "0");
+                    Val.put("congh6", "0");
+                    Val.put("congh7", "0");
+                    Val.put("congh8", "0");
+                    Val.put("congh9", "0");
+                    Val.put("congh10", "0");
+                    Val.put("congh11", "0");
+                    Val.put("congh12", "0");
+                    Val.put("congh13", "0");
+                    Val.put("congh14", "0");
+                    Val.put("congh15", "0");
+                    Val.put("congh16", "0");
+                    Val.put("congh17", "0");
+                    Val.put("congh18", "0");
+                    Val.put("congh19", "0");
+                    Val.put("congh20", "0");
+                    Val.put("congh21", "0");
+                    Val.put("congh22", "0");
+                    Val.put("congh23", "0");
+                    Val.put("congh24", "0");
+                    Val.put("congh25", "0");
+                    Val.put("congh26", "0");
+                    Val.put("congh_another", "");
+                } else if (rbCongenitalYes.isChecked()) {
+                    Val.put("congh_type", "2");
+                    Val.put("congh1", ModelCheckboxCheck.checkboxReturnCheck(cbCong1));
+                    Val.put("congh2", ModelCheckboxCheck.checkboxReturnCheck(cbCong2));
+                    Val.put("congh3", ModelCheckboxCheck.checkboxReturnCheck(cbCong3));
+                    Val.put("congh4", ModelCheckboxCheck.checkboxReturnCheck(cbCong4));
+                    Val.put("congh5", ModelCheckboxCheck.checkboxReturnCheck(cbCong5));
+                    Val.put("congh6", ModelCheckboxCheck.checkboxReturnCheck(cbCong6));
+                    Val.put("congh7", ModelCheckboxCheck.checkboxReturnCheck(cbCong7));
+                    Val.put("congh8", ModelCheckboxCheck.checkboxReturnCheck(cbCong8));
+                    Val.put("congh9", ModelCheckboxCheck.checkboxReturnCheck(cbCong9));
+                    Val.put("congh10", ModelCheckboxCheck.checkboxReturnCheck(cbCong10));
+                    Val.put("congh11", ModelCheckboxCheck.checkboxReturnCheck(cbCong11));
+                    Val.put("congh12", ModelCheckboxCheck.checkboxReturnCheck(cbCong12));
+                    Val.put("congh13", ModelCheckboxCheck.checkboxReturnCheck(cbCong13));
+                    Val.put("congh14", ModelCheckboxCheck.checkboxReturnCheck(cbCong14));
+                    Val.put("congh15", ModelCheckboxCheck.checkboxReturnCheck(cbCong15));
+                    Val.put("congh16", ModelCheckboxCheck.checkboxReturnCheck(cbCong16));
+                    Val.put("congh17", ModelCheckboxCheck.checkboxReturnCheck(cbCong17));
+                    Val.put("congh18", ModelCheckboxCheck.checkboxReturnCheck(cbCong18));
+                    Val.put("congh19", ModelCheckboxCheck.checkboxReturnCheck(cbCong19));
+                    Val.put("congh20", ModelCheckboxCheck.checkboxReturnCheck(cbCong20));
+                    Val.put("congh21", ModelCheckboxCheck.checkboxReturnCheck(cbCong21));
+                    Val.put("congh22", ModelCheckboxCheck.checkboxReturnCheck(cbCong22));
+                    Val.put("congh23", ModelCheckboxCheck.checkboxReturnCheck(cbCong23));
+                    Val.put("congh24", ModelCheckboxCheck.checkboxReturnCheck(cbCong24));
+                    Val.put("congh25", ModelCheckboxCheck.checkboxReturnCheck(cbCong25));
+                    Val.put("congh26", ModelCheckboxCheck.checkboxReturnCheck(cbCong26));
+                    if (cbCong26.isChecked()) {
+                        Val.put("congh_another", etAnotherCong.getText().toString());
+                    } else if (!cbCong26.isChecked()) {
+                        Val.put("congh_another", "");
+                    }
+                } else {
+                    Val.put("congh_type", "0");
+                    Val.put("congh1", "0");
+                    Val.put("congh2", "0");
+                    Val.put("congh3", "0");
+                    Val.put("congh4", "0");
+                    Val.put("congh5", "0");
+                    Val.put("congh6", "0");
+                    Val.put("congh7", "0");
+                    Val.put("congh8", "0");
+                    Val.put("congh9", "0");
+                    Val.put("congh10", "0");
+                    Val.put("congh11", "0");
+                    Val.put("congh12", "0");
+                    Val.put("congh13", "0");
+                    Val.put("congh14", "0");
+                    Val.put("congh15", "0");
+                    Val.put("congh16", "0");
+                    Val.put("congh17", "0");
+                    Val.put("congh18", "0");
+                    Val.put("congh19", "0");
+                    Val.put("congh20", "0");
+                    Val.put("congh21", "0");
+                    Val.put("congh22", "0");
+                    Val.put("congh23", "0");
+                    Val.put("congh24", "0");
+                    Val.put("congh25", "0");
+                    Val.put("congh26", "0");
                     Val.put("congh_another", "");
                 }
-            } else {
-                Val.put("congh_type", "0");
-                Val.put("congh1", "0");
-                Val.put("congh2", "0");
-                Val.put("congh3", "0");
-                Val.put("congh4", "0");
-                Val.put("congh5", "0");
-                Val.put("congh_another", "");
             }
+
             Val.put("population_idcard", etPersonalID.getText().toString());
             Val.put("upd_by", "");
             Val.put("upd_date", date);
@@ -1336,7 +1649,9 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             //////////////////////////////////// Population Congenitalhis Insert/Update ////////////////////////////////////
 
             Val = new ContentValues();
-            if (rbContagiousNo.isChecked()) {
+
+            if (rbInHousehold.isChecked()) {
+
                 Val.put("conth_type", "0");
                 Val.put("conth1", "0");
                 Val.put("conth2", "0");
@@ -1349,40 +1664,218 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("conth9", "0");
                 Val.put("conth10", "0");
                 Val.put("conth11", "0");
+                Val.put("conth12", "0");
+                Val.put("conth13", "0");
+                Val.put("conth14", "0");
+                Val.put("conth15", "0");
+                Val.put("conth16", "0");
+                Val.put("conth17", "0");
+                Val.put("conth18", "0");
+                Val.put("conth19", "0");
+                Val.put("conth20", "0");
+                Val.put("conth21", "0");
+                Val.put("conth22", "0");
+                Val.put("conth23", "0");
+                Val.put("conth24", "0");
+                Val.put("conth25", "0");
+                Val.put("conth26", "0");
+                Val.put("conth27", "0");
+                Val.put("conth28", "0");
+                Val.put("conth29", "0");
+                Val.put("conth30", "0");
+                Val.put("conth31", "0");
+                Val.put("conth32", "0");
+                Val.put("conth33", "0");
+                Val.put("conth34", "0");
+                Val.put("conth35", "0");
+                Val.put("conth36", "0");
+                Val.put("conth37", "0");
+                Val.put("conth38", "0");
+                Val.put("conth39", "0");
+                Val.put("conth40", "0");
+                Val.put("conth41", "0");
+                Val.put("conth42", "0");
+                Val.put("conth43", "0");
+                Val.put("conth44", "0");
+                Val.put("conth45", "0");
+                Val.put("conth46", "0");
+                Val.put("conth47", "0");
+                Val.put("conth48", "0");
+                Val.put("conth49", "0");
+                Val.put("conth50", "0");
+                Val.put("conth51", "0");
                 Val.put("conth_another", "");
-            } else if (rbContagiousYes.isChecked()) {
-                Val.put("conth_type", "1");
-                Val.put("conth1", ModelCheckboxCheck.checkboxReturnCheck(cbCont1));
-                Val.put("conth2", ModelCheckboxCheck.checkboxReturnCheck(cbCont2));
-                Val.put("conth3", ModelCheckboxCheck.checkboxReturnCheck(cbCont3));
-                Val.put("conth4", ModelCheckboxCheck.checkboxReturnCheck(cbCont4));
-                Val.put("conth5", ModelCheckboxCheck.checkboxReturnCheck(cbCont5));
-                Val.put("conth6", ModelCheckboxCheck.checkboxReturnCheck(cbCont6));
-                Val.put("conth7", ModelCheckboxCheck.checkboxReturnCheck(cbCont7));
-                Val.put("conth8", ModelCheckboxCheck.checkboxReturnCheck(cbCont8));
-                Val.put("conth9", ModelCheckboxCheck.checkboxReturnCheck(cbCont9));
-                Val.put("conth10", ModelCheckboxCheck.checkboxReturnCheck(cbCont10));
-                Val.put("conth11", ModelCheckboxCheck.checkboxReturnCheck(cbCont11));
-                if (cbCont11.isChecked()) {
-                    Val.put("conth_another", etAnotherCont.getText().toString());
-                } else if (!cbCont11.isChecked()) {
+
+            } else if (rbNotInHousehold.isChecked()) {
+                if (rbContagiousNo.isChecked()) {
+                    Val.put("conth_type", "1");
+                    Val.put("conth1", "0");
+                    Val.put("conth2", "0");
+                    Val.put("conth3", "0");
+                    Val.put("conth4", "0");
+                    Val.put("conth5", "0");
+                    Val.put("conth6", "0");
+                    Val.put("conth7", "0");
+                    Val.put("conth8", "0");
+                    Val.put("conth9", "0");
+                    Val.put("conth10", "0");
+                    Val.put("conth11", "0");
+                    Val.put("conth12", "0");
+                    Val.put("conth13", "0");
+                    Val.put("conth14", "0");
+                    Val.put("conth15", "0");
+                    Val.put("conth16", "0");
+                    Val.put("conth17", "0");
+                    Val.put("conth18", "0");
+                    Val.put("conth19", "0");
+                    Val.put("conth20", "0");
+                    Val.put("conth21", "0");
+                    Val.put("conth22", "0");
+                    Val.put("conth23", "0");
+                    Val.put("conth24", "0");
+                    Val.put("conth25", "0");
+                    Val.put("conth26", "0");
+                    Val.put("conth27", "0");
+                    Val.put("conth28", "0");
+                    Val.put("conth29", "0");
+                    Val.put("conth30", "0");
+                    Val.put("conth31", "0");
+                    Val.put("conth32", "0");
+                    Val.put("conth33", "0");
+                    Val.put("conth34", "0");
+                    Val.put("conth35", "0");
+                    Val.put("conth36", "0");
+                    Val.put("conth37", "0");
+                    Val.put("conth38", "0");
+                    Val.put("conth39", "0");
+                    Val.put("conth40", "0");
+                    Val.put("conth41", "0");
+                    Val.put("conth42", "0");
+                    Val.put("conth43", "0");
+                    Val.put("conth44", "0");
+                    Val.put("conth45", "0");
+                    Val.put("conth46", "0");
+                    Val.put("conth47", "0");
+                    Val.put("conth48", "0");
+                    Val.put("conth49", "0");
+                    Val.put("conth50", "0");
+                    Val.put("conth51", "0");
+                    Val.put("conth_another", "");
+                } else if (rbContagiousYes.isChecked()) {
+                    Val.put("conth_type", "2");
+                    Val.put("conth1", ModelCheckboxCheck.checkboxReturnCheck(cbCont1));
+                    Val.put("conth2", ModelCheckboxCheck.checkboxReturnCheck(cbCont2));
+                    Val.put("conth3", ModelCheckboxCheck.checkboxReturnCheck(cbCont3));
+                    Val.put("conth4", ModelCheckboxCheck.checkboxReturnCheck(cbCont4));
+                    Val.put("conth5", ModelCheckboxCheck.checkboxReturnCheck(cbCont5));
+                    Val.put("conth6", ModelCheckboxCheck.checkboxReturnCheck(cbCont6));
+                    Val.put("conth7", ModelCheckboxCheck.checkboxReturnCheck(cbCont7));
+                    Val.put("conth8", ModelCheckboxCheck.checkboxReturnCheck(cbCont8));
+                    Val.put("conth9", ModelCheckboxCheck.checkboxReturnCheck(cbCont9));
+                    Val.put("conth10", ModelCheckboxCheck.checkboxReturnCheck(cbCont10));
+                    Val.put("conth11", ModelCheckboxCheck.checkboxReturnCheck(cbCont11));
+                    Val.put("conth12", ModelCheckboxCheck.checkboxReturnCheck(cbCont12));
+                    Val.put("conth13", ModelCheckboxCheck.checkboxReturnCheck(cbCont13));
+                    Val.put("conth14", ModelCheckboxCheck.checkboxReturnCheck(cbCont14));
+                    Val.put("conth15", ModelCheckboxCheck.checkboxReturnCheck(cbCont15));
+                    Val.put("conth16", ModelCheckboxCheck.checkboxReturnCheck(cbCont16));
+                    Val.put("conth17", ModelCheckboxCheck.checkboxReturnCheck(cbCont17));
+                    Val.put("conth18", ModelCheckboxCheck.checkboxReturnCheck(cbCont18));
+                    Val.put("conth19", ModelCheckboxCheck.checkboxReturnCheck(cbCont19));
+                    Val.put("conth20", ModelCheckboxCheck.checkboxReturnCheck(cbCont20));
+                    Val.put("conth21", ModelCheckboxCheck.checkboxReturnCheck(cbCont21));
+                    Val.put("conth22", ModelCheckboxCheck.checkboxReturnCheck(cbCont22));
+                    Val.put("conth23", ModelCheckboxCheck.checkboxReturnCheck(cbCont23));
+                    Val.put("conth24", ModelCheckboxCheck.checkboxReturnCheck(cbCont24));
+                    Val.put("conth25", ModelCheckboxCheck.checkboxReturnCheck(cbCont25));
+                    Val.put("conth26", ModelCheckboxCheck.checkboxReturnCheck(cbCont26));
+                    Val.put("conth27", ModelCheckboxCheck.checkboxReturnCheck(cbCont27));
+                    Val.put("conth28", ModelCheckboxCheck.checkboxReturnCheck(cbCont28));
+                    Val.put("conth29", ModelCheckboxCheck.checkboxReturnCheck(cbCont29));
+                    Val.put("conth30", ModelCheckboxCheck.checkboxReturnCheck(cbCont30));
+                    Val.put("conth31", ModelCheckboxCheck.checkboxReturnCheck(cbCont31));
+                    Val.put("conth32", ModelCheckboxCheck.checkboxReturnCheck(cbCont32));
+                    Val.put("conth33", ModelCheckboxCheck.checkboxReturnCheck(cbCont33));
+                    Val.put("conth34", ModelCheckboxCheck.checkboxReturnCheck(cbCont34));
+                    Val.put("conth35", ModelCheckboxCheck.checkboxReturnCheck(cbCont35));
+                    Val.put("conth36", ModelCheckboxCheck.checkboxReturnCheck(cbCont36));
+                    Val.put("conth37", ModelCheckboxCheck.checkboxReturnCheck(cbCont37));
+                    Val.put("conth38", ModelCheckboxCheck.checkboxReturnCheck(cbCont38));
+                    Val.put("conth39", ModelCheckboxCheck.checkboxReturnCheck(cbCont39));
+                    Val.put("conth40", ModelCheckboxCheck.checkboxReturnCheck(cbCont40));
+                    Val.put("conth41", ModelCheckboxCheck.checkboxReturnCheck(cbCont41));
+                    Val.put("conth42", ModelCheckboxCheck.checkboxReturnCheck(cbCont42));
+                    Val.put("conth43", ModelCheckboxCheck.checkboxReturnCheck(cbCont43));
+                    Val.put("conth44", ModelCheckboxCheck.checkboxReturnCheck(cbCont44));
+                    Val.put("conth45", ModelCheckboxCheck.checkboxReturnCheck(cbCont45));
+                    Val.put("conth46", ModelCheckboxCheck.checkboxReturnCheck(cbCont46));
+                    Val.put("conth47", ModelCheckboxCheck.checkboxReturnCheck(cbCont47));
+                    Val.put("conth48", ModelCheckboxCheck.checkboxReturnCheck(cbCont48));
+                    Val.put("conth49", ModelCheckboxCheck.checkboxReturnCheck(cbCont49));
+                    Val.put("conth50", ModelCheckboxCheck.checkboxReturnCheck(cbCont50));
+                    Val.put("conth51", ModelCheckboxCheck.checkboxReturnCheck(cbCont51));
+                    if (cbCont51.isChecked()) {
+                        Val.put("conth_another", etAnotherCont.getText().toString());
+                    } else if (!cbCont51.isChecked()) {
+                        Val.put("conth_another", "");
+                    }
+                } else {
+                    Val.put("conth_type", "0");
+                    Val.put("conth1", "0");
+                    Val.put("conth2", "0");
+                    Val.put("conth3", "0");
+                    Val.put("conth4", "0");
+                    Val.put("conth5", "0");
+                    Val.put("conth6", "0");
+                    Val.put("conth7", "0");
+                    Val.put("conth8", "0");
+                    Val.put("conth9", "0");
+                    Val.put("conth10", "0");
+                    Val.put("conth11", "0");
+                    Val.put("conth12", "0");
+                    Val.put("conth13", "0");
+                    Val.put("conth14", "0");
+                    Val.put("conth15", "0");
+                    Val.put("conth16", "0");
+                    Val.put("conth17", "0");
+                    Val.put("conth18", "0");
+                    Val.put("conth19", "0");
+                    Val.put("conth20", "0");
+                    Val.put("conth21", "0");
+                    Val.put("conth22", "0");
+                    Val.put("conth23", "0");
+                    Val.put("conth24", "0");
+                    Val.put("conth25", "0");
+                    Val.put("conth26", "0");
+                    Val.put("conth27", "0");
+                    Val.put("conth28", "0");
+                    Val.put("conth29", "0");
+                    Val.put("conth30", "0");
+                    Val.put("conth31", "0");
+                    Val.put("conth32", "0");
+                    Val.put("conth33", "0");
+                    Val.put("conth34", "0");
+                    Val.put("conth35", "0");
+                    Val.put("conth36", "0");
+                    Val.put("conth37", "0");
+                    Val.put("conth38", "0");
+                    Val.put("conth39", "0");
+                    Val.put("conth40", "0");
+                    Val.put("conth41", "0");
+                    Val.put("conth42", "0");
+                    Val.put("conth43", "0");
+                    Val.put("conth44", "0");
+                    Val.put("conth45", "0");
+                    Val.put("conth46", "0");
+                    Val.put("conth47", "0");
+                    Val.put("conth48", "0");
+                    Val.put("conth49", "0");
+                    Val.put("conth50", "0");
+                    Val.put("conth51", "0");
                     Val.put("conth_another", "");
                 }
-            } else {
-                Val.put("conth_type", "0");
-                Val.put("conth1", "0");
-                Val.put("conth2", "0");
-                Val.put("conth3", "0");
-                Val.put("conth4", "0");
-                Val.put("conth5", "0");
-                Val.put("conth6", "0");
-                Val.put("conth7", "0");
-                Val.put("conth8", "0");
-                Val.put("conth9", "0");
-                Val.put("conth10", "0");
-                Val.put("conth11", "0");
-                Val.put("conth_another", "");
             }
+
             Val.put("population_idcard", etPersonalID.getText().toString());
             Val.put("upd_by", "");
             Val.put("upd_date", date);
@@ -1398,7 +1891,9 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             //////////////////////////////////// Population Contagioushis Insert/Update ////////////////////////////////////
 
             Val = new ContentValues();
-            if (rbDisabledNo.isChecked()) {
+
+            if (rbInHousehold.isChecked()) {
+
                 Val.put("disabled_type", "0");
                 Val.put("disabled1", "0");
                 Val.put("disabled2", "0");
@@ -1406,23 +1901,35 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("disabled4", "0");
                 Val.put("disabled5", "0");
                 Val.put("disabled6", "0");
-            } else if (rbDisabledYes.isChecked()) {
-                Val.put("disabled_type", "1");
-                Val.put("disabled1", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled1));
-                Val.put("disabled2", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled2));
-                Val.put("disabled3", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled3));
-                Val.put("disabled4", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled4));
-                Val.put("disabled5", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled5));
-                Val.put("disabled6", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled6));
-            } else {
-                Val.put("disabled_type", "0");
-                Val.put("disabled1", "0");
-                Val.put("disabled2", "0");
-                Val.put("disabled3", "0");
-                Val.put("disabled4", "0");
-                Val.put("disabled5", "0");
-                Val.put("disabled6", "0");
+
+            } else if (rbNotInHousehold.isChecked()) {
+                if (rbDisabledNo.isChecked()) {
+                    Val.put("disabled_type", "1");
+                    Val.put("disabled1", "0");
+                    Val.put("disabled2", "0");
+                    Val.put("disabled3", "0");
+                    Val.put("disabled4", "0");
+                    Val.put("disabled5", "0");
+                    Val.put("disabled6", "0");
+                } else if (rbDisabledYes.isChecked()) {
+                    Val.put("disabled_type", "2");
+                    Val.put("disabled1", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled1));
+                    Val.put("disabled2", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled2));
+                    Val.put("disabled3", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled3));
+                    Val.put("disabled4", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled4));
+                    Val.put("disabled5", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled5));
+                    Val.put("disabled6", ModelCheckboxCheck.checkboxReturnCheck(cbDisabled6));
+                } else {
+                    Val.put("disabled_type", "0");
+                    Val.put("disabled1", "0");
+                    Val.put("disabled2", "0");
+                    Val.put("disabled3", "0");
+                    Val.put("disabled4", "0");
+                    Val.put("disabled5", "0");
+                    Val.put("disabled6", "0");
+                }
             }
+
             Val.put("population_idcard", etPersonalID.getText().toString());
             Val.put("upd_by", "");
             Val.put("upd_date", date);
@@ -1438,25 +1945,37 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             //////////////////////////////////// Population Disabled Insert/Update ////////////////////////////////////
 
             Val = new ContentValues();
-            if (rbTransportationNo.isChecked()) {
+
+            if (rbInHousehold.isChecked()) {
+
                 Val.put("transport_type", "0");
                 Val.put("trans1", "0");
                 Val.put("trans2", "0");
                 Val.put("trans3", "0");
                 Val.put("trans4", "0");
-            } else if (rbTransportationYes.isChecked()) {
-                Val.put("transport_type", "1");
-                Val.put("trans1", ModelCheckboxCheck.checkboxReturnCheck(cbTrans1));
-                Val.put("trans2", ModelCheckboxCheck.checkboxReturnCheck(cbTrans2));
-                Val.put("trans3", ModelCheckboxCheck.checkboxReturnCheck(cbTrans3));
-                Val.put("trans4", ModelCheckboxCheck.checkboxReturnCheck(cbTrans4));
-            } else {
-                Val.put("transport_type", "0");
-                Val.put("trans1", "0");
-                Val.put("trans2", "0");
-                Val.put("trans3", "0");
-                Val.put("trans4", "0");
+
+            } else if (rbNotInHousehold.isChecked()) {
+                if (rbTransportationNo.isChecked()) {
+                    Val.put("transport_type", "1");
+                    Val.put("trans1", "0");
+                    Val.put("trans2", "0");
+                    Val.put("trans3", "0");
+                    Val.put("trans4", "0");
+                } else if (rbTransportationYes.isChecked()) {
+                    Val.put("transport_type", "2");
+                    Val.put("trans1", ModelCheckboxCheck.checkboxReturnCheck(cbTrans1));
+                    Val.put("trans2", ModelCheckboxCheck.checkboxReturnCheck(cbTrans2));
+                    Val.put("trans3", ModelCheckboxCheck.checkboxReturnCheck(cbTrans3));
+                    Val.put("trans4", ModelCheckboxCheck.checkboxReturnCheck(cbTrans4));
+                } else {
+                    Val.put("transport_type", "0");
+                    Val.put("trans1", "0");
+                    Val.put("trans2", "0");
+                    Val.put("trans3", "0");
+                    Val.put("trans4", "0");
+                }
             }
+
             Val.put("population_idcard", etPersonalID.getText().toString());
             Val.put("upd_by", "");
             Val.put("upd_date", date);
@@ -1472,15 +1991,23 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             //////////////////////////////////// Population Transport Insert/Update ////////////////////////////////////
 
             Val = new ContentValues();
-            if (rbJGStudent.isChecked()) {
+
+            if (rbInHousehold.isChecked()) {
+
                 Val.put("works_type", "0");
-            } else if (rbJGCareer.isChecked()) {
-                Val.put("works_type", "1");
-            } else if (rbJGNoJob.isChecked()) {
-                Val.put("works_type", "2");
-            } else {
-                Val.put("works_type", "0");
+
+            } else if (rbNotInHousehold.isChecked()) {
+                if (rbJGStudent.isChecked()) {
+                    Val.put("works_type", "1");
+                } else if (rbJGCareer.isChecked()) {
+                    Val.put("works_type", "2");
+                } else if (rbJGNoJob.isChecked()) {
+                    Val.put("works_type", "3");
+                } else {
+                    Val.put("works_type", "0");
+                }
             }
+
             Val.put("population_idcard", etPersonalID.getText().toString());
             Val.put("upd_by", "");
             Val.put("upd_date", date);
@@ -1497,23 +2024,8 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
             Val = new ContentValues();
             TestList = db.SelectWhereData("population_works", "population_idcard", etPersonalID.getText().toString());
-            Val.put("works_id", TestList.get(0).get("works_id"));
-            if (cbAgri.isChecked()) {
-                Val.put("agri1", ModelCheckboxCheck.checkboxReturnCheck(cbAgri1));
-                Val.put("agri2", ModelCheckboxCheck.checkboxReturnCheck(cbAgri2));
-                Val.put("agri3", ModelCheckboxCheck.checkboxReturnCheck(cbAgri3));
-                Val.put("agri4", ModelCheckboxCheck.checkboxReturnCheck(cbAgri4));
-                Val.put("agri5", ModelCheckboxCheck.checkboxReturnCheck(cbAgri5));
-                Val.put("agri6", ModelCheckboxCheck.checkboxReturnCheck(cbAgri6));
-                Val.put("agri7", ModelCheckboxCheck.checkboxReturnCheck(cbAgri7));
-                Val.put("agri8", ModelCheckboxCheck.checkboxReturnCheck(cbAgri8));
-                if (cbAgri8.isChecked()) {
-                    Val.put("agri_another", etAnotherAgri.getText().toString());
-                } else {
-                    Val.put("agri_another", "");
-                }
+            if (rbInHousehold.isChecked()) {
 
-            } else {
                 Val.put("agri1", "0");
                 Val.put("agri2", "0");
                 Val.put("agri3", "0");
@@ -1523,7 +2035,37 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("agri7", "0");
                 Val.put("agri8", "0");
                 Val.put("agri_another", "");
+
+            } else if (rbNotInHousehold.isChecked()) {
+                if (cbAgri.isChecked()) {
+                    Val.put("agri1", ModelCheckboxCheck.checkboxReturnCheck(cbAgri1));
+                    Val.put("agri2", ModelCheckboxCheck.checkboxReturnCheck(cbAgri2));
+                    Val.put("agri3", ModelCheckboxCheck.checkboxReturnCheck(cbAgri3));
+                    Val.put("agri4", ModelCheckboxCheck.checkboxReturnCheck(cbAgri4));
+                    Val.put("agri5", ModelCheckboxCheck.checkboxReturnCheck(cbAgri5));
+                    Val.put("agri6", ModelCheckboxCheck.checkboxReturnCheck(cbAgri6));
+                    Val.put("agri7", ModelCheckboxCheck.checkboxReturnCheck(cbAgri7));
+                    Val.put("agri8", ModelCheckboxCheck.checkboxReturnCheck(cbAgri8));
+                    if (cbAgri8.isChecked()) {
+                        Val.put("agri_another", etAnotherAgri.getText().toString());
+                    } else {
+                        Val.put("agri_another", "");
+                    }
+
+                } else {
+                    Val.put("agri1", "0");
+                    Val.put("agri2", "0");
+                    Val.put("agri3", "0");
+                    Val.put("agri4", "0");
+                    Val.put("agri5", "0");
+                    Val.put("agri6", "0");
+                    Val.put("agri7", "0");
+                    Val.put("agri8", "0");
+                    Val.put("agri_another", "");
+                }
             }
+
+            Val.put("works_id", TestList.get(0).get("works_id"));
             Val.put("upd_by", "");
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
@@ -1539,24 +2081,8 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
             Val = new ContentValues();
             TestList = db.SelectWhereData("population_works", "population_idcard", etPersonalID.getText().toString());
-            Val.put("works_id", TestList.get(0).get("works_id"));
-            if (cbPet.isChecked()) {
-                Val.put("animal1", ModelCheckboxCheck.checkboxReturnCheck(cbPet1));
-                Val.put("animal2", ModelCheckboxCheck.checkboxReturnCheck(cbPet2));
-                Val.put("animal3", ModelCheckboxCheck.checkboxReturnCheck(cbPet3));
-                Val.put("animal4", ModelCheckboxCheck.checkboxReturnCheck(cbPet4));
-                Val.put("animal5", ModelCheckboxCheck.checkboxReturnCheck(cbPet5));
-                Val.put("animal6", ModelCheckboxCheck.checkboxReturnCheck(cbPet6));
-                Val.put("animal7", ModelCheckboxCheck.checkboxReturnCheck(cbPet7));
-                Val.put("animal8", ModelCheckboxCheck.checkboxReturnCheck(cbPet8));
-                Val.put("animal9", ModelCheckboxCheck.checkboxReturnCheck(cbPet9));
-                if (cbPet9.isChecked()) {
-                    Val.put("animal_another", etAnotherPet.getText().toString());
-                } else {
-                    Val.put("animal_another", "");
-                }
+            if (rbInHousehold.isChecked()) {
 
-            } else {
                 Val.put("animal1", "0");
                 Val.put("animal2", "0");
                 Val.put("animal3", "0");
@@ -1567,7 +2093,38 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("animal8", "0");
                 Val.put("animal9", "0");
                 Val.put("animal_another", "");
+
+            } else if (rbNotInHousehold.isChecked()) {
+                if (cbPet.isChecked()) {
+                    Val.put("animal1", ModelCheckboxCheck.checkboxReturnCheck(cbPet1));
+                    Val.put("animal2", ModelCheckboxCheck.checkboxReturnCheck(cbPet2));
+                    Val.put("animal3", ModelCheckboxCheck.checkboxReturnCheck(cbPet3));
+                    Val.put("animal4", ModelCheckboxCheck.checkboxReturnCheck(cbPet4));
+                    Val.put("animal5", ModelCheckboxCheck.checkboxReturnCheck(cbPet5));
+                    Val.put("animal6", ModelCheckboxCheck.checkboxReturnCheck(cbPet6));
+                    Val.put("animal7", ModelCheckboxCheck.checkboxReturnCheck(cbPet7));
+                    Val.put("animal8", ModelCheckboxCheck.checkboxReturnCheck(cbPet8));
+                    Val.put("animal9", ModelCheckboxCheck.checkboxReturnCheck(cbPet9));
+                    if (cbPet9.isChecked()) {
+                        Val.put("animal_another", etAnotherPet.getText().toString());
+                    } else {
+                        Val.put("animal_another", "");
+                    }
+                } else {
+                    Val.put("animal1", "0");
+                    Val.put("animal2", "0");
+                    Val.put("animal3", "0");
+                    Val.put("animal4", "0");
+                    Val.put("animal5", "0");
+                    Val.put("animal6", "0");
+                    Val.put("animal7", "0");
+                    Val.put("animal8", "0");
+                    Val.put("animal9", "0");
+                    Val.put("animal_another", "");
+                }
             }
+
+            Val.put("works_id", TestList.get(0).get("works_id"));
             Val.put("upd_by", "");
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
@@ -1583,24 +2140,35 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
             Val = new ContentValues();
             TestList = db.SelectWhereData("population_works", "population_idcard", etPersonalID.getText().toString());
-            Val.put("works_id", TestList.get(0).get("works_id"));
-            if (cbGovern.isChecked()) {
-                Val.put("govern1", ModelCheckboxCheck.checkboxReturnCheck(cbGovern1));
-                Val.put("govern2", ModelCheckboxCheck.checkboxReturnCheck(cbGovern2));
-                Val.put("govern3", ModelCheckboxCheck.checkboxReturnCheck(cbGovern3));
-                Val.put("govern4", ModelCheckboxCheck.checkboxReturnCheck(cbGovern4));
-                if (cbGovern4.isChecked()) {
-                    Val.put("govern_another", etAnotherGovern.getText().toString());
-                } else {
-                    Val.put("govern_another", "");
-                }
-            } else {
+            if (rbInHousehold.isChecked()) {
+
                 Val.put("govern1", "0");
                 Val.put("govern2", "0");
                 Val.put("govern3", "0");
                 Val.put("govern4", "0");
                 Val.put("govern_another", "");
+
+            } else if (rbNotInHousehold.isChecked()) {
+                if (cbGovern.isChecked()) {
+                    Val.put("govern1", ModelCheckboxCheck.checkboxReturnCheck(cbGovern1));
+                    Val.put("govern2", ModelCheckboxCheck.checkboxReturnCheck(cbGovern2));
+                    Val.put("govern3", ModelCheckboxCheck.checkboxReturnCheck(cbGovern3));
+                    Val.put("govern4", ModelCheckboxCheck.checkboxReturnCheck(cbGovern4));
+                    if (cbGovern4.isChecked()) {
+                        Val.put("govern_another", etAnotherGovern.getText().toString());
+                    } else {
+                        Val.put("govern_another", "");
+                    }
+                } else {
+                    Val.put("govern1", "0");
+                    Val.put("govern2", "0");
+                    Val.put("govern3", "0");
+                    Val.put("govern4", "0");
+                    Val.put("govern_another", "");
+                }
             }
+
+            Val.put("works_id", TestList.get(0).get("works_id"));
             Val.put("upd_by", "");
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
@@ -1616,22 +2184,8 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
             Val = new ContentValues();
             TestList = db.SelectWhereData("population_works", "population_idcard", etPersonalID.getText().toString());
-            Val.put("works_id", TestList.get(0).get("works_id"));
-            if (cbPrivate.isChecked()) {
-                Val.put("private1", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate1));
-                Val.put("private2", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate2));
-                Val.put("private3", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate3));
-                Val.put("private4", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate4));
-                Val.put("private5", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate5));
-                Val.put("private6", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate6));
-                Val.put("private7", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate7));
-                if (cbPrivate7.isChecked()) {
-                    Val.put("private_another", etAnotherPrivate.getText().toString());
-                } else {
-                    Val.put("private_another", "");
-                }
+            if (rbInHousehold.isChecked()) {
 
-            } else {
                 Val.put("private1", "0");
                 Val.put("private2", "0");
                 Val.put("private3", "0");
@@ -1640,7 +2194,35 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("private6", "0");
                 Val.put("private7", "0");
                 Val.put("private_another", "");
+
+            } else if (rbNotInHousehold.isChecked()) {
+                if (cbPrivate.isChecked()) {
+                    Val.put("private1", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate1));
+                    Val.put("private2", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate2));
+                    Val.put("private3", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate3));
+                    Val.put("private4", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate4));
+                    Val.put("private5", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate5));
+                    Val.put("private6", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate6));
+                    Val.put("private7", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate7));
+                    if (cbPrivate7.isChecked()) {
+                        Val.put("private_another", etAnotherPrivate.getText().toString());
+                    } else {
+                        Val.put("private_another", "");
+                    }
+
+                } else {
+                    Val.put("private1", "0");
+                    Val.put("private2", "0");
+                    Val.put("private3", "0");
+                    Val.put("private4", "0");
+                    Val.put("private5", "0");
+                    Val.put("private6", "0");
+                    Val.put("private7", "0");
+                    Val.put("private_another", "");
+                }
             }
+
+            Val.put("works_id", TestList.get(0).get("works_id"));
             Val.put("upd_by", "");
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
@@ -1667,10 +2249,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             ModelShowHideLayout.checkboxShowHide(cbGovern, loGovern);
         if (compoundButton == cbPrivate)
             ModelShowHideLayout.checkboxShowHide(cbPrivate, loPrivate);
-        if (compoundButton == cbCong5)
-            ModelShowHideLayout.checkboxShowHide(cbCong5, loAnotherCong);
-        if (compoundButton == cbCont11)
-            ModelShowHideLayout.checkboxShowHide(cbCont11, loAnotherCont);
+        if (compoundButton == cbCong26)
+            ModelShowHideLayout.checkboxShowHide(cbCong26, loAnotherCong);
+        if (compoundButton == cbCont51)
+            ModelShowHideLayout.checkboxShowHide(cbCont51, loAnotherCont);
         if (compoundButton == cbAgri8)
             ModelShowHideLayout.checkboxShowHide(cbAgri8, loAnotherAgri);
         if (compoundButton == cbPet9)
@@ -1707,13 +2289,18 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             ModelShowHideLayout.radiobuttonShowHide(rbInStudy, loInStudy);
         if (compoundButton == rbGraduated)
             ModelShowHideLayout.radiobuttonShowHide(rbGraduated, loGraduated);
-        if (compoundButton == rbExpertiseYes)
+        if (compoundButton == rbExpertiseYes) {
             ModelShowHideLayout.radiobuttonShowHide(rbExpertiseYes, loExpertise);
-        ModelShowHideLayout.radiobuttonShowHide(rbExpertiseYes, loExpertiseText);
+            ModelShowHideLayout.radiobuttonShowHide(rbExpertiseYes, loExpertiseText);
+        }
         if (compoundButton == rbAnotherReligion)
             ModelShowHideLayout.radiobuttonShowHide(rbAnotherReligion, loAnotherReligion);
         if (compoundButton == rbTransportationYes)
             ModelShowHideLayout.radiobuttonShowHide(rbTransportationYes, loTransportation);
+        if (compoundButton == rbIHCountry)
+            ModelShowHideLayout.radiobuttonEnable(rbIHCountry, spIHCountry, spIHProvince);
+        if (compoundButton == rbIRCountry)
+            ModelShowHideLayout.radiobuttonEnable(rbIRCountry, spIRCountry, spIRProvince);
     }
 
     @Override
@@ -1722,9 +2309,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             fromDatePickerDialog.show();
         }
         if (view == btnSavingData) {
-            if (!etPersonalID.getText().toString().equals("") && !etFirstName.getText().toString().equals("") && !etLastName.getText().toString().equals("")) {
-                updateData();
-                if (!PersonID.equals("Nope")) {
+            if (fieldCheck() == true) {
+                Toast.makeText(this, "ครบ", Toast.LENGTH_SHORT).show();
+                //updateData();
+                /*if (!PersonID.equals("Nope")) {
                     loProperty.setVisibility(View.VISIBLE);
                     svPopulation.post(new Runnable() {
                         public void run() {
@@ -1734,9 +2322,9 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
                 } else {
                     this.finish();
-                }
+                }*/
             } else {
-                Toast.makeText(this, "กรุณากรอกข้อมูลประชากร", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "ไม่ครบ", Toast.LENGTH_SHORT).show();
             }
         }
         if (view == btnAddProperty) {
@@ -1793,6 +2381,87 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         }
     }
 
+    private Boolean fieldCheck(){
+        Boolean formPass = false,
+                nationPass = true,//
+                fnamePass = true,//
+                lnamePass = true,//
+                prefixPass = true,//
+                sexPass = true,//
+                personidPass = true,//
+                birthPass = true,//
+                bloodPass = true,//
+                livingPass = true,//
+                maritalPass = true,//
+                inregisPass = true,//
+                inhousePass = true,//
+                dwellerPass = true,//
+                graduatePass = true,//
+                expertSPass = true,//
+                irPPass = true,//
+                irCPass = true,//
+                ihPPass = true,//
+                ihCPass = true,//
+                conPass = true;//
+
+        if (!rbMale.isChecked() || !rbFemale.isChecked()){
+            sexPass = false;
+        }
+
+        if (!rbAlive.isChecked() || !rbDead.isChecked()){
+            livingPass = false;
+        }
+
+        if (!rbInRegister.isChecked() || !rbNotInRegister.isChecked()){
+            inregisPass = false;
+        }
+
+        if (!rbInHousehold.isChecked() || !rbNotInHousehold.isChecked()){
+            inhousePass = false;
+        }
+
+        if (!rbStatusOwner.isChecked() || !rbStatusDweller.isChecked()){
+            dwellerPass = false;
+        }
+
+        //, , , , , , , , , spIRProvince, spIHProvince, spIHCountry, spIRCountry;
+        if (rbInHousehold.isChecked()){
+            if (rbInStudy.isChecked()){
+                graduatePass = ModelCheckForm.checkSpinner(spInStudy);
+            }else if (rbGraduated.isChecked()){
+                graduatePass = ModelCheckForm.checkSpinner(spGraduated);
+            }
+
+            if (rbExpertiseYes.isChecked()){
+                expertSPass = ModelCheckForm.checkSpinner(spExpertise);
+            }
+
+            if (rbNotInRegister.isChecked()){
+                irPPass = ModelCheckForm.checkSpinner(spIRProvince);
+                irCPass = ModelCheckForm.checkSpinner(spIRCountry);
+            }
+
+            if (rbNotInHousehold.isChecked()){
+                ihPPass = ModelCheckForm.checkSpinner(spIHProvince);
+                ihCPass = ModelCheckForm.checkSpinner(spIHCountry);
+            }
+
+        }
+
+        fnamePass = ModelCheckForm.checkEditText(etFirstName);
+        lnamePass = ModelCheckForm.checkEditText(etLastName);
+        personidPass = ModelCheckForm.checkEditText(etPersonalID);
+        birthPass = ModelCheckForm.checkEditText(etBirtDate);
+
+        nationPass = ModelCheckForm.checkSpinner(spNationality);
+        prefixPass = ModelCheckForm.checkSpinner(spNationality);
+        bloodPass = ModelCheckForm.checkSpinner(spBloodType);
+        maritalPass = ModelCheckForm.checkSpinner(spMaritalStatus);
+        conPass = ModelCheckForm.checkSpinner(spContributor);
+
+        return formPass;
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent == spNationality) {
@@ -1817,30 +2486,21 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         if (Item.get("PropType").toString().equals("ที่ดิน")) {
             intent = new Intent(getApplicationContext(), LandFormActivity.class);
             intent.putExtra("LandID", SelectedIDItem);
-            intent.putExtra("PersonID", PersonID);
-            intent.putExtra("HouseID", HouseID);
-            startActivity(intent);
         } else if (Item.get("PropType").toString().equals("ยานพาหนะ")) {
             intent = new Intent(getApplicationContext(), VehicalFormActivity.class);
             intent.putExtra("VehicleID", SelectedIDItem);
-            intent.putExtra("PersonID", PersonID);
-            intent.putExtra("HouseID", HouseID);
-            startActivity(intent);
         } else if (Item.get("PropType").toString().equals("สัตว์เลี้ยงในครัวเรือน")) {
             intent = new Intent(getApplicationContext(), PetFormActivity.class);
             intent.putExtra("PetID", SelectedIDItem);
-            intent.putExtra("PersonID", PersonID);
-            intent.putExtra("HouseID", HouseID);
-            startActivity(intent);
         } else if (Item.get("PropType").toString().equals("สัตว์เลี้ยงเพื่อการเกษตร")) {
             intent = new Intent(getApplicationContext(), AnimalFormActivity.class);
             intent.putExtra("AnimalID", SelectedIDItem);
-            intent.putExtra("PersonID", PersonID);
-            intent.putExtra("HouseID", HouseID);
-            startActivity(intent);
-        }
-    }
 
+        }
+        intent.putExtra("PersonID", PersonID);
+        intent.putExtra("HouseID", HouseID);
+        startActivity(intent);
+    }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -1857,28 +2517,28 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                             Val.put("ACTIVE", "N");
                             db.UpdateData("population_asset_land", Val, "land_running", SelectedIDItem);
                             Val = new ContentValues();
-                            Val.put("survey_status", "1");
+                            Val.put("upload_status", "1");
                             db.UpdateData("population", Val, "population_idcard", etPersonalID.getText().toString());
                             Toast.makeText(getApplicationContext(), "ลบข้อมูล " + SelectedNameItem + " เรียบร้อย", Toast.LENGTH_SHORT).show();
                         } else if (SelectedNameItem.equals("ยานพาหนะ")) {
                             Val.put("ACTIVE", "N");
                             db.UpdateData("population_asset_vehicle", Val, "vehicle_running", SelectedIDItem);
                             Val = new ContentValues();
-                            Val.put("survey_status", "1");
+                            Val.put("upload_status", "1");
                             db.UpdateData("population", Val, "population_idcard", etPersonalID.getText().toString());
                             Toast.makeText(getApplicationContext(), "ลบข้อมูล " + SelectedNameItem + " เรียบร้อย", Toast.LENGTH_SHORT).show();
                         } else if (SelectedNameItem.equals("สัตว์เลี้ยงในครัวเรือน")) {
                             Val.put("ACTIVE", "N");
                             db.UpdateData("population_asset_pet", Val, "pet_running", SelectedIDItem);
                             Val = new ContentValues();
-                            Val.put("survey_status", "1");
+                            Val.put("upload_status", "1");
                             db.UpdateData("population", Val, "population_idcard", etPersonalID.getText().toString());
                             Toast.makeText(getApplicationContext(), "ลบข้อมูล " + SelectedNameItem + " เรียบร้อย", Toast.LENGTH_SHORT).show();
                         } else if (SelectedNameItem.equals("สัตว์เลี้ยงเพื่อการเกษตร")) {
                             Val.put("ACTIVE", "N");
                             db.UpdateData("population_asset_animal", Val, "animal_running", SelectedIDItem);
                             Val = new ContentValues();
-                            Val.put("survey_status", "1");
+                            Val.put("upload_status", "1");
                             db.UpdateData("population", Val, "population_idcard", etPersonalID.getText().toString());
                             Toast.makeText(getApplicationContext(), "ลบข้อมูล " + SelectedNameItem + " เรียบร้อย", Toast.LENGTH_SHORT).show();
                         }

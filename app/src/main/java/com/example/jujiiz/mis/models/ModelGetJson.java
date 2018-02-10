@@ -32,7 +32,7 @@ public class ModelGetJson {
                     String key = iter.next();
                     try {
                         Object value = jsonObj.get(key);
-                        temp.put(key,value.toString());
+                        temp.put(key, value.toString());
                     } catch (JSONException e) {
                         // Something went wrong!
                     }

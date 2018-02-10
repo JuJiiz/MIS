@@ -15,11 +15,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
             android:layout_centerVertical="true"
             android:paddingLeft="8dp"
             android:text="ข้อมูลครัวเรือน"
-            android:textColor="@color/topicColor"
+            android:textColor="@color/appbarTextColor"
+            android:textStyle="bold"
             android:textSize="24dp" />
 
         <Button
@@ -67,12 +68,15 @@
                         android:id="@+id/rbRegisterYes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:checked="true"
                         android:text="อยู่ในทะเบียนราษฎร์" />
 
                     <RadioButton
                         android:id="@+id/rbRegisterNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:enabled="false"
                         android:text="ไม่อยู่ในทะเบียนราษฎร์" />
                 </RadioGroup>
             </LinearLayout>
@@ -223,6 +227,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="บ้านเลขที่"
+                android:enabled="false"
                 android:inputType="number" />
 
             <TextView
@@ -239,6 +244,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="รหัสประจำบ้าน"
+                android:enabled="false"
                 android:inputType="number" />
 
             <LinearLayout

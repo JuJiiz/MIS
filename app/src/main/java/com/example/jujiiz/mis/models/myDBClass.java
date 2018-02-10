@@ -182,6 +182,46 @@ public class myDBClass extends SQLiteOpenHelper {
                 "\t`conth9`\tTEXT NOT NULL,\n" +
                 "\t`conth10`\tTEXT NOT NULL,\n" +
                 "\t`conth11`\tTEXT NOT NULL,\n" +
+                "\t`conth12`\tTEXT NOT NULL,\n" +
+                "\t`conth13`\tTEXT NOT NULL,\n" +
+                "\t`conth14`\tTEXT NOT NULL,\n" +
+                "\t`conth15`\tTEXT NOT NULL,\n" +
+                "\t`conth16`\tTEXT NOT NULL,\n" +
+                "\t`conth17`\tTEXT NOT NULL,\n" +
+                "\t`conth18`\tTEXT NOT NULL,\n" +
+                "\t`conth19`\tTEXT NOT NULL,\n" +
+                "\t`conth20`\tTEXT NOT NULL,\n" +
+                "\t`conth21`\tTEXT NOT NULL,\n" +
+                "\t`conth22`\tTEXT NOT NULL,\n" +
+                "\t`conth23`\tTEXT NOT NULL,\n" +
+                "\t`conth24`\tTEXT NOT NULL,\n" +
+                "\t`conth25`\tTEXT NOT NULL,\n" +
+                "\t`conth26`\tTEXT NOT NULL,\n" +
+                "\t`conth27`\tTEXT NOT NULL,\n" +
+                "\t`conth28`\tTEXT NOT NULL,\n" +
+                "\t`conth29`\tTEXT NOT NULL,\n" +
+                "\t`conth30`\tTEXT NOT NULL,\n" +
+                "\t`conth31`\tTEXT NOT NULL,\n" +
+                "\t`conth32`\tTEXT NOT NULL,\n" +
+                "\t`conth33`\tTEXT NOT NULL,\n" +
+                "\t`conth34`\tTEXT NOT NULL,\n" +
+                "\t`conth35`\tTEXT NOT NULL,\n" +
+                "\t`conth36`\tTEXT NOT NULL,\n" +
+                "\t`conth37`\tTEXT NOT NULL,\n" +
+                "\t`conth38`\tTEXT NOT NULL,\n" +
+                "\t`conth39`\tTEXT NOT NULL,\n" +
+                "\t`conth40`\tTEXT NOT NULL,\n" +
+                "\t`conth41`\tTEXT NOT NULL,\n" +
+                "\t`conth42`\tTEXT NOT NULL,\n" +
+                "\t`conth43`\tTEXT NOT NULL,\n" +
+                "\t`conth44`\tTEXT NOT NULL,\n" +
+                "\t`conth45`\tTEXT NOT NULL,\n" +
+                "\t`conth46`\tTEXT NOT NULL,\n" +
+                "\t`conth47`\tTEXT NOT NULL,\n" +
+                "\t`conth48`\tTEXT NOT NULL,\n" +
+                "\t`conth49`\tTEXT NOT NULL,\n" +
+                "\t`conth50`\tTEXT NOT NULL,\n" +
+                "\t`conth51`\tTEXT NOT NULL,\n" +
                 "\t`conth_another`\tTEXT NOT NULL,\n" +
                 "\t`population_idcard`\tINTEGER NOT NULL,\n" +
                 "\t`cr_by`\tTEXT NOT NULL,\n" +
@@ -199,6 +239,18 @@ public class myDBClass extends SQLiteOpenHelper {
                 "\t`congh3`\tTEXT NOT NULL,\n" +
                 "\t`congh4`\tTEXT NOT NULL,\n" +
                 "\t`congh5`\tTEXT NOT NULL,\n" +
+                "\t`congh6`\tTEXT NOT NULL,\n" +
+                "\t`congh7`\tTEXT NOT NULL,\n" +
+                "\t`congh8`\tTEXT NOT NULL,\n" +
+                "\t`congh9`\tTEXT NOT NULL,\n" +
+                "\t`congh10`\tTEXT NOT NULL,\n" +
+                "\t`congh20`\tTEXT NOT NULL,\n" +
+                "\t`congh21`\tTEXT NOT NULL,\n" +
+                "\t`congh22`\tTEXT NOT NULL,\n" +
+                "\t`congh23`\tTEXT NOT NULL,\n" +
+                "\t`congh24`\tTEXT NOT NULL,\n" +
+                "\t`congh25`\tTEXT NOT NULL,\n" +
+                "\t`congh26`\tTEXT NOT NULL,\n" +
                 "\t`congh_another`\tTEXT NOT NULL,\n" +
                 "\t`population_idcard`\tINTEGER NOT NULL,\n" +
                 "\t`cr_by`\tTEXT NOT NULL,\n" +
@@ -328,6 +380,7 @@ public class myDBClass extends SQLiteOpenHelper {
                 "\t`latentpop_country`\tTEXT NOT NULL,\n" +
                 "\t`distributor`\tTEXT NOT NULL,\n" +
                 "\t`survey_status`\tTEXT NOT NULL,\n" +
+                "\t`upload_status`\tTEXT NOT NULL,\n" +
                 "\t`cr_by`\tTEXT NOT NULL,\n" +
                 "\t`cr_date`\tTEXT NOT NULL,\n" +
                 "\t`upd_by`\tTEXT,\n" +
@@ -420,6 +473,7 @@ public class myDBClass extends SQLiteOpenHelper {
                 "\t`house_family_type`\tTEXT NOT NULL,\n" +
                 "\t`distributor`\tTEXT NOT NULL,\n" +
                 "\t`survey_status`\tTEXT NOT NULL,\n" +
+                "\t`upload_status`\tTEXT NOT NULL,\n" +
                 "\t`cr_by`\tTEXT NOT NULL,\n" +
                 "\t`cr_date`\tTEXT NOT NULL,\n" +
                 "\t`upd_by`\tTEXT NOT NULL,\n" +

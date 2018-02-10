@@ -15,12 +15,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
             android:layout_centerVertical="true"
             android:paddingLeft="8dp"
             android:text="สัตว์เพื่อการเกษตร"
             android:textAlignment="center"
-            android:textColor="@color/topicColor"
+            android:textColor="@color/appbarTextColor"
+            android:textStyle="bold"
             android:textSize="24dp" />
 
         <Button
@@ -57,15 +58,15 @@
                     android:text="ชื่อ-นามสกุล"
 
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etAnimalOwner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:layout_weight="2" />
+                    android:layout_weight="2"
+                    android:enabled="false" />
             </LinearLayout>
 
             <!--<LinearLayout
@@ -111,8 +112,8 @@
                     android:layout_weight="1"
                     android:text="การขึ้นทะเบียนสัตว์เลี้ยง"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rdAnimalRegister"
@@ -155,8 +156,8 @@
                     android:layout_weight="1"
                     android:text="จำนวนสัตว์เลี้ยง"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etAnimalAmount"
@@ -171,8 +172,8 @@
                 android:paddingLeft="8dp"
                 android:text="การป้องกันโรค"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -180,8 +181,8 @@
                 android:paddingLeft="16dp"
                 android:text="สัตว์เลี้ยงเพื่อการเกษตร"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -199,8 +200,8 @@
                     android:layout_weight="1"
                     android:text="ชนิดสัตว์เลี้ยง"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spAnimalType"
@@ -214,16 +215,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="gone"
                 android:paddingBottom="8dp"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingRight="16dp"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/etAnimalType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="ระบุชนิดสัตว์เลี้ยง"/>
+                    android:hint="ระบุชนิดสัตว์เลี้ยง" />
             </LinearLayout>
 
             <LinearLayout
@@ -242,8 +243,8 @@
                     android:layout_weight="1"
                     android:text="การติดโรค"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rdAnimalInfection"
@@ -274,16 +275,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:visibility="gone"
                 android:paddingBottom="8dp"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingRight="16dp"
+                android:visibility="gone">
 
                 <EditText
                     android:id="@+id/etAnimalInfection"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="ระบุโรค"/>
+                    android:hint="ระบุโรค" />
             </LinearLayout>
 
             <LinearLayout
@@ -302,8 +303,8 @@
                     android:layout_weight="1"
                     android:text="สถานที่เลี้ยง"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rdAnimalShelter"
@@ -344,8 +345,8 @@
                     android:layout_weight="1"
                     android:text="การควบคุมโรค"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rdInfectionCtrl"
@@ -418,8 +419,8 @@
                     android:layout_weight="1"
                     android:text="สถานที่ปลอดโรค"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rdDiseaseFree"
@@ -460,8 +461,8 @@
                     android:layout_weight="1"
                     android:text="ตลาดในการซื้อขาย"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rdAnimalMarket"
@@ -493,11 +494,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:orientation="horizontal"
-                android:visibility="gone"
                 android:paddingBottom="8dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:paddingTop="8dp">
+                android:paddingTop="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="0dp"
@@ -505,8 +506,8 @@
                     android:layout_weight="1"
                     android:text="สถานที่ซื้อขาย"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spAnimalMarket"
@@ -529,8 +530,8 @@
                     android:layout_height="wrap_content"
                     android:text="ชื่อผู้ให้ข้อมูล"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spContributor"
@@ -552,8 +553,8 @@
                     android:layout_height="wrap_content"
                     android:text="วันที่บันทึกข้อมูล"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etDate"

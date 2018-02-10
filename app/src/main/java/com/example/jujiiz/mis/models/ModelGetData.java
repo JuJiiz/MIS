@@ -22,12 +22,12 @@ public class ModelGetData {
         try {
             String url = apiURL;
             String strGetJson = new CallApi().execute(url).get();
-            if (strGetJson!=null){
+            if (strGetJson != null) {
                 JSONObject jsonObject = new JSONObject(strGetJson);
                 result = new String(jsonObject.getString(pname).getBytes("ISO-8859-1"), "UTF-8");
                 //result = jsonObject.getString(pname);
                 jsonArray = new JSONArray(result);
-            }else {
+            } else {
                 jsonArray = null;
             }
 

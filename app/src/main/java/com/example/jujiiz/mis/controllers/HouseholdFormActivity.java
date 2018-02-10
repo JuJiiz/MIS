@@ -46,6 +46,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.ModelCheckForm;
 import com.example.jujiiz.mis.models.ModelCheckboxCheck;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
 import com.example.jujiiz.mis.models.ModelShowHideLayout;
@@ -143,7 +144,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //Important!! (Form)
         setSpinner();
-        setListView();
         setField();
     }
 
@@ -166,13 +166,13 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         listHousehold = (ListView) findViewById(R.id.listHousehold);
         listHousehold.setOnItemClickListener(this);
         listHousehold.setOnItemLongClickListener(this);
-        listHousehold.setOnTouchListener(new View.OnTouchListener() {
+        /*listHousehold.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 v.getParent().requestDisallowInterceptTouchEvent(true);
                 return false;
             }
-        });
+        });*/
 
         registerRadioGroup = (RadioGroup) findViewById(R.id.registerRadioGroup);
         registerRadioGroup.setOnCheckedChangeListener(this);
@@ -348,7 +348,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             ivImage.setVisibility(View.VISIBLE);
         }
         HouseList = db.SelectWhereData("tr14", "house_id", HouseID);
-        JSONArray ja = new JSONArray(HouseList);
         HouseList = db.SelectWhereData("house", "house_id", HouseID);
         if (!HouseList.isEmpty()) {
             ((RadioButton) registerRadioGroup.getChildAt(0)).setChecked(true);
@@ -370,7 +369,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             }
             DwellerList = db.SelectWhereData("population", "house_id", HouseID);
             Log.d("MYLOG", "DwellerList setField: " + DwellerList);
-            if (!DwellerList.get(0).get("distributor").equals("")){
+            if (!DwellerList.get(0).get("distributor").equals("")) {
                 int spinnerPositionContri = dwellerArrayAdapter.getPosition(DwellerList.get(0).get("distributor"));
                 spContributor.setSelection(spinnerPositionContri);
             }
@@ -480,6 +479,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         }
         Val.put("distributor", spContributor.getSelectedItem().toString());
         Val.put("survey_status", "1");
+        Val.put("upload_status", "1");
         Val.put("upd_by", "");
         Val.put("upd_date", date);
         db.UpdateData("house", Val, "house_id", HouseID);
@@ -1000,6 +1000,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     private void setSpinner() {
         DwellerList = db.SelectWhereData("population", "house_id", HouseID);
         if (!DwellerList.isEmpty()) {
+            Dweller.add("กรุณาเลือก");
             for (int i = 0; i < DwellerList.size(); i++) {
                 String strDweller = DwellerList.get(i).get("firstname") + " " + DwellerList.get(i).get("lastname");
                 Dweller.add(strDweller);
@@ -1034,10 +1035,10 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                     temp.put(strFName, DwellerList.get(i).get("firstname"));
                     temp.put(strLName, DwellerList.get(i).get("lastname"));
                     if (DwellerList.get(i).get("survey_status").equals("0")) {
-                        survey = "";
+                        survey = "ยังไม่สำรวจ";
                     }
                     if (DwellerList.get(i).get("survey_status").equals("1")) {
-                        survey = "*";
+                        survey = "สำรวจแล้ว";
                     }
                     temp.put(strSStatus, survey);
                     temp.put(strPopulationID, DwellerList.get(i).get("population_idcard"));
@@ -1051,7 +1052,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             listHousehold.setAdapter(simpleAdapter);
             listHousehold.getAdapter().getCount();
             ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) listHousehold.getLayoutParams();
-            lp.height = listHousehold.getAdapter().getCount()*92;
+            lp.height = listHousehold.getAdapter().getCount() * 92;
             listHousehold.setLayoutParams(lp);
         }
     }
@@ -1340,8 +1341,8 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                     mGoogleMap.clear();
                     mGoogleMap.addMarker(new MarkerOptions()
                             .position(latLng)/*.draggable(true)*/);
-                    etLat.setText(String.format( "%.5f", latLng.latitude ));
-                    etLong.setText(String.format( "%.5f", latLng.longitude ));
+                    etLat.setText(String.format("%.5f", latLng.latitude));
+                    etLong.setText(String.format("%.5f", latLng.longitude));
                 }
             });
             etLat.setText(mLastLocation.convert(mLastLocation.getLatitude(), mLastLocation.FORMAT_DEGREES));
@@ -1363,21 +1364,138 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             startActivityForResult(cameraIntent, CAMERA_REQUEST);
         }
         if (view == btnSavingData) {
-            if (registerRadioGroup.getCheckedRadioButtonId() != -1) {
-                if (housestatusRadioGroup.getCheckedRadioButtonId() != -1) {
-                    if (familyRadioGroup.getCheckedRadioButtonId() != -1) {
-                        updateData();
-                        Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(this, "กรุณาระบุ รูปแบบครอบครัว", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(this, "กรุณาระบุ สถานะบ้าน", Toast.LENGTH_SHORT).show();
-                }
+            if (fieldCheck() == true) {
+                updateData();
+                Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "กรุณาระบุ ทะเบียนราษฎ์", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "ข้อมูลไม่สมบูรณ์", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private Boolean fieldCheck() {
+        Boolean formPass = false,
+                regisPass = true,
+                housePass = true,
+                familyPass = true,
+                probPass = true,
+                enviPass = true,
+                disasPass = true,
+                conPass = true;
+
+        regisPass = ModelCheckForm.checkRadioGroup(registerRadioGroup);
+        housePass = ModelCheckForm.checkRadioGroup(housestatusRadioGroup);
+        familyPass = ModelCheckForm.checkRadioGroup(familyRadioGroup);
+
+        if (cbProb10.isChecked() == true) {
+            probPass = ModelCheckForm.checkEditText(etAnotherProblem);
+        }
+
+        if (rbProbEnvyYes.isChecked() == true) {
+            if (cbSound.isChecked() != true ||
+                    cbShock.isChecked() != true ||
+                    cbDust.isChecked() != true ||
+                    cbSmell.isChecked() != true ||
+                    cbAir.isChecked() != true ||
+                    cbWater.isChecked() != true ||
+                    cbGarbage.isChecked() != true) {
+                enviPass = false;
+            }
+
+            if (cbSound.isChecked() == true) {
+                enviPass = ModelCheckForm.checkRadioGroup(soundRadioGroup);
+            }
+            if (cbShock.isChecked() == true) {
+                enviPass = ModelCheckForm.checkRadioGroup(shockRadioGroup);
+            }
+            if (cbDust.isChecked() == true) {
+                enviPass = ModelCheckForm.checkRadioGroup(dustRadioGroup);
+            }
+            if (cbSmell.isChecked() == true) {
+                enviPass = ModelCheckForm.checkRadioGroup(smellRadioGroup);
+            }
+            if (cbAir.isChecked() == true) {
+                enviPass = ModelCheckForm.checkRadioGroup(airRadioGroup);
+            }
+            if (cbWater.isChecked() == true) {
+                enviPass = ModelCheckForm.checkRadioGroup(waterRadioGroup);
+            }
+            if (cbGarbage.isChecked() == true) {
+                enviPass = ModelCheckForm.checkRadioGroup(garbageRadioGroup);
+            }
+        }
+
+        if (rbDisasterYes.isChecked() == true) {
+            if (cbStorm.isChecked() != true ||
+                    cbFlood.isChecked() != true ||
+                    cbMud.isChecked() != true ||
+                    cbEarthquake.isChecked() != true ||
+                    cbBuilding.isChecked() != true ||
+                    cbDrought.isChecked() != true ||
+                    cbCold.isChecked() != true ||
+                    cbRoad.isChecked() != true ||
+                    cbFire.isChecked() != true ||
+                    cbFireForest.isChecked() != true ||
+                    cbSmoke.isChecked() != true ||
+                    cbChemical.isChecked() != true ||
+                    cbPlague.isChecked() != true ||
+                    cbWeed.isChecked() != true) {
+                disasPass = false;
+            }
+
+            if (cbStorm.isChecked() == true) {
+                disasPass = ModelCheckForm.checkRadioGroup(stormRadioGroup);
+            }
+            if (cbFlood.isChecked() == true) {
+                disasPass = ModelCheckForm.checkRadioGroup(floodRadioGroup);
+            }
+            if (cbMud.isChecked() == true) {
+                disasPass = ModelCheckForm.checkRadioGroup(mudRadioGroup);
+            }
+            if (cbEarthquake.isChecked() == true) {
+                disasPass = ModelCheckForm.checkRadioGroup(earthquakeRadioGroup);
+            }
+            if (cbBuilding.isChecked() == true) {
+                disasPass = ModelCheckForm.checkRadioGroup(buildingRadioGroup);
+            }
+            if (cbDrought.isChecked() == true) {
+                disasPass = ModelCheckForm.checkRadioGroup(droughtRadioGroup);
+            }
+            if (cbCold.isChecked() == true) {
+                disasPass = ModelCheckForm.checkRadioGroup(coldRadioGroup);
+            }
+            if (cbRoad.isChecked() == true) {
+                disasPass = ModelCheckForm.checkRadioGroup(roadRadioGroup);
+            }
+            if (cbFire.isChecked() == true) {
+                disasPass = ModelCheckForm.checkRadioGroup(fireRadioGroup);
+            }
+            if (cbFireForest.isChecked() == true) {
+                disasPass = ModelCheckForm.checkRadioGroup(fireforestRadioGroup);
+            }
+            if (cbSmoke.isChecked() == true) {
+                disasPass = ModelCheckForm.checkRadioGroup(smokeRadioGroup);
+            }
+            if (cbChemical.isChecked() == true) {
+                disasPass = ModelCheckForm.checkRadioGroup(chemicalRadioGroup);
+            }
+            if (cbPlague.isChecked() == true) {
+                disasPass = ModelCheckForm.checkRadioGroup(plagueRadioGroup);
+            }
+            if (cbWeed.isChecked() == true) {
+                disasPass = ModelCheckForm.checkRadioGroup(weedRadioGroup);
+            }
+        }
+
+        conPass = ModelCheckForm.checkSpinner(spContributor);
+
+        if (regisPass == true && housePass == true && familyPass == true && probPass == true && enviPass == true && disasPass == true && conPass == true){
+            formPass = true;
+        }else{
+            formPass = false;
+        }
+
+        return formPass;
     }
 
     @Override
@@ -1410,7 +1528,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
 
                         if (residenceStatus.equals("0")) { //ประชากรแฝง
                             Val = new ContentValues();
-                            Val.put("survey_status", "1");
+                            Val.put("upload_status", "1");
                             Val.put("ACTIVE", "N");
                             db.UpdateData("population", Val, "population_idcard", SelectedIDItem);
 
@@ -1457,6 +1575,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                             Val.put("latentpop_country", "");
                             Val.put("distributor", "");
                             Val.put("survey_status", "0");
+                            Val.put("upload_status", "1");
                             db.UpdateData("population", Val, "population_idcard", SelectedIDItem);
 
                             Val = new ContentValues();

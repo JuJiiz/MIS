@@ -16,16 +16,26 @@
         android:paddingBottom="16dp"
         android:paddingTop="16dp">
 
+        <ImageView
+            android:id="@+id/ivSearchIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:paddingLeft="16dp"
+            android:src="@drawable/search_icon"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_toRightOf="@+id/ivSearchIcon"
             android:layout_centerVertical="true"
             android:paddingLeft="8dp"
             android:text="เลือกครัวเรือนที่ต้องการสำรวจ"
             android:textAlignment="center"
-            android:textColor="@color/topicColor"
-            android:textSize="24dp" />
+            android:textColor="@color/appbarTextColor"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -39,7 +49,6 @@
         android:orientation="horizontal"
         android:weightSum="5">
 
-        <!--หมู่บ้าน-->
         <Spinner
             android:id="@+id/spVName"
             android:layout_width="0dp"
@@ -60,7 +69,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="ค้นหา" />
+            android:text="ค้นหา"
+            android:textStyle="bold"
+            android:textSize="16dp"/>
     </LinearLayout>
 
     <LinearLayout

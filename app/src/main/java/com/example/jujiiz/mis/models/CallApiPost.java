@@ -17,17 +17,8 @@ import java.net.URL;
 public class CallApiPost extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
-
         try {
             URL url = new URL(params[0]);
-           /* HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
-            httpCon.setDoOutput(true);
-            httpCon.setDoInput(true);
-            httpCon.setUseCaches(false);
-            httpCon.setRequestProperty( "Content-Type", "application/json" );
-            httpCon.setRequestProperty("Accept", "application/json");
-            httpCon.setRequestMethod("POST");
-            httpCon.connect();*/
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
             httpURLConnection.setDoOutput(true);
             httpURLConnection.setRequestMethod("POST"); // here you are telling that it is a POST request, which can be changed into "PUT", "GET", "DELETE" etc.
@@ -52,9 +43,7 @@ public class CallApiPost extends AsyncTask<String, Void, String> {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } /*catch (JSONException e) {
-            e.printStackTrace();
-        }*/
+        }
 
         return null;
     }

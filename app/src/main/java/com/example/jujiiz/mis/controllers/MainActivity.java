@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import com.example.jujiiz.mis.R;
 import com.example.jujiiz.mis.models.ModelGetData;
 import com.example.jujiiz.mis.models.ModelNavClick;
-import com.example.jujiiz.mis.models.ModelToken;
 import com.example.jujiiz.mis.models.myDBClass;
 
 import org.json.JSONArray;
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        /*int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action) {
@@ -98,7 +97,7 @@ public class MainActivity extends AppCompatActivity
 
             }
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }

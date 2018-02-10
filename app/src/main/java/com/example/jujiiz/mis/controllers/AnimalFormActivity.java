@@ -328,7 +328,7 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
                 Val.put("cr_date", date);
                 db.InsertData("population_asset_animal", Val);
                 Val = new ContentValues();
-                Val.put("survey_status","1");
+                Val.put("upload_status", "1");
                 db.UpdateData("population",Val,"population_idcard",PersonID);
             } else {
                 AnimalList = db.SelectWhereData("population_asset_animal", "animal_running", AnimalID);
@@ -338,12 +338,12 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
                     Val.put("cr_date", date);
                     db.InsertData("population_asset_animal", Val);
                     Val = new ContentValues();
-                    Val.put("survey_status","1");
+                    Val.put("upload_status", "1");
                     db.UpdateData("population",Val,"population_idcard",PersonID);
                 } else {
                     db.UpdateData("population_asset_animal", Val, "animal_running", AnimalID);
                     Val = new ContentValues();
-                    Val.put("survey_status","1");
+                    Val.put("upload_status", "1");
                     db.UpdateData("population",Val,"population_idcard",PersonID);
                 }
             }

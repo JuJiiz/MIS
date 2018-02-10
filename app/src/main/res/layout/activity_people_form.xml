@@ -15,13 +15,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
             android:layout_centerVertical="true"
             android:paddingLeft="8dp"
             android:text="ข้อมูลประชากร"
             android:textAlignment="center"
-            android:textColor="@color/topicColor"
-            android:textSize="24dp" />
+            android:textColor="@color/appbarTextColor"
+            android:textSize="24dp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnSavingData"
@@ -48,15 +49,16 @@
                 android:layout_height="wrap_content"
                 android:text="ส่วนบุคคล"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingRight="16dp"
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -76,8 +78,8 @@
                             android:layout_weight="1"
                             android:text="สัญชาติ"
                             android:textColor="@color/topicColor"
-                            android:textStyle="bold"
-                            android:textSize="16dp" />
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
 
                         <Spinner
                             android:id="@+id/spNationality"
@@ -110,8 +112,8 @@
                     android:layout_height="wrap_content"
                     android:text="ชื่อต้น *"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etFirstName"
@@ -126,8 +128,8 @@
                     android:layout_height="wrap_content"
                     android:text="นามสกุล *"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etLastName"
@@ -147,8 +149,8 @@
                         android:layout_height="wrap_content"
                         android:text="คำนำหน้านาม *"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <Spinner
                         android:id="@+id/spPrefix"
@@ -187,8 +189,8 @@
                         android:layout_weight="1"
                         android:text="เพศ *"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <RadioGroup
                         android:id="@+id/rgSex"
@@ -219,8 +221,8 @@
                     android:layout_height="wrap_content"
                     android:text="เลขประจำตัวประชาชน *"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etPersonalID"
@@ -228,8 +230,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:hint="เลขประจำตัวประชาชน"
-                    android:maxLength="13"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:maxLength="13" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -269,8 +271,8 @@
                         android:layout_weight="1"
                         android:text="ส่วนสูงปัจจุบัน"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/etHeight"
@@ -284,9 +286,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".7"
+                        android:gravity="end"
                         android:text="เซนติเมตร"
                         android:textColor="@color/topicColor"
-                        android:gravity="end"
                         android:textSize="16dp" />
                 </LinearLayout>
 
@@ -303,8 +305,8 @@
                         android:layout_weight="1"
                         android:text="น้ำหนักปัจจุบัน"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/etWeight"
@@ -318,9 +320,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".7"
+                        android:gravity="end"
                         android:text="กิโลกรัม"
                         android:textColor="@color/topicColor"
-                        android:gravity="end"
                         android:textSize="16dp" />
                 </LinearLayout>
 
@@ -337,8 +339,8 @@
                         android:layout_weight="1"
                         android:text="กรุ๊ปเลือด *"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <Spinner
                         android:id="@+id/spBloodType"
@@ -376,8 +378,8 @@
                         android:layout_weight="1"
                         android:text="การมีชีวิตอยู่ *"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <RadioGroup
                         android:id="@+id/rgDeadOrAlive"
@@ -416,8 +418,8 @@
                         android:layout_weight="1"
                         android:text="สถานภาพการสมรส"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <Spinner
                         android:id="@+id/spMaritalStatus"
@@ -440,8 +442,8 @@
                         android:layout_weight="1"
                         android:text="เบอร์โทรศัพท์ติดต่อ"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/etTel"
@@ -449,9 +451,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:layout_weight="2"
-                        android:maxLength="10"
                         android:hint="เบอร์โทรศัพท์ติดต่อ"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:maxLength="10" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -460,15 +462,16 @@
                 android:layout_height="wrap_content"
                 android:text="ที่อยู่อาศัย"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingRight="16dp"
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -484,8 +487,8 @@
                         android:layout_weight="1"
                         android:text="หมู่บ้าน"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <Spinner
                         android:id="@+id/spVillageName"
@@ -499,8 +502,8 @@
                     android:layout_height="wrap_content"
                     android:text="ที่อยู่ตามทะเบียนบ้าน"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rgRegister"
@@ -530,8 +533,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:text="บ้านเลขที่ *" />
+                                android:text="บ้านเลขที่ *"
+                                android:textStyle="bold" />
 
                             <EditText
                                 android:id="@+id/etHNo"
@@ -550,8 +553,8 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:text="รหัสประจำบ้าน *" />
+                                android:text="รหัสประจำบ้าน *"
+                                android:textStyle="bold" />
 
                             <EditText
                                 android:id="@+id/etHID"
@@ -575,41 +578,51 @@
                         android:orientation="vertical"
                         android:visibility="gone">
 
-                        <LinearLayout
+                        <RadioGroup
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical"
+                            android:paddingLeft="16dp">
 
-                            <TextView
+                            <RadioButton
+                                android:id="@+id/rbIRCountry"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
                                 android:text="ระบุประเทศ" />
 
-                            <EditText
-                                android:id="@+id/etIRCountry"
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingBottom="16dp" />
-                        </LinearLayout>
+                                android:orientation="horizontal"
+                                android:paddingLeft="16dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
 
-                            <TextView
+                                <Spinner
+                                    android:id="@+id/spIRCountry"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingBottom="16dp" />
+                            </LinearLayout>
+
+                            <RadioButton
+                                android:id="@+id/rbIRProvince"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
                                 android:text="ระบุจังหวัด" />
 
-                            <EditText
-                                android:id="@+id/etIRProvince"
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingBottom="16dp" />
-                        </LinearLayout>
+                                android:orientation="horizontal"
+                                android:paddingLeft="16dp">
+
+                                <Spinner
+                                    android:id="@+id/spIRProvince"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingBottom="16dp" />
+                            </LinearLayout>
+                        </RadioGroup>
                     </LinearLayout>
                 </RadioGroup>
 
@@ -618,8 +631,8 @@
                     android:layout_height="wrap_content"
                     android:text="ที่อยู่ปัจจุบัน"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rgCurrentAddress"
@@ -646,31 +659,50 @@
                         android:orientation="vertical"
                         android:visibility="gone">
 
-                        <LinearLayout
+                        <RadioGroup
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="vertical"
+                            android:paddingLeft="16dp">
 
-                            <EditText
-                                android:id="@+id/etIHCountry"
+                            <RadioButton
+                                android:id="@+id/rbIHCountry"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ระบุประเทศ" />
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="ระบุประเทศ"
-                                android:paddingBottom="16dp" />
-                        </LinearLayout>
+                                android:orientation="horizontal"
+                                android:paddingLeft="16dp">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                                <Spinner
+                                    android:id="@+id/spIHCountry"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingBottom="16dp" />
+                            </LinearLayout>
 
-                            <EditText
-                                android:id="@+id/etIHProvince"
+                            <RadioButton
+                                android:id="@+id/rbIHProvince"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ระบุจังหวัด" />
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="ระบุจังหวัด"
-                                android:paddingBottom="16dp" />
-                        </LinearLayout>
+                                android:orientation="horizontal"
+                                android:paddingLeft="16dp">
+
+                                <Spinner
+                                    android:id="@+id/spIHProvince"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingBottom="16dp" />
+                            </LinearLayout>
+                        </RadioGroup>
                     </LinearLayout>
                 </RadioGroup>
 
@@ -679,8 +711,8 @@
                     android:layout_height="wrap_content"
                     android:text="สถานภาพของการอาศัย *"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rgStatus"
@@ -714,15 +746,16 @@
                     android:layout_height="wrap_content"
                     android:text="อาชีพและรายได้"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingLeft="16dp"
-                    android:paddingRight="16dp">
+                    android:paddingRight="16dp"
+                    android:visibility="visible">
 
                     <RadioGroup
                         android:id="@+id/rbJobGroup"
@@ -753,8 +786,8 @@
                                 android:layout_height="wrap_content"
                                 android:text="ประเภทอาชีพ"
                                 android:textColor="@color/topicColor"
-                                android:textStyle="bold"
-                                android:textSize="20dp" />
+                                android:textSize="20dp"
+                                android:textStyle="bold" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -1129,8 +1162,8 @@
                             android:layout_weight="1"
                             android:text="รายได้"
                             android:textColor="@color/topicColor"
-                            android:textStyle="bold"
-                            android:textSize="16dp" />
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
 
                         <RadioGroup
                             android:id="@+id/rbIncome"
@@ -1195,8 +1228,8 @@
                             android:layout_weight="1"
                             android:text="หนี้สิน"
                             android:textColor="@color/topicColor"
-                            android:textStyle="bold"
-                            android:textSize="16dp" />
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
 
                         <RadioGroup
                             android:id="@+id/rbDebt"
@@ -1232,8 +1265,8 @@
                             android:layout_weight="1"
                             android:text="การออม"
                             android:textColor="@color/topicColor"
-                            android:textStyle="bold"
-                            android:textSize="16dp" />
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
 
                         <RadioGroup
                             android:id="@+id/rbSaving"
@@ -1263,8 +1296,8 @@
                     android:layout_height="wrap_content"
                     android:text="สุขภาพและอนามัย"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1278,8 +1311,8 @@
                         android:layout_height="wrap_content"
                         android:text="ประวัติโรคประจําตัว"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <RadioGroup
                         android:id="@+id/rgCongenitalHis"
@@ -1305,53 +1338,204 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
+                            android:paddingBottom="16dp"
                             android:paddingLeft="16dp"
                             android:paddingRight="16dp"
                             android:visibility="gone">
 
-                            <CheckBox
-                                android:id="@+id/cbCong1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="ความดันโลหิตสูง" />
-
-                            <CheckBox
-                                android:id="@+id/cbCong2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="เบาหวาน" />
-
-                            <CheckBox
-                                android:id="@+id/cbCong3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="หัวใจขาดเลือด" />
-
-                            <CheckBox
-                                android:id="@+id/cbCong4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="มะเร็ง" />
-
-                            <CheckBox
-                                android:id="@+id/cbCong5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="อื่นๆ" />
-
                             <LinearLayout
-                                android:id="@+id/loAnotherCong"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingBottom="16dp"
-                                android:visibility="gone">
+                                android:orientation="horizontal"
+                                android:weightSum="2">
 
-                                <EditText
-                                    android:id="@+id/etAnotherCong"
-                                    android:layout_width="match_parent"
+                                <LinearLayout
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:hint="ระบุ"
-                                    android:inputType="text" />
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ความดันโลหิตสูง" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="เบาหวาน" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong3"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="หัวใจขาดเลือด" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="มะเร็ง" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong5"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="กายภาพ" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong6"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="จิตเวช" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong7"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ระบบทางเดินหายใจ" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong8"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ระบบย่อยอาหาร" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong9"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="สูตินรีเวช" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong10"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคกระดูก" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong11"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคกล้ามเนื้อ" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong12"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคตับ" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong13"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคตา" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong14"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคติดต่อทางเพศสัมพันธ์" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong15"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคติดเชื้อ" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong16"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคต่อมไร้ท่อ" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong17"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคทางพันธุกรรม" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong18"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคทางเดินอาหาร" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong19"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคทางเพศสัมพันธ์" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong20"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคผิวหนัง" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong21"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคระบบขับถ่าย" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong22"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคระบบประสาท" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong23"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคระบาด" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong24"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคหัวใจและหลอดเลือด" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong25"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โรคหูคอจมูก" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCong26"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="อื่นๆ" />
+
+                                    <LinearLayout
+                                        android:id="@+id/loAnotherCong"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:paddingBottom="16dp"
+                                        android:visibility="gone">
+
+                                        <EditText
+                                            android:id="@+id/etAnotherCong"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:hint="ระบุ"
+                                            android:inputType="text" />
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
                             </LinearLayout>
 
                         </LinearLayout>
@@ -1362,8 +1546,8 @@
                         android:layout_height="wrap_content"
                         android:text="ประวัติโรคติดต่อ"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <RadioGroup
                         android:id="@+id/rgContagiousHis"
@@ -1392,86 +1576,351 @@
                             android:paddingRight="16dp"
                             android:visibility="gone">
 
-                            <CheckBox
-                                android:id="@+id/cbCont1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="อหิวาตกโรค" />
-
-                            <CheckBox
-                                android:id="@+id/cbCont2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="คอตีบ" />
-
-                            <CheckBox
-                                android:id="@+id/cbCont3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="ไอกรน" />
-
-                            <CheckBox
-                                android:id="@+id/cbCont4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="บาดทะยัก" />
-
-                            <CheckBox
-                                android:id="@+id/cbCont5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="โปลิโอ" />
-
-                            <CheckBox
-                                android:id="@+id/cbCont6"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="ไข้เลือดออก " />
-
-                            <CheckBox
-                                android:id="@+id/cbCont7"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="พิษสุนัขบ้า" />
-
-                            <CheckBox
-                                android:id="@+id/cbCont8"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="วัณโรค" />
-
-                            <CheckBox
-                                android:id="@+id/cbCont9"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="ไข้มาเลเลีย" />
-
-                            <CheckBox
-                                android:id="@+id/cbCont10"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="เอดส์" />
-
-                            <CheckBox
-                                android:id="@+id/cbCont11"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="อื่นๆ" />
-
                             <LinearLayout
-                                android:id="@+id/loAnotherCont"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingBottom="16dp"
-                                android:visibility="gone">
+                                android:orientation="horizontal"
+                                android:weightSum="2">
 
-                                <EditText
-                                    android:id="@+id/etAnotherCont"
-                                    android:layout_width="match_parent"
+                                <LinearLayout
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:hint="ระบุ"
-                                    android:inputType="text" />
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="กามโรคของต่อมและท่อน้ำเหลือง" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="กาฬโรค" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont3"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้กลับซ้ำ" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้กาฬหลังแอ่น" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont5"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้ซิกา" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont6"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้ทรพิษ" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont7"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้ปวดข้อยุงลายหรือไวรัสชิกุนคุนยา" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont8"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้มาลาเรีย" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont9"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้รากสาดเทียม" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont10"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้รากสาดน้อย" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont11"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้รากสาดใหญ่" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont12"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้เลือดออก" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont13"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้สมองอักเสบ" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont14"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้สุกใส" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont15"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้หวัดใหญ่" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont16"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้หัด" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont17"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้หัดเยอรมัน" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont18"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไข้เหลือง" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont19"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="คอตีบ" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont20"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="คางทูม" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont21"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="คุดทะราด" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont22"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ซิฟิลิส" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont23"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ตับอักเสบ" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont24"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ตัาแดงจากไวรัส" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont25"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ทริคิโนชิส" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont26"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ทางเดินหายใจเฉียบพลันรุนแรงหรือซาร์ส" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont27"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="เท้าช้าง" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont28"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="บาดทะยัก" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont29"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="บิดแบชิลลารี่" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont30"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="บิดอมีบา" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont31"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="โปลิโอ" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont32"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="แผลกามเรื้อรังที่ขาหนีบ" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont33"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="แผลริมอ่อน" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont34"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="พิษสุนัขบ้า" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont35"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="มูรีนไทฟัส" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont36"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="เริมที่อวัยวะเพศ" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont37"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="เรื้อน" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont38"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="เลปโตสไปโรซิส" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont39"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="วัณโรค" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont40"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="สครัพไทฟัส" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont41"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="หนองใน" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont42"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="หนองในเทียม" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont43"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="หูดหงอนไก่" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont44"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="อหิวาตก" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont45"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="อัมพาตกล้ามเนื้ออ่อนปวกเปียกอย่างเฉียบพลันในเด็ก" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont46"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="อาหารเป็นพิษ" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont47"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="อุจจาระร่วง" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont48"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="เอดส์" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont49"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="แอนแทร็กซ์" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont50"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="ไอกรน" />
+
+                                    <CheckBox
+                                        android:id="@+id/cbCont51"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="อื่นๆ" />
+
+                                    <LinearLayout
+                                        android:id="@+id/loAnotherCont"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:paddingBottom="16dp"
+                                        android:visibility="gone">
+
+                                        <EditText
+                                            android:id="@+id/etAnotherCont"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:hint="ระบุ"
+                                            android:inputType="text" />
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
                             </LinearLayout>
+
                         </LinearLayout>
                     </RadioGroup>
 
@@ -1480,8 +1929,8 @@
                         android:layout_height="wrap_content"
                         android:text="ประวัติการแพ้ยา"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <RadioGroup
                         android:id="@+id/rgAllergicHis"
@@ -1526,8 +1975,8 @@
                     android:layout_height="wrap_content"
                     android:text="ความพิการ"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1541,8 +1990,8 @@
                         android:layout_height="wrap_content"
                         android:text="ความพิการ"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <RadioGroup
                         android:id="@+id/rgDisabled"
@@ -1615,8 +2064,8 @@
                         android:layout_height="wrap_content"
                         android:text="การด้อยโอกาส"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <RadioGroup
                         android:id="@+id/rgDisadvantage"
@@ -1644,8 +2093,8 @@
                     android:layout_height="wrap_content"
                     android:text="สวัสดิการทางสังคม"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1659,8 +2108,8 @@
                         android:layout_height="wrap_content"
                         android:text="การช่วยเหลือเรื่องเบี้ยยังชีพ"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <RadioGroup
                         android:id="@+id/rgSubAl"
@@ -1687,8 +2136,8 @@
                     android:layout_height="wrap_content"
                     android:text="การศึกษาและความเชี่ยวชาญ"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1726,9 +2175,9 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
                                 android:text="ระดับการศึกษา"
-                                android:textColor="@color/topicColor" />
+                                android:textColor="@color/topicColor"
+                                android:textStyle="bold" />
 
                             <Spinner
                                 android:id="@+id/spInStudy"
@@ -1752,9 +2201,9 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textStyle="bold"
                                 android:text="ระดับการศึกษา"
-                                android:textColor="@color/topicColor" />
+                                android:textColor="@color/topicColor"
+                                android:textStyle="bold" />
 
                             <Spinner
                                 android:id="@+id/spGraduated"
@@ -1768,8 +2217,8 @@
                         android:layout_height="wrap_content"
                         android:text="การอ่านออกเขียนได้"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <RadioGroup
                         android:id="@+id/rgLiteracy"
@@ -1797,8 +2246,8 @@
                         android:layout_height="wrap_content"
                         android:text="ความรู้ด้านเทคโนโลยี"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <RadioGroup
                         android:id="@+id/rgTechnology"
@@ -1826,8 +2275,8 @@
                         android:layout_height="wrap_content"
                         android:text="ความเชี่ยวชาญ"
                         android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
 
                     <RadioGroup
                         android:id="@+id/rgExpertise"
@@ -1860,10 +2309,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="ระบุสาขา"
                             android:textColor="@color/topicColor"
-                            android:textStyle="bold"
                             android:textSize="16dp"
-                            android:text="ระบุสาขา" />
+                            android:textStyle="bold" />
 
                         <Spinner
                             android:id="@+id/spExpertise"
@@ -1887,8 +2336,8 @@
                             android:layout_weight="1"
                             android:text="รายละเอียดสาขาความเชี่ยวชาญ"
                             android:textColor="@color/topicColor"
-                            android:textStyle="bold"
-                            android:textSize="16dp" />
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/etExpertise"
@@ -1905,8 +2354,8 @@
                     android:layout_height="wrap_content"
                     android:text="ศาสนา"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1970,8 +2419,8 @@
                     android:layout_height="wrap_content"
                     android:text="การมีส่วนร่วมในชุมชน/กลุ่ม/สมาคม"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -2001,13 +2450,13 @@
 
                 </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="การไปใช้สิทธิ์เลือกตั้ง"
-                        android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="20dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="การไปใช้สิทธิ์เลือกตั้ง"
+                    android:textColor="@color/topicColor"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -2042,13 +2491,13 @@
                     </RadioGroup>
                 </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="การใช้บริการขนส่งสาธารณะ(ภายใน 6 เดือน)"
-                        android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="20dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="การใช้บริการขนส่งสาธารณะ(ภายใน 6 เดือน)"
+                    android:textColor="@color/topicColor"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -2111,138 +2560,140 @@
 
             </LinearLayout>
 
-                <LinearLayout
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ชื่อผู้ให้ข้อมูล"
+                    android:textColor="@color/topicColor"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spContributor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="16dp"></Spinner>
+            </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="ชื่อผู้ให้ข้อมูล"
-                        android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                    <Spinner
-                        android:id="@+id/spContributor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"></Spinner>
-                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="วันที่บันทึกข้อมูล"
+                    android:textColor="@color/topicColor"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/etDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginBottom="16dp"
+                    android:enabled="false"
+                    android:hint="วันที่บันทึก"
+                    android:inputType="date" />
+            </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="วันที่บันทึกข้อมูล"
-                        android:textColor="@color/topicColor"
-                        android:textStyle="bold"
-                        android:textSize="16dp" />
-
-                    <EditText
-                        android:id="@+id/etDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:enabled="false"
-                        android:hint="วันที่บันทึก"
-                        android:inputType="date" />
-                </LinearLayout>
+            <LinearLayout
+                android:id="@+id/loProperty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                android:visibility="visible">
 
                 <LinearLayout
-                    android:id="@+id/loProperty"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingBottom="8dp"
-                    android:visibility="visible">
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ตารางแสดงผลทรัพย์สิน"
+                        android:textColor="@color/topicColor"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(กรุณาเพิ่มทรัพย์สินถ้ามี)"
+                        android:textColor="@color/topicColor" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="16dp">
 
                     <LinearLayout
+                        android:id="@+id/lvPropertyHeadLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingBottom="4dp">
+                        android:background="@color/listHeadColor"
+                        android:orientation="horizontal"
+                        android:weightSum="5">
+
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="ตารางแสดงผลทรัพย์สิน"
-                            android:textColor="@color/topicColor"
-                            android:textStyle="bold"
-                            android:textSize="16dp" />
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="ลำดับ"
+                            android:textColor="@color/topicColor" />
+
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="(กรุณาเพิ่มทรัพย์สินถ้ามี)"
+                            android:layout_weight="1.5"
+                            android:gravity="center"
+                            android:text="ประเภททรัพย์สิน"
+                            android:textColor="@color/topicColor" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2.5"
+                            android:gravity="center"
+                            android:text="สถานะทรัพย์สิน"
                             android:textColor="@color/topicColor" />
                     </LinearLayout>
 
-                    <RelativeLayout
+                    <LinearLayout
+                        android:id="@+id/lvPropertyLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="16dp">
+                        android:layout_below="@+id/lvPropertyHeadLayout"
+                        android:background="#f5f5f5"
+                        android:orientation="vertical">
 
-                        <LinearLayout
-                            android:id="@+id/lvPropertyHeadLayout"
+                        <ListView
+                            android:id="@+id/lvProperty"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/listHeadColor"
-                            android:orientation="horizontal"
-                            android:weightSum="5">
+                            android:background="@color/listItemColor"></ListView>
+                    </LinearLayout>
 
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="ลำดับ"
-                                android:textColor="@color/topicColor" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1.5"
-                                android:gravity="center"
-                                android:text="ประเภททรัพย์สิน"
-                                android:textColor="@color/topicColor" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2.5"
-                                android:gravity="center"
-                                android:text="สถานะทรัพย์สิน"
-                                android:textColor="@color/topicColor" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/lvPropertyLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/lvPropertyHeadLayout"
-                            android:background="#f5f5f5"
-                            android:orientation="vertical">
-
-                            <ListView
-                                android:id="@+id/lvProperty"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/listItemColor"></ListView>
-                        </LinearLayout>
-
-                        <Button
-                            android:id="@+id/btnAddProperty"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/lvPropertyLayout"
-                            android:text="เพิ่มทรัพย์สิน" />
-                    </RelativeLayout>
-                </LinearLayout>
+                    <Button
+                        android:id="@+id/btnAddProperty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/lvPropertyLayout"
+                        android:text="เพิ่มทรัพย์สิน" />
+                </RelativeLayout>
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
