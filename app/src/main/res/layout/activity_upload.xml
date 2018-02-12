@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.example.jujiiz.mis.controllers.UploadActivity">
 
     <RelativeLayout
+        android:id="@+id/headderLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+        android:layout_alignParentTop="true"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="8dp"
@@ -27,16 +28,37 @@
             android:textSize="24dp" />
 
         <Button
-            android:id="@+id/btnUploadData"
+            android:id="@+id/btnMap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:text="แผนที่" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/footerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <Button
+            android:id="@+id/btnUploadData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:text="อัพโหลด" />
     </RelativeLayout>
 
     <ScrollView
+        android:id="@+id/svUpload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/headderLayout"
+        android:layout_above="@id/footerLayout"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="8dp"
@@ -105,7 +127,7 @@
                         android:id="@+id/listHousehold"
                         android:layout_width="match_parent"
                         android:background="@color/listItemColor"
-                        android:layout_height="220dp"></ListView>
+                        android:layout_height="200dp"></ListView>
                 </LinearLayout>
             </RelativeLayout>
 
@@ -168,11 +190,11 @@
                         android:id="@+id/listPopulation"
                         android:layout_width="match_parent"
                         android:background="@color/listItemColor"
-                        android:layout_height="220dp"></ListView>
+                        android:layout_height="200dp"></ListView>
                 </LinearLayout>
             </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>
 
-</LinearLayout>
+</RelativeLayout>

@@ -1,10 +1,16 @@
 package com.example.jujiiz.mis.controllers;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +23,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.ModelGetData;
+import com.example.jujiiz.mis.models.ModelGetJson;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -32,6 +40,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -46,6 +64,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     MarkerOptions markerOptions;
     LatLng latLng;
 
+    JSONArray STRING_JSONDATA;
+    String apiURL = "https://bayclouds.com/getMarker";
+    String JKey = "data";
+
+    LatLng centerLatLng = new LatLng(15.1375, 100.243056);
+    int centerZoom = 14;
+
+    Boolean setMarker = true;
+
+    ArrayList<HashMap<String, String>> List;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,30 +82,30 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.googleMap);
         mapFrag.getMapAsync(this);
+    }
 
-        /*if (addressList.size() > 0) {
-            mMap.clear();
+    private void setMapMarker(){
+        STRING_JSONDATA = ModelGetData.getJsonArray(MapActivity.this, apiURL, JKey);
+        if (STRING_JSONDATA != null) {
+            List = ModelGetJson.JsonArraytoArrayList(STRING_JSONDATA);
+            if (!List.isEmpty()) {
+                mGoogleMap.clear();
 
-            Address add = null;
-            LatLng CurrentAddress = null;
-            for (int i = 0; i < addressList.size(); i++) {
-                add = (Address) addressList.get(i);
-                CurrentAddress = new LatLng(add.getLatitude(), add.getLongitude());
+                for (int i = 0; i < List.size(); i++) {
+                    LatLng CurrentAddress = new LatLng(Double.parseDouble(List.get(i).get("lat")), Double.parseDouble(List.get(i).get("lng")));
 
-                String str = "";
-                for (int j = 0; j < add.getMaxAddressLineIndex(); j++) {
-                    str = str + add.getAddressLine(j) + "\n";
+                    mGoogleMap.addMarker(new MarkerOptions().position(CurrentAddress)
+                            .title("บ้านเลขที่ " + List.get(i).get("house_no"))
+                            /*.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))*/
+                            .snippet(List.get(i).get("house_id")));
                 }
-                Marker m = mMap.addMarker(new MarkerOptions().position(CurrentAddress)
-                        .title(add.getAddressLine(0) + "(Lat: " + add.getLatitude() + "Long: " + add.getLongitude() + ")")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)).snippet(str));
+                    CameraPosition cam = new CameraPosition.Builder()
+                            .target(centerLatLng).zoom(centerZoom).build();
+                    mGoogleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cam));
             }
-            CameraPosition cam = new CameraPosition.Builder()
-                    .target(CurrentAddress).zoom(5).build();
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cam));
         } else {
-            Toast.makeText(getBaseContext(), "ไม่พบที่อยู่ตามที่คุณระบุ!!", Toast.LENGTH_LONG).show();
-        }*/
+            Toast.makeText(MapActivity.this, "ไม่มีข้อมูล", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -145,13 +174,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
-        mLastLocation = location;
-
-            latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            markerOptions = new MarkerOptions();
-            markerOptions.position(latLng);
-            markerOptions.title("Current Position");
-            //markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        if (setMarker == true){
+            ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = manager.getActiveNetworkInfo();
+            if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+                setMapMarker();
+                setMarker = false;
+            } else {
+                Toast.makeText(getApplicationContext(), "การเชื่อมต่อขัดข้อง", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;

@@ -29,7 +29,7 @@ import java.util.HashMap;
 
 public class UploadActivity extends AppCompatActivity implements View.OnClickListener {
     ListView listHousehold, listPopulation;
-    Button btnUploadData;
+    Button btnUploadData, btnMap;
 
     Intent intent;
     myDBClass db = new myDBClass(this);
@@ -79,6 +79,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
         btnUploadData = (Button) findViewById(R.id.btnUploadData);
         btnUploadData.setOnClickListener(this);
+        btnMap = (Button) findViewById(R.id.btnMap);
+        btnMap.setOnClickListener(this);
     }
 
     private void setHouseListView() {
@@ -96,7 +98,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     TestList = db.SelectWhereData("tr14", "house_id", HouseList.get(i).get("house_id"));
                     temp.put(strVilleNo, TestList.get(0).get("vilage_no"));
                     temp.put(strHouseNo, HouseList.get(i).get("house_no"));
-                    temp.put(strVilleName, " ");
+                    temp.put(strVilleName, "หมู่บ้านที่ " + TestList.get(0).get("vilage_no"));
                     temp.put(strHID, HouseList.get(i).get("house_id"));
                     HouseActive.add(temp);
                 }
@@ -722,6 +724,11 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 setPopulationListView();
             }
+        }
+
+        if (v == btnMap){
+            Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+            startActivity(intent);
         }
     }
 }
