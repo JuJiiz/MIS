@@ -152,10 +152,11 @@
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="จำนวนสัตว์เลี้ยง"
                     android:textColor="@color/topicColor"
+                    android:gravity="center_vertical"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 

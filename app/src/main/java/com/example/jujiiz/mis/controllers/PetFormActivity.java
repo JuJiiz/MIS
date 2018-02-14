@@ -287,16 +287,16 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
                 sterilePass = true,
                 conPass = true;
 
-        if (!rbPetTypeDog.isChecked() || !rbPetTypeCat.isChecked()){
+        if (!rbPetTypeDog.isChecked() && !rbPetTypeCat.isChecked()){
             typePass = false;
         }
 
-        if (!rbPetSexMale.isChecked() || !rbPetSexFemale.isChecked()){
+        if (!rbPetSexMale.isChecked() && !rbPetSexFemale.isChecked()){
             sexPass = false;
         }
 
         if(rbPetVaccineYes.isChecked()){
-            if (!rbVaccineContinueNo.isChecked() || !rbVaccineContinueYes.isChecked()){
+            if (!rbVaccineContinueNo.isChecked() && !rbVaccineContinueYes.isChecked()){
                 vacconPass = false;
             }
         }

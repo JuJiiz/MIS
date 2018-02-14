@@ -355,7 +355,7 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
                 datePass = true,
                 conPass = true;
 
-        if (!rbVehicalType1.isChecked() || !rbVehicalType2.isChecked() || !rbVehicalType3.isChecked() || !rbVehicalType4.isChecked() || !rbVehicalType5.isChecked()){
+        if (!rbVehicalType1.isChecked() && !rbVehicalType2.isChecked() && !rbVehicalType3.isChecked() && !rbVehicalType4.isChecked() && !rbVehicalType5.isChecked()){
             typePass = false;
         }
 

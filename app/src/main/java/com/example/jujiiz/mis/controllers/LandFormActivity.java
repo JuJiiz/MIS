@@ -262,11 +262,11 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
                 benefitPass = true,
                 conPass = true;
 
-        if (ModelCheckForm.checkEditText(etDimenA) != true || ModelCheckForm.checkEditText(etDimenB) != true || ModelCheckForm.checkEditText(etDimenC) != true) {
+        if (ModelCheckForm.checkEditText(etDimenA) != true && ModelCheckForm.checkEditText(etDimenB) != true && ModelCheckForm.checkEditText(etDimenC) != true) {
             dimenPass = false;
         }
 
-        if (!rbLB1.isChecked() || !rbLB2.isChecked() || !rbLB3.isChecked() || !rbLB4.isChecked() || !rbLB5.isChecked()) {
+        if (!rbLB1.isChecked() && !rbLB2.isChecked() && !rbLB3.isChecked() && !rbLB4.isChecked() && !rbLB5.isChecked()) {
             benefitPass = false;
         }
 

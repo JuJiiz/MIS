@@ -132,6 +132,7 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
 
         DwellerList = db.SelectWhereData("population", "house_id", HouseID);
         if (!DwellerList.isEmpty()) {
+            Dweller.add("กรุณาเลือก");
             for (int i = 0; i < DwellerList.size(); i++) {
                 String strDweller = DwellerList.get(i).get("firstname") + " " + DwellerList.get(i).get("lastname");
                 Dweller.add(strDweller);
@@ -379,7 +380,7 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
         conPass = ModelCheckForm.checkSpinner(spContributor);
 
         if(rbInfectionCtrlYes.isChecked()){
-            if (!rbCtrlBySelf.isChecked() || !rbCtrlByGovern.isChecked()){
+            if (!rbCtrlBySelf.isChecked() && !rbCtrlByGovern.isChecked()){
                 infectctrlPass = false;
             }
         }

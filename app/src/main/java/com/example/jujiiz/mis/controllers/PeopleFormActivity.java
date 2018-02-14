@@ -819,7 +819,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                         } else if (PersonList.get(i).get("election").equals("3")) {
                             rbElectionNever.setChecked(true);
                         }
-                        if (!DwellerList.get(0).get("distributor").equals("")) {
+                        if (!PersonList.get(0).get("distributor").equals("")) {
                             int spinnerPositionContri = dwellerArrayAdapter.getPosition(PersonList.get(i).get("distributor"));
                             spContributor.setSelection(spinnerPositionContri);
                         }
@@ -2340,7 +2340,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     intent.putExtra("PersonID", PersonID);
                     intent.putExtra("LandID", "Nope");
                     intent.putExtra("HouseID", HouseID);
-                    getApplicationContext().startActivity(intent);
+                    PeopleFormActivity.this.startActivity(intent);
                 }
             });
             Button btnVehicle = (Button) v.findViewById(R.id.btnVehicle);
@@ -2351,7 +2351,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     intent.putExtra("PersonID", PersonID);
                     intent.putExtra("VehicleID", "Nope");
                     intent.putExtra("HouseID", HouseID);
-                    getApplicationContext().startActivity(intent);
+                    PeopleFormActivity.this.startActivity(intent);
                 }
             });
             Button btnPet = (Button) v.findViewById(R.id.btnPet);
@@ -2362,7 +2362,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     intent.putExtra("PersonID", PersonID);
                     intent.putExtra("PetID", "Nope");
                     intent.putExtra("HouseID", HouseID);
-                    getApplicationContext().startActivity(intent);
+                    PeopleFormActivity.this.startActivity(intent);
                 }
             });
             Button btnAnimal = (Button) v.findViewById(R.id.btnAnimal);
@@ -2373,7 +2373,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     intent.putExtra("PersonID", PersonID);
                     intent.putExtra("AnimalID", "Nope");
                     intent.putExtra("HouseID", HouseID);
-                    getApplicationContext().startActivity(intent);
+                    PeopleFormActivity.this.startActivity(intent);
                 }
             });
             alert.setView(v);
