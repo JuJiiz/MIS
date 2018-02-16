@@ -1138,9 +1138,9 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                         temp.put(strOrder, String.valueOf(++order));
                         temp.put(strPropType, "สัตว์เลี้ยงในครัวเรือน");
                         if (!PPetList.get(0).get("pet_type").equals("")) {
-                            if (PPetList.get(0).get("pet_type").equals("0")) {
+                            if (PPetList.get(0).get("pet_type").equals("1")) {
                                 temp.put(strBenefit, "หมา");
-                            } else if (PPetList.get(0).get("pet_type").equals("1")) {
+                            } else if (PPetList.get(0).get("pet_type").equals("2")) {
                                 temp.put(strBenefit, "แมว");
                             }
                         } else {
@@ -2302,6 +2302,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             ModelShowHideLayout.radiobuttonEnable(rbIHCountry, spIHCountry, spIHProvince);
         if (compoundButton == rbIRCountry)
             ModelShowHideLayout.radiobuttonEnable(rbIRCountry, spIRCountry, spIRProvince);
+        if (compoundButton == rbIHProvince)
+            ModelShowHideLayout.radiobuttonEnable(rbIHProvince, spIHProvince, spIHCountry);
+        if (compoundButton == rbIRProvince)
+            ModelShowHideLayout.radiobuttonEnable(rbIRProvince, spIRProvince, spIRCountry);
     }
 
     @Override
@@ -2381,7 +2385,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         }
     }
 
-    private Boolean fieldCheck(){
+    private Boolean fieldCheck() {
         Boolean formPass = false,
                 nationPass = true,//
                 fnamePass = true,//
@@ -2416,69 +2420,69 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 transPass = true,//
                 conPass = true;//
 
-        if (!rbMale.isChecked() && !rbFemale.isChecked()){
+        if (!rbMale.isChecked() && !rbFemale.isChecked()) {
             sexPass = false;
         }
 
-        if (!rbAlive.isChecked() && !rbDead.isChecked()){
+        if (!rbAlive.isChecked() && !rbDead.isChecked()) {
             livingPass = false;
         }
 
-        if (!rbInRegister.isChecked() && !rbNotInRegister.isChecked()){
+        if (!rbInRegister.isChecked() && !rbNotInRegister.isChecked()) {
             inregisPass = false;
         }
 
-        if (!rbInHousehold.isChecked() && !rbNotInHousehold.isChecked()){
+        if (!rbInHousehold.isChecked() && !rbNotInHousehold.isChecked()) {
             inhousePass = false;
         }
 
-        if (!rbStatusOwner.isChecked() && !rbStatusDweller.isChecked()){
+        if (!rbStatusOwner.isChecked() && !rbStatusDweller.isChecked()) {
             dwellerPass = false;
         }
 
-        if (rbInHousehold.isChecked()){
+        if (rbInHousehold.isChecked()) {
             Log.d("MYLOG", "rbInHousehold");
-            if (rbInStudy.isChecked()){
+            if (rbInStudy.isChecked()) {
                 graduatePass = ModelCheckForm.checkSpinner(spInStudy);
-            }else if (rbGraduated.isChecked()){
+            } else if (rbGraduated.isChecked()) {
                 graduatePass = ModelCheckForm.checkSpinner(spGraduated);
             }
 
-            if (rbExpertiseYes.isChecked()){
+            if (rbExpertiseYes.isChecked()) {
                 expertSPass = ModelCheckForm.checkSpinner(spExpertise);
             }
         }
 
-        if (rbNotInRegister.isChecked()){
-            if (rbIRProvince.isChecked()){
+        if (rbNotInRegister.isChecked()) {
+            if (rbIRProvince.isChecked()) {
                 Log.d("MYLOG", "irPPass");
                 irPPass = ModelCheckForm.checkSpinner(spIRProvince);
             }
 
-            if (rbIRCountry.isChecked()){
+            if (rbIRCountry.isChecked()) {
                 Log.d("MYLOG", "irCPass");
                 irCPass = ModelCheckForm.checkSpinner(spIRCountry);
             }
         }
 
-        if (rbNotInHousehold.isChecked()){
-            if (rbIHProvince.isChecked()){
+        if (rbNotInHousehold.isChecked()) {
+            if (rbIHProvince.isChecked()) {
                 Log.d("MYLOG", "ihPPass");
                 ihPPass = ModelCheckForm.checkSpinner(spIHProvince);
             }
 
-            if (rbIHCountry.isChecked()){
+            if (rbIHCountry.isChecked()) {
                 Log.d("MYLOG", "ihCPass");
                 ihCPass = ModelCheckForm.checkSpinner(spIHCountry);
             }
         }
 
-        if (rbJGCareer.isChecked()){
-            if (!cbAgri.isChecked() && !cbPet.isChecked() && !cbGovern.isChecked() && !cbPrivate.isChecked()){
+        if (rbJGCareer.isChecked()) {
+            if (!cbAgri.isChecked() && !cbPet.isChecked() && !cbGovern.isChecked() && !cbPrivate.isChecked()) {
                 jobPass = false;
             }
 
-            if(cbAgri.isChecked()){
+            if (cbAgri.isChecked()) {
                 if (!cbAgri1.isChecked() &&
                         !cbAgri2.isChecked() &&
                         !cbAgri3.isChecked() &&
@@ -2487,14 +2491,14 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                         !cbAgri6.isChecked() &&
                         !cbAgri7.isChecked() &&
                         !cbAgri7.isChecked() &&
-                        !cbAgri8.isChecked()){
+                        !cbAgri8.isChecked()) {
                     job1Pass = false;
                 }
 
-                if (cbAgri8.isChecked()){
+                if (cbAgri8.isChecked()) {
                     job1APass = ModelCheckForm.checkEditText(etAnotherAgri);
                 }
-            }else if(cbPet.isChecked()){
+            } else if (cbPet.isChecked()) {
                 if (!cbPet1.isChecked() &&
                         !cbPet2.isChecked() &&
                         !cbPet3.isChecked() &&
@@ -2503,49 +2507,49 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                         !cbPet6.isChecked() &&
                         !cbPet7.isChecked() &&
                         !cbPet8.isChecked() &&
-                        !cbPet9.isChecked()){
+                        !cbPet9.isChecked()) {
                     job1Pass = false;
                 }
 
-                if (cbPet9.isChecked()){
+                if (cbPet9.isChecked()) {
                     job1APass = ModelCheckForm.checkEditText(etAnotherPet);
                 }
-            }else if(cbGovern.isChecked()){
+            } else if (cbGovern.isChecked()) {
                 if (!cbGovern1.isChecked() &&
                         !cbGovern2.isChecked() &&
                         !cbGovern3.isChecked() &&
                         !cbGovern4.isChecked() &&
-                        !cbGovern5.isChecked()){
+                        !cbGovern5.isChecked()) {
                     job1Pass = false;
                 }
 
-                if (cbGovern5.isChecked()){
+                if (cbGovern5.isChecked()) {
                     job1APass = ModelCheckForm.checkEditText(etAnotherGovern);
                 }
-            }else if(cbPrivate.isChecked()){
+            } else if (cbPrivate.isChecked()) {
                 if (!cbPrivate1.isChecked() &&
                         !cbPrivate2.isChecked() &&
                         !cbPrivate3.isChecked() &&
                         !cbPrivate4.isChecked() &&
                         !cbPrivate5.isChecked() &&
                         !cbPrivate6.isChecked() &&
-                        !cbPrivate7.isChecked()){
+                        !cbPrivate7.isChecked()) {
                     job1Pass = false;
                 }
 
-                if (cbPrivate7.isChecked()){
+                if (cbPrivate7.isChecked()) {
                     job1APass = ModelCheckForm.checkEditText(etAnotherPrivate);
                 }
             }
         }
 
-        if (rbICMonth.isChecked()){
+        if (rbICMonth.isChecked()) {
             incomePass = ModelCheckForm.checkEditText(etICMonth);
-        }else if (rbICYear.isChecked()){
+        } else if (rbICYear.isChecked()) {
             incomePass = ModelCheckForm.checkEditText(etICMonth);
         }
 
-        if (rbCongenitalYes.isChecked()){
+        if (rbCongenitalYes.isChecked()) {
             if (!cbCong1.isChecked() &&
                     !cbCong2.isChecked() &&
                     !cbCong3.isChecked() &&
@@ -2571,16 +2575,16 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     !cbCong23.isChecked() &&
                     !cbCong24.isChecked() &&
                     !cbCong25.isChecked() &&
-                    !cbCong26.isChecked()){
+                    !cbCong26.isChecked()) {
                 conghPass = false;
             }
 
-            if (cbCong26.isChecked()){
+            if (cbCong26.isChecked()) {
                 conghAPass = ModelCheckForm.checkEditText(etAnotherCong);
             }
         }
 
-        if (rbContagiousYes.isChecked()){
+        if (rbContagiousYes.isChecked()) {
             if (!cbCont1.isChecked() &&
                     !cbCont2.isChecked() &&
                     !cbCont3.isChecked() &&
@@ -2631,39 +2635,39 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     !cbCont48.isChecked() &&
                     !cbCont49.isChecked() &&
                     !cbCont50.isChecked() &&
-                    !cbCont51.isChecked()){
+                    !cbCont51.isChecked()) {
                 conthPass = false;
             }
 
-            if (cbCont51.isChecked()){
+            if (cbCont51.isChecked()) {
                 conthAPass = ModelCheckForm.checkEditText(etAnotherCong);
             }
         }
 
-        if (rbAllergicYes.isChecked()){
+        if (rbAllergicYes.isChecked()) {
             allePass = ModelCheckForm.checkEditText(etAllergic);
         }
 
-        if (rbDisabledYes.isChecked()){
+        if (rbDisabledYes.isChecked()) {
             if (!cbDisabled1.isChecked() &&
                     !cbDisabled2.isChecked() &&
                     !cbDisabled3.isChecked() &&
                     !cbDisabled4.isChecked() &&
                     !cbDisabled5.isChecked() &&
-                    !cbDisabled6.isChecked()){
+                    !cbDisabled6.isChecked()) {
                 disPass = false;
             }
         }
 
-        if (rbAnotherReligion.isChecked()){
+        if (rbAnotherReligion.isChecked()) {
             regionPass = ModelCheckForm.checkEditText(etAnotherReligion);
         }
 
-        if (rbTransportationYes.isChecked()){
+        if (rbTransportationYes.isChecked()) {
             if (!cbTrans1.isChecked() &&
                     !cbTrans2.isChecked() &&
                     !cbTrans3.isChecked() &&
-                    !cbTrans4.isChecked()){
+                    !cbTrans4.isChecked()) {
                 transPass = false;
             }
         }
@@ -2710,9 +2714,9 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 disPass == true &&
                 regionPass == true &&
                 transPass == true &&
-                conPass == true){
+                conPass == true) {
             formPass = true;
-        }else{
+        } else {
             formPass = false;
         }
 
@@ -2811,6 +2815,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("ท่านต้องการลบข้อมูล " + SelectedNameItem + " ?").setPositiveButton("ใช่", dialogClickListener)
                 .setNegativeButton("ไม่ใช่", dialogClickListener).show();
-        return false;
+        return true;
     }
 }

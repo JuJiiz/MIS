@@ -23,6 +23,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -1308,6 +1309,10 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 selectedImage.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
                 dataBitmap = outputStream.toByteArray();
+                String imgString = Base64.encodeToString(dataBitmap,
+                        Base64.NO_WRAP);
+                Log.d("MYLOG", "Byte Array: " + imgString);
+                Log.d("MYLOG", "Bitmap: " + selectedImage);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
@@ -1694,6 +1699,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setMessage("ท่านต้องการลบข้อมูล " + SelectedFNameItem + " " + SelectedLNameItem + " ?").setPositiveButton("ใช่", dialogClickListener)
                 .setNegativeButton("ไม่ใช่", dialogClickListener).show();
-        return false;
+        return true;
     }
 }
