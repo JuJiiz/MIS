@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     String jsonResult = "";
     HashMap<String, String> loginTemp = new HashMap<String, String>();
     String parseJSON = "";
+    Boolean checkBoolean = true, resultBoolean = true, connectBoolean = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = manager.getActiveNetworkInfo();
             if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+                connectBoolean = true;
                 try {
                     pUsername = etUsername.getText().toString();
                     pPassword = etPassword.getText().toString();
@@ -92,6 +94,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if (jsonResult != null) {
                         JSONObject jsonObject = new JSONObject(jsonResult);
                         String loginStatus = jsonObject.getString("status");
+                        resultBoolean = true;
                         if (loginStatus.equals("ok")) {
                             String loginUserName = jsonObject.getString("username");
                             String loginUserStatus = jsonObject.getString("userstatus");
@@ -102,29 +105,46 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             editor.putString("userstatus", loginUserStatus);
                             editor.putString("userid", loginUserID);
                             editor.commit();
-                            intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
+                            checkBoolean = true;
                         } else {
-                            Toast.makeText(LoginActivity.this, "ชื่อผู้ใช้หรือรหัสผ่าน ไม่ถูกต้อง", Toast.LENGTH_SHORT).show();
+                            checkBoolean = false;
                         }
                     } else {
-                        Toast.makeText(LoginActivity.this, "ข้อผิดพลาดในการเชื่อมต่อ", Toast.LENGTH_SHORT).show();
+                        resultBoolean = false;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(LoginActivity.this, "การเชื่อมต่อขัดข้อง", Toast.LENGTH_SHORT).show();
+                connectBoolean = false;
             }
             return null;
         }
+
         @Override
         protected void onPostExecute(Void result) {
 
             if (this.dialogLogin.isShowing()) {
                 this.dialogLogin.dismiss();
             }
+
+            if (connectBoolean != false) {
+                if (resultBoolean != false) {
+                    if (checkBoolean != false) {
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(LoginActivity.this, "ชื่อผู้ใช้หรือรหัสผ่าน ไม่ถูกต้อง", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(LoginActivity.this, "ข้อผิดพลาดในการเชื่อมต่อ", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(LoginActivity.this, "การเชื่อมต่อขัดข้อง", Toast.LENGTH_SHORT).show();
+            }
+
         }
+
     }
 
     @Override

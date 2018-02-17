@@ -3,21 +3,14 @@ package com.example.jujiiz.mis.controllers;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -25,7 +18,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -41,7 +33,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -50,6 +41,7 @@ import com.example.jujiiz.mis.R;
 import com.example.jujiiz.mis.models.ModelCheckForm;
 import com.example.jujiiz.mis.models.ModelCheckboxCheck;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
+import com.example.jujiiz.mis.models.ModelSetting;
 import com.example.jujiiz.mis.models.ModelShowHideLayout;
 import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
 import com.example.jujiiz.mis.models.myDBClass;
@@ -62,17 +54,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONArray;
-
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -121,7 +110,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     //RadioButton rbStormHigh,rbStormMid,rbStormLow,rbFloodHigh,rbFloodMid,rbFloodLow,rbMudHigh,rbMudMid,rbMudLow,rbEarthquakeHigh,rbEarthquakeMid,rbEarthquakeLow,rbBuildingHigh,rbBuildingMid,rbBuildingLow,rbDroughtHigh,rbDroughtMid,rbDroughtLow,rbColdHigh,rbColdMid,rbColdLow,rbRoadHigh,rbRoadMid,rbRoadLow,rbFireHigh,rbFireMid,rbFireLow,rbFireForestHigh,rbFireForestMid,rbFireForestLow,rbSmokeHigh,rbSmokeMid,rbSmokeLow,rbChemicalHigh,rbChemicalMid,rbChemicalLow,rbPlagueHigh,rbPlagueMid,rbPlagueLow,rbWeedHigh,rbWeedMid,rbWeedLow;
 
     Intent intent;
-    Bitmap selectedImage;
     myDBClass db = new myDBClass(this);
     String HouseID;
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -131,7 +119,8 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     ArrayAdapter<String> dwellerArrayAdapter;
     Boolean onDataReady = false;
     String SelectedIDItem, SelectedFNameItem, SelectedLNameItem;
-    byte[] dataBitmap = null;
+    Bitmap imgBitmap;
+    byte[] imgByteArray = null;
 
     private static final int CAMERA_REQUEST = 1888;
 
@@ -342,12 +331,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     }
 
     private void setField() {
-        byte[] dataIMG = db.SelectImg("house_img", "house_id", HouseID);
-        if (dataIMG != null) {
-            Bitmap bm = BitmapFactory.decodeByteArray(dataIMG, 0, dataIMG.length);
-            ivImage.setImageBitmap(bm);
-            ivImage.setVisibility(View.VISIBLE);
-        }
         HouseList = db.SelectWhereData("tr14", "house_id", HouseID);
         HouseList = db.SelectWhereData("house", "house_id", HouseID);
         if (!HouseList.isEmpty()) {
@@ -374,6 +357,13 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                 spContributor.setSelection(spinnerPositionContri);
             }
             ModelCurrentCalendar.edittextCurrentCalendar(this, etDate);
+
+            if (!HouseList.get(0).get("distributor_img").equals("")) {
+                imgByteArray = Base64.decode(HouseList.get(0).get("distributor_img"), Base64.DEFAULT);
+                imgBitmap = BitmapFactory.decodeByteArray(imgByteArray, 0, imgByteArray.length);
+                ivImage.setImageBitmap(imgBitmap);
+                ivImage.setVisibility(View.VISIBLE);
+            }
 
             HProbList = db.SelectWhereData("house_problem", "house_id", HouseID);
             if (!HProbList.isEmpty()) {
@@ -425,19 +415,6 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
 
     private void updateData() {
         String date = df.format(Calendar.getInstance().getTime());
-        Val = new ContentValues();
-        Val.put("house_id", HouseID);
-        if (ivImage.getDrawable() != null) {
-            Val.put("distributor_img", dataBitmap);
-        } else {
-            Val.put("distributor_img", "");
-        }
-        byte[] dataIMG = db.SelectImg("house_img", "house_id", HouseID);
-        if (dataIMG == null) {
-            db.InsertData("house_img", Val);
-        } else {
-            db.UpdateData("house_img", Val, "house_id", HouseID);
-        }
 
         Val = new ContentValues();
         Val.put("house_id", etHouseID.getText().toString());
@@ -480,6 +457,14 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         Val.put("distributor", spContributor.getSelectedItem().toString());
         Val.put("survey_status", "1");
         Val.put("upload_status", "1");
+
+        if (ivImage.getDrawable() != null) {
+            String imgString = Base64.encodeToString(imgByteArray, Base64.NO_WRAP);
+            Val.put("distributor_img", imgString);
+        } else {
+            Val.put("distributor_img", "");
+        }
+
         Val.put("upd_by", "");
         Val.put("upd_date", date);
         db.UpdateData("house", Val, "house_id", HouseID);
@@ -1050,10 +1035,8 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                     new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvColumn4, R.id.tvHiddenColumn}
             );
             listHousehold.setAdapter(simpleAdapter);
-            listHousehold.getAdapter().getCount();
-            ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) listHousehold.getLayoutParams();
-            lp.height = listHousehold.getAdapter().getCount() * 92;
-            listHousehold.setLayoutParams(lp);
+
+            ModelSetting.listviewHeight(listHousehold);
         }
     }
 
@@ -1303,16 +1286,12 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             try {
                 final Uri imageUri = data.getData();
                 InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                selectedImage = BitmapFactory.decodeStream(imageStream);
-                ivImage.setImageBitmap(selectedImage);
+                imgBitmap = BitmapFactory.decodeStream(imageStream);
+                ivImage.setImageBitmap(imgBitmap);
                 ivImage.setVisibility(View.VISIBLE);
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                selectedImage.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
-                dataBitmap = outputStream.toByteArray();
-                String imgString = Base64.encodeToString(dataBitmap,
-                        Base64.NO_WRAP);
-                Log.d("MYLOG", "Byte Array: " + imgString);
-                Log.d("MYLOG", "Bitmap: " + selectedImage);
+                imgBitmap.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
+                imgByteArray = outputStream.toByteArray();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
@@ -1325,7 +1304,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             ivImage.setVisibility(View.VISIBLE);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             photo.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
-            dataBitmap = outputStream.toByteArray();
+            imgByteArray = outputStream.toByteArray();
         }
     }
 
@@ -1493,9 +1472,9 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
 
         conPass = ModelCheckForm.checkSpinner(spContributor);
 
-        if (regisPass == true && housePass == true && familyPass == true && probPass == true && enviPass == true && disasPass == true && conPass == true){
+        if (regisPass == true && housePass == true && familyPass == true && probPass == true && enviPass == true && disasPass == true && conPass == true) {
             formPass = true;
-        }else{
+        } else {
             formPass = false;
         }
 

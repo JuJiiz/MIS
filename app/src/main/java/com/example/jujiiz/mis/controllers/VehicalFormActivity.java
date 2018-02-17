@@ -1,9 +1,15 @@
 package com.example.jujiiz.mis.controllers;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -12,6 +18,8 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -25,6 +33,9 @@ import com.example.jujiiz.mis.models.ModelShowHideLayout;
 import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
 import com.example.jujiiz.mis.models.myDBClass;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,7 +50,9 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
     RadioButton rbVehicalType1, rbVehicalType2, rbVehicalType3, rbVehicalType4, rbVehicalType5, rbRentNo, rbRentYes;
     LinearLayout loVehicalType1, loVehicalType2, loVehicalType3, loVehicalType4, loVehicalType5;
     Spinner spVehicalType1, spVehicalType2, spVehicalType3, spVehicalType4, spVehicalType5, spContributor;
-    Button btnSavingData,btnDatePick;
+    Button btnSavingData,btnDatePick, btnImagePick;
+    ImageView ivImage;
+    ImageButton btnCameraPick;
 
     myDBClass db = new myDBClass(this);
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -54,6 +67,10 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
     ArrayList<String> Type5 = new ArrayList<String>();
     ArrayAdapter<String> dwellerArrayAdapter, AdapterType1, AdapterType2, AdapterType3, AdapterType4, AdapterType5;
     String PersonID, HouseID, VehicleID;
+    Bitmap imgBitmap;
+    byte[] imgByteArray = null;
+
+    private static final int CAMERA_REQUEST = 1888;
 
     private DatePickerDialog fromDatePickerDialog;
 
@@ -115,6 +132,12 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
         btnSavingData.setOnClickListener(this);
         btnDatePick = (Button) findViewById(R.id.btnDatePick);
         btnDatePick.setOnClickListener(this);
+        btnImagePick = (Button) findViewById(R.id.btnImagePick);
+        btnImagePick.setOnClickListener(this);
+        btnCameraPick = (ImageButton) findViewById(R.id.btnCameraPick);
+        btnCameraPick.setOnClickListener(this);
+
+        ivImage = (ImageView) findViewById(R.id.ivImage);
     }
 
     private void setDateTimeField() {
@@ -216,8 +239,15 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
             etRegisterDate.setText(formattedDate);
+
+            if (!VehicleList.get(0).get("vehical_img").equals("")) {
+                imgByteArray = Base64.decode(VehicleList.get(0).get("vehical_img"), Base64.DEFAULT);
+                imgBitmap = BitmapFactory.decodeByteArray(imgByteArray, 0, imgByteArray.length);
+                ivImage.setImageBitmap(imgBitmap);
+                ivImage.setVisibility(View.VISIBLE);
+            }
+
             VTypeList = db.SelectWhereData("asset_vehicle", "vtype_id", VehicleList.get(0).get("vtype_id"));
             if (VTypeList.get(0).get("vtype_name").equals("ประเภทยานพาหนะทั่วไป")){
                 rbVehicalType1.setChecked(true);
@@ -273,6 +303,14 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
         }
 
         Val.put("regisdate", formattedDate);
+
+        if (ivImage.getDrawable() != null) {
+            String imgString = Base64.encodeToString(imgByteArray, Base64.NO_WRAP);
+            Val.put("vehical_img", imgString);
+        } else {
+            Val.put("vehical_img", "");
+        }
+
         if (rbVehicalType1.isChecked()) {
             TestList = db.SelectWhereData("asset_vehicle", "vtype_detail", "\"" + spVehicalType1.getSelectedItem() + "\"");
             Val.put("vtype_id", TestList.get(0).get("vtype_id"));
@@ -329,6 +367,35 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            try {
+                final Uri imageUri = data.getData();
+                InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                imgBitmap = BitmapFactory.decodeStream(imageStream);
+                ivImage.setImageBitmap(imgBitmap);
+                ivImage.setVisibility(View.VISIBLE);
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                imgBitmap.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
+                imgByteArray = outputStream.toByteArray();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        }
+        if (reqCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            ivImage.setImageBitmap(photo);
+            ivImage.setVisibility(View.VISIBLE);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
+            imgByteArray = outputStream.toByteArray();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         if (v == btnSavingData) {
             if (fieldCheck() == true){
@@ -341,6 +408,15 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
         }
         if (v == btnDatePick) {
             fromDatePickerDialog.show();
+        }
+        if (v == btnImagePick) {
+            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+            photoPickerIntent.setType("image/*");
+            startActivityForResult(photoPickerIntent, 1);
+        }
+        if (v == btnCameraPick) {
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, CAMERA_REQUEST);
         }
     }
 

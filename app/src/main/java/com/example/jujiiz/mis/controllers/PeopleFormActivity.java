@@ -20,6 +20,7 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
@@ -33,6 +34,7 @@ import com.example.jujiiz.mis.models.ModelCheckboxCheck;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
 import com.example.jujiiz.mis.models.ModelGetJson;
 import com.example.jujiiz.mis.models.ModelLoadJsonRaw;
+import com.example.jujiiz.mis.models.ModelSetting;
 import com.example.jujiiz.mis.models.ModelShowHideLayout;
 import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
 import com.example.jujiiz.mis.models.myDBClass;
@@ -1176,10 +1178,8 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     new int[]{R.id.tvColumn1, R.id.tvColumn2, R.id.tvColumn3, R.id.tvHiddenColumn}
             );
             lvProperty.setAdapter(simpleAdapter);
-            lvProperty.getAdapter().getCount();
-            ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) lvProperty.getLayoutParams();
-            lp.height = lvProperty.getAdapter().getCount() * 92;
-            lvProperty.setLayoutParams(lp);
+
+            ModelSetting.listviewHeight(lvProperty);
         }
     }
 

@@ -21,8 +21,8 @@
             android:text="สัตว์เลี้ยงในครัวเรือน"
             android:textAlignment="center"
             android:textColor="@color/appbarTextColor"
-            android:textStyle="bold"
-            android:textSize="24dp" />
+            android:textSize="24dp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnSavingData"
@@ -57,15 +57,15 @@
                     android:layout_weight="1"
                     android:text="ชื่อ-นามสกุล"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etPetOwner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:layout_weight="2" />
+                    android:layout_weight="2"
+                    android:enabled="false" />
             </LinearLayout>
 
             <!--<LinearLayout
@@ -110,8 +110,8 @@
                     android:layout_weight="1"
                     android:text="การขึ้นทะเบียนสัตว์เลี้ยง"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rdPetRegister"
@@ -146,8 +146,8 @@
                 android:paddingBottom="8dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:visibility="gone"
-                android:paddingTop="8dp">
+                android:paddingTop="8dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="0dp"
@@ -155,16 +155,66 @@
                     android:layout_weight="1"
                     android:text="จำนวนสัตว์เลี้ยง"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etPetAmount"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:text="1"
-                    android:inputType="number"/>
+                    android:inputType="number"
+                    android:text="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="อัพโหลดรูปภาพ"
+                    android:textColor="@color/topicColor"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/ivImage"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
+                    android:background="#c5c5c5"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <Button
+                        android:id="@+id/btnImagePick"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="8"
+                        android:text="เพิ่มรูปภาพ" />
+
+                    <ImageButton
+                        android:id="@+id/btnCameraPick"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:src="@drawable/ic_menu_camera" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <TextView
@@ -173,8 +223,8 @@
                 android:paddingLeft="8dp"
                 android:text="การป้องกันโรค"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -182,8 +232,8 @@
                 android:paddingLeft="16dp"
                 android:text="สัตว์เลี้ยงในครัวเรือน"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -201,8 +251,8 @@
                     android:layout_weight="1"
                     android:text="ประเภทสัตว์เลี้ยงในครัวเรือน"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rdPetType"
@@ -245,8 +295,8 @@
                     android:layout_weight="1"
                     android:text="เพศ"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rdPetSex"
@@ -318,9 +368,9 @@
                 android:id="@+id/loVaccineContinue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:paddingBottom="8dp"
                 android:visibility="gone">
 
                 <RadioGroup
@@ -363,8 +413,8 @@
                     android:layout_weight="1"
                     android:text="เดือนที่ฉีดวัคซีนล่าสุด"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp"/>
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spLastVaccine"
@@ -389,8 +439,8 @@
                     android:layout_weight="1"
                     android:text="การทำหมัน"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spSterile"
@@ -415,8 +465,8 @@
                     android:layout_weight="1"
                     android:text="จำนวนสัตว์เกิดใหม่ต่อปี"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rdPetBorn"
@@ -472,8 +522,8 @@
                     android:layout_height="wrap_content"
                     android:text="ชื่อผู้ให้ข้อมูล"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spContributor"
@@ -495,8 +545,8 @@
                     android:layout_height="wrap_content"
                     android:text="วันที่บันทึกข้อมูล"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etDate"

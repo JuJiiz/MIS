@@ -1,14 +1,23 @@
 package com.example.jujiiz.mis.controllers;
 
+import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -22,6 +31,9 @@ import com.example.jujiiz.mis.models.ModelShowHideLayout;
 import com.example.jujiiz.mis.models.ModelSpinnerAdapter;
 import com.example.jujiiz.mis.models.myDBClass;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +46,11 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
     RadioButton rbPetRegisterNo, rbPetRegisterYes, rbPetTypeDog, rbPetTypeCat, rbPetSexMale, rbPetSexFemale, rbPetVaccineNo, rbPetVaccineYes, rbVaccineContinueNo, rbVaccineContinueYes, rbPetBornNo, rbPetBornYes;
     LinearLayout loVaccineContinue, loLastVaccine, loPetBorn;
     Spinner spSterile, spLastVaccine, spContributor;
-    Button btnSavingData;
+    Button btnSavingData, btnImagePick;
+    ImageView ivImage;
+    ImageButton btnCameraPick;
+
+    private static final int CAMERA_REQUEST = 1888;
 
     String[] spMonthArray = {"กรุณาเลือก","มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"};
     String[] spSterileArray = {"กรุณาเลือก","ทำหมันแล้ว", "ยังไม่ทำหมัน", "ไม่ทราบ", "ฉีดยาคุม"};
@@ -46,6 +62,8 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
     ArrayList<String> Dweller = new ArrayList<String>();
     ArrayAdapter<String> dwellerArrayAdapter, monthArrayAdapter, sterileArrayAdapter;
     String PersonID, HouseID, PetID;
+    Bitmap imgBitmap;
+    byte[] imgByteArray = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +120,12 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
 
         btnSavingData = (Button) findViewById(R.id.btnSavingData);
         btnSavingData.setOnClickListener(this);
+        btnImagePick = (Button) findViewById(R.id.btnImagePick);
+        btnImagePick.setOnClickListener(this);
+        btnCameraPick = (ImageButton) findViewById(R.id.btnCameraPick);
+        btnCameraPick.setOnClickListener(this);
+
+        ivImage = (ImageView) findViewById(R.id.ivImage);
     }
 
     private void setSpinner() {
@@ -131,11 +155,18 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
                 rbPetRegisterYes.setChecked(true);
             }
 
+            if (!PetList.get(0).get("pet_img").equals("")) {
+                imgByteArray = Base64.decode(PetList.get(0).get("pet_img"), Base64.DEFAULT);
+                imgBitmap = BitmapFactory.decodeByteArray(imgByteArray, 0, imgByteArray.length);
+                ivImage.setImageBitmap(imgBitmap);
+                ivImage.setVisibility(View.VISIBLE);
+            }
+
             etPetAmount.setText(PetList.get(0).get("pet_amount"));
 
-            if (PetList.get(0).get("pet_type").equals("0")) {
+            if (PetList.get(0).get("pet_type").equals("1")) {
                 rbPetTypeDog.setChecked(true);
-            } else if (PetList.get(0).get("pet_type").equals("1")) {
+            } else if (PetList.get(0).get("pet_type").equals("2")) {
                 rbPetTypeCat.setChecked(true);
             }
 
@@ -183,6 +214,13 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
             Val.put("pet_regis", "1");
         } else {
             Val.put("pet_regis", "0");
+        }
+
+        if (ivImage.getDrawable() != null) {
+            String imgString = Base64.encodeToString(imgByteArray, Base64.NO_WRAP);
+            Val.put("pet_img", imgString);
+        } else {
+            Val.put("pet_img", "");
         }
 
         Val.put("pet_amount", etPetAmount.getText().toString());
@@ -266,6 +304,35 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            try {
+                final Uri imageUri = data.getData();
+                InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                imgBitmap = BitmapFactory.decodeStream(imageStream);
+                ivImage.setImageBitmap(imgBitmap);
+                ivImage.setVisibility(View.VISIBLE);
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                imgBitmap.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
+                imgByteArray = outputStream.toByteArray();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        }
+        if (reqCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            ivImage.setImageBitmap(photo);
+            ivImage.setVisibility(View.VISIBLE);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
+            imgByteArray = outputStream.toByteArray();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         if (v == btnSavingData) {
             if (fieldCheck() == true){
@@ -275,6 +342,15 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
             } else {
                 Toast.makeText(this, "ข้อมูลไม่สมบูรณ์", Toast.LENGTH_SHORT).show();
             }
+        }
+        if (v == btnImagePick) {
+            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+            photoPickerIntent.setType("image/*");
+            startActivityForResult(photoPickerIntent, 1);
+        }
+        if (v == btnCameraPick) {
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, CAMERA_REQUEST);
         }
     }
 

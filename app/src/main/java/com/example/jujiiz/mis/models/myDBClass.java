@@ -264,6 +264,7 @@ public class myDBClass extends SQLiteOpenHelper {
                 "\t`vehicle_running`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
                 "\t`population_idcard`\tINTEGER NOT NULL,\n" +
                 "\t`regisdate`\tTEXT NOT NULL,\n" +
+                "\t`vehical_img`\tTEXT NOT NULL,\n" +
                 "\t`vtype_id`\tINTEGER NOT NULL,\n" +
                 "\t`vehical_rent`\tTEXT NOT NULL,\n" +
                 "\t`distributor`\tTEXT NOT NULL,\n" +
@@ -278,6 +279,7 @@ public class myDBClass extends SQLiteOpenHelper {
                 "\t`pet_running`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
                 "\t`population_idcard`\tINTEGER NOT NULL,\n" +
                 "\t`pet_regis`\tTEXT NOT NULL,\n" +
+                "\t`pet_img`\tTEXT NOT NULL,\n" +
                 "\t`pet_amount`\tINTEGER NOT NULL,\n" +
                 "\t`pet_type`\tTEXT NOT NULL,\n" +
                 "\t`pet_sex`\tTEXT NOT NULL,\n" +
@@ -474,6 +476,7 @@ public class myDBClass extends SQLiteOpenHelper {
                 "\t`distributor`\tTEXT NOT NULL,\n" +
                 "\t`survey_status`\tTEXT NOT NULL,\n" +
                 "\t`upload_status`\tTEXT NOT NULL,\n" +
+                "\t`distributor_img`\tTEXT NOT NULL,\n" +
                 "\t`cr_by`\tTEXT NOT NULL,\n" +
                 "\t`cr_date`\tTEXT NOT NULL,\n" +
                 "\t`upd_by`\tTEXT NOT NULL,\n" +
@@ -481,10 +484,10 @@ public class myDBClass extends SQLiteOpenHelper {
                 "\t`ACTIVE`\tTEXT NOT NULL\n" +
                 ");");
 
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `house_img` (\n" +
+        /*sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `house_img` (\n" +
                 "\t`house_id`\tINTEGER NOT NULL PRIMARY KEY,\n" +
                 "\t`distributor_img`\tBLOB NOT NULL\n" +
-                ");");
+                ");");*/
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS `asset_vehicle` (\n" +
                 "\t`vtype_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +

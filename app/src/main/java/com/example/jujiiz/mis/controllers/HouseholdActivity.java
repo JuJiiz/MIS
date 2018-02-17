@@ -235,6 +235,7 @@ public class HouseholdActivity extends AppCompatActivity
                             Val.put("house_status", "");
                             Val.put("house_family_type", "");
                             Val.put("distributor", "");
+                            Val.put("distributor_img", "");
                             Val.put("survey_status", "0");
                             Val.put("upload_status", "0");
                             Val.put("cr_by", "ADMIN");

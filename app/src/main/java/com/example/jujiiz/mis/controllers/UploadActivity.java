@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -169,12 +170,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     temp.put("house_in_registry", HouseList.get(i).get("house_in_registry"));
                     temp.put("house_status", HouseList.get(i).get("house_status"));
                     temp.put("house_family_type", HouseList.get(i).get("house_family_type"));
-                    IMGList = db.SelectWhereData("house_img", "house_id", HouseList.get(i).get("house_id"));
-                    if (IMGList != null) {
-                        temp.put("distributor_img", IMGList.get(0).get("distributor_img"));
-                    } else {
-                        temp.put("distributor_img", "");
-                    }
+                    temp.put("distributor_img", HouseList.get(i).get("distributor_img"));
                     temp.put("distributor", HouseList.get(i).get("distributor"));
                     temp.put("survey_status", HouseList.get(i).get("survey_status"));
 
@@ -505,6 +501,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
             temp.put("population_idcard", VehicleList.get(i).get("population_idcard"));
             temp.put("regisdate", VehicleList.get(i).get("regisdate"));
+            temp.put("vehical_img", VehicleList.get(i).get("vehical_img"));
             temp.put("vtype_id", VehicleList.get(i).get("vtype_id"));
             temp.put("vehicle_rent", VehicleList.get(i).get("vehical_rent"));
             temp.put("distributor", VehicleList.get(i).get("distributor"));
@@ -524,6 +521,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
 
             temp.put("population_idcard", PetList.get(i).get("population_idcard"));
             temp.put("pet_regis", PetList.get(i).get("pet_regis"));
+            temp.put("pet_img", PetList.get(i).get("pet_img"));
             temp.put("pet_amount", PetList.get(i).get("pet_amount"));
             temp.put("ptype_id", PetList.get(i).get("pet_type"));
             temp.put("pet_sex", PetList.get(i).get("pet_sex"));
