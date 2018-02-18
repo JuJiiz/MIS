@@ -69,7 +69,7 @@ public class HouseholdActivity extends AppCompatActivity
     JSONArray STRING_JSONDATA;
     String apiURL = "https://bayclouds.com/gettr14";
     String JKey = "data";
-    boolean RESUME = false;
+    Boolean resultBoolean = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,9 +218,7 @@ public class HouseholdActivity extends AppCompatActivity
                             public void run() {
                                 dialog.setMessage("กำลังดาวน์โหลด... \nบ้านเลขที่ " + HNoDialogMessage);
                             }
-                        });;
-                        //publishProgress(new TaskProgress(DialogMessage));
-                        //this.dialog.setMessage("กำลังดาวน์โหลด... \nบ้านเลขที่ " + HNoDialogMessage);
+                        });
 
                         HouseList = new ArrayList<HashMap<String, String>>();
                         HouseList = db.SelectWhereData("house", "house_id", List.get(i).get("house_id"));
@@ -312,8 +310,9 @@ public class HouseholdActivity extends AppCompatActivity
                         }
                     }
                 }
+                resultBoolean = true;
             } else {
-                Toast.makeText(HouseholdActivity.this, "ไม่มีข้อมูล", Toast.LENGTH_SHORT).show();
+                resultBoolean = false;
             }
             return null;
         }
@@ -323,8 +322,12 @@ public class HouseholdActivity extends AppCompatActivity
             if (this.dialog.isShowing()) {
                 this.dialog.dismiss();
             }
-            Toast.makeText(getApplicationContext(), "ดาวน์โหลดสำเร็จแล้ว", Toast.LENGTH_SHORT).show();
-            new AsynTaskSetListView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            if (resultBoolean != false){
+                new AsynTaskSetListView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                Toast.makeText(getApplicationContext(), "ดาวน์โหลดสำเร็จแล้ว", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(HouseholdActivity.this, "ไม่มีข้อมูล", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
