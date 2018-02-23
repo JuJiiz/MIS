@@ -21,8 +21,8 @@
             android:text="สัตว์เพื่อการเกษตร"
             android:textAlignment="center"
             android:textColor="@color/appbarTextColor"
-            android:textStyle="bold"
-            android:textSize="24dp" />
+            android:textSize="24dp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnSavingData"
@@ -140,33 +140,6 @@
                 </RadioGroup>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:orientation="horizontal"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="จำนวนสัตว์เลี้ยง"
-                    android:textColor="@color/topicColor"
-                    android:gravity="center_vertical"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/etAnimalAmount"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2" />
-            </LinearLayout>
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -204,11 +177,44 @@
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                <Spinner
-                    android:id="@+id/spAnimalType"
+                <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"></Spinner>
+                    android:layout_weight="2"
+                    android:background="@color/listItemColor">
+
+                    <Spinner
+                        android:id="@+id/spAnimalType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></Spinner>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="จำนวนสัตว์เลี้ยง"
+                    android:textColor="@color/topicColor"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/etAnimalAmount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2" />
             </LinearLayout>
 
             <LinearLayout
@@ -510,11 +516,17 @@
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                <Spinner
-                    android:id="@+id/spAnimalMarket"
+                <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"></Spinner>
+                    android:layout_weight="2"
+                    android:background="@color/listItemColor">
+
+                    <Spinner
+                        android:id="@+id/spAnimalMarket"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></Spinner>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -534,10 +546,17 @@
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                <Spinner
-                    android:id="@+id/spContributor"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></Spinner>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:background="@color/listItemColor">
+
+                    <Spinner
+                        android:id="@+id/spContributor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></Spinner>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout

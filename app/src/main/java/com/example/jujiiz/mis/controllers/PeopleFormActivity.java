@@ -29,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.CustomDatePicker;
 import com.example.jujiiz.mis.models.ModelCheckForm;
 import com.example.jujiiz.mis.models.ModelCheckboxCheck;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
@@ -2311,10 +2312,11 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     @Override
     public void onClick(View view) {
         if (view == btnDatePick) {
-            fromDatePickerDialog.show();
+            //fromDatePickerDialog.show();
+            CustomDatePicker.customDialog(PeopleFormActivity.this, etBirtDate);
         }
         if (view == btnSavingData) {
-            if (fieldCheck() == true) {
+            if (fieldCheck() == 0) {
                 updateData();
                 Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
                 if (!PersonID.equals("Nope")) {
@@ -2327,8 +2329,70 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 } else {
                     this.finish();
                 }
-            } else {
-                Toast.makeText(this, "ข้อมูลไม่สมบูรณ์", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 1) {
+                Toast.makeText(this, "กรุณาระบุ \"สัญชาติ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 2) {
+                Toast.makeText(this, "กรุณาระบุ \"ชื่อต้น\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 3) {
+                Toast.makeText(this, "กรุณาระบุ \"นามสกุล\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 4) {
+                Toast.makeText(this, "กรุณาระบุ \"คำนำหน้า\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 5) {
+                Toast.makeText(this, "กรุณาระบุ \"เพศ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 6) {
+                Toast.makeText(this, "กรุณาระบุ \"เลขประจำตัวประชาชน\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 7) {
+                Toast.makeText(this, "กรุณาระบุ \"วัน/เดือน/ปีเกิด\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 8) {
+                Toast.makeText(this, "กรุณาระบุ \"กรุ๊ปเลือด\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 9) {
+                Toast.makeText(this, "กรุณาระบุ \"การมีชีวิตอยู่\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 10) {
+                Toast.makeText(this, "กรุณาระบุ \"สถานภาพการสมรส\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 11) {
+                Toast.makeText(this, "กรุณาระบุ \"ที่อยู่ตามทะเบียนบ้าน\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 12) {
+                Toast.makeText(this, "กรุณาระบุ \"ที่อยู่ปัจจุบัน\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 13) {
+                Toast.makeText(this, "กรุณาระบุ \"สถานภาพของการอาศัย\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 14) {
+                Toast.makeText(this, "กรุณาระบุ \"ระดับการศึกษา\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 15) {
+                Toast.makeText(this, "กรุณาระบุ \"สาขาความเชี่ยวชาญ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 16) {
+                Toast.makeText(this, "กรุณาระบุ \"จังหวัด\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 17) {
+                Toast.makeText(this, "กรุณาระบุ \"ประเทศ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 18) {
+                Toast.makeText(this, "กรุณาระบุ \"จังหวัด\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 19) {
+                Toast.makeText(this, "กรุณาระบุ \"ประเทศ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 20) {
+                Toast.makeText(this, "กรุณาระบุ \"ประเภทอาชีพ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 21) {
+                Toast.makeText(this, "กรุณาระบุ \"อาชีพ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 22) {
+                Toast.makeText(this, "กรุณาระบุ \"อาชีพ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 23) {
+                Toast.makeText(this, "กรุณาระบุ \"รายได้\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 24) {
+                Toast.makeText(this, "กรุณาระบุ \"ประวัติโรคประจำตัว\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 25) {
+                Toast.makeText(this, "กรุณาระบุ \"ประวัติโรคประจำตัว (อื่นๆ)\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 26) {
+                Toast.makeText(this, "กรุณาระบุ \"ประวัติการเป็นโรค\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 27) {
+                Toast.makeText(this, "กรุณาระบุ \"ประวัติการเป็นโรค (อื่นๆ)\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 28) {
+                Toast.makeText(this, "กรุณาระบุ \"ประวัติการแพ้ยา\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 29) {
+                Toast.makeText(this, "กรุณาระบุ \"ความพิการ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 30) {
+                Toast.makeText(this, "กรุณาระบุ \"สัญชาติ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 31) {
+                Toast.makeText(this, "กรุณาระบุ \"การใช้บริการขนส่งสาธารณะ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 32) {
+                Toast.makeText(this, "กรุณาระบุ \"ชื่อผู้ให้ข้อมูล\"", Toast.LENGTH_SHORT).show();
             }
         }
         if (view == btnAddProperty) {
@@ -2385,40 +2449,40 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         }
     }
 
-    private Boolean fieldCheck() {
-        Boolean formPass = false,
-                nationPass = true,//
-                fnamePass = true,//
-                lnamePass = true,//
-                prefixPass = true,//
-                sexPass = true,//
-                personidPass = true,//
-                birthPass = true,//
-                bloodPass = true,//
-                livingPass = true,//
-                maritalPass = true,//
-                inregisPass = true,//
-                inhousePass = true,//
-                dwellerPass = true,//
-                graduatePass = true,//
-                expertSPass = true,//
-                irPPass = true,//
-                irCPass = true,//
-                ihPPass = true,//
-                ihCPass = true,//
-                jobPass = true,//
-                job1Pass = true,//
-                job1APass = true,//
-                incomePass = true,//
-                conghPass = true,//
-                conghAPass = true,//
-                conthPass = true,//
-                conthAPass = true,//
-                allePass = true,//
-                disPass = true,//
-                regionPass = true,//
-                transPass = true,//
-                conPass = true;//
+    private int fieldCheck() {
+        int formPass = 0;
+        Boolean nationPass = true,//1
+                fnamePass = true,//2
+                lnamePass = true,//3
+                prefixPass = true,//4
+                sexPass = true,//5
+                personidPass = true,//6
+                birthPass = true,//7
+                bloodPass = true,//8
+                livingPass = true,//9
+                maritalPass = true,//10
+                inregisPass = true,//11
+                inhousePass = true,//12
+                dwellerPass = true,//13
+                graduatePass = true,//14
+                expertSPass = true,//15
+                irPPass = true,//16
+                irCPass = true,//17
+                ihPPass = true,//18
+                ihCPass = true,//19
+                jobPass = true,//20
+                job1Pass = true,//21
+                job1APass = true,//22
+                incomePass = true,//23
+                conghPass = true,//24
+                conghAPass = true,//25
+                conthPass = true,//26
+                conthAPass = true,//27
+                allePass = true,//28
+                disPass = true,//29
+                regionPass = true,//30
+                transPass = true,//31
+                conPass = true;//32
 
         if (!rbMale.isChecked() && !rbFemale.isChecked()) {
             sexPass = false;
@@ -2441,7 +2505,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         }
 
         if (rbInHousehold.isChecked()) {
-            Log.d("MYLOG", "rbInHousehold");
             if (rbInStudy.isChecked()) {
                 graduatePass = ModelCheckForm.checkSpinner(spInStudy);
             } else if (rbGraduated.isChecked()) {
@@ -2455,24 +2518,20 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
         if (rbNotInRegister.isChecked()) {
             if (rbIRProvince.isChecked()) {
-                Log.d("MYLOG", "irPPass");
                 irPPass = ModelCheckForm.checkSpinner(spIRProvince);
             }
 
             if (rbIRCountry.isChecked()) {
-                Log.d("MYLOG", "irCPass");
                 irCPass = ModelCheckForm.checkSpinner(spIRCountry);
             }
         }
 
         if (rbNotInHousehold.isChecked()) {
             if (rbIHProvince.isChecked()) {
-                Log.d("MYLOG", "ihPPass");
                 ihPPass = ModelCheckForm.checkSpinner(spIHProvince);
             }
 
             if (rbIHCountry.isChecked()) {
-                Log.d("MYLOG", "ihCPass");
                 ihCPass = ModelCheckForm.checkSpinner(spIHCountry);
             }
         }
@@ -2683,41 +2742,134 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         maritalPass = ModelCheckForm.checkSpinner(spMaritalStatus);
         conPass = ModelCheckForm.checkSpinner(spContributor);
 
-        if (nationPass == true &&
-                fnamePass == true &&
-                lnamePass == true &&
-                prefixPass == true &&
-                sexPass == true &&
-                personidPass == true &&
-                birthPass == true &&
-                bloodPass == true &&
-                livingPass == true &&
-                maritalPass == true &&
-                inregisPass == true &&
-                inhousePass == true &&
-                dwellerPass == true &&
-                graduatePass == true &&
-                expertSPass == true &&
-                irPPass == true &&
-                irCPass == true &&
-                ihPPass == true &&
-                ihCPass == true &&
-                jobPass == true &&
-                job1Pass == true &&
-                job1APass == true &&
-                incomePass == true &&
-                conghPass == true &&
-                conghAPass == true &&
-                conthPass == true &&
-                conthAPass == true &&
-                allePass == true &&
-                disPass == true &&
-                regionPass == true &&
-                transPass == true &&
-                conPass == true) {
-            formPass = true;
+        if (nationPass == true) {
+            if (fnamePass == true) {
+                if (lnamePass == true) {
+                    if (prefixPass == true) {
+                        if (sexPass == true) {
+                            if (personidPass == true) {
+                                if (birthPass == true) {
+                                    if (bloodPass == true) {
+                                        if (livingPass == true) {
+                                            if (maritalPass == true) {
+                                                if (inregisPass == true) {
+                                                    if (inhousePass == true) {
+                                                        if (dwellerPass == true) {
+                                                            if (graduatePass == true) {
+                                                                if (expertSPass == true) {
+                                                                    if (irPPass == true) {
+                                                                        if (irCPass == true) {
+                                                                            if (ihPPass == true) {
+                                                                                if (ihCPass == true) {
+                                                                                    if (jobPass == true) {
+                                                                                        if (job1Pass == true) {
+                                                                                            if (job1APass == true) {
+                                                                                                if (incomePass == true) {
+                                                                                                    if (conghPass == true) {
+                                                                                                        if (conghAPass == true) {
+                                                                                                            if (conthPass == true) {
+                                                                                                                if (conthAPass == true) {
+                                                                                                                    if (allePass == true) {
+                                                                                                                        if (disPass == true) {
+                                                                                                                            if (regionPass == true) {
+                                                                                                                                if (transPass == true) {
+                                                                                                                                    if (conPass == true) {
+                                                                                                                                        formPass = 0;
+                                                                                                                                    } else {
+                                                                                                                                        formPass = 32;
+                                                                                                                                    }
+                                                                                                                                } else {
+                                                                                                                                    formPass = 31;
+                                                                                                                                }
+                                                                                                                            } else {
+                                                                                                                                formPass = 30;
+                                                                                                                            }
+                                                                                                                        } else {
+                                                                                                                            formPass = 29;
+                                                                                                                        }
+                                                                                                                    } else {
+                                                                                                                        formPass = 28;
+                                                                                                                    }
+                                                                                                                } else {
+                                                                                                                    formPass = 27;
+                                                                                                                }
+                                                                                                            } else {
+                                                                                                                formPass = 26;
+                                                                                                            }
+                                                                                                        } else {
+                                                                                                            formPass = 25;
+                                                                                                        }
+                                                                                                    } else {
+                                                                                                        formPass = 24;
+                                                                                                    }
+                                                                                                } else {
+                                                                                                    formPass = 23;
+                                                                                                }
+                                                                                            } else {
+                                                                                                formPass = 22;
+                                                                                            }
+                                                                                        } else {
+                                                                                            formPass = 21;
+                                                                                        }
+                                                                                    } else {
+                                                                                        formPass = 20;
+                                                                                    }
+                                                                                } else {
+                                                                                    formPass = 19;
+                                                                                }
+                                                                            } else {
+                                                                                formPass = 18;
+                                                                            }
+                                                                        } else {
+                                                                            formPass = 17;
+                                                                        }
+                                                                    } else {
+                                                                        formPass = 16;
+                                                                    }
+                                                                } else {
+                                                                    formPass = 15;
+                                                                }
+                                                            } else {
+                                                                formPass = 14;
+                                                            }
+                                                        } else {
+                                                            formPass = 13;
+                                                        }
+                                                    } else {
+                                                        formPass = 12;
+                                                    }
+                                                } else {
+                                                    formPass = 11;
+                                                }
+                                            } else {
+                                                formPass = 10;
+                                            }
+                                        } else {
+                                            formPass = 9;
+                                        }
+                                    } else {
+                                        formPass = 8;
+                                    }
+                                } else {
+                                    formPass = 7;
+                                }
+                            } else {
+                                formPass = 6;
+                            }
+                        } else {
+                            formPass = 5;
+                        }
+                    } else {
+                        formPass = 4;
+                    }
+                } else {
+                    formPass = 3;
+                }
+            } else {
+                formPass = 2;
+            }
         } else {
-            formPass = false;
+            formPass = 1;
         }
 
         return formPass;

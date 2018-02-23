@@ -51,6 +51,7 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
     ImageButton btnCameraPick;
 
     private static final int CAMERA_REQUEST = 1888;
+    private static final int GALLERY_REQUEST = 1;
 
     String[] spMonthArray = {"กรุณาเลือก","มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"};
     String[] spSterileArray = {"กรุณาเลือก","ทำหมันแล้ว", "ยังไม่ทำหมัน", "ไม่ทราบ", "ฉีดยาคุม"};
@@ -109,6 +110,8 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
         rbPetBornYes = (RadioButton) findViewById(R.id.rbPetBornYes);
         rbPetVaccineYes.setOnCheckedChangeListener(this);
         rbPetBornYes.setOnCheckedChangeListener(this);
+        rbPetSexMale.setOnCheckedChangeListener(this);
+        rbPetSexFemale.setOnCheckedChangeListener(this);
 
         loVaccineContinue = (LinearLayout) findViewById(R.id.loVaccineContinue);
         loLastVaccine = (LinearLayout) findViewById(R.id.loLastVaccine);
@@ -306,7 +309,7 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
+        if (reqCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
             try {
                 final Uri imageUri = data.getData();
                 InputStream imageStream = getContentResolver().openInputStream(imageUri);
@@ -335,18 +338,28 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (v == btnSavingData) {
-            if (fieldCheck() == true){
+            if (fieldCheck() == 0){
                 updateData();
                 Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
                 this.finish();
-            } else {
-                Toast.makeText(this, "ข้อมูลไม่สมบูรณ์", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 1){
+                Toast.makeText(this, "กรุณาระบุ \"ประเภทสัตว์เลี้ยงในครัวเรือน\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 2){
+                Toast.makeText(this, "กรุณาระบุ \"เพศ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 3){
+                Toast.makeText(this, "กรุณาระบุ \"การฉีดวัคซีน\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 4){
+                Toast.makeText(this, "กรุณาระบุ \"จำนวนสัตว์เกิดใหม่ต่อปี\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 5){
+                Toast.makeText(this, "กรุณาระบุ \"การทำหมัน\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 6){
+                Toast.makeText(this, "กรุณาระบุ \"ชื่อผู้ให้ข้อมูล\"", Toast.LENGTH_SHORT).show();
             }
         }
         if (v == btnImagePick) {
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");
-            startActivityForResult(photoPickerIntent, 1);
+            startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
         }
         if (v == btnCameraPick) {
             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -354,14 +367,14 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    private Boolean fieldCheck(){
-        Boolean formPass = false,
-                typePass = true,
-                sexPass = true,
-                vacconPass = true,
-                bornPass = true,
-                sterilePass = true,
-                conPass = true;
+    private int fieldCheck(){
+        int formPass = 0;
+        Boolean typePass = true,//1
+                sexPass = true,//2
+                vacconPass = true,//3
+                bornPass = true,//4
+                sterilePass = true,//5
+                conPass = true;//6
 
         if (!rbPetTypeDog.isChecked() && !rbPetTypeCat.isChecked()){
             typePass = false;
@@ -392,10 +405,30 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
         sterilePass = ModelCheckForm.checkSpinner(spSterile);
         conPass = ModelCheckForm.checkSpinner(spContributor);
 
-        if (typePass == true && sexPass == true && vacconPass == true && bornPass == true && sterilePass == true && conPass == true){
-            formPass = true;
+        if (typePass == true){
+            if (sexPass == true){
+                if (vacconPass == true){
+                    if (bornPass == true){
+                        if (sterilePass == true){
+                            if (conPass == true){
+                                formPass = 0;
+                            }else{
+                                formPass = 6;
+                            }
+                        }else{
+                            formPass = 5;
+                        }
+                    }else{
+                        formPass = 4;
+                    }
+                }else{
+                    formPass = 3;
+                }
+            }else{
+                formPass = 2;
+            }
         }else{
-            formPass = false;
+            formPass = 1;
         }
 
         return formPass;
@@ -409,5 +442,13 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
         }
         if (buttonView == rbPetBornYes)
             ModelShowHideLayout.radiobuttonShowHide(rbPetBornYes, loPetBorn);
+        if (buttonView == rbPetSexMale){
+            rbPetBornYes.setEnabled(false);
+            rbPetBornNo.setEnabled(false);
+        }
+        if (buttonView == rbPetSexFemale){
+            rbPetBornYes.setEnabled(true);
+            rbPetBornNo.setEnabled(true);
+        }
     }
 }

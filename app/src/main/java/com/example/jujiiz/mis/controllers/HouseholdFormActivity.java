@@ -33,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -98,6 +99,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
 
     LinearLayout loAnotherProblem;
     ListView listHousehold;
+    ScrollView svHousehold;
 
     RadioButton rbProbEnvyNo, rbProbEnvyYes;
     CheckBox cbSound, cbShock, cbDust, cbSmell, cbAir, cbWater, cbGarbage;
@@ -123,6 +125,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     byte[] imgByteArray = null;
 
     private static final int CAMERA_REQUEST = 1888;
+    private static final int GALLERY_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +155,8 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         etLong = (EditText) findViewById(R.id.etLong);
 
         spContributor = (Spinner) findViewById(R.id.spContributor);
+
+        svHousehold = (ScrollView) findViewById(R.id.svHousehold);
 
         listHousehold = (ListView) findViewById(R.id.listHousehold);
         listHousehold.setOnItemClickListener(this);
@@ -1282,7 +1287,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
+        if (reqCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
             try {
                 final Uri imageUri = data.getData();
                 InputStream imageStream = getContentResolver().openInputStream(imageUri);
@@ -1340,31 +1345,48 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         if (view == btnImagePick) {
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");
-            startActivityForResult(photoPickerIntent, 1);
+            startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
         }
         if (view == btnCameraPick) {
             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(cameraIntent, CAMERA_REQUEST);
         }
         if (view == btnSavingData) {
-            if (fieldCheck() == true) {
+            if (fieldCheck() == 0) {
                 updateData();
                 Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "ข้อมูลไม่สมบูรณ์", Toast.LENGTH_SHORT).show();
+                svHousehold.post(new Runnable() {
+                    public void run() {
+                        svHousehold.fullScroll(View.FOCUS_UP);
+                    }
+                });
+            } else if (fieldCheck() == 1){
+                Toast.makeText(this, "กรุณาระบุ \"ทะเบียนราษฎ์\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 2){
+                Toast.makeText(this, "กรุณาระบุ \"สถานะบ้าน\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 3){
+                Toast.makeText(this, "กรุณาระบุ \"รูปแบบครอบครัว\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 4){
+                Toast.makeText(this, "กรุณาระบุ \"สภาพปัญหา (อื่นๆ)\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 5){
+                Toast.makeText(this, "กรุณาระบุ \"ปัญหาสภาพแวดล้อม\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 6){
+                Toast.makeText(this, "กรุณาระบุ \"ภัย\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 7){
+                Toast.makeText(this, "กรุณาระบุ \"ผู้ให้ข้อมูล\"", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private Boolean fieldCheck() {
-        Boolean formPass = false,
-                regisPass = true,
-                housePass = true,
-                familyPass = true,
-                probPass = true,
-                enviPass = true,
-                disasPass = true,
-                conPass = true;
+    private int fieldCheck() {
+        int formPass = 0;
+        Boolean regisPass = true,//1
+                housePass = true,//2
+                familyPass = true,//3
+                probPass = true,//4
+                enviPass = true,//5
+                disasPass = true,//6
+                conPass = true;//7
 
         regisPass = ModelCheckForm.checkRadioGroup(registerRadioGroup);
         housePass = ModelCheckForm.checkRadioGroup(housestatusRadioGroup);
@@ -1472,11 +1494,39 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
 
         conPass = ModelCheckForm.checkSpinner(spContributor);
 
-        if (regisPass == true && housePass == true && familyPass == true && probPass == true && enviPass == true && disasPass == true && conPass == true) {
-            formPass = true;
+        //if (regisPass == true && housePass == true && familyPass == true && probPass == true && enviPass == true && disasPass == true && conPass == true) {
+        //formPass = 0;
+        //} else {
+        if (regisPass == true) {
+            if (housePass == true) {
+                if (familyPass == true) {
+                    if (probPass == true) {
+                        if (enviPass == true) {
+                            if (disasPass == true) {
+                                if (conPass == true) {
+                                    formPass = 0;
+                                } else {
+                                    formPass = 7;
+                                }
+                            } else {
+                                formPass = 6;
+                            }
+                        } else {
+                            formPass = 5;
+                        }
+                    } else {
+                        formPass = 4;
+                    }
+                } else {
+                    formPass = 3;
+                }
+            } else {
+                formPass = 2;
+            }
         } else {
-            formPass = false;
+            formPass = 1;
         }
+        //}
 
         return formPass;
     }

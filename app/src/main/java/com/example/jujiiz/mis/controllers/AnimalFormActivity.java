@@ -358,23 +358,31 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         if (v == btnSavingData){
-            if (fieldCheck() == true){
+            if (fieldCheck() == 0){
                 updateData();
                 Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
                 this.finish();
-            } else {
-                Toast.makeText(this, "ข้อมูลไม่สมบูรณ์", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 1){
+                Toast.makeText(this, "กรุณาระบุ \"ชนิดสัตว์เลี้ยง\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 2){
+                Toast.makeText(this, "กรุณาระบุ \"การควบคุมโรค\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 3){
+                Toast.makeText(this, "กรุณาระบุ \"การติดโรค\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 4){
+                Toast.makeText(this, "กรุณาระบุ \"ตลาดในการซื้อขาย\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 5){
+                Toast.makeText(this, "กรุณาระบุ \"ชื่อผู้ให้ข้อมูล\"", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private Boolean fieldCheck(){
-        Boolean formPass = false,
-                typePass = true,
-                infectctrlPass = true,
-                infectPass = true,
-                marketPass = true,
-                conPass = true;
+    private int fieldCheck(){
+        int formPass = 0;
+        Boolean typePass = true,//1
+                infectctrlPass = true,//2
+                infectPass = true,//3
+                marketPass = true,//4
+                conPass = true;//5
 
         typePass = ModelCheckForm.checkSpinner(spAnimalType);
         conPass = ModelCheckForm.checkSpinner(spContributor);
@@ -393,10 +401,26 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
             marketPass = ModelCheckForm.checkSpinner(spAnimalMarket);
         }
 
-        if (typePass == true && infectctrlPass == true && infectPass == true && marketPass == true && conPass == true){
-            formPass = true;
+        if (typePass == true ){
+            if (infectctrlPass == true ){
+                if (infectPass == true ){
+                    if (marketPass == true ){
+                        if (conPass == true ){
+                            formPass = 0;
+                        }else{
+                            formPass = 5;
+                        }
+                    }else{
+                        formPass = 4;
+                    }
+                }else{
+                    formPass = 3;
+                }
+            }else{
+                formPass = 2;
+            }
         }else{
-            formPass = false;
+            formPass = 1;
         }
 
         return formPass;

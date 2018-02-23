@@ -1,17 +1,24 @@
 package com.example.jujiiz.mis.controllers;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,12 +28,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
+import com.example.jujiiz.mis.models.CustomDatePicker;
 import com.example.jujiiz.mis.models.ModelCheckForm;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
 import com.example.jujiiz.mis.models.ModelShowHideLayout;
@@ -37,6 +46,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,7 +60,7 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
     RadioButton rbVehicalType1, rbVehicalType2, rbVehicalType3, rbVehicalType4, rbVehicalType5, rbRentNo, rbRentYes;
     LinearLayout loVehicalType1, loVehicalType2, loVehicalType3, loVehicalType4, loVehicalType5;
     Spinner spVehicalType1, spVehicalType2, spVehicalType3, spVehicalType4, spVehicalType5, spContributor;
-    Button btnSavingData,btnDatePick, btnImagePick;
+    Button btnSavingData, btnDatePick, btnImagePick;
     ImageView ivImage;
     ImageButton btnCameraPick;
 
@@ -71,8 +81,17 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
     byte[] imgByteArray = null;
 
     private static final int CAMERA_REQUEST = 1888;
+    private static final int GALLERY_REQUEST = 1;
 
     private DatePickerDialog fromDatePickerDialog;
+
+    ArrayList<String> data;
+    String[] date28 = new String[28],
+            date29 = new String[29],
+            date31 = new String[31],
+            date30 = new String[30],
+            month = {"มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"},
+            year = new String[300];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +169,8 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
                 etRegisterDate.setText(dateFormatter.format(newDate.getTime()));
             }
 
-        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        }, newCalendar.get(Calendar.YEAR) + 543, newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        //Log.d("MYLOG", "setDateTimeField: " + Calendar.YEAR);
 
     }
 
@@ -249,23 +269,23 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
             }
 
             VTypeList = db.SelectWhereData("asset_vehicle", "vtype_id", VehicleList.get(0).get("vtype_id"));
-            if (VTypeList.get(0).get("vtype_name").equals("ประเภทยานพาหนะทั่วไป")){
+            if (VTypeList.get(0).get("vtype_name").equals("ประเภทยานพาหนะทั่วไป")) {
                 rbVehicalType1.setChecked(true);
                 int spinnerPositionType = AdapterType1.getPosition(VTypeList.get(0).get("vtype_detail"));
                 spVehicalType1.setSelection(spinnerPositionType);
-            }else if (VTypeList.get(0).get("vtype_name").equals("ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน")){
+            } else if (VTypeList.get(0).get("vtype_name").equals("ประเภทยานพาหนะด้านโครงสร้างพื้นฐาน")) {
                 rbVehicalType2.setChecked(true);
                 int spinnerPositionType = AdapterType1.getPosition(VTypeList.get(0).get("vtype_detail"));
                 spVehicalType2.setSelection(spinnerPositionType);
-            }else if (VTypeList.get(0).get("vtype_name").equals("ประเภทยานพาหนะด้านบรรเทาสาธารณภัย")){
+            } else if (VTypeList.get(0).get("vtype_name").equals("ประเภทยานพาหนะด้านบรรเทาสาธารณภัย")) {
                 rbVehicalType3.setChecked(true);
                 int spinnerPositionType = AdapterType1.getPosition(VTypeList.get(0).get("vtype_detail"));
                 spVehicalType3.setSelection(spinnerPositionType);
-            }else if (VTypeList.get(0).get("vtype_name").equals("ประเภทยานพาหนะด้านสิ่งแวดล้อม")){
+            } else if (VTypeList.get(0).get("vtype_name").equals("ประเภทยานพาหนะด้านสิ่งแวดล้อม")) {
                 rbVehicalType4.setChecked(true);
                 int spinnerPositionType = AdapterType1.getPosition(VTypeList.get(0).get("vtype_detail"));
                 spVehicalType4.setSelection(spinnerPositionType);
-            }else if (VTypeList.get(0).get("vtype_name").equals("ประเภทยานพาหนะด้านการศึกษา")){
+            } else if (VTypeList.get(0).get("vtype_name").equals("ประเภทยานพาหนะด้านการศึกษา")) {
                 rbVehicalType5.setChecked(true);
                 int spinnerPositionType = AdapterType5.getPosition(VTypeList.get(0).get("vtype_detail"));
                 spVehicalType5.setSelection(spinnerPositionType);
@@ -347,7 +367,7 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
             db.InsertData("population_asset_vehicle", Val);
             Val = new ContentValues();
             Val.put("upload_status", "1");
-            db.UpdateData("population",Val,"population_idcard",PersonID);
+            db.UpdateData("population", Val, "population_idcard", PersonID);
         } else {
             VehicleList = db.SelectWhereData("population_asset_vehicle", "vehicle_running", VehicleID);
             if (VehicleList.isEmpty()) {
@@ -356,12 +376,12 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
                 db.InsertData("population_asset_vehicle", Val);
                 Val = new ContentValues();
                 Val.put("upload_status", "1");
-                db.UpdateData("population",Val,"population_idcard",PersonID);
+                db.UpdateData("population", Val, "population_idcard", PersonID);
             } else {
                 db.UpdateData("population_asset_vehicle", Val, "vehicle_running", VehicleID);
                 Val = new ContentValues();
                 Val.put("upload_status", "1");
-                db.UpdateData("population",Val,"population_idcard",PersonID);
+                db.UpdateData("population", Val, "population_idcard", PersonID);
             }
         }
     }
@@ -369,7 +389,7 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
+        if (reqCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
             try {
                 final Uri imageUri = data.getData();
                 InputStream imageStream = getContentResolver().openInputStream(imageUri);
@@ -398,60 +418,75 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         if (v == btnSavingData) {
-            if (fieldCheck() == true){
+            if (fieldCheck() == 0) {
                 updateData();
                 Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
                 this.finish();
-            } else {
-                Toast.makeText(this, "ข้อมูลไม่สมบูรณ์", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 1) {
+                Toast.makeText(this, "กรุณาระบุ \"ประเภทยานพาหนะ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 2) {
+                Toast.makeText(this, "กรุณาระบุ \"ประเภทยานพาหนะ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 3) {
+                Toast.makeText(this, "กรุณาระบุ \"ประเภทยานพาหนะ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 4) {
+                Toast.makeText(this, "กรุณาระบุ \"ประเภทยานพาหนะ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 5) {
+                Toast.makeText(this, "กรุณาระบุ \"ประเภทยานพาหนะ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 6) {
+                Toast.makeText(this, "กรุณาระบุ \"ประเภทยานพาหนะ\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 7) {
+                Toast.makeText(this, "กรุณาระบุ \"วันที่จดทะเบียน\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 8) {
+                Toast.makeText(this, "กรุณาระบุ \"ชื่อผู้ให้ข้อมูล\"", Toast.LENGTH_SHORT).show();
             }
         }
         if (v == btnDatePick) {
-            fromDatePickerDialog.show();
+            //fromDatePickerDialog.show();
+            CustomDatePicker.customDialog(VehicalFormActivity.this,etRegisterDate);
         }
         if (v == btnImagePick) {
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");
-            startActivityForResult(photoPickerIntent, 1);
+            startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
         }
         if (v == btnCameraPick) {
-            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(cameraIntent, CAMERA_REQUEST);
         }
     }
 
-    private Boolean fieldCheck(){
-        Boolean formPass = false,
-                typePass = true,
-                type1Pass = true,
-                type2Pass = true,
-                type3Pass = true,
-                type4Pass = true,
-                type5Pass = true,
-                datePass = true,
-                conPass = true;
+    private int fieldCheck() {
+        int formPass = 0;
+        Boolean typePass = true,//1
+                type1Pass = true,//2
+                type2Pass = true,//3
+                type3Pass = true,//4
+                type4Pass = true,//5
+                type5Pass = true,//6
+                datePass = true,//7
+                conPass = true;//8
 
-        if (!rbVehicalType1.isChecked() && !rbVehicalType2.isChecked() && !rbVehicalType3.isChecked() && !rbVehicalType4.isChecked() && !rbVehicalType5.isChecked()){
+        if (!rbVehicalType1.isChecked() && !rbVehicalType2.isChecked() && !rbVehicalType3.isChecked() && !rbVehicalType4.isChecked() && !rbVehicalType5.isChecked()) {
             typePass = false;
         }
 
-        if (rbVehicalType1.isChecked()){
+        if (rbVehicalType1.isChecked()) {
             type1Pass = ModelCheckForm.checkSpinner(spVehicalType1);
         }
 
-        if (rbVehicalType2.isChecked()){
+        if (rbVehicalType2.isChecked()) {
             type2Pass = ModelCheckForm.checkSpinner(spVehicalType2);
         }
 
-        if (rbVehicalType3.isChecked()){
+        if (rbVehicalType3.isChecked()) {
             type3Pass = ModelCheckForm.checkSpinner(spVehicalType3);
         }
 
-        if (rbVehicalType4.isChecked()){
+        if (rbVehicalType4.isChecked()) {
             type4Pass = ModelCheckForm.checkSpinner(spVehicalType4);
         }
 
-        if (rbVehicalType5.isChecked()){
+        if (rbVehicalType5.isChecked()) {
             type5Pass = ModelCheckForm.checkSpinner(spVehicalType5);
         }
 
@@ -459,10 +494,44 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
 
         conPass = ModelCheckForm.checkSpinner(spContributor);
 
-        if (typePass == true && type1Pass == true && type2Pass == true && type3Pass == true && type4Pass == true && type5Pass == true && datePass == true && conPass == true){
+        /*if ( &&  == true &&  == true &&  == true &&  == true &&  == true &&  == true &&  == true){
             formPass = true;
         }else{
-            formPass = false;
+
+        }*/
+
+        if (typePass == true) {
+            if (type1Pass == true) {
+                if (type2Pass == true) {
+                    if (type3Pass == true) {
+                        if (type4Pass == true) {
+                            if (type5Pass == true) {
+                                if (datePass == true) {
+                                    if (conPass == true) {
+                                        formPass = 0;
+                                    } else {
+                                        formPass = 8;
+                                    }
+                                } else {
+                                    formPass = 7;
+                                }
+                            } else {
+                                formPass = 6;
+                            }
+                        } else {
+                            formPass = 5;
+                        }
+                    } else {
+                        formPass = 4;
+                    }
+                } else {
+                    formPass = 3;
+                }
+            } else {
+                formPass = 2;
+            }
+        } else {
+            formPass = 1;
         }
 
         return formPass;

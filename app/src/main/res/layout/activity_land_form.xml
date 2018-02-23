@@ -21,8 +21,8 @@
             android:text="ข้อมูลที่ดิน"
             android:textAlignment="center"
             android:textColor="@color/appbarTextColor"
-            android:textStyle="bold"
-            android:textSize="24dp" />
+            android:textSize="24dp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnSavingData"
@@ -48,24 +48,24 @@
                 android:layout_height="wrap_content"
                 android:text="เจ้าของที่ดิน"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ชื่อ-นามสกุล"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etOwnertName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:hint="ชื่อ-นามสกุล"
                 android:enabled="false"
+                android:hint="ชื่อ-นามสกุล"
                 android:inputType="text" />
 
             <TextView
@@ -73,16 +73,16 @@
                 android:layout_height="wrap_content"
                 android:text="เลขประจำตัวประชาชน"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etOwnerPersonalID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:hint="เลขประจำตัวประชาชน"
                 android:enabled="false"
+                android:hint="เลขประจำตัวประชาชน"
                 android:inputType="number" />
 
             <LinearLayout
@@ -90,13 +90,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="รหัสระบบ"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etSystemID"
@@ -106,21 +107,22 @@
                     android:hint="รหัสระบบ"
                     android:inputType="number" />
             </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="จำนวนพื้นที่"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ไร่"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etDimenA"
@@ -135,8 +137,8 @@
                 android:layout_height="wrap_content"
                 android:text="งาน"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etDimenB"
@@ -151,8 +153,8 @@
                 android:layout_height="wrap_content"
                 android:text="ตร.วา"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etDimenC"
@@ -167,8 +169,8 @@
                 android:layout_height="wrap_content"
                 android:text="การใช้ประโยชน์ที่ดิน"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <RadioGroup
                 android:id="@+id/rgLandBenefit"
@@ -200,6 +202,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ประกอบกิจการ" />
+
                 <RadioButton
                     android:id="@+id/rbLB5"
                     android:layout_width="wrap_content"
@@ -212,8 +215,8 @@
                 android:layout_height="wrap_content"
                 android:text="ที่ตั้งที่ดิน"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <RadioGroup
                 android:id="@+id/rgLandLocation"
@@ -240,8 +243,8 @@
                 android:layout_height="wrap_content"
                 android:text="ชำระภาษี"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <RadioGroup
                 android:id="@+id/rgLandTax"
@@ -274,8 +277,8 @@
                 android:layout_height="wrap_content"
                 android:text="การให้เช่าใช้ที่ดิน"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <RadioGroup
                 android:id="@+id/rgLandRent"
@@ -307,13 +310,20 @@
                     android:layout_height="wrap_content"
                     android:text="ชื่อผู้ให้ข้อมูล"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
-                <Spinner
-                    android:id="@+id/spContributor"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></Spinner>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:background="@color/listItemColor">
+
+                    <Spinner
+                        android:id="@+id/spContributor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></Spinner>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -326,8 +336,8 @@
                     android:layout_height="wrap_content"
                     android:text="วันที่บันทึกข้อมูล"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etDate"

@@ -21,8 +21,8 @@
             android:text="ข้อมูลยานพาหนะ"
             android:textAlignment="center"
             android:textColor="@color/appbarTextColor"
-            android:textStyle="bold"
-            android:textSize="24dp" />
+            android:textSize="24dp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnSavingData"
@@ -49,8 +49,8 @@
                 android:paddingLeft="8dp"
                 android:text="เจ้าของยานพาหนะ"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -68,15 +68,15 @@
                     android:layout_weight="1"
                     android:text="ชื่อ-นามสกุล"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etOwnerName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
-                    android:layout_weight="2" />
+                    android:layout_weight="2"
+                    android:enabled="false" />
             </LinearLayout>
 
             <LinearLayout
@@ -95,16 +95,16 @@
                     android:layout_weight="1"
                     android:text="เลขประจำตัวประชาชน"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etOwnerPersonalID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:enabled="false"
                     android:layout_weight="2"
-                    android:inputType="number"/>
+                    android:enabled="false"
+                    android:inputType="number" />
             </LinearLayout>
 
             <LinearLayout
@@ -201,8 +201,8 @@
                     android:layout_weight="1"
                     android:text="ประเภทยานพาหนะ"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rdVehicalType"
@@ -224,14 +224,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingTop="16dp"
                         android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
                         android:visibility="gone">
 
-                        <Spinner
-                            android:id="@+id/spVehicalType1"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"></Spinner>
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:background="@color/listItemColor">
+
+                            <Spinner
+                                android:id="@+id/spVehicalType1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"></Spinner>
+                        </RelativeLayout>
                     </LinearLayout>
 
                     <RadioButton
@@ -246,14 +253,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingTop="16dp"
                         android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
                         android:visibility="gone">
 
-                        <Spinner
-                            android:id="@+id/spVehicalType2"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"></Spinner>
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:background="@color/listItemColor">
+
+                            <Spinner
+                                android:id="@+id/spVehicalType2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"></Spinner>
+                        </RelativeLayout>
                     </LinearLayout>
 
                     <RadioButton
@@ -268,14 +282,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingTop="16dp"
                         android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
                         android:visibility="gone">
 
-                        <Spinner
-                            android:id="@+id/spVehicalType3"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"></Spinner>
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:background="@color/listItemColor">
+
+                            <Spinner
+                                android:id="@+id/spVehicalType3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"></Spinner>
+                        </RelativeLayout>
                     </LinearLayout>
 
                     <RadioButton
@@ -290,14 +311,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingTop="16dp"
                         android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
                         android:visibility="gone">
 
-                        <Spinner
-                            android:id="@+id/spVehicalType4"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"></Spinner>
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:background="@color/listItemColor">
+
+                            <Spinner
+                                android:id="@+id/spVehicalType4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"></Spinner>
+                        </RelativeLayout>
                     </LinearLayout>
 
                     <RadioButton
@@ -312,14 +340,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingTop="16dp"
                         android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
                         android:visibility="gone">
 
-                        <Spinner
-                            android:id="@+id/spVehicalType5"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"></Spinner>
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:background="@color/listItemColor">
+
+                            <Spinner
+                                android:id="@+id/spVehicalType5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"></Spinner>
+                        </RelativeLayout>
                     </LinearLayout>
                 </RadioGroup>
             </LinearLayout>
@@ -340,8 +375,8 @@
                     android:layout_weight="1"
                     android:text="การให้เช่าใช้"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rdRent"
@@ -384,14 +419,21 @@
                     android:layout_weight="1"
                     android:text="ชื่อผู้ให้ข้อมูล"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="2"
+                    android:background="@color/listItemColor">
 
                 <Spinner
                     android:id="@+id/spContributor"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"></Spinner>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></Spinner>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -408,11 +450,11 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:gravity="center_vertical"
                     android:text="วันที่บันทึกข้อมูล"
                     android:textColor="@color/topicColor"
-                    android:gravity="center_vertical"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etDate"
@@ -420,8 +462,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:enabled="false"
-                    android:text="xx/xx/xx"
-                    android:inputType="date" />
+                    android:inputType="date"
+                    android:text="xx/xx/xx" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

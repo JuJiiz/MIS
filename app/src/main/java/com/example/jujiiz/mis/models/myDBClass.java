@@ -244,6 +244,15 @@ public class myDBClass extends SQLiteOpenHelper {
                 "\t`congh8`\tTEXT NOT NULL,\n" +
                 "\t`congh9`\tTEXT NOT NULL,\n" +
                 "\t`congh10`\tTEXT NOT NULL,\n" +
+                "\t`congh11`\tTEXT NOT NULL,\n" +
+                "\t`congh12`\tTEXT NOT NULL,\n" +
+                "\t`congh13`\tTEXT NOT NULL,\n" +
+                "\t`congh14`\tTEXT NOT NULL,\n" +
+                "\t`congh15`\tTEXT NOT NULL,\n" +
+                "\t`congh16`\tTEXT NOT NULL,\n" +
+                "\t`congh17`\tTEXT NOT NULL,\n" +
+                "\t`congh18`\tTEXT NOT NULL,\n" +
+                "\t`congh19`\tTEXT NOT NULL,\n" +
                 "\t`congh20`\tTEXT NOT NULL,\n" +
                 "\t`congh21`\tTEXT NOT NULL,\n" +
                 "\t`congh22`\tTEXT NOT NULL,\n" +

@@ -81,11 +81,19 @@
                             android:textSize="16dp"
                             android:textStyle="bold" />
 
-                        <Spinner
-                            android:id="@+id/spNationality"
+                        <RelativeLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"></Spinner>
+                            android:layout_marginLeft="16dp"
+                            android:layout_weight="2"
+                            android:background="@color/listItemColor">
+
+                            <Spinner
+                                android:id="@+id/spNationality"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"></Spinner>
+                        </RelativeLayout>
+
                     </LinearLayout>
                 </LinearLayout>
 
@@ -152,11 +160,20 @@
                         android:textSize="16dp"
                         android:textStyle="bold" />
 
-                    <Spinner
-                        android:id="@+id/spPrefix"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"></Spinner>
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:background="@color/listItemColor">
+
+                        <Spinner
+                            android:id="@+id/spPrefix"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></Spinner>
+                    </RelativeLayout>
+
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -244,7 +261,6 @@
                         android:id="@+id/etBirtDate"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
                         android:layout_weight="1.5"
                         android:enabled="false"
                         android:hint="วัน/เดือน/ปีที่เกิด"
@@ -278,7 +294,6 @@
                         android:id="@+id/etHeight"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
                         android:layout_weight="1.3"
                         android:inputType="number" />
 
@@ -312,7 +327,6 @@
                         android:id="@+id/etWeight"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
                         android:layout_weight="1.3"
                         android:inputType="number" />
 
@@ -342,12 +356,18 @@
                         android:textSize="16dp"
                         android:textStyle="bold" />
 
-                    <Spinner
-                        android:id="@+id/spBloodType"
+                    <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:layout_weight="2"></Spinner>
+                        android:layout_weight="2"
+                        android:background="@color/listItemColor">
+
+                        <Spinner
+                            android:id="@+id/spBloodType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></Spinner>
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -421,12 +441,18 @@
                         android:textSize="16dp"
                         android:textStyle="bold" />
 
-                    <Spinner
-                        android:id="@+id/spMaritalStatus"
+                    <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:layout_weight="2"></Spinner>
+                        android:layout_weight="2"
+                        android:background="@color/listItemColor">
+
+                        <Spinner
+                            android:id="@+id/spMaritalStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></Spinner>
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -490,11 +516,18 @@
                         android:textSize="16dp"
                         android:textStyle="bold" />
 
-                    <Spinner
-                        android:id="@+id/spVillageName"
+                    <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"></Spinner>
+                        android:layout_marginBottom="16dp"
+                        android:layout_weight="2"
+                        android:background="@color/listItemColor">
+
+                        <Spinner
+                            android:id="@+id/spVillageName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></Spinner>
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <TextView
@@ -588,7 +621,7 @@
                                 android:id="@+id/rbIRCountry"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="ระบุประเทศ" />
+                                android:text="ต่างประเทศ" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -596,19 +629,25 @@
                                 android:orientation="horizontal"
                                 android:paddingLeft="16dp">
 
-
-                                <Spinner
-                                    android:id="@+id/spIRCountry"
+                                <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:paddingBottom="16dp" />
+                                    android:layout_marginBottom="16dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:background="@color/listItemColor">
+
+                                    <Spinner
+                                        android:id="@+id/spIRCountry"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content" />
+                                </RelativeLayout>
                             </LinearLayout>
 
                             <RadioButton
                                 android:id="@+id/rbIRProvince"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="ระบุจังหวัด" />
+                                android:text="ในประเทศ" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -616,11 +655,18 @@
                                 android:orientation="horizontal"
                                 android:paddingLeft="16dp">
 
-                                <Spinner
-                                    android:id="@+id/spIRProvince"
+                                <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:paddingBottom="16dp" />
+                                    android:layout_marginBottom="16dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:background="@color/listItemColor">
+
+                                    <Spinner
+                                        android:id="@+id/spIRProvince"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content" />
+                                </RelativeLayout>
                             </LinearLayout>
                         </RadioGroup>
                     </LinearLayout>
@@ -669,7 +715,7 @@
                                 android:id="@+id/rbIHCountry"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="ระบุประเทศ" />
+                                android:text="ต่างประเทศ" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -677,18 +723,25 @@
                                 android:orientation="horizontal"
                                 android:paddingLeft="16dp">
 
-                                <Spinner
-                                    android:id="@+id/spIHCountry"
+                                <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:paddingBottom="16dp" />
+                                    android:layout_marginBottom="16dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:background="@color/listItemColor">
+
+                                    <Spinner
+                                        android:id="@+id/spIHCountry"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content" />
+                                </RelativeLayout>
                             </LinearLayout>
 
                             <RadioButton
                                 android:id="@+id/rbIHProvince"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="ระบุจังหวัด" />
+                                android:text="ในประเทศ" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -696,11 +749,18 @@
                                 android:orientation="horizontal"
                                 android:paddingLeft="16dp">
 
-                                <Spinner
-                                    android:id="@+id/spIHProvince"
+                                <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:paddingBottom="16dp" />
+                                    android:layout_marginBottom="16dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:background="@color/listItemColor">
+
+                                    <Spinner
+                                        android:id="@+id/spIHProvince"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content" />
+                                </RelativeLayout>
                             </LinearLayout>
                         </RadioGroup>
                     </LinearLayout>
@@ -1544,7 +1604,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ประวัติโรคติดต่อ"
+                        android:text="ประวัติการเป็นโรค"
                         android:textColor="@color/topicColor"
                         android:textSize="16dp"
                         android:textStyle="bold" />
@@ -2179,10 +2239,18 @@
                                 android:textColor="@color/topicColor"
                                 android:textStyle="bold" />
 
-                            <Spinner
-                                android:id="@+id/spInStudy"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:background="@color/listItemColor">
+
+                                <Spinner
+                                    android:id="@+id/spInStudy"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+                            </RelativeLayout>
                         </LinearLayout>
 
                         <RadioButton
@@ -2205,10 +2273,18 @@
                                 android:textColor="@color/topicColor"
                                 android:textStyle="bold" />
 
-                            <Spinner
-                                android:id="@+id/spGraduated"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:background="@color/listItemColor">
+
+                                <Spinner
+                                    android:id="@+id/spGraduated"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
+                            </RelativeLayout>
                         </LinearLayout>
                     </RadioGroup>
 
@@ -2314,11 +2390,18 @@
                             android:textSize="16dp"
                             android:textStyle="bold" />
 
-                        <Spinner
-                            android:id="@+id/spExpertise"
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"></Spinner>
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:background="@color/listItemColor">
+
+                            <Spinner
+                                android:id="@+id/spExpertise"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"></Spinner>
+                        </RelativeLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -2573,11 +2656,18 @@
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                <Spinner
-                    android:id="@+id/spContributor"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"></Spinner>
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:background="@color/listItemColor">
+
+                    <Spinner
+                        android:id="@+id/spContributor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></Spinner>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout

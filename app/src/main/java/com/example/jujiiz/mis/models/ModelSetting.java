@@ -18,15 +18,11 @@ public class ModelSetting {
         for (int i = 0; i < mAdapter.getCount(); i++) {
             View mView = mAdapter.getView(i, null, listView);
             mView.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-            Log.d("MYLOG", "getMeasuredHeight: " + mView.getMeasuredHeight());
-            totalHeight += mView.getMeasuredHeight() - 42 - (21*((((mView.getMeasuredHeight()-89)/42)-1)));
+            totalHeight += mView.getMeasuredHeight()/* - 42 - (21*((((mView.getMeasuredHeight()-89)/42)-1)))*/;
         }
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (mAdapter.getCount() - 1));
-        Log.d("MYLOG", "totalHeight: " + totalHeight);
-        Log.d("MYLOG", "getDividerHeight: " + listView.getDividerHeight());
-        Log.d("MYLOG", "getCount: " + mAdapter.getCount());
         listView.setLayoutParams(params);
         listView.requestLayout();
     }

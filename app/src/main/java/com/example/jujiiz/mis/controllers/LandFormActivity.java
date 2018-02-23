@@ -3,6 +3,8 @@ package com.example.jujiiz.mis.controllers;
 import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -66,6 +68,46 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
         etDimenB = (EditText) findViewById(R.id.etDimenB);
         etDimenC = (EditText) findViewById(R.id.etDimenC);
         etDate = (EditText) findViewById(R.id.etDate);
+
+        etDimenB.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() != 0) {
+                    if (Integer.parseInt(s.toString()) > 3) {
+                        etDimenB.setText("");
+                    }
+                }
+            }
+        });
+
+        etDimenC.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() != 0) {
+                    if (Integer.parseInt(s.toString()) > 99) {
+                        etDimenC.setText("");
+                    }
+                }
+            }
+        });
+
 
         rgLandBenefit = (RadioGroup) findViewById(R.id.rgLandBenefit);
         rgLandLocation = (RadioGroup) findViewById(R.id.rgLandLocation);
@@ -246,21 +288,25 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         if (v == btnSavingData) {
-            if (fieldCheck() == true){
+            if (fieldCheck() == 0) {
                 updateData();
                 Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
                 this.finish();
-            } else {
-                Toast.makeText(this, "ข้อมูลไม่สมบูรณ์", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 1) {
+                Toast.makeText(this, "กรุณาระบุ \"จำนวนพื้นที่\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 2) {
+                Toast.makeText(this, "กรุณาระบุ \"การใช้ประโยชน์ที่ดิน\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 3) {
+                Toast.makeText(this, "กรุณาระบุ \"ชื่อผู้ให้ข้อมูล\"", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private Boolean fieldCheck() {
-        Boolean formPass = false,
-                dimenPass = true,
-                benefitPass = true,
-                conPass = true;
+    private int fieldCheck() {
+        int formPass = 0;
+        Boolean dimenPass = true,//1
+                benefitPass = true,//2
+                conPass = true;//3
 
         if (ModelCheckForm.checkEditText(etDimenA) != true && ModelCheckForm.checkEditText(etDimenB) != true && ModelCheckForm.checkEditText(etDimenC) != true) {
             dimenPass = false;
@@ -272,10 +318,18 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
 
         conPass = ModelCheckForm.checkSpinner(spContributor);
 
-        if (dimenPass == true && benefitPass == true && conPass == true) {
-            formPass = true;
+        if (dimenPass == true) {
+            if (benefitPass == true) {
+                if (conPass == true) {
+                    formPass = 0;
+                } else {
+                    formPass = 3;
+                }
+            } else {
+                formPass = 2;
+            }
         } else {
-            formPass = false;
+            formPass = 1;
         }
 
         return formPass;
