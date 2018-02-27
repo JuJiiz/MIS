@@ -326,12 +326,18 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
 
         }
         if (reqCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            ivImage.setImageBitmap(photo);
-            ivImage.setVisibility(View.VISIBLE);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            photo.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
-            imgByteArray = outputStream.toByteArray();
+            try {
+                final Uri imageUri = data.getData();
+                InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                imgBitmap = BitmapFactory.decodeStream(imageStream);
+                ivImage.setImageBitmap(imgBitmap);
+                ivImage.setVisibility(View.VISIBLE);
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                imgBitmap.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
+                imgByteArray = outputStream.toByteArray();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 

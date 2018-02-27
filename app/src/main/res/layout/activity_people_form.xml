@@ -626,21 +626,32 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
                                 android:orientation="horizontal"
-                                android:paddingLeft="16dp">
+                                android:paddingBottom="16dp"
+                                android:paddingLeft="16dp"
+                                android:weightSum="3">
 
                                 <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="16dp"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
                                     android:layout_marginLeft="16dp"
+                                    android:layout_weight="2"
                                     android:background="@color/listItemColor">
 
                                     <Spinner
                                         android:id="@+id/spIRCountry"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content" />
+                                        android:layout_height="match_parent" />
                                 </RelativeLayout>
+
+                                <Button
+                                    android:id="@+id/btnIRCSearch"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="ค้นหา"
+                                    android:visibility="gone" />
                             </LinearLayout>
 
                             <RadioButton
@@ -652,21 +663,32 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
                                 android:orientation="horizontal"
-                                android:paddingLeft="16dp">
+                                android:paddingBottom="16dp"
+                                android:paddingLeft="16dp"
+                                android:weightSum="3">
 
                                 <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="16dp"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
                                     android:layout_marginLeft="16dp"
+                                    android:layout_weight="2"
                                     android:background="@color/listItemColor">
 
                                     <Spinner
                                         android:id="@+id/spIRProvince"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content" />
+                                        android:layout_height="match_parent" />
                                 </RelativeLayout>
+
+                                <Button
+                                    android:id="@+id/btnIRPSearch"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="ค้นหา"
+                                    android:visibility="gone" />
                             </LinearLayout>
                         </RadioGroup>
                     </LinearLayout>
@@ -720,21 +742,32 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
                                 android:orientation="horizontal"
-                                android:paddingLeft="16dp">
+                                android:paddingBottom="16dp"
+                                android:paddingLeft="16dp"
+                                android:weightSum="3">
 
                                 <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="16dp"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
                                     android:layout_marginLeft="16dp"
+                                    android:layout_weight="2"
                                     android:background="@color/listItemColor">
 
                                     <Spinner
                                         android:id="@+id/spIHCountry"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content" />
+                                        android:layout_height="match_parent" />
                                 </RelativeLayout>
+
+                                <Button
+                                    android:id="@+id/btnIHCSearch"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="ค้นหา"
+                                    android:visibility="gone" />
                             </LinearLayout>
 
                             <RadioButton
@@ -746,21 +779,32 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
                                 android:orientation="horizontal"
-                                android:paddingLeft="16dp">
+                                android:paddingBottom="16dp"
+                                android:paddingLeft="16dp"
+                                android:weightSum="3">
 
                                 <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="16dp"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
                                     android:layout_marginLeft="16dp"
+                                    android:layout_weight="2"
                                     android:background="@color/listItemColor">
 
                                     <Spinner
                                         android:id="@+id/spIHProvince"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content" />
+                                        android:layout_height="match_parent" />
                                 </RelativeLayout>
+
+                                <Button
+                                    android:id="@+id/btnIHPSearch"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="ค้นหา"
+                                    android:visibility="gone" />
                             </LinearLayout>
                         </RadioGroup>
                     </LinearLayout>

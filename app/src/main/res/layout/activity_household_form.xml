@@ -20,8 +20,8 @@
             android:paddingLeft="8dp"
             android:text="ข้อมูลครัวเรือน"
             android:textColor="@color/appbarTextColor"
-            android:textStyle="bold"
-            android:textSize="24dp" />
+            android:textSize="24dp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnSavingData"
@@ -56,8 +56,8 @@
                     android:layout_weight="1"
                     android:text="ทะเบียนราษฎร์"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/registerRadioGroup"
@@ -69,8 +69,8 @@
                         android:id="@+id/rbRegisterYes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:enabled="false"
                         android:checked="true"
+                        android:enabled="false"
                         android:text="อยู่ในทะเบียนราษฎร์" />
 
                     <RadioButton
@@ -95,8 +95,8 @@
                     android:layout_weight="1"
                     android:text="สถานะบ้าน"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/housestatusRadioGroup"
@@ -130,13 +130,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingBottom="4dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ตารางผู้อยู่อาศัยในครัวเรือน"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -219,16 +221,16 @@
                 android:layout_height="wrap_content"
                 android:text="บ้านเลขที่"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etHouseNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:hint="บ้านเลขที่"
                 android:enabled="false"
+                android:hint="บ้านเลขที่"
                 android:inputType="number" />
 
             <TextView
@@ -236,16 +238,16 @@
                 android:layout_height="wrap_content"
                 android:text="รหัสประจำบ้าน"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etHouseID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:hint="รหัสประจำบ้าน"
                 android:enabled="false"
+                android:hint="รหัสประจำบ้าน"
                 android:inputType="number" />
 
             <LinearLayout
@@ -259,8 +261,8 @@
                     android:layout_height="wrap_content"
                     android:text="ชื่อหมู่บ้าน"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spVillageName"
@@ -281,8 +283,8 @@
                     android:layout_height="wrap_content"
                     android:text="พิกัด"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -345,7 +347,7 @@
                         tools:context=".controllers.HouseholdFormActivity" />
 
                     <ImageView
-                        android:id="@+id/transparent_image"
+                        android:id="@+id/ivTransparent"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_alignBottom="@+id/googleMap"
@@ -371,8 +373,8 @@
                     android:layout_weight="1"
                     android:text="รูปแบบครอบครัว"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/familyRadioGroup"
@@ -402,8 +404,8 @@
                 android:layout_height="wrap_content"
                 android:text="สภาพปัญหา"
                 android:textColor="@color/topicColor"
-                android:textStyle="bold"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -509,8 +511,8 @@
                     android:layout_height="wrap_content"
                     android:text="ปัญหาสภาพแวดล้อม"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/probenvyRadioGroup"
@@ -846,8 +848,8 @@
                     android:layout_height="wrap_content"
                     android:text="ภัย"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/disasterRadioGroup"
@@ -1515,8 +1517,8 @@
                     android:layout_marginBottom="8dp"
                     android:text="อัพโหลดรูปภาพ"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/ivImage"
@@ -1532,6 +1534,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="10">
+
                     <Button
                         android:id="@+id/btnImagePick"
                         android:layout_width="0dp"
@@ -1543,8 +1546,8 @@
                         android:id="@+id/btnCameraPick"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_menu_camera"
-                        android:layout_weight="2" />
+                        android:layout_weight="2"
+                        android:src="@drawable/ic_menu_camera" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -1552,6 +1555,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -1559,8 +1563,8 @@
                     android:layout_height="wrap_content"
                     android:text="ชื่อผู้ให้ข้อมูล"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -1569,16 +1573,17 @@
                     android:layout_weight="2"
                     android:background="@color/listItemColor">
 
-                <Spinner
-                    android:id="@+id/spContributor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></Spinner>
+                    <Spinner
+                        android:id="@+id/spContributor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></Spinner>
                 </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -1586,14 +1591,13 @@
                     android:layout_height="wrap_content"
                     android:text="วันที่บันทึกข้อมูล"
                     android:textColor="@color/topicColor"
-                    android:textStyle="bold"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/etDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
                     android:enabled="false"
                     android:hint="วันที่บันทึก"
                     android:inputType="date" />

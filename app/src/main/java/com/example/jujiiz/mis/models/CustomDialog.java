@@ -2,11 +2,18 @@ package com.example.jujiiz.mis.models;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
 import com.example.jujiiz.mis.controllers.VehicalFormActivity;
@@ -18,9 +25,9 @@ import java.util.ArrayList;
  * Created by JuJiiz on 23/2/2561.
  */
 
-public class CustomDatePicker {
+public class CustomDialog {
 
-    public static void customDialog(Context context, final EditText editText) {
+    public static void DatePickerDialog(Context context, final EditText editText) {
         final String[] date28 = new String[28],
                 date29 = new String[29],
                 date31 = new String[31],
@@ -153,6 +160,45 @@ public class CustomDatePicker {
                 d.dismiss();
             }
         });
+        d.show();
+    }
+
+    public static void ListViewDialog(final Context context, Spinner spinner, String[] strings, ArrayAdapter<String> arrayAdapter) {
+
+        final Dialog d = new Dialog(context);
+        d.setTitle("Search");
+        d.setContentView(R.layout.spinner_search_dialog);
+        EditText etListSearch = d.findViewById(R.id.etListSearch);
+        ListView lvList = d.findViewById(R.id.lvList);
+        ArrayAdapter<String> adapter;
+
+        adapter = new ArrayAdapter<String>(context, R.layout.spinner_search_dialog, R.id.lvList, strings);
+        lvList.setAdapter(adapter);
+
+        etListSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //adapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(context, position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         d.show();
     }
 }

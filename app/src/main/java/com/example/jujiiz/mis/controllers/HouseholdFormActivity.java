@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -94,7 +95,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     CheckBox cbProb1, cbProb2, cbProb3, cbProb4, cbProb5, cbProb6, cbProb7, cbProb8, cbProb9, cbProb10;
 
     Button btnSavingData, btnCurrentLocation, btnAddDweller, btnImagePick;
-    ImageView ivImage;
+    ImageView ivImage,ivTransparent;
     ImageButton btnCameraPick;
 
     LinearLayout loAnotherProblem;
@@ -149,16 +150,16 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     private void init() {
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.googleMap);
         mapFrag.getMapAsync(this);
-        btnCurrentLocation = (Button) findViewById(R.id.btnCurrentLocation);
+        btnCurrentLocation = findViewById(R.id.btnCurrentLocation);
         btnCurrentLocation.setOnClickListener(this);
-        etLat = (EditText) findViewById(R.id.etLat);
-        etLong = (EditText) findViewById(R.id.etLong);
+        etLat = findViewById(R.id.etLat);
+        etLong = findViewById(R.id.etLong);
 
-        spContributor = (Spinner) findViewById(R.id.spContributor);
+        spContributor = findViewById(R.id.spContributor);
 
-        svHousehold = (ScrollView) findViewById(R.id.svHousehold);
+        svHousehold = findViewById(R.id.svHousehold);
 
-        listHousehold = (ListView) findViewById(R.id.listHousehold);
+        listHousehold = findViewById(R.id.listHousehold);
         listHousehold.setOnItemClickListener(this);
         listHousehold.setOnItemLongClickListener(this);
         /*listHousehold.setOnTouchListener(new View.OnTouchListener() {
@@ -169,121 +170,129 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             }
         });*/
 
-        registerRadioGroup = (RadioGroup) findViewById(R.id.registerRadioGroup);
+        registerRadioGroup = findViewById(R.id.registerRadioGroup);
         registerRadioGroup.setOnCheckedChangeListener(this);
-        housestatusRadioGroup = (RadioGroup) findViewById(R.id.housestatusRadioGroup);
+        housestatusRadioGroup = findViewById(R.id.housestatusRadioGroup);
         housestatusRadioGroup.setOnCheckedChangeListener(this);
-        familyRadioGroup = (RadioGroup) findViewById(R.id.familyRadioGroup);
+        familyRadioGroup = findViewById(R.id.familyRadioGroup);
         familyRadioGroup.setOnCheckedChangeListener(this);
 
-        probenvyRadioGroup = (RadioGroup) findViewById(R.id.probenvyRadioGroup);
+        probenvyRadioGroup = findViewById(R.id.probenvyRadioGroup);
         probenvyRadioGroup.setOnCheckedChangeListener(this);
-        soundRadioGroup = (RadioGroup) findViewById(R.id.soundRadioGroup);
+        soundRadioGroup = findViewById(R.id.soundRadioGroup);
         soundRadioGroup.setOnCheckedChangeListener(this);
-        shockRadioGroup = (RadioGroup) findViewById(R.id.shockRadioGroup);
+        shockRadioGroup = findViewById(R.id.shockRadioGroup);
         shockRadioGroup.setOnCheckedChangeListener(this);
-        dustRadioGroup = (RadioGroup) findViewById(R.id.dustRadioGroup);
+        dustRadioGroup = findViewById(R.id.dustRadioGroup);
         dustRadioGroup.setOnCheckedChangeListener(this);
-        smellRadioGroup = (RadioGroup) findViewById(R.id.smellRadioGroup);
+        smellRadioGroup = findViewById(R.id.smellRadioGroup);
         smellRadioGroup.setOnCheckedChangeListener(this);
-        airRadioGroup = (RadioGroup) findViewById(R.id.airRadioGroup);
+        airRadioGroup = findViewById(R.id.airRadioGroup);
         airRadioGroup.setOnCheckedChangeListener(this);
-        waterRadioGroup = (RadioGroup) findViewById(R.id.waterRadioGroup);
+        waterRadioGroup = findViewById(R.id.waterRadioGroup);
         waterRadioGroup.setOnCheckedChangeListener(this);
-        garbageRadioGroup = (RadioGroup) findViewById(R.id.garbageRadioGroup);
+        garbageRadioGroup = findViewById(R.id.garbageRadioGroup);
         garbageRadioGroup.setOnCheckedChangeListener(this);
 
-        disasterRadioGroup = (RadioGroup) findViewById(R.id.disasterRadioGroup);
+        disasterRadioGroup = findViewById(R.id.disasterRadioGroup);
         disasterRadioGroup.setOnCheckedChangeListener(this);
-        stormRadioGroup = (RadioGroup) findViewById(R.id.stormRadioGroup);
+        stormRadioGroup = findViewById(R.id.stormRadioGroup);
         stormRadioGroup.setOnCheckedChangeListener(this);
-        floodRadioGroup = (RadioGroup) findViewById(R.id.floodRadioGroup);
+        floodRadioGroup = findViewById(R.id.floodRadioGroup);
         floodRadioGroup.setOnCheckedChangeListener(this);
-        mudRadioGroup = (RadioGroup) findViewById(R.id.mudRadioGroup);
+        mudRadioGroup = findViewById(R.id.mudRadioGroup);
         mudRadioGroup.setOnCheckedChangeListener(this);
-        earthquakeRadioGroup = (RadioGroup) findViewById(R.id.earthquakeRadioGroup);
+        earthquakeRadioGroup = findViewById(R.id.earthquakeRadioGroup);
         earthquakeRadioGroup.setOnCheckedChangeListener(this);
-        buildingRadioGroup = (RadioGroup) findViewById(R.id.buildingRadioGroup);
+        buildingRadioGroup = findViewById(R.id.buildingRadioGroup);
         buildingRadioGroup.setOnCheckedChangeListener(this);
-        droughtRadioGroup = (RadioGroup) findViewById(R.id.droughtRadioGroup);
+        droughtRadioGroup = findViewById(R.id.droughtRadioGroup);
         droughtRadioGroup.setOnCheckedChangeListener(this);
-        coldRadioGroup = (RadioGroup) findViewById(R.id.coldRadioGroup);
+        coldRadioGroup = findViewById(R.id.coldRadioGroup);
         coldRadioGroup.setOnCheckedChangeListener(this);
-        roadRadioGroup = (RadioGroup) findViewById(R.id.roadRadioGroup);
+        roadRadioGroup = findViewById(R.id.roadRadioGroup);
         roadRadioGroup.setOnCheckedChangeListener(this);
-        fireRadioGroup = (RadioGroup) findViewById(R.id.fireRadioGroup);
+        fireRadioGroup = findViewById(R.id.fireRadioGroup);
         fireRadioGroup.setOnCheckedChangeListener(this);
-        fireforestRadioGroup = (RadioGroup) findViewById(R.id.fireforestRadioGroup);
+        fireforestRadioGroup = findViewById(R.id.fireforestRadioGroup);
         fireforestRadioGroup.setOnCheckedChangeListener(this);
-        smokeRadioGroup = (RadioGroup) findViewById(R.id.smokeRadioGroup);
+        smokeRadioGroup = findViewById(R.id.smokeRadioGroup);
         smokeRadioGroup.setOnCheckedChangeListener(this);
-        chemicalRadioGroup = (RadioGroup) findViewById(R.id.chemicalRadioGroup);
+        chemicalRadioGroup = findViewById(R.id.chemicalRadioGroup);
         chemicalRadioGroup.setOnCheckedChangeListener(this);
-        plagueRadioGroup = (RadioGroup) findViewById(R.id.plagueRadioGroup);
+        plagueRadioGroup = findViewById(R.id.plagueRadioGroup);
         plagueRadioGroup.setOnCheckedChangeListener(this);
-        weedRadioGroup = (RadioGroup) findViewById(R.id.weedRadioGroup);
+        weedRadioGroup = findViewById(R.id.weedRadioGroup);
         weedRadioGroup.setOnCheckedChangeListener(this);
 
-        btnSavingData = (Button) findViewById(R.id.btnSavingData);
+        btnSavingData = findViewById(R.id.btnSavingData);
         btnSavingData.setOnClickListener(this);
 
-        btnAddDweller = (Button) findViewById(R.id.btnAddDweller);
+        btnAddDweller = findViewById(R.id.btnAddDweller);
         btnAddDweller.setOnClickListener(this);
 
-        btnImagePick = (Button) findViewById(R.id.btnImagePick);
+        btnImagePick = findViewById(R.id.btnImagePick);
         btnImagePick.setOnClickListener(this);
-        btnCameraPick = (ImageButton) findViewById(R.id.btnCameraPick);
+        btnCameraPick = findViewById(R.id.btnCameraPick);
         btnCameraPick.setOnClickListener(this);
 
-        etDate = (EditText) findViewById(R.id.etDate);
-        etHouseID = (EditText) findViewById(R.id.etHouseID);
-        etHouseNumber = (EditText) findViewById(R.id.etHouseNumber);
-        etAnotherProblem = (EditText) findViewById(R.id.etAnotherProblem);
+        etDate = findViewById(R.id.etDate);
+        etHouseID = findViewById(R.id.etHouseID);
+        etHouseNumber = findViewById(R.id.etHouseNumber);
+        etAnotherProblem = findViewById(R.id.etAnotherProblem);
 
-        ivImage = (ImageView) findViewById(R.id.ivImage);
+        ivImage = findViewById(R.id.ivImage);
+        ivTransparent = findViewById(R.id.ivTransparent);
+        /*ivTransparent.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });*/
 
-        rbProbEnvyYes = (RadioButton) findViewById(R.id.rbProbEnvyYes);
-        rbProbEnvyNo = (RadioButton) findViewById(R.id.rbProbEnvyNo);
-        rbDisasterYes = (RadioButton) findViewById(R.id.rbDisasterYes);
-        rbDisasterNo = (RadioButton) findViewById(R.id.rbDisasterNo);
+        rbProbEnvyYes = findViewById(R.id.rbProbEnvyYes);
+        rbProbEnvyNo = findViewById(R.id.rbProbEnvyNo);
+        rbDisasterYes = findViewById(R.id.rbDisasterYes);
+        rbDisasterNo = findViewById(R.id.rbDisasterNo);
 
         rbProbEnvyYes.setOnCheckedChangeListener(this);
         rbProbEnvyNo.setOnCheckedChangeListener(this);
         rbDisasterYes.setOnCheckedChangeListener(this);
         rbDisasterNo.setOnCheckedChangeListener(this);
 
-        cbProb1 = (CheckBox) findViewById(R.id.cbProb1);
-        cbProb2 = (CheckBox) findViewById(R.id.cbProb2);
-        cbProb3 = (CheckBox) findViewById(R.id.cbProb3);
-        cbProb4 = (CheckBox) findViewById(R.id.cbProb4);
-        cbProb5 = (CheckBox) findViewById(R.id.cbProb5);
-        cbProb6 = (CheckBox) findViewById(R.id.cbProb6);
-        cbProb7 = (CheckBox) findViewById(R.id.cbProb7);
-        cbProb8 = (CheckBox) findViewById(R.id.cbProb8);
-        cbProb9 = (CheckBox) findViewById(R.id.cbProb9);
+        cbProb1 = findViewById(R.id.cbProb1);
+        cbProb2 = findViewById(R.id.cbProb2);
+        cbProb3 = findViewById(R.id.cbProb3);
+        cbProb4 = findViewById(R.id.cbProb4);
+        cbProb5 = findViewById(R.id.cbProb5);
+        cbProb6 = findViewById(R.id.cbProb6);
+        cbProb7 = findViewById(R.id.cbProb7);
+        cbProb8 = findViewById(R.id.cbProb8);
+        cbProb9 = findViewById(R.id.cbProb9);
 
-        cbProb10 = (CheckBox) findViewById(R.id.cbProb10);
-        cbSound = (CheckBox) findViewById(R.id.cbSound);
-        cbShock = (CheckBox) findViewById(R.id.cbShock);
-        cbDust = (CheckBox) findViewById(R.id.cbDust);
-        cbSmell = (CheckBox) findViewById(R.id.cbSmell);
-        cbAir = (CheckBox) findViewById(R.id.cbAir);
-        cbWater = (CheckBox) findViewById(R.id.cbWater);
-        cbGarbage = (CheckBox) findViewById(R.id.cbGarbage);
-        cbStorm = (CheckBox) findViewById(R.id.cbStorm);
-        cbFlood = (CheckBox) findViewById(R.id.cbFlood);
-        cbMud = (CheckBox) findViewById(R.id.cbMud);
-        cbEarthquake = (CheckBox) findViewById(R.id.cbEarthquake);
-        cbBuilding = (CheckBox) findViewById(R.id.cbBuilding);
-        cbDrought = (CheckBox) findViewById(R.id.cbDrought);
-        cbCold = (CheckBox) findViewById(R.id.cbCold);
-        cbRoad = (CheckBox) findViewById(R.id.cbRoad);
-        cbFire = (CheckBox) findViewById(R.id.cbFire);
-        cbFireForest = (CheckBox) findViewById(R.id.cbFireForest);
-        cbSmoke = (CheckBox) findViewById(R.id.cbSmoke);
-        cbChemical = (CheckBox) findViewById(R.id.cbChemical);
-        cbPlague = (CheckBox) findViewById(R.id.cbPlague);
-        cbWeed = (CheckBox) findViewById(R.id.cbWeed);
+        cbProb10 = findViewById(R.id.cbProb10);
+        cbSound = findViewById(R.id.cbSound);
+        cbShock = findViewById(R.id.cbShock);
+        cbDust = findViewById(R.id.cbDust);
+        cbSmell = findViewById(R.id.cbSmell);
+        cbAir = findViewById(R.id.cbAir);
+        cbWater = findViewById(R.id.cbWater);
+        cbGarbage = findViewById(R.id.cbGarbage);
+        cbStorm = findViewById(R.id.cbStorm);
+        cbFlood = findViewById(R.id.cbFlood);
+        cbMud = findViewById(R.id.cbMud);
+        cbEarthquake = findViewById(R.id.cbEarthquake);
+        cbBuilding = findViewById(R.id.cbBuilding);
+        cbDrought = findViewById(R.id.cbDrought);
+        cbCold = findViewById(R.id.cbCold);
+        cbRoad = findViewById(R.id.cbRoad);
+        cbFire = findViewById(R.id.cbFire);
+        cbFireForest = findViewById(R.id.cbFireForest);
+        cbSmoke = findViewById(R.id.cbSmoke);
+        cbChemical = findViewById(R.id.cbChemical);
+        cbPlague = findViewById(R.id.cbPlague);
+        cbWeed = findViewById(R.id.cbWeed);
 
         cbProb10.setOnCheckedChangeListener(this);
         cbSound.setOnCheckedChangeListener(this);
@@ -308,30 +317,30 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         cbPlague.setOnCheckedChangeListener(this);
         cbWeed.setOnCheckedChangeListener(this);
 
-        loAnotherProblem = (LinearLayout) findViewById(R.id.loAnotherProblem);
-        loEnvyProblem = (LinearLayout) findViewById(R.id.loEnvyProblem); //Radio
-        loSound = (LinearLayout) findViewById(R.id.loSound);
-        loShock = (LinearLayout) findViewById(R.id.loShock);
-        loDust = (LinearLayout) findViewById(R.id.loDust);
-        loSmell = (LinearLayout) findViewById(R.id.loSmell);
-        loAir = (LinearLayout) findViewById(R.id.loAir);
-        loWater = (LinearLayout) findViewById(R.id.loWater);
-        loGarbage = (LinearLayout) findViewById(R.id.loGarbage);
-        loDisaster = (LinearLayout) findViewById(R.id.loDisaster); //Radio
-        loStorm = (LinearLayout) findViewById(R.id.loStorm);
-        loFlood = (LinearLayout) findViewById(R.id.loFlood);
-        loMud = (LinearLayout) findViewById(R.id.loMud);
-        loEarthquake = (LinearLayout) findViewById(R.id.loEarthquake);
-        loBuilding = (LinearLayout) findViewById(R.id.loBuilding);
-        loDrought = (LinearLayout) findViewById(R.id.loDrought);
-        loCold = (LinearLayout) findViewById(R.id.loCold);
-        loRoad = (LinearLayout) findViewById(R.id.loRoad);
-        loFire = (LinearLayout) findViewById(R.id.loFire);
-        loFireForest = (LinearLayout) findViewById(R.id.loFireForest);
-        loSmoke = (LinearLayout) findViewById(R.id.loSmoke);
-        loChemical = (LinearLayout) findViewById(R.id.loChemical);
-        loPlague = (LinearLayout) findViewById(R.id.loPlague);
-        loWeed = (LinearLayout) findViewById(R.id.loWeed);
+        loAnotherProblem = findViewById(R.id.loAnotherProblem);
+        loEnvyProblem = findViewById(R.id.loEnvyProblem); //Radio
+        loSound = findViewById(R.id.loSound);
+        loShock = findViewById(R.id.loShock);
+        loDust = findViewById(R.id.loDust);
+        loSmell = findViewById(R.id.loSmell);
+        loAir = findViewById(R.id.loAir);
+        loWater = findViewById(R.id.loWater);
+        loGarbage = findViewById(R.id.loGarbage);
+        loDisaster = findViewById(R.id.loDisaster); //Radio
+        loStorm = findViewById(R.id.loStorm);
+        loFlood = findViewById(R.id.loFlood);
+        loMud = findViewById(R.id.loMud);
+        loEarthquake = findViewById(R.id.loEarthquake);
+        loBuilding = findViewById(R.id.loBuilding);
+        loDrought = findViewById(R.id.loDrought);
+        loCold = findViewById(R.id.loCold);
+        loRoad = findViewById(R.id.loRoad);
+        loFire = findViewById(R.id.loFire);
+        loFireForest = findViewById(R.id.loFireForest);
+        loSmoke = findViewById(R.id.loSmoke);
+        loChemical = findViewById(R.id.loChemical);
+        loPlague = findViewById(R.id.loPlague);
+        loWeed = findViewById(R.id.loWeed);
 
     }
 
@@ -435,7 +444,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             Val.put("house_location_lng", "0");
         }
         int register = registerRadioGroup.getCheckedRadioButtonId();
-        radioButton = (RadioButton) findViewById(register);
+        radioButton = findViewById(register);
         int idxregister = registerRadioGroup.indexOfChild(radioButton);
         if (idxregister <= 0) {
             Val.put("house_in_registry", idxregister);
@@ -444,7 +453,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         }
 
         int hStatus = housestatusRadioGroup.getCheckedRadioButtonId();
-        radioButton = (RadioButton) findViewById(hStatus);
+        radioButton = findViewById(hStatus);
         int idxhStatus = housestatusRadioGroup.indexOfChild(radioButton);
         if (idxhStatus <= 0) {
             Val.put("house_status", idxhStatus);
@@ -452,7 +461,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             Val.put("house_status", "0");
         }
         int famtype = familyRadioGroup.getCheckedRadioButtonId();
-        radioButton = (RadioButton) findViewById(famtype);
+        radioButton = findViewById(famtype);
         int idxfamtype = familyRadioGroup.indexOfChild(radioButton);
         if (idxfamtype <= 0) {
             Val.put("house_family_type", idxfamtype);
@@ -520,7 +529,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbSound.isChecked() == true) {
                 if (soundRadioGroup.getCheckedRadioButtonId() != -1) {
                     int sound = soundRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(sound);
+                    radioButton = findViewById(sound);
                     int idxsound = soundRadioGroup.indexOfChild(radioButton);
                     if (idxsound == 0) {
                         Val.put("ep1", "3");
@@ -540,7 +549,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbShock.isChecked() == true) {
                 if (shockRadioGroup.getCheckedRadioButtonId() != -1) {
                     int shock = shockRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(shock);
+                    radioButton = findViewById(shock);
                     int idxshock = shockRadioGroup.indexOfChild(radioButton);
                     if (idxshock == 0) {
                         Val.put("ep2", "3");
@@ -560,7 +569,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbDust.isChecked() == true) {
                 if (dustRadioGroup.getCheckedRadioButtonId() != -1) {
                     int dust = dustRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(dust);
+                    radioButton = findViewById(dust);
                     int idxdust = dustRadioGroup.indexOfChild(radioButton);
                     if (dust == 0) {
                         Val.put("ep3", "3");
@@ -580,7 +589,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbSmell.isChecked() == true) {
                 if (smellRadioGroup.getCheckedRadioButtonId() != -1) {
                     int smell = smellRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(smell);
+                    radioButton = findViewById(smell);
                     int idxsmell = smellRadioGroup.indexOfChild(radioButton);
                     if (idxsmell == 0) {
                         Val.put("ep4", "3");
@@ -600,7 +609,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbAir.isChecked() == true) {
                 if (airRadioGroup.getCheckedRadioButtonId() != -1) {
                     int air = airRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(air);
+                    radioButton = findViewById(air);
                     int idxair = airRadioGroup.indexOfChild(radioButton);
                     if (idxair == 0) {
                         Val.put("ep5", "3");
@@ -620,7 +629,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbWater.isChecked() == true) {
                 if (waterRadioGroup.getCheckedRadioButtonId() != -1) {
                     int water = waterRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(water);
+                    radioButton = findViewById(water);
                     int idxwater = waterRadioGroup.indexOfChild(radioButton);
                     if (idxwater == 0) {
                         Val.put("ep6", "3");
@@ -640,7 +649,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbGarbage.isChecked() == true) {
                 if (garbageRadioGroup.getCheckedRadioButtonId() != -1) {
                     int garbage = garbageRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(garbage);
+                    radioButton = findViewById(garbage);
                     int idxgarbage = garbageRadioGroup.indexOfChild(radioButton);
                     if (idxgarbage == 0) {
                         Val.put("ep7", "3");
@@ -694,7 +703,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbStorm.isChecked() == true) {
                 if (stormRadioGroup.getCheckedRadioButtonId() != -1) {
                     int rg = stormRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(rg);
+                    radioButton = findViewById(rg);
                     int idx = stormRadioGroup.indexOfChild(radioButton);
                     if (idx == 0) {
                         Val.put("dis1", "3");
@@ -714,7 +723,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbFlood.isChecked() == true) {
                 if (floodRadioGroup.getCheckedRadioButtonId() != -1) {
                     int rg = floodRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(rg);
+                    radioButton = findViewById(rg);
                     int idx = floodRadioGroup.indexOfChild(radioButton);
                     if (idx == 0) {
                         Val.put("dis2", "3");
@@ -734,7 +743,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbMud.isChecked() == true) {
                 if (mudRadioGroup.getCheckedRadioButtonId() != -1) {
                     int rg = mudRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(rg);
+                    radioButton = findViewById(rg);
                     int idx = mudRadioGroup.indexOfChild(radioButton);
                     if (idx == 0) {
                         Val.put("dis3", "3");
@@ -754,7 +763,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbEarthquake.isChecked() == true) {
                 if (earthquakeRadioGroup.getCheckedRadioButtonId() != -1) {
                     int rg = earthquakeRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(rg);
+                    radioButton = findViewById(rg);
                     int idx = earthquakeRadioGroup.indexOfChild(radioButton);
                     if (idx == 0) {
                         Val.put("dis4", "3");
@@ -774,7 +783,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbBuilding.isChecked() == true) {
                 if (buildingRadioGroup.getCheckedRadioButtonId() != -1) {
                     int rg = buildingRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(rg);
+                    radioButton = findViewById(rg);
                     int idx = buildingRadioGroup.indexOfChild(radioButton);
                     if (idx == 0) {
                         Val.put("dis5", "3");
@@ -794,7 +803,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbDrought.isChecked() == true) {
                 if (droughtRadioGroup.getCheckedRadioButtonId() != -1) {
                     int rg = droughtRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(rg);
+                    radioButton = findViewById(rg);
                     int idx = droughtRadioGroup.indexOfChild(radioButton);
                     if (idx == 0) {
                         Val.put("dis6", "3");
@@ -814,7 +823,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbCold.isChecked() == true) {
                 if (coldRadioGroup.getCheckedRadioButtonId() != -1) {
                     int rg = coldRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(rg);
+                    radioButton = findViewById(rg);
                     int idx = coldRadioGroup.indexOfChild(radioButton);
                     if (idx == 0) {
                         Val.put("dis7", "3");
@@ -834,7 +843,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbRoad.isChecked() == true) {
                 if (roadRadioGroup.getCheckedRadioButtonId() != -1) {
                     int rg = roadRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(rg);
+                    radioButton = findViewById(rg);
                     int idx = roadRadioGroup.indexOfChild(radioButton);
                     if (idx == 0) {
                         Val.put("dis8", "3");
@@ -854,7 +863,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbFire.isChecked() == true) {
                 if (fireRadioGroup.getCheckedRadioButtonId() != -1) {
                     int rg = fireRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(rg);
+                    radioButton = findViewById(rg);
                     int idx = fireRadioGroup.indexOfChild(radioButton);
                     if (idx == 0) {
                         Val.put("dis9", "3");
@@ -874,7 +883,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbFireForest.isChecked() == true) {
                 if (fireforestRadioGroup.getCheckedRadioButtonId() != -1) {
                     int rg = fireforestRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(rg);
+                    radioButton = findViewById(rg);
                     int idx = fireforestRadioGroup.indexOfChild(radioButton);
                     if (idx == 0) {
                         Val.put("dis10", "3");
@@ -894,7 +903,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbSmoke.isChecked() == true) {
                 if (smokeRadioGroup.getCheckedRadioButtonId() != -1) {
                     int rg = smokeRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(rg);
+                    radioButton = findViewById(rg);
                     int idx = smokeRadioGroup.indexOfChild(radioButton);
                     if (idx == 0) {
                         Val.put("dis11", "3");
@@ -914,7 +923,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbChemical.isChecked() == true) {
                 if (chemicalRadioGroup.getCheckedRadioButtonId() != -1) {
                     int rg = chemicalRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(rg);
+                    radioButton = findViewById(rg);
                     int idx = chemicalRadioGroup.indexOfChild(radioButton);
                     if (idx == 0) {
                         Val.put("dis12", "3");
@@ -934,7 +943,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbPlague.isChecked() == true) {
                 if (plagueRadioGroup.getCheckedRadioButtonId() != -1) {
                     int rg = plagueRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(rg);
+                    radioButton = findViewById(rg);
                     int idx = plagueRadioGroup.indexOfChild(radioButton);
                     if (idx == 0) {
                         Val.put("dis13", "3");
@@ -954,7 +963,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             if (cbWeed.isChecked() == true) {
                 if (weedRadioGroup.getCheckedRadioButtonId() != -1) {
                     int rg = weedRadioGroup.getCheckedRadioButtonId();
-                    radioButton = (RadioButton) findViewById(rg);
+                    radioButton = findViewById(rg);
                     int idx = weedRadioGroup.indexOfChild(radioButton);
                     if (idx == 0) {
                         Val.put("dis14", "3");
@@ -1299,17 +1308,22 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                 imgByteArray = outputStream.toByteArray();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
 
         }
         if (reqCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            ivImage.setImageBitmap(photo);
-            ivImage.setVisibility(View.VISIBLE);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            photo.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
-            imgByteArray = outputStream.toByteArray();
+            try {
+                final Uri imageUri = data.getData();
+                InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                imgBitmap = BitmapFactory.decodeStream(imageStream);
+                ivImage.setImageBitmap(imgBitmap);
+                ivImage.setVisibility(View.VISIBLE);
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                imgBitmap.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
+                imgByteArray = outputStream.toByteArray();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -1333,8 +1347,8 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                     etLong.setText(String.format("%.5f", latLng.longitude));
                 }
             });
-            etLat.setText(mLastLocation.convert(mLastLocation.getLatitude(), mLastLocation.FORMAT_DEGREES));
-            etLong.setText(mLastLocation.convert(mLastLocation.getLongitude(), mLastLocation.FORMAT_DEGREES));
+            etLat.setText(Location.convert(mLastLocation.getLatitude(), Location.FORMAT_DEGREES));
+            etLong.setText(Location.convert(mLastLocation.getLongitude(), Location.FORMAT_DEGREES));
         }
         if (view == btnAddDweller) {
             intent = new Intent(this, PeopleFormActivity.class);

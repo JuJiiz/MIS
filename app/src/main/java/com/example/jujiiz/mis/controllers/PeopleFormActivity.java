@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
@@ -29,7 +27,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.jujiiz.mis.R;
-import com.example.jujiiz.mis.models.CustomDatePicker;
+import com.example.jujiiz.mis.models.CustomDialog;
 import com.example.jujiiz.mis.models.ModelCheckForm;
 import com.example.jujiiz.mis.models.ModelCheckboxCheck;
 import com.example.jujiiz.mis.models.ModelCurrentCalendar;
@@ -88,6 +86,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     CheckBox cbDisabled1, cbDisabled2, cbDisabled3, cbDisabled4, cbDisabled5, cbDisabled6;
     CheckBox cbTrans1, cbTrans2, cbTrans3, cbTrans4;
     Button btnSavingData, btnAddProperty, btnDatePick;
+    Button btnIRCSearch, btnIRPSearch, btnIHCSearch, btnIHPSearch;
     ListView lvProperty;
     ScrollView svPopulation;
 
@@ -115,6 +114,8 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     String[] spEducationArray = {"กรุณาเลือก", "ระดับก่อนประถมศึกษา", "ระดับประถมศึกษา", "ระดับมัธยมศึกษาตอนต้น", "ระดับมัธยมศึกษาตอนปลาย", "ระดับอนุปริญญา", "ระดับปริญญาตรี", "ระดับปริญญาโท", "ระดับปริญญาเอก"};
     String[] spExpertiseArray = {"กรุณาเลือก", "สาขาการเกษตรและพัฒนาชนบท", "สาขาอุตสาหกรรมก่อสร้าง", "สาขาการศึกษา", "สาขาพลังงาน", "สาขาสิ่งแวดล้อม", "สาขาการเงิน", "สาขาสาธารณสุข", "สาขาอุตสาหกรรม", "สาขาเบ็ดเตล็ด", "สาขาประชากร", "สาขาเทคโนโลยีสารสนเทศและการสื่อสาร", "สาขาการท่องเที่ยว", "สาขาการขนส่ง", "สาขาการพัฒนาเมือง", "สาขาการประปาและสุขาภิบาล", "สาขาภาษาต่างประเทศ"};
 
+    String[] spCountryArray, spProvinceArray;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,7 +141,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
     }
 
     private void init() {
-        lvProperty = (ListView) findViewById(R.id.lvProperty);
+        lvProperty = findViewById(R.id.lvProperty);
         lvProperty.setOnItemClickListener(this);
         lvProperty.setOnItemLongClickListener(this);
         /*lvProperty.setOnTouchListener(new View.OnTouchListener() {
@@ -151,270 +152,279 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             }
         });*/
 
-        svPopulation = (ScrollView) findViewById(R.id.svPopulation);
+        svPopulation = findViewById(R.id.svPopulation);
 
-        btnSavingData = (Button) findViewById(R.id.btnSavingData);
+        btnSavingData = findViewById(R.id.btnSavingData);
         btnSavingData.setOnClickListener(this);
-        btnAddProperty = (Button) findViewById(R.id.btnAddProperty);
+        btnAddProperty = findViewById(R.id.btnAddProperty);
         btnAddProperty.setOnClickListener(this);
-        btnDatePick = (Button) findViewById(R.id.btnDatePick);
+        btnDatePick = findViewById(R.id.btnDatePick);
         btnDatePick.setOnClickListener(this);
 
-        loNationality = (LinearLayout) findViewById(R.id.loNationality);
-        loAnotherPrefix = (LinearLayout) findViewById(R.id.loAnotherPrefix);
-        loBloodType = (LinearLayout) findViewById(R.id.loBloodType);
-        loInRegister = (LinearLayout) findViewById(R.id.loInRegister);
-        loNotInRegister = (LinearLayout) findViewById(R.id.loNotInRegister);
-        loNotInHousehold = (LinearLayout) findViewById(R.id.loNotInHousehold);
-        loCareer = (LinearLayout) findViewById(R.id.loCareer);
-        loAgri = (LinearLayout) findViewById(R.id.loAgri);
-        loAnotherAgri = (LinearLayout) findViewById(R.id.loAnotherAgri);
-        loPet = (LinearLayout) findViewById(R.id.loPet);
-        loAnotherPet = (LinearLayout) findViewById(R.id.loAnotherPet);
-        loGovern = (LinearLayout) findViewById(R.id.loGovern);
-        loAnotherGovern = (LinearLayout) findViewById(R.id.loAnotherGovern);
-        loPrivate = (LinearLayout) findViewById(R.id.loPrivate);
-        loAnotherPrivate = (LinearLayout) findViewById(R.id.loAnotherPrivate);
-        loICMonth = (LinearLayout) findViewById(R.id.loICMonth);
-        loICYear = (LinearLayout) findViewById(R.id.loICYear);
-        loCongenital = (LinearLayout) findViewById(R.id.loCongenital);
-        loContagious = (LinearLayout) findViewById(R.id.loContagious);
-        loAllergic = (LinearLayout) findViewById(R.id.loAllergic);
-        loDisabled = (LinearLayout) findViewById(R.id.loDisabled);
-        loInStudy = (LinearLayout) findViewById(R.id.loInStudy);
-        loGraduated = (LinearLayout) findViewById(R.id.loGraduated);
-        loExpertise = (LinearLayout) findViewById(R.id.loExpertise);
-        loExpertiseText = (LinearLayout) findViewById(R.id.loExpertiseText);
-        loAnotherReligion = (LinearLayout) findViewById(R.id.loAnotherReligion);
-        loTransportation = (LinearLayout) findViewById(R.id.loTransportation);
-        loAnotherCong = (LinearLayout) findViewById(R.id.loAnotherCong);
-        loAnotherCont = (LinearLayout) findViewById(R.id.loAnotherCont);
-        loProperty = (LinearLayout) findViewById(R.id.loProperty);
-        loLiveHere = (LinearLayout) findViewById(R.id.loLiveHere);
+        btnIRCSearch = findViewById(R.id.btnIRCSearch);
+        btnIRCSearch.setOnClickListener(this);
+        btnIRPSearch = findViewById(R.id.btnIRPSearch);
+        btnIRPSearch.setOnClickListener(this);
+        btnIHCSearch = findViewById(R.id.btnIHCSearch);
+        btnIHCSearch.setOnClickListener(this);
+        btnIHPSearch = findViewById(R.id.btnIHPSearch);
+        btnIHPSearch.setOnClickListener(this);
 
-        spNationality = (Spinner) findViewById(R.id.spNationality);
+        loNationality = findViewById(R.id.loNationality);
+        loAnotherPrefix = findViewById(R.id.loAnotherPrefix);
+        loBloodType = findViewById(R.id.loBloodType);
+        loInRegister = findViewById(R.id.loInRegister);
+        loNotInRegister = findViewById(R.id.loNotInRegister);
+        loNotInHousehold = findViewById(R.id.loNotInHousehold);
+        loCareer = findViewById(R.id.loCareer);
+        loAgri = findViewById(R.id.loAgri);
+        loAnotherAgri = findViewById(R.id.loAnotherAgri);
+        loPet = findViewById(R.id.loPet);
+        loAnotherPet = findViewById(R.id.loAnotherPet);
+        loGovern = findViewById(R.id.loGovern);
+        loAnotherGovern = findViewById(R.id.loAnotherGovern);
+        loPrivate = findViewById(R.id.loPrivate);
+        loAnotherPrivate = findViewById(R.id.loAnotherPrivate);
+        loICMonth = findViewById(R.id.loICMonth);
+        loICYear = findViewById(R.id.loICYear);
+        loCongenital = findViewById(R.id.loCongenital);
+        loContagious = findViewById(R.id.loContagious);
+        loAllergic = findViewById(R.id.loAllergic);
+        loDisabled = findViewById(R.id.loDisabled);
+        loInStudy = findViewById(R.id.loInStudy);
+        loGraduated = findViewById(R.id.loGraduated);
+        loExpertise = findViewById(R.id.loExpertise);
+        loExpertiseText = findViewById(R.id.loExpertiseText);
+        loAnotherReligion = findViewById(R.id.loAnotherReligion);
+        loTransportation = findViewById(R.id.loTransportation);
+        loAnotherCong = findViewById(R.id.loAnotherCong);
+        loAnotherCont = findViewById(R.id.loAnotherCont);
+        loProperty = findViewById(R.id.loProperty);
+        loLiveHere = findViewById(R.id.loLiveHere);
+
+        spNationality = findViewById(R.id.spNationality);
         spNationality.setOnItemSelectedListener(this);
-        spPrefix = (Spinner) findViewById(R.id.spPrefix);
-        spBloodType = (Spinner) findViewById(R.id.spBloodType);
-        spMaritalStatus = (Spinner) findViewById(R.id.spMaritalStatus);
-        spVillageName = (Spinner) findViewById(R.id.spVillageName);
-        spInStudy = (Spinner) findViewById(R.id.spInStudy);
-        spGraduated = (Spinner) findViewById(R.id.spGraduated);
-        spExpertise = (Spinner) findViewById(R.id.spExpertise);
-        spContributor = (Spinner) findViewById(R.id.spContributor);
+        spPrefix = findViewById(R.id.spPrefix);
+        spBloodType = findViewById(R.id.spBloodType);
+        spMaritalStatus = findViewById(R.id.spMaritalStatus);
+        spVillageName = findViewById(R.id.spVillageName);
+        spInStudy = findViewById(R.id.spInStudy);
+        spGraduated = findViewById(R.id.spGraduated);
+        spExpertise = findViewById(R.id.spExpertise);
+        spContributor = findViewById(R.id.spContributor);
 
-        etNationality = (EditText) findViewById(R.id.etNationality);
-        etFirstName = (EditText) findViewById(R.id.etFirstName);
-        etLastName = (EditText) findViewById(R.id.etLastName);
-        etAnotherPrefix = (EditText) findViewById(R.id.etAnotherPrefix);
-        etPersonalID = (EditText) findViewById(R.id.etPersonalID);
-        etBirtDate = (EditText) findViewById(R.id.etBirtDate);
+        etNationality = findViewById(R.id.etNationality);
+        etFirstName = findViewById(R.id.etFirstName);
+        etLastName = findViewById(R.id.etLastName);
+        etAnotherPrefix = findViewById(R.id.etAnotherPrefix);
+        etPersonalID = findViewById(R.id.etPersonalID);
+        etBirtDate = findViewById(R.id.etBirtDate);
 
-        etHeight = (EditText) findViewById(R.id.etHeight);
-        etWeight = (EditText) findViewById(R.id.etWeight);
-        etBloodType = (EditText) findViewById(R.id.etBloodType);
-        etTel = (EditText) findViewById(R.id.etTel);
-        etHNo = (EditText) findViewById(R.id.etHNo);
-        etHID = (EditText) findViewById(R.id.etHID);
-        etAnotherAgri = (EditText) findViewById(R.id.etAnotherAgri);
-        etAnotherPet = (EditText) findViewById(R.id.etAnotherPet);
-        etAnotherGovern = (EditText) findViewById(R.id.etAnotherGovern);
-        etAnotherPrivate = (EditText) findViewById(R.id.etAnotherPrivate);
-        etICMonth = (EditText) findViewById(R.id.etICMonth);
-        etICYear = (EditText) findViewById(R.id.etICYear);
-        etAllergic = (EditText) findViewById(R.id.etAllergic);
-        etAnotherReligion = (EditText) findViewById(R.id.etAnotherReligion);
-        etDate = (EditText) findViewById(R.id.etDate);
+        etHeight = findViewById(R.id.etHeight);
+        etWeight = findViewById(R.id.etWeight);
+        etBloodType = findViewById(R.id.etBloodType);
+        etTel = findViewById(R.id.etTel);
+        etHNo = findViewById(R.id.etHNo);
+        etHID = findViewById(R.id.etHID);
+        etAnotherAgri = findViewById(R.id.etAnotherAgri);
+        etAnotherPet = findViewById(R.id.etAnotherPet);
+        etAnotherGovern = findViewById(R.id.etAnotherGovern);
+        etAnotherPrivate = findViewById(R.id.etAnotherPrivate);
+        etICMonth = findViewById(R.id.etICMonth);
+        etICYear = findViewById(R.id.etICYear);
+        etAllergic = findViewById(R.id.etAllergic);
+        etAnotherReligion = findViewById(R.id.etAnotherReligion);
+        etDate = findViewById(R.id.etDate);
 
-        spIHCountry = (Spinner) findViewById(R.id.spIHCountry);
+        spIHCountry = findViewById(R.id.spIHCountry);
         spIHCountry.setEnabled(false);
-        spIHProvince = (Spinner) findViewById(R.id.spIHProvince);
+        spIHProvince = findViewById(R.id.spIHProvince);
         spIHProvince.setEnabled(false);
-        spIRCountry = (Spinner) findViewById(R.id.spIRCountry);
+        spIRCountry = findViewById(R.id.spIRCountry);
         spIRCountry.setEnabled(false);
-        spIRProvince = (Spinner) findViewById(R.id.spIRProvince);
+        spIRProvince = findViewById(R.id.spIRProvince);
         spIRProvince.setEnabled(false);
 
-        etExpertise = (EditText) findViewById(R.id.etExpertise);
-        etAnotherCong = (EditText) findViewById(R.id.etAnotherCong);
-        etAnotherCont = (EditText) findViewById(R.id.etAnotherCont);
+        etExpertise = findViewById(R.id.etExpertise);
+        etAnotherCong = findViewById(R.id.etAnotherCong);
+        etAnotherCont = findViewById(R.id.etAnotherCont);
 
-        cbAgri = (CheckBox) findViewById(R.id.cbAgri);
-        cbAgri1 = (CheckBox) findViewById(R.id.cbAgri1);
-        cbAgri2 = (CheckBox) findViewById(R.id.cbAgri2);
-        cbAgri3 = (CheckBox) findViewById(R.id.cbAgri3);
-        cbAgri4 = (CheckBox) findViewById(R.id.cbAgri4);
-        cbAgri5 = (CheckBox) findViewById(R.id.cbAgri5);
-        cbAgri6 = (CheckBox) findViewById(R.id.cbAgri6);
-        cbAgri7 = (CheckBox) findViewById(R.id.cbAgri7);
-        cbAgri8 = (CheckBox) findViewById(R.id.cbAgri8);
-        cbPet = (CheckBox) findViewById(R.id.cbPet);
-        cbPet1 = (CheckBox) findViewById(R.id.cbPet1);
-        cbPet2 = (CheckBox) findViewById(R.id.cbPet2);
-        cbPet3 = (CheckBox) findViewById(R.id.cbPet3);
-        cbPet4 = (CheckBox) findViewById(R.id.cbPet4);
-        cbPet5 = (CheckBox) findViewById(R.id.cbPet5);
-        cbPet6 = (CheckBox) findViewById(R.id.cbPet6);
-        cbPet7 = (CheckBox) findViewById(R.id.cbPet7);
-        cbPet8 = (CheckBox) findViewById(R.id.cbPet8);
-        cbPet9 = (CheckBox) findViewById(R.id.cbPet9);
-        cbGovern = (CheckBox) findViewById(R.id.cbGovern);
-        cbGovern1 = (CheckBox) findViewById(R.id.cbGovern1);
-        cbGovern2 = (CheckBox) findViewById(R.id.cbGovern2);
-        cbGovern3 = (CheckBox) findViewById(R.id.cbGovern3);
-        cbGovern4 = (CheckBox) findViewById(R.id.cbGovern4);
-        cbGovern5 = (CheckBox) findViewById(R.id.cbGovern5);
-        cbPrivate = (CheckBox) findViewById(R.id.cbPrivate);
-        cbPrivate1 = (CheckBox) findViewById(R.id.cbPrivate1);
-        cbPrivate2 = (CheckBox) findViewById(R.id.cbPrivate2);
-        cbPrivate3 = (CheckBox) findViewById(R.id.cbPrivate3);
-        cbPrivate4 = (CheckBox) findViewById(R.id.cbPrivate4);
-        cbPrivate5 = (CheckBox) findViewById(R.id.cbPrivate5);
-        cbPrivate6 = (CheckBox) findViewById(R.id.cbPrivate6);
-        cbPrivate7 = (CheckBox) findViewById(R.id.cbPrivate7);
-        cbCong1 = (CheckBox) findViewById(R.id.cbCong1);
-        cbCong2 = (CheckBox) findViewById(R.id.cbCong2);
-        cbCong3 = (CheckBox) findViewById(R.id.cbCong3);
-        cbCong4 = (CheckBox) findViewById(R.id.cbCong4);
-        cbCong5 = (CheckBox) findViewById(R.id.cbCong5);
-        cbCong6 = (CheckBox) findViewById(R.id.cbCong6);
-        cbCong7 = (CheckBox) findViewById(R.id.cbCong7);
-        cbCong8 = (CheckBox) findViewById(R.id.cbCong8);
-        cbCong9 = (CheckBox) findViewById(R.id.cbCong9);
-        cbCong10 = (CheckBox) findViewById(R.id.cbCong10);
-        cbCong11 = (CheckBox) findViewById(R.id.cbCong11);
-        cbCong12 = (CheckBox) findViewById(R.id.cbCong12);
-        cbCong13 = (CheckBox) findViewById(R.id.cbCong13);
-        cbCong14 = (CheckBox) findViewById(R.id.cbCong14);
-        cbCong15 = (CheckBox) findViewById(R.id.cbCong15);
-        cbCong16 = (CheckBox) findViewById(R.id.cbCong17);
-        cbCong17 = (CheckBox) findViewById(R.id.cbCong18);
-        cbCong18 = (CheckBox) findViewById(R.id.cbCong18);
-        cbCong19 = (CheckBox) findViewById(R.id.cbCong19);
-        cbCong20 = (CheckBox) findViewById(R.id.cbCong20);
-        cbCong21 = (CheckBox) findViewById(R.id.cbCong21);
-        cbCong22 = (CheckBox) findViewById(R.id.cbCong22);
-        cbCong23 = (CheckBox) findViewById(R.id.cbCong23);
-        cbCong24 = (CheckBox) findViewById(R.id.cbCong24);
-        cbCong25 = (CheckBox) findViewById(R.id.cbCong25);
-        cbCong26 = (CheckBox) findViewById(R.id.cbCong26);
-        cbCont1 = (CheckBox) findViewById(R.id.cbCont1);
-        cbCont2 = (CheckBox) findViewById(R.id.cbCont2);
-        cbCont3 = (CheckBox) findViewById(R.id.cbCont3);
-        cbCont4 = (CheckBox) findViewById(R.id.cbCont4);
-        cbCont5 = (CheckBox) findViewById(R.id.cbCont5);
-        cbCont6 = (CheckBox) findViewById(R.id.cbCont6);
-        cbCont7 = (CheckBox) findViewById(R.id.cbCont7);
-        cbCont8 = (CheckBox) findViewById(R.id.cbCont8);
-        cbCont9 = (CheckBox) findViewById(R.id.cbCont9);
-        cbCont10 = (CheckBox) findViewById(R.id.cbCont10);
-        cbCont11 = (CheckBox) findViewById(R.id.cbCont11);
-        cbCont12 = (CheckBox) findViewById(R.id.cbCont12);
-        cbCont13 = (CheckBox) findViewById(R.id.cbCont13);
-        cbCont14 = (CheckBox) findViewById(R.id.cbCont14);
-        cbCont15 = (CheckBox) findViewById(R.id.cbCont15);
-        cbCont16 = (CheckBox) findViewById(R.id.cbCont16);
-        cbCont17 = (CheckBox) findViewById(R.id.cbCont17);
-        cbCont18 = (CheckBox) findViewById(R.id.cbCont18);
-        cbCont19 = (CheckBox) findViewById(R.id.cbCont19);
-        cbCont20 = (CheckBox) findViewById(R.id.cbCont20);
-        cbCont21 = (CheckBox) findViewById(R.id.cbCont21);
-        cbCont22 = (CheckBox) findViewById(R.id.cbCont22);
-        cbCont23 = (CheckBox) findViewById(R.id.cbCont23);
-        cbCont24 = (CheckBox) findViewById(R.id.cbCont24);
-        cbCont25 = (CheckBox) findViewById(R.id.cbCont25);
-        cbCont26 = (CheckBox) findViewById(R.id.cbCont26);
-        cbCont27 = (CheckBox) findViewById(R.id.cbCont27);
-        cbCont28 = (CheckBox) findViewById(R.id.cbCont28);
-        cbCont29 = (CheckBox) findViewById(R.id.cbCont29);
-        cbCont30 = (CheckBox) findViewById(R.id.cbCont30);
-        cbCont31 = (CheckBox) findViewById(R.id.cbCont31);
-        cbCont32 = (CheckBox) findViewById(R.id.cbCont32);
-        cbCont33 = (CheckBox) findViewById(R.id.cbCont33);
-        cbCont34 = (CheckBox) findViewById(R.id.cbCont34);
-        cbCont35 = (CheckBox) findViewById(R.id.cbCont35);
-        cbCont36 = (CheckBox) findViewById(R.id.cbCont36);
-        cbCont37 = (CheckBox) findViewById(R.id.cbCont37);
-        cbCont38 = (CheckBox) findViewById(R.id.cbCont38);
-        cbCont39 = (CheckBox) findViewById(R.id.cbCont39);
-        cbCont40 = (CheckBox) findViewById(R.id.cbCont40);
-        cbCont41 = (CheckBox) findViewById(R.id.cbCont41);
-        cbCont42 = (CheckBox) findViewById(R.id.cbCont42);
-        cbCont43 = (CheckBox) findViewById(R.id.cbCont43);
-        cbCont44 = (CheckBox) findViewById(R.id.cbCont44);
-        cbCont45 = (CheckBox) findViewById(R.id.cbCont45);
-        cbCont46 = (CheckBox) findViewById(R.id.cbCont46);
-        cbCont47 = (CheckBox) findViewById(R.id.cbCont47);
-        cbCont48 = (CheckBox) findViewById(R.id.cbCont48);
-        cbCont49 = (CheckBox) findViewById(R.id.cbCont49);
-        cbCont50 = (CheckBox) findViewById(R.id.cbCont50);
-        cbCont51 = (CheckBox) findViewById(R.id.cbCont51);
-        cbDisabled1 = (CheckBox) findViewById(R.id.cbDisabled1);
-        cbDisabled2 = (CheckBox) findViewById(R.id.cbDisabled2);
-        cbDisabled3 = (CheckBox) findViewById(R.id.cbDisabled3);
-        cbDisabled4 = (CheckBox) findViewById(R.id.cbDisabled4);
-        cbDisabled5 = (CheckBox) findViewById(R.id.cbDisabled5);
-        cbDisabled6 = (CheckBox) findViewById(R.id.cbDisabled6);
-        cbTrans1 = (CheckBox) findViewById(R.id.cbTrans1);
-        cbTrans2 = (CheckBox) findViewById(R.id.cbTrans2);
-        cbTrans3 = (CheckBox) findViewById(R.id.cbTrans3);
-        cbTrans4 = (CheckBox) findViewById(R.id.cbTrans4);
+        cbAgri = findViewById(R.id.cbAgri);
+        cbAgri1 = findViewById(R.id.cbAgri1);
+        cbAgri2 = findViewById(R.id.cbAgri2);
+        cbAgri3 = findViewById(R.id.cbAgri3);
+        cbAgri4 = findViewById(R.id.cbAgri4);
+        cbAgri5 = findViewById(R.id.cbAgri5);
+        cbAgri6 = findViewById(R.id.cbAgri6);
+        cbAgri7 = findViewById(R.id.cbAgri7);
+        cbAgri8 = findViewById(R.id.cbAgri8);
+        cbPet = findViewById(R.id.cbPet);
+        cbPet1 = findViewById(R.id.cbPet1);
+        cbPet2 = findViewById(R.id.cbPet2);
+        cbPet3 = findViewById(R.id.cbPet3);
+        cbPet4 = findViewById(R.id.cbPet4);
+        cbPet5 = findViewById(R.id.cbPet5);
+        cbPet6 = findViewById(R.id.cbPet6);
+        cbPet7 = findViewById(R.id.cbPet7);
+        cbPet8 = findViewById(R.id.cbPet8);
+        cbPet9 = findViewById(R.id.cbPet9);
+        cbGovern = findViewById(R.id.cbGovern);
+        cbGovern1 = findViewById(R.id.cbGovern1);
+        cbGovern2 = findViewById(R.id.cbGovern2);
+        cbGovern3 = findViewById(R.id.cbGovern3);
+        cbGovern4 = findViewById(R.id.cbGovern4);
+        cbGovern5 = findViewById(R.id.cbGovern5);
+        cbPrivate = findViewById(R.id.cbPrivate);
+        cbPrivate1 = findViewById(R.id.cbPrivate1);
+        cbPrivate2 = findViewById(R.id.cbPrivate2);
+        cbPrivate3 = findViewById(R.id.cbPrivate3);
+        cbPrivate4 = findViewById(R.id.cbPrivate4);
+        cbPrivate5 = findViewById(R.id.cbPrivate5);
+        cbPrivate6 = findViewById(R.id.cbPrivate6);
+        cbPrivate7 = findViewById(R.id.cbPrivate7);
+        cbCong1 = findViewById(R.id.cbCong1);
+        cbCong2 = findViewById(R.id.cbCong2);
+        cbCong3 = findViewById(R.id.cbCong3);
+        cbCong4 = findViewById(R.id.cbCong4);
+        cbCong5 = findViewById(R.id.cbCong5);
+        cbCong6 = findViewById(R.id.cbCong6);
+        cbCong7 = findViewById(R.id.cbCong7);
+        cbCong8 = findViewById(R.id.cbCong8);
+        cbCong9 = findViewById(R.id.cbCong9);
+        cbCong10 = findViewById(R.id.cbCong10);
+        cbCong11 = findViewById(R.id.cbCong11);
+        cbCong12 = findViewById(R.id.cbCong12);
+        cbCong13 = findViewById(R.id.cbCong13);
+        cbCong14 = findViewById(R.id.cbCong14);
+        cbCong15 = findViewById(R.id.cbCong15);
+        cbCong16 = findViewById(R.id.cbCong17);
+        cbCong17 = findViewById(R.id.cbCong18);
+        cbCong18 = findViewById(R.id.cbCong18);
+        cbCong19 = findViewById(R.id.cbCong19);
+        cbCong20 = findViewById(R.id.cbCong20);
+        cbCong21 = findViewById(R.id.cbCong21);
+        cbCong22 = findViewById(R.id.cbCong22);
+        cbCong23 = findViewById(R.id.cbCong23);
+        cbCong24 = findViewById(R.id.cbCong24);
+        cbCong25 = findViewById(R.id.cbCong25);
+        cbCong26 = findViewById(R.id.cbCong26);
+        cbCont1 = findViewById(R.id.cbCont1);
+        cbCont2 = findViewById(R.id.cbCont2);
+        cbCont3 = findViewById(R.id.cbCont3);
+        cbCont4 = findViewById(R.id.cbCont4);
+        cbCont5 = findViewById(R.id.cbCont5);
+        cbCont6 = findViewById(R.id.cbCont6);
+        cbCont7 = findViewById(R.id.cbCont7);
+        cbCont8 = findViewById(R.id.cbCont8);
+        cbCont9 = findViewById(R.id.cbCont9);
+        cbCont10 = findViewById(R.id.cbCont10);
+        cbCont11 = findViewById(R.id.cbCont11);
+        cbCont12 = findViewById(R.id.cbCont12);
+        cbCont13 = findViewById(R.id.cbCont13);
+        cbCont14 = findViewById(R.id.cbCont14);
+        cbCont15 = findViewById(R.id.cbCont15);
+        cbCont16 = findViewById(R.id.cbCont16);
+        cbCont17 = findViewById(R.id.cbCont17);
+        cbCont18 = findViewById(R.id.cbCont18);
+        cbCont19 = findViewById(R.id.cbCont19);
+        cbCont20 = findViewById(R.id.cbCont20);
+        cbCont21 = findViewById(R.id.cbCont21);
+        cbCont22 = findViewById(R.id.cbCont22);
+        cbCont23 = findViewById(R.id.cbCont23);
+        cbCont24 = findViewById(R.id.cbCont24);
+        cbCont25 = findViewById(R.id.cbCont25);
+        cbCont26 = findViewById(R.id.cbCont26);
+        cbCont27 = findViewById(R.id.cbCont27);
+        cbCont28 = findViewById(R.id.cbCont28);
+        cbCont29 = findViewById(R.id.cbCont29);
+        cbCont30 = findViewById(R.id.cbCont30);
+        cbCont31 = findViewById(R.id.cbCont31);
+        cbCont32 = findViewById(R.id.cbCont32);
+        cbCont33 = findViewById(R.id.cbCont33);
+        cbCont34 = findViewById(R.id.cbCont34);
+        cbCont35 = findViewById(R.id.cbCont35);
+        cbCont36 = findViewById(R.id.cbCont36);
+        cbCont37 = findViewById(R.id.cbCont37);
+        cbCont38 = findViewById(R.id.cbCont38);
+        cbCont39 = findViewById(R.id.cbCont39);
+        cbCont40 = findViewById(R.id.cbCont40);
+        cbCont41 = findViewById(R.id.cbCont41);
+        cbCont42 = findViewById(R.id.cbCont42);
+        cbCont43 = findViewById(R.id.cbCont43);
+        cbCont44 = findViewById(R.id.cbCont44);
+        cbCont45 = findViewById(R.id.cbCont45);
+        cbCont46 = findViewById(R.id.cbCont46);
+        cbCont47 = findViewById(R.id.cbCont47);
+        cbCont48 = findViewById(R.id.cbCont48);
+        cbCont49 = findViewById(R.id.cbCont49);
+        cbCont50 = findViewById(R.id.cbCont50);
+        cbCont51 = findViewById(R.id.cbCont51);
+        cbDisabled1 = findViewById(R.id.cbDisabled1);
+        cbDisabled2 = findViewById(R.id.cbDisabled2);
+        cbDisabled3 = findViewById(R.id.cbDisabled3);
+        cbDisabled4 = findViewById(R.id.cbDisabled4);
+        cbDisabled5 = findViewById(R.id.cbDisabled5);
+        cbDisabled6 = findViewById(R.id.cbDisabled6);
+        cbTrans1 = findViewById(R.id.cbTrans1);
+        cbTrans2 = findViewById(R.id.cbTrans2);
+        cbTrans3 = findViewById(R.id.cbTrans3);
+        cbTrans4 = findViewById(R.id.cbTrans4);
 
-        rbMale = (RadioButton) findViewById(R.id.rbMale);
-        rbFemale = (RadioButton) findViewById(R.id.rbFemale);
-        rbAlive = (RadioButton) findViewById(R.id.rbAlive);
-        rbDead = (RadioButton) findViewById(R.id.rbDead);
-        rbInRegister = (RadioButton) findViewById(R.id.rbInRegister);
-        rbNotInRegister = (RadioButton) findViewById(R.id.rbNotInRegister);
-        rbInHousehold = (RadioButton) findViewById(R.id.rbInHousehold);
-        rbNotInHousehold = (RadioButton) findViewById(R.id.rbNotInHousehold);
-        rbStatusOwner = (RadioButton) findViewById(R.id.rbStatusOwner);
-        rbStatusDweller = (RadioButton) findViewById(R.id.rbStatusDweller);
-        rbJGStudent = (RadioButton) findViewById(R.id.rbJGStudent);
-        rbJGCareer = (RadioButton) findViewById(R.id.rbJGCareer);
-        rbJGNoJob = (RadioButton) findViewById(R.id.rbJGNoJob);
-        rbICMonth = (RadioButton) findViewById(R.id.rbICMonth);
-        rbICYear = (RadioButton) findViewById(R.id.rbICYear);
-        rbDebtNo = (RadioButton) findViewById(R.id.rbDebtNo);
-        rbDebtYes = (RadioButton) findViewById(R.id.rbDebtYes);
-        rbSavingNo = (RadioButton) findViewById(R.id.rbSavingNo);
-        rbSavingYes = (RadioButton) findViewById(R.id.rbSavingYes);
-        rbCongenitalNo = (RadioButton) findViewById(R.id.rbCongenitalNo);
-        rbCongenitalYes = (RadioButton) findViewById(R.id.rbCongenitalYes);
-        rbContagiousNo = (RadioButton) findViewById(R.id.rbContagiousNo);
-        rbContagiousYes = (RadioButton) findViewById(R.id.rbContagiousYes);
-        rbAllergicNo = (RadioButton) findViewById(R.id.rbAllergicNo);
-        rbAllergicYes = (RadioButton) findViewById(R.id.rbAllergicYes);
-        rbDisabledNo = (RadioButton) findViewById(R.id.rbDisabledNo);
-        rbDisabledYes = (RadioButton) findViewById(R.id.rbDisabledYes);
-        rbDisadvantageNo = (RadioButton) findViewById(R.id.rbDisadvantageNo);
-        rbDisadvantageYes = (RadioButton) findViewById(R.id.rbDisadvantageYes);
-        rbSubAlNo = (RadioButton) findViewById(R.id.rbSubAlNo);
-        rbSubAlYes = (RadioButton) findViewById(R.id.rbSubAlYes);
-        rbNoStudy = (RadioButton) findViewById(R.id.rbNoStudy);
-        rbInStudy = (RadioButton) findViewById(R.id.rbInStudy);
-        rbGraduated = (RadioButton) findViewById(R.id.rbGraduated);
-        rbLiteracyYes = (RadioButton) findViewById(R.id.rbLiteracyYes);
-        rbLiteracyNo = (RadioButton) findViewById(R.id.rbLiteracyNo);
-        rbTechnologyNo = (RadioButton) findViewById(R.id.rbTechnologyNo);
-        rbTechnologyYes = (RadioButton) findViewById(R.id.rbTechnologyYes);
-        rbExpertiseNo = (RadioButton) findViewById(R.id.rbExpertiseNo);
-        rbExpertiseYes = (RadioButton) findViewById(R.id.rbExpertiseYes);
-        rbBuddhismReligion = (RadioButton) findViewById(R.id.rbBuddhismReligion);
-        rbChristReligion = (RadioButton) findViewById(R.id.rbChristReligion);
-        rbIslamicReligion = (RadioButton) findViewById(R.id.rbIslamicReligion);
-        rbAnotherReligion = (RadioButton) findViewById(R.id.rbAnotherReligion);
-        rbParticipationNo = (RadioButton) findViewById(R.id.rbParticipationNo);
-        rbParticipationYes = (RadioButton) findViewById(R.id.rbParticipationYes);
-        rbElectionAlway = (RadioButton) findViewById(R.id.rbElectionAlway);
-        rbElectionSometime = (RadioButton) findViewById(R.id.rbElectionSometime);
-        rbElectionNever = (RadioButton) findViewById(R.id.rbElectionNever);
-        rbTransportationNo = (RadioButton) findViewById(R.id.rbTransportationNo);
-        rbTransportationYes = (RadioButton) findViewById(R.id.rbTransportationYes);
-        rbIHProvince = (RadioButton) findViewById(R.id.rbIHProvince);
-        rbIRProvince = (RadioButton) findViewById(R.id.rbIRProvince);
-        rbIHCountry = (RadioButton) findViewById(R.id.rbIHCountry);
-        rbIRCountry = (RadioButton) findViewById(R.id.rbIRCountry);
+        rbMale = findViewById(R.id.rbMale);
+        rbFemale = findViewById(R.id.rbFemale);
+        rbAlive = findViewById(R.id.rbAlive);
+        rbDead = findViewById(R.id.rbDead);
+        rbInRegister = findViewById(R.id.rbInRegister);
+        rbNotInRegister = findViewById(R.id.rbNotInRegister);
+        rbInHousehold = findViewById(R.id.rbInHousehold);
+        rbNotInHousehold = findViewById(R.id.rbNotInHousehold);
+        rbStatusOwner = findViewById(R.id.rbStatusOwner);
+        rbStatusDweller = findViewById(R.id.rbStatusDweller);
+        rbJGStudent = findViewById(R.id.rbJGStudent);
+        rbJGCareer = findViewById(R.id.rbJGCareer);
+        rbJGNoJob = findViewById(R.id.rbJGNoJob);
+        rbICMonth = findViewById(R.id.rbICMonth);
+        rbICYear = findViewById(R.id.rbICYear);
+        rbDebtNo = findViewById(R.id.rbDebtNo);
+        rbDebtYes = findViewById(R.id.rbDebtYes);
+        rbSavingNo = findViewById(R.id.rbSavingNo);
+        rbSavingYes = findViewById(R.id.rbSavingYes);
+        rbCongenitalNo = findViewById(R.id.rbCongenitalNo);
+        rbCongenitalYes = findViewById(R.id.rbCongenitalYes);
+        rbContagiousNo = findViewById(R.id.rbContagiousNo);
+        rbContagiousYes = findViewById(R.id.rbContagiousYes);
+        rbAllergicNo = findViewById(R.id.rbAllergicNo);
+        rbAllergicYes = findViewById(R.id.rbAllergicYes);
+        rbDisabledNo = findViewById(R.id.rbDisabledNo);
+        rbDisabledYes = findViewById(R.id.rbDisabledYes);
+        rbDisadvantageNo = findViewById(R.id.rbDisadvantageNo);
+        rbDisadvantageYes = findViewById(R.id.rbDisadvantageYes);
+        rbSubAlNo = findViewById(R.id.rbSubAlNo);
+        rbSubAlYes = findViewById(R.id.rbSubAlYes);
+        rbNoStudy = findViewById(R.id.rbNoStudy);
+        rbInStudy = findViewById(R.id.rbInStudy);
+        rbGraduated = findViewById(R.id.rbGraduated);
+        rbLiteracyYes = findViewById(R.id.rbLiteracyYes);
+        rbLiteracyNo = findViewById(R.id.rbLiteracyNo);
+        rbTechnologyNo = findViewById(R.id.rbTechnologyNo);
+        rbTechnologyYes = findViewById(R.id.rbTechnologyYes);
+        rbExpertiseNo = findViewById(R.id.rbExpertiseNo);
+        rbExpertiseYes = findViewById(R.id.rbExpertiseYes);
+        rbBuddhismReligion = findViewById(R.id.rbBuddhismReligion);
+        rbChristReligion = findViewById(R.id.rbChristReligion);
+        rbIslamicReligion = findViewById(R.id.rbIslamicReligion);
+        rbAnotherReligion = findViewById(R.id.rbAnotherReligion);
+        rbParticipationNo = findViewById(R.id.rbParticipationNo);
+        rbParticipationYes = findViewById(R.id.rbParticipationYes);
+        rbElectionAlway = findViewById(R.id.rbElectionAlway);
+        rbElectionSometime = findViewById(R.id.rbElectionSometime);
+        rbElectionNever = findViewById(R.id.rbElectionNever);
+        rbTransportationNo = findViewById(R.id.rbTransportationNo);
+        rbTransportationYes = findViewById(R.id.rbTransportationYes);
+        rbIHProvince = findViewById(R.id.rbIHProvince);
+        rbIRProvince = findViewById(R.id.rbIRProvince);
+        rbIHCountry = findViewById(R.id.rbIHCountry);
+        rbIRCountry = findViewById(R.id.rbIRCountry);
 
         cbAgri.setOnCheckedChangeListener(this);
         cbAgri1.setOnCheckedChangeListener(this);
@@ -587,7 +597,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 String strProvince = CountryList.get(i).get("countryName");
                 Country.add(strProvince);
             }
-            String[] spCountryArray = Country.toArray(new String[0]);
+            spCountryArray = Country.toArray(new String[0]);
             countryArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spCountryArray, spIHCountry);
             countryArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spCountryArray, spIRCountry);
         }
@@ -601,7 +611,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 String strProvince = ProvinceList.get(i).get("name");
                 Province.add(strProvince);
             }
-            String[] spProvinceArray = Province.toArray(new String[0]);
+            spProvinceArray = Province.toArray(new String[0]);
             provinceArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spProvinceArray, spIHProvince);
             provinceArrayAdapter = ModelSpinnerAdapter.setSpinnerItem(this, spProvinceArray, spIRProvince);
         }
@@ -2311,9 +2321,14 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
     @Override
     public void onClick(View view) {
+        //,btnIRPSearch,btnIHCSearch,btnIHPSearch;
+        if (view == btnIRCSearch) {
+            //CustomDialog.ListViewDialog(PeopleFormActivity.this, spIRCountry, spCountryArray, countryArrayAdapter);
+        }
+
         if (view == btnDatePick) {
             //fromDatePickerDialog.show();
-            CustomDatePicker.customDialog(PeopleFormActivity.this, etBirtDate);
+            CustomDialog.DatePickerDialog(PeopleFormActivity.this, etBirtDate);
         }
         if (view == btnSavingData) {
             if (fieldCheck() == 0) {
@@ -2400,7 +2415,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             LayoutInflater inflater = getLayoutInflater();
             View v = inflater.inflate(R.layout.my_alert_dialog, (ViewGroup) findViewById(R.id.root));
 
-            Button btnLand = (Button) v.findViewById(R.id.btnLand);
+            Button btnLand = v.findViewById(R.id.btnLand);
             btnLand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -2411,7 +2426,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     PeopleFormActivity.this.startActivity(intent);
                 }
             });
-            Button btnVehicle = (Button) v.findViewById(R.id.btnVehicle);
+            Button btnVehicle = v.findViewById(R.id.btnVehicle);
             btnVehicle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -2422,7 +2437,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     PeopleFormActivity.this.startActivity(intent);
                 }
             });
-            Button btnPet = (Button) v.findViewById(R.id.btnPet);
+            Button btnPet = v.findViewById(R.id.btnPet);
             btnPet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -2433,7 +2448,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     PeopleFormActivity.this.startActivity(intent);
                 }
             });
-            Button btnAnimal = (Button) v.findViewById(R.id.btnAnimal);
+            Button btnAnimal = v.findViewById(R.id.btnAnimal);
             btnAnimal.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
