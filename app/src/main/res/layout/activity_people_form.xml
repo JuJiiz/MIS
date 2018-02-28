@@ -1292,7 +1292,8 @@
                                     android:id="@+id/etICMonth"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="ระบุ" />
+                                    android:hint="ระบุ"
+                                    android:inputType="number" />
 
                             </LinearLayout>
 
@@ -1313,7 +1314,8 @@
                                     android:id="@+id/etICYear"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="ระบุ" />
+                                    android:hint="ระบุ"
+                                    android:inputType="number" />
 
                             </LinearLayout>
                         </RadioGroup>

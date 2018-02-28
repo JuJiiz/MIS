@@ -44,7 +44,7 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
     EditText etPetOwner, etPetAmount, etPetBorn, etDate;
     RadioGroup rdPetRegister, rdPetType, rdPetSex, rdPetVaccine, rdVaccineContinue, rdPetBorn;
     RadioButton rbPetRegisterNo, rbPetRegisterYes, rbPetTypeDog, rbPetTypeCat, rbPetSexMale, rbPetSexFemale, rbPetVaccineNo, rbPetVaccineYes, rbVaccineContinueNo, rbVaccineContinueYes, rbPetBornNo, rbPetBornYes;
-    LinearLayout loVaccineContinue, loLastVaccine, loPetBorn;
+    LinearLayout loVaccineContinue, loLastVaccine, loPetBorn, loNewBorn;
     Spinner spSterile, spLastVaccine, spContributor;
     Button btnSavingData, btnImagePick;
     ImageView ivImage;
@@ -53,8 +53,8 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
     private static final int CAMERA_REQUEST = 1888;
     private static final int GALLERY_REQUEST = 1;
 
-    String[] spMonthArray = {"กรุณาเลือก","มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"};
-    String[] spSterileArray = {"กรุณาเลือก","ทำหมันแล้ว", "ยังไม่ทำหมัน", "ไม่ทราบ", "ฉีดยาคุม"};
+    String[] spMonthArray = {"กรุณาเลือก", "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"};
+    String[] spSterileArray = {"กรุณาเลือก", "ทำหมันแล้ว", "ยังไม่ทำหมัน", "ไม่ทราบ", "ฉีดยาคุม"};
 
     myDBClass db = new myDBClass(this);
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -116,6 +116,7 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
         loVaccineContinue = (LinearLayout) findViewById(R.id.loVaccineContinue);
         loLastVaccine = (LinearLayout) findViewById(R.id.loLastVaccine);
         loPetBorn = (LinearLayout) findViewById(R.id.loPetBorn);
+        loNewBorn = (LinearLayout) findViewById(R.id.loNewBorn);
 
         spSterile = (Spinner) findViewById(R.id.spSterile);
         spLastVaccine = (Spinner) findViewById(R.id.spLastVaccine);
@@ -175,8 +176,10 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
 
             if (PetList.get(0).get("pet_sex").equals("M")) {
                 rbPetSexMale.setChecked(true);
+                loNewBorn.setVisibility(View.GONE);
             } else if (PetList.get(0).get("pet_sex").equals("F")) {
                 rbPetSexFemale.setChecked(true);
+                loNewBorn.setVisibility(View.VISIBLE);
             }
 
             if (PetList.get(0).get("vaccine").equals("0")) {
@@ -287,7 +290,7 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
             db.InsertData("population_asset_pet", Val);
             Val = new ContentValues();
             Val.put("upload_status", "1");
-            db.UpdateData("population",Val,"population_idcard",PersonID);
+            db.UpdateData("population", Val, "population_idcard", PersonID);
         } else {
             PetList = db.SelectWhereData("population_asset_pet", "pet_running", PetID);
             if (PetList.isEmpty()) {
@@ -296,12 +299,12 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
                 db.InsertData("population_asset_pet", Val);
                 Val = new ContentValues();
                 Val.put("upload_status", "1");
-                db.UpdateData("population",Val,"population_idcard",PersonID);
+                db.UpdateData("population", Val, "population_idcard", PersonID);
             } else {
                 db.UpdateData("population_asset_pet", Val, "pet_running", PetID);
                 Val = new ContentValues();
                 Val.put("upload_status", "1");
-                db.UpdateData("population",Val,"population_idcard",PersonID);
+                db.UpdateData("population", Val, "population_idcard", PersonID);
             }
         }
     }
@@ -344,21 +347,21 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (v == btnSavingData) {
-            if (fieldCheck() == 0){
+            if (fieldCheck() == 0) {
                 updateData();
                 Toast.makeText(this, "บันทึกข้อมูลเรียบร้อย", Toast.LENGTH_SHORT).show();
                 this.finish();
-            } else if (fieldCheck() == 1){
+            } else if (fieldCheck() == 1) {
                 Toast.makeText(this, "กรุณาระบุ \"ประเภทสัตว์เลี้ยงในครัวเรือน\"", Toast.LENGTH_SHORT).show();
-            } else if (fieldCheck() == 2){
+            } else if (fieldCheck() == 2) {
                 Toast.makeText(this, "กรุณาระบุ \"เพศ\"", Toast.LENGTH_SHORT).show();
-            } else if (fieldCheck() == 3){
+            } else if (fieldCheck() == 3) {
                 Toast.makeText(this, "กรุณาระบุ \"การฉีดวัคซีน\"", Toast.LENGTH_SHORT).show();
-            } else if (fieldCheck() == 4){
+            } else if (fieldCheck() == 4) {
                 Toast.makeText(this, "กรุณาระบุ \"จำนวนสัตว์เกิดใหม่ต่อปี\"", Toast.LENGTH_SHORT).show();
-            } else if (fieldCheck() == 5){
+            } else if (fieldCheck() == 5) {
                 Toast.makeText(this, "กรุณาระบุ \"การทำหมัน\"", Toast.LENGTH_SHORT).show();
-            } else if (fieldCheck() == 6){
+            } else if (fieldCheck() == 6) {
                 Toast.makeText(this, "กรุณาระบุ \"ชื่อผู้ให้ข้อมูล\"", Toast.LENGTH_SHORT).show();
             }
         }
@@ -373,7 +376,7 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    private int fieldCheck(){
+    private int fieldCheck() {
         int formPass = 0;
         Boolean typePass = true,//1
                 sexPass = true,//2
@@ -382,28 +385,28 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
                 sterilePass = true,//5
                 conPass = true;//6
 
-        if (!rbPetTypeDog.isChecked() && !rbPetTypeCat.isChecked()){
+        if (!rbPetTypeDog.isChecked() && !rbPetTypeCat.isChecked()) {
             typePass = false;
         }
 
-        if (!rbPetSexMale.isChecked() && !rbPetSexFemale.isChecked()){
+        if (!rbPetSexMale.isChecked() && !rbPetSexFemale.isChecked()) {
             sexPass = false;
         }
 
-        if(rbPetVaccineYes.isChecked()){
-            if (!rbVaccineContinueNo.isChecked() && !rbVaccineContinueYes.isChecked()){
+        if (rbPetVaccineYes.isChecked()) {
+            if (!rbVaccineContinueNo.isChecked() && !rbVaccineContinueYes.isChecked()) {
                 vacconPass = false;
             }
         }
 
-        if(rbPetVaccineYes.isChecked()){
-            if (ModelCheckForm.checkSpinner(spLastVaccine) != true){
+        if (rbPetVaccineYes.isChecked()) {
+            if (ModelCheckForm.checkSpinner(spLastVaccine) != true) {
                 vacconPass = false;
             }
         }
 
-        if(rbPetBornYes.isChecked()){
-            if (ModelCheckForm.checkEditText(etPetBorn) != true){
+        if (rbPetBornYes.isChecked()) {
+            if (ModelCheckForm.checkEditText(etPetBorn) != true) {
                 bornPass = false;
             }
         }
@@ -411,29 +414,29 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
         sterilePass = ModelCheckForm.checkSpinner(spSterile);
         conPass = ModelCheckForm.checkSpinner(spContributor);
 
-        if (typePass == true){
-            if (sexPass == true){
-                if (vacconPass == true){
-                    if (bornPass == true){
-                        if (sterilePass == true){
-                            if (conPass == true){
+        if (typePass == true) {
+            if (sexPass == true) {
+                if (vacconPass == true) {
+                    if (bornPass == true) {
+                        if (sterilePass == true) {
+                            if (conPass == true) {
                                 formPass = 0;
-                            }else{
+                            } else {
                                 formPass = 6;
                             }
-                        }else{
+                        } else {
                             formPass = 5;
                         }
-                    }else{
+                    } else {
                         formPass = 4;
                     }
-                }else{
+                } else {
                     formPass = 3;
                 }
-            }else{
+            } else {
                 formPass = 2;
             }
-        }else{
+        } else {
             formPass = 1;
         }
 
@@ -442,19 +445,18 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (buttonView == rbPetVaccineYes){
+        if (buttonView == rbPetVaccineYes) {
             ModelShowHideLayout.radiobuttonShowHide(rbPetVaccineYes, loVaccineContinue);
             ModelShowHideLayout.radiobuttonShowHide(rbPetVaccineYes, loLastVaccine);
         }
         if (buttonView == rbPetBornYes)
             ModelShowHideLayout.radiobuttonShowHide(rbPetBornYes, loPetBorn);
-        if (buttonView == rbPetSexMale){
-            rbPetBornYes.setEnabled(false);
-            rbPetBornNo.setEnabled(false);
+
+        if (rbPetSexMale.isChecked()) {
+            loNewBorn.setVisibility(View.GONE);
         }
-        if (buttonView == rbPetSexFemale){
-            rbPetBornYes.setEnabled(true);
-            rbPetBornNo.setEnabled(true);
+        if (rbPetSexFemale.isChecked()) {
+            loNewBorn.setVisibility(View.VISIBLE);
         }
     }
 }
