@@ -207,13 +207,31 @@
                         android:background="@color/listItemColor"></ListView>
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/btnAddDweller"
-                    android:layout_width="wrap_content"
+
+                <RelativeLayout
+                    android:id="@+id/underlistLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/listviewLayout"
-                    android:text="เพิ่มประชากรแฝง" />
+                    android:layout_below="@+id/listviewLayout">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:paddingLeft="8dp"
+                        android:text="* = ประชากรแฝง"
+                        android:textSize="12dp" />
+
+                    <Button
+                        android:id="@+id/btnAddDweller"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="เพิ่มประชากรแฝง" />
+
+                </RelativeLayout>
+
+
             </RelativeLayout>
 
             <TextView

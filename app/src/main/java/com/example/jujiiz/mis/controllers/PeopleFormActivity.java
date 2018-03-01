@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -839,6 +840,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                         ModelCurrentCalendar.edittextCurrentCalendar(this, etDate);
 
                         WorkList = db.SelectWhereData("population_works", "population_idcard", PersonList.get(i).get("population_idcard"));
+                        Log.d("MYLOG", "WorkList: " + WorkList);
                         if (!WorkList.isEmpty()) {
                             if (WorkList.get(0).get("works_type").equals("1")) {
                                 rbJGStudent.setChecked(true);
@@ -848,6 +850,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                                 rbJGNoJob.setChecked(true);
                             }
                             AgriList = db.SelectWhereData("population_job_agriculture", "works_id", WorkList.get(0).get("works_id"));
+                            Log.d("MYLOG", "AgriList: " + AgriList);
                             if (!AgriList.isEmpty()) {
                                 ModelCheckboxCheck.checkboxSetCheck(cbAgri1, AgriList.get(0).get("agri1"));
                                 ModelCheckboxCheck.checkboxSetCheck(cbAgri2, AgriList.get(0).get("agri2"));
@@ -873,6 +876,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                             }
 
                             PetList = db.SelectWhereData("population_job_animal", "works_id", WorkList.get(0).get("works_id"));
+                            Log.d("MYLOG", "PetList: " + PetList);
                             if (!PetList.isEmpty()) {
                                 ModelCheckboxCheck.checkboxSetCheck(cbPet1, PetList.get(0).get("animal1"));
                                 ModelCheckboxCheck.checkboxSetCheck(cbPet2, PetList.get(0).get("animal2"));
@@ -900,6 +904,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                             }
 
                             GovernList = db.SelectWhereData("population_job_govern", "works_id", WorkList.get(0).get("works_id"));
+                            Log.d("MYLOG", "GovernList: " + GovernList);
                             if (!GovernList.isEmpty()) {
                                 ModelCheckboxCheck.checkboxSetCheck(cbGovern1, GovernList.get(0).get("govern1"));
                                 ModelCheckboxCheck.checkboxSetCheck(cbGovern2, GovernList.get(0).get("govern2"));
@@ -917,6 +922,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                             }
 
                             PrivateList = db.SelectWhereData("population_job_private", "works_id", WorkList.get(0).get("works_id"));
+                            Log.d("MYLOG", "PrivateList: " + PrivateList);
                             if (!PrivateList.isEmpty()) {
                                 ModelCheckboxCheck.checkboxSetCheck(cbPrivate1, PrivateList.get(0).get("private1"));
                                 ModelCheckboxCheck.checkboxSetCheck(cbPrivate2, PrivateList.get(0).get("private2"));
@@ -1257,13 +1263,13 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             if (!etHeight.getText().toString().equals("")) {
                 Val.put("height", etHeight.getText().toString());
             } else {
-                Val.put("height", "1");
+                Val.put("height", "0");
             }
 
             if (!etWeight.getText().toString().equals("")) {
                 Val.put("weight", etWeight.getText().toString());
             } else {
-                Val.put("weight", "1");
+                Val.put("weight", "0");
             }
 
             if (rbMale.isChecked()) {
@@ -1289,7 +1295,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             if (!etTel.getText().toString().equals("")) {
                 Val.put("tel", etTel.getText().toString());
             } else {
-                Val.put("tel", "1");
+                Val.put("tel", "0");
             }
             if (spNationality.getSelectedItem().toString().equals("อื่นๆ")) {
                 Val.put("nationality", etNationality.getText().toString());
@@ -1336,7 +1342,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 }
             }
 
-            if (rbInHousehold.isChecked()) {
+            if (rbNotInHousehold.isChecked()) {
 
                 Val.put("income", "0");
                 Val.put("income_money", "0");
@@ -1358,7 +1364,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("participation", "0");
                 Val.put("election", "0");
 
-            } else if (rbNotInHousehold.isChecked()) {
+            } else if (rbInHousehold.isChecked()) {
                 if (rbICMonth.isChecked()) {
                     Val.put("income", "1");
                     if (!etICMonth.getText().toString().equals("")) {
@@ -2004,11 +2010,11 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
             Val = new ContentValues();
 
-            if (rbInHousehold.isChecked()) {
+            if (rbNotInHousehold.isChecked()) {
 
                 Val.put("works_type", "0");
 
-            } else if (rbNotInHousehold.isChecked()) {
+            } else if (rbInHousehold.isChecked()) {
                 if (rbJGStudent.isChecked()) {
                     Val.put("works_type", "1");
                 } else if (rbJGCareer.isChecked()) {
@@ -2036,7 +2042,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
             Val = new ContentValues();
             TestList = db.SelectWhereData("population_works", "population_idcard", etPersonalID.getText().toString());
-            if (rbInHousehold.isChecked()) {
+            if (rbNotInHousehold.isChecked()) {
 
                 Val.put("agri1", "0");
                 Val.put("agri2", "0");
@@ -2048,7 +2054,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("agri8", "0");
                 Val.put("agri_another", "");
 
-            } else if (rbNotInHousehold.isChecked()) {
+            } else if (rbInHousehold.isChecked()) {
                 if (cbAgri.isChecked()) {
                     Val.put("agri1", ModelCheckboxCheck.checkboxReturnCheck(cbAgri1));
                     Val.put("agri2", ModelCheckboxCheck.checkboxReturnCheck(cbAgri2));
@@ -2093,7 +2099,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
             Val = new ContentValues();
             TestList = db.SelectWhereData("population_works", "population_idcard", etPersonalID.getText().toString());
-            if (rbInHousehold.isChecked()) {
+            if (rbNotInHousehold.isChecked()) {
 
                 Val.put("animal1", "0");
                 Val.put("animal2", "0");
@@ -2106,7 +2112,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("animal9", "0");
                 Val.put("animal_another", "");
 
-            } else if (rbNotInHousehold.isChecked()) {
+            } else if (rbInHousehold.isChecked()) {
                 if (cbPet.isChecked()) {
                     Val.put("animal1", ModelCheckboxCheck.checkboxReturnCheck(cbPet1));
                     Val.put("animal2", ModelCheckboxCheck.checkboxReturnCheck(cbPet2));
@@ -2152,7 +2158,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
             Val = new ContentValues();
             TestList = db.SelectWhereData("population_works", "population_idcard", etPersonalID.getText().toString());
-            if (rbInHousehold.isChecked()) {
+            if (rbNotInHousehold.isChecked()) {
 
                 Val.put("govern1", "0");
                 Val.put("govern2", "0");
@@ -2160,7 +2166,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("govern4", "0");
                 Val.put("govern_another", "");
 
-            } else if (rbNotInHousehold.isChecked()) {
+            } else if (rbInHousehold.isChecked()) {
                 if (cbGovern.isChecked()) {
                     Val.put("govern1", ModelCheckboxCheck.checkboxReturnCheck(cbGovern1));
                     Val.put("govern2", ModelCheckboxCheck.checkboxReturnCheck(cbGovern2));
@@ -2196,7 +2202,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
             Val = new ContentValues();
             TestList = db.SelectWhereData("population_works", "population_idcard", etPersonalID.getText().toString());
-            if (rbInHousehold.isChecked()) {
+            if (rbNotInHousehold.isChecked()) {
 
                 Val.put("private1", "0");
                 Val.put("private2", "0");
@@ -2207,7 +2213,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("private7", "0");
                 Val.put("private_another", "");
 
-            } else if (rbNotInHousehold.isChecked()) {
+            } else if (rbInHousehold.isChecked()) {
                 if (cbPrivate.isChecked()) {
                     Val.put("private1", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate1));
                     Val.put("private2", ModelCheckboxCheck.checkboxReturnCheck(cbPrivate2));
@@ -2620,7 +2626,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         if (rbICMonth.isChecked()) {
             incomePass = ModelCheckForm.checkEditText(etICMonth);
         } else if (rbICYear.isChecked()) {
-            incomePass = ModelCheckForm.checkEditText(etICMonth);
+            incomePass = ModelCheckForm.checkEditText(etICYear);
         }
 
         if (rbCongenitalYes.isChecked()) {

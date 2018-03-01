@@ -360,7 +360,7 @@ public class myDBClass extends SQLiteOpenHelper {
                 "\t`bloodgroup`\tTEXT NOT NULL,\n" +
                 "\t`living`\tTEXT NOT NULL,\n" +
                 "\t`maritalstatus`\tTEXT NOT NULL,\n" +
-                "\t`tel`\tINTEGER NOT NULL,\n" +
+                "\t`tel`\tTEXT NOT NULL,\n" +
                 "\t`nationality`\tTEXT NOT NULL,\n" +
                 "\t`house_id`\tINTEGER NOT NULL,\n" +
                 "\t`currentaddr`\tTEXT NOT NULL,\n" +
