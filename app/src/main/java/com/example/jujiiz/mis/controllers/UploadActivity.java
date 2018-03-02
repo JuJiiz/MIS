@@ -50,10 +50,22 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             AnimalName;
     String parseJson = "", jsonResult = "";
 
+    String username, userid;
+    String houseURL = "https://bayclouds.com/inserthouse";
+    String populationURL = "https://bayclouds.com/insertpopulation";
+    String landURL = "https://bayclouds.com/insertassetland";
+    String vehicleURL = "https://bayclouds.com/insertassetvehicle";
+    String petURL = "https://bayclouds.com/insertassetpet";
+    String animalURL = "https://bayclouds.com/insertassetanimal";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
+
+        SharedPreferences sp = UploadActivity.this.getSharedPreferences("UserMemo", Context.MODE_PRIVATE);
+        username = sp.getString("username", "");
+        userid = sp.getString("userid", "");
 
         init();
         setHouseListView();
@@ -174,8 +186,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     temp.put("distributor", HouseList.get(i).get("distributor"));
                     temp.put("survey_status", HouseList.get(i).get("survey_status"));
 
-                    temp.put("userid", "1579");
-                    temp.put("username", "JuJiiz");
+                    temp.put("userid", userid);
+                    temp.put("username", username);
 
                     DisasterList = db.SelectWhereData("house_disaster", "house_id", HouseList.get(i).get("house_id"));
                     temp.put("disaster_type", DisasterList.get(0).get("disaster_type"));
@@ -272,8 +284,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     temp.put("distributor", PopulationList.get(i).get("distributor"));
                     temp.put("survey_status", PopulationList.get(i).get("survey_status"));
 
-                    temp.put("userid", "1579");
-                    temp.put("username", "JuJiiz");
+                    temp.put("userid", userid);
+                    temp.put("username", username);
 
                     CongList = db.SelectWhereData("population_congenitalhis", "population_idcard", PopulationList.get(i).get("population_idcard"));
                     temp.put("congh_type", CongList.get(0).get("congh_type"));
@@ -472,8 +484,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         //if (!LandList.isEmpty()) {
         for (int i = 0; i < LandList.size(); i++) {
             HashMap<String, String> temp = new HashMap<String, String>();
-            temp.put("userid", "1579");
-            temp.put("username", "JuJiiz");
+            temp.put("userid", userid);
+            temp.put("username", username);
 
             temp.put("population_idcard", LandList.get(i).get("population_idcard"));
             temp.put("system_id", LandList.get(i).get("system_id"));
@@ -496,8 +508,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         //if (!VehicleList.isEmpty()) {
         for (int i = 0; i < VehicleList.size(); i++) {
             HashMap<String, String> temp = new HashMap<String, String>();
-            temp.put("userid", "1579");
-            temp.put("username", "JuJiiz");
+            temp.put("userid", userid);
+            temp.put("username", username);
 
             temp.put("population_idcard", VehicleList.get(i).get("population_idcard"));
             temp.put("regisdate", VehicleList.get(i).get("regisdate"));
@@ -505,6 +517,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             temp.put("vtype_id", VehicleList.get(i).get("vtype_id"));
             temp.put("vehicle_rent", VehicleList.get(i).get("vehical_rent"));
             temp.put("distributor", VehicleList.get(i).get("distributor"));
+            temp.put("img_name", VehicleList.get(i).get("vehical_img"));
             VehicleActive.add(temp);
         }
         //}
@@ -516,8 +529,8 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         //if (!PetList.isEmpty()) {
         for (int i = 0; i < PetList.size(); i++) {
             HashMap<String, String> temp = new HashMap<String, String>();
-            temp.put("userid", "1579");
-            temp.put("username", "JuJiiz");
+            temp.put("userid", userid);
+            temp.put("username", username);
 
             temp.put("population_idcard", PetList.get(i).get("population_idcard"));
             temp.put("pet_regis", PetList.get(i).get("pet_regis"));
@@ -532,6 +545,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             temp.put("pet_newborn", PetList.get(i).get("pet_newborn"));
             temp.put("pet_newborn_number", PetList.get(i).get("pet_newborn_number"));
             temp.put("distributor", PetList.get(i).get("distributor"));
+            temp.put("img_name", PetList.get(i).get("pet_img"));
             PetActive.add(temp);
         }
         //}
@@ -543,14 +557,13 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
         //if (!AnimalList.isEmpty()) {
         for (int i = 0; i < AnimalList.size(); i++) {
             HashMap<String, String> temp = new HashMap<String, String>();
-            temp.put("userid", "1579");
-            temp.put("username", "JuJiiz");
+            temp.put("userid", userid);
+            temp.put("username", username);
 
             temp.put("population_idcard", AnimalList.get(i).get("population_idcard"));
             temp.put("animal_regis", AnimalList.get(i).get("animal_regis"));
             temp.put("animal_amount", AnimalList.get(i).get("animal_amount"));
             AnimalName = db.SelectWhereData("asset_animal", "atype_id", AnimalList.get(0).get("atype_id"));
-            Log.d("MYLOG", "AnimalName: " + AnimalName.get(0).get("atype_name"));
             temp.put("atype_name", AnimalName.get(0).get("atype_name"));
             temp.put("infection", AnimalList.get(i).get("infection"));
             temp.put("infection_detail", AnimalList.get(i).get("infection_detail"));
@@ -574,7 +587,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             uploadHouse();
             for (int i = 0; i < HouseActive.size(); i++) {
                 parseJson = ModelParseJson.HashmapToJsonlist(HouseActive.get(i));
-                jsonResult = ModelSendApi.send("http://203.154.54.229/inserthouse", parseJson);
+                jsonResult = ModelSendApi.send(houseURL, parseJson);
                 Log.d("MYLOG", "jsonResult (House): " + jsonResult);
                 try {
                     if (jsonResult != null) {
@@ -601,7 +614,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             for (int i = 0; i < PopulationActive.size(); i++) {
                 //for (int h = 0; h < PopulationActive.size(); h++) {
                 parseJson = ModelParseJson.HashmapToJsonlist(PopulationActive.get(i));
-                jsonResult = ModelSendApi.send("http://203.154.54.229/insertpopulation", parseJson);
+                jsonResult = ModelSendApi.send(populationURL, parseJson);
                 Log.d("MYLOG", "jsonResult (Population): " + jsonResult);
                 try {
                     if (jsonResult != null) {
@@ -622,7 +635,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     uploadLand();
                     for (int j = 0; j < LandActive.size(); j++) {
                         parseJson = ModelParseJson.HashmapToJsonlist(LandActive.get(j));
-                        jsonResult = ModelSendApi.send("http://203.154.54.229/insertassetland", parseJson);
+                        jsonResult = ModelSendApi.send(landURL, parseJson);
                         Log.d("MYLOG", "jsonResult (Land): " + jsonResult);
                         try {
                             if (jsonResult != null) {
@@ -646,7 +659,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     uploadVehicle();
                     for (int j = 0; j < VehicleActive.size(); j++) {
                         parseJson = ModelParseJson.HashmapToJsonlist(VehicleActive.get(j));
-                        jsonResult = ModelSendApi.send("http://203.154.54.229/insertassetvehicle", parseJson);
+                        jsonResult = ModelSendApi.send(vehicleURL, parseJson);
                         Log.d("MYLOG", "jsonResult (Vehicle): " + jsonResult);
                         try {
                             if (jsonResult != null) {
@@ -670,7 +683,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     uploadPet();
                     for (int j = 0; j < PetActive.size(); j++) {
                         parseJson = ModelParseJson.HashmapToJsonlist(PetActive.get(j));
-                        jsonResult = ModelSendApi.send("http://203.154.54.229/insertassetpet", parseJson);
+                        jsonResult = ModelSendApi.send(petURL, parseJson);
                         Log.d("MYLOG", "jsonResult (Pet): " + jsonResult);
                         try {
                             if (jsonResult != null) {
@@ -694,7 +707,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     uploadAnimal();
                     for (int j = 0; j < AnimalActive.size(); j++) {
                         parseJson = ModelParseJson.HashmapToJsonlist(AnimalActive.get(j));
-                        jsonResult = ModelSendApi.send("http://203.154.54.229/insertassetanimal", parseJson);
+                        jsonResult = ModelSendApi.send(animalURL, parseJson);
                         Log.d("MYLOG", "jsonResult (Animal): " + jsonResult);
                         try {
                             if (jsonResult != null) {
@@ -724,7 +737,7 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
             }
         }
 
-        if (v == btnMap){
+        if (v == btnMap) {
             Intent intent = new Intent(getApplicationContext(), MapActivity.class);
             startActivity(intent);
         }

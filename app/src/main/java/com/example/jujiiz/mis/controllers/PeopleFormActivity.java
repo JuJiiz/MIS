@@ -3,8 +3,10 @@ package com.example.jujiiz.mis.controllers;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -117,12 +119,17 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
 
     String[] spCountryArray, spProvinceArray;
 
+    String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_people_form);
         PersonID = getIntent().getExtras().getString("PersonID");
         HouseID = getIntent().getExtras().getString("HouseID");
+
+        SharedPreferences sp = PeopleFormActivity.this.getSharedPreferences("UserMemo", Context.MODE_PRIVATE);
+        username = sp.getString("username", "");
 
         init();
 
@@ -850,7 +857,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                                 rbJGNoJob.setChecked(true);
                             }
                             AgriList = db.SelectWhereData("population_job_agriculture", "works_id", WorkList.get(0).get("works_id"));
-                            Log.d("MYLOG", "AgriList: " + AgriList);
                             if (!AgriList.isEmpty()) {
                                 ModelCheckboxCheck.checkboxSetCheck(cbAgri1, AgriList.get(0).get("agri1"));
                                 ModelCheckboxCheck.checkboxSetCheck(cbAgri2, AgriList.get(0).get("agri2"));
@@ -876,7 +882,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                             }
 
                             PetList = db.SelectWhereData("population_job_animal", "works_id", WorkList.get(0).get("works_id"));
-                            Log.d("MYLOG", "PetList: " + PetList);
                             if (!PetList.isEmpty()) {
                                 ModelCheckboxCheck.checkboxSetCheck(cbPet1, PetList.get(0).get("animal1"));
                                 ModelCheckboxCheck.checkboxSetCheck(cbPet2, PetList.get(0).get("animal2"));
@@ -904,7 +909,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                             }
 
                             GovernList = db.SelectWhereData("population_job_govern", "works_id", WorkList.get(0).get("works_id"));
-                            Log.d("MYLOG", "GovernList: " + GovernList);
                             if (!GovernList.isEmpty()) {
                                 ModelCheckboxCheck.checkboxSetCheck(cbGovern1, GovernList.get(0).get("govern1"));
                                 ModelCheckboxCheck.checkboxSetCheck(cbGovern2, GovernList.get(0).get("govern2"));
@@ -922,7 +926,6 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                             }
 
                             PrivateList = db.SelectWhereData("population_job_private", "works_id", WorkList.get(0).get("works_id"));
-                            Log.d("MYLOG", "PrivateList: " + PrivateList);
                             if (!PrivateList.isEmpty()) {
                                 ModelCheckboxCheck.checkboxSetCheck(cbPrivate1, PrivateList.get(0).get("private1"));
                                 ModelCheckboxCheck.checkboxSetCheck(cbPrivate2, PrivateList.get(0).get("private2"));
@@ -1104,6 +1107,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             int order = 0;
             PropertyActive = new ArrayList<HashMap<String, String>>();
             PLandList = db.SelectWhereData("population_asset_land", "population_idcard", PersonID);
+            Log.d("MYLOG", "PLandList: " + PLandList);
             if (!PLandList.isEmpty()) {
                 for (int i = 0; i < PLandList.size(); i++) {
                     if (PLandList.get(i).get("ACTIVE").equals("Y")) {
@@ -1131,6 +1135,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             }
 
             PVehicleList = db.SelectWhereData("population_asset_vehicle", "population_idcard", PersonID);
+            Log.d("MYLOG", "PVehicleList: " + PVehicleList);
             if (!PVehicleList.isEmpty()) {
                 for (int i = 0; i < PVehicleList.size(); i++) {
                     if (PVehicleList.get(i).get("ACTIVE").equals("Y")) {
@@ -1150,6 +1155,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             }
 
             PPetList = db.SelectWhereData("population_asset_pet", "population_idcard", PersonID);
+            Log.d("MYLOG", "PPetList: " + PPetList);
             if (!PPetList.isEmpty()) {
                 for (int i = 0; i < PPetList.size(); i++) {
                     if (PPetList.get(i).get("ACTIVE").equals("Y")) {
@@ -1172,6 +1178,7 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             }
 
             PAnimalList = db.SelectWhereData("population_asset_animal", "population_idcard", PersonID);
+            Log.d("MYLOG", "PAnimalList: " + PAnimalList);
             if (!PAnimalList.isEmpty()) {
                 for (int i = 0; i < PAnimalList.size(); i++) {
                     if (PAnimalList.get(i).get("ACTIVE").equals("Y")) {
@@ -1217,12 +1224,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     if (!Nationality.contains(strAnotherNat)) {
                         Val = new ContentValues();
                         Val.put("nationality_detail", strAnotherNat);
-                        Val.put("upd_by", "JuJiiz");
+                        Val.put("upd_by", username);
                         Val.put("upd_date", date);
                         Val.put("ACTIVE", "Y");
                         NationalityList = db.SelectWhereData("nationality", "nationality_detail", "\"" + strAnotherNat + "\"");
                         if (NationalityList.isEmpty()) {
-                            Val.put("cr_by", "JuJiiz");
+                            Val.put("cr_by", username);
                             Val.put("cr_date", date);
                             db.InsertData("nationality", Val);
                             NatPass = true;
@@ -1511,12 +1518,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             Val.put("distributor", spContributor.getSelectedItem().toString());
             Val.put("survey_status", "1");
             Val.put("upload_status", "1");
-            Val.put("upd_by", "JuJiiz");
+            Val.put("upd_by", username);
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
             DwellerList = db.SelectWhereData("population", "population_idcard", etPersonalID.getText().toString());
             if (DwellerList.isEmpty()) {
-                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_by", username);
                 Val.put("cr_date", date);
                 db.InsertData("population", Val);
             } else {
@@ -1653,12 +1660,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             }
 
             Val.put("population_idcard", etPersonalID.getText().toString());
-            Val.put("upd_by", "");
+            Val.put("upd_by", username);
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
             DwellerList = db.SelectWhereData("population_congenitalhis", "population_idcard", etPersonalID.getText().toString());
             if (DwellerList.isEmpty()) {
-                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_by", username);
                 Val.put("cr_date", date);
                 db.InsertData("population_congenitalhis", Val);
             } else {
@@ -1895,12 +1902,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             }
 
             Val.put("population_idcard", etPersonalID.getText().toString());
-            Val.put("upd_by", "");
+            Val.put("upd_by", username);
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
             DwellerList = db.SelectWhereData("population_contagioushis", "population_idcard", etPersonalID.getText().toString());
             if (DwellerList.isEmpty()) {
-                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_by", username);
                 Val.put("cr_date", date);
                 db.InsertData("population_contagioushis", Val);
             } else {
@@ -1949,12 +1956,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             }
 
             Val.put("population_idcard", etPersonalID.getText().toString());
-            Val.put("upd_by", "");
+            Val.put("upd_by", username);
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
             DwellerList = db.SelectWhereData("population_disabled", "population_idcard", etPersonalID.getText().toString());
             if (DwellerList.isEmpty()) {
-                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_by", username);
                 Val.put("cr_date", date);
                 db.InsertData("population_disabled", Val);
             } else {
@@ -1995,12 +2002,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             }
 
             Val.put("population_idcard", etPersonalID.getText().toString());
-            Val.put("upd_by", "");
+            Val.put("upd_by", username);
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
             DwellerList = db.SelectWhereData("population_transport", "population_idcard", etPersonalID.getText().toString());
             if (DwellerList.isEmpty()) {
-                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_by", username);
                 Val.put("cr_date", date);
                 db.InsertData("population_transport", Val);
             } else {
@@ -2027,12 +2034,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             }
 
             Val.put("population_idcard", etPersonalID.getText().toString());
-            Val.put("upd_by", "");
+            Val.put("upd_by", username);
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
             DwellerList = db.SelectWhereData("population_works", "population_idcard", etPersonalID.getText().toString());
             if (DwellerList.isEmpty()) {
-                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_by", username);
                 Val.put("cr_date", date);
                 db.InsertData("population_works", Val);
             } else {
@@ -2084,12 +2091,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             }
 
             Val.put("works_id", TestList.get(0).get("works_id"));
-            Val.put("upd_by", "");
+            Val.put("upd_by", username);
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
             DwellerList = db.SelectWhereData("population_job_agriculture", "works_id", TestList.get(0).get("works_id"));
             if (DwellerList.isEmpty()) {
-                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_by", username);
                 Val.put("cr_date", date);
                 db.InsertData("population_job_agriculture", Val);
             } else {
@@ -2143,12 +2150,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             }
 
             Val.put("works_id", TestList.get(0).get("works_id"));
-            Val.put("upd_by", "");
+            Val.put("upd_by", username);
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
             DwellerList = db.SelectWhereData("population_job_animal", "works_id", TestList.get(0).get("works_id"));
             if (DwellerList.isEmpty()) {
-                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_by", username);
                 Val.put("cr_date", date);
                 db.InsertData("population_job_animal", Val);
             } else {
@@ -2187,12 +2194,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             }
 
             Val.put("works_id", TestList.get(0).get("works_id"));
-            Val.put("upd_by", "");
+            Val.put("upd_by", username);
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
             DwellerList = db.SelectWhereData("population_job_govern", "works_id", TestList.get(0).get("works_id"));
             if (DwellerList.isEmpty()) {
-                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_by", username);
                 Val.put("cr_date", date);
                 db.InsertData("population_job_govern", Val);
             } else {
@@ -2241,12 +2248,12 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
             }
 
             Val.put("works_id", TestList.get(0).get("works_id"));
-            Val.put("upd_by", "");
+            Val.put("upd_by", username);
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
             DwellerList = db.SelectWhereData("population_job_private", "works_id", TestList.get(0).get("works_id"));
             if (DwellerList.isEmpty()) {
-                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_by", username);
                 Val.put("cr_date", date);
                 db.InsertData("population_job_private", Val);
             } else {

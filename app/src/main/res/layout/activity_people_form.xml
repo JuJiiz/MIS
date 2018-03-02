@@ -29,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:backgroundTint="@color/redButton"
             android:text="บันทึก" />
     </RelativeLayout>
 
@@ -271,6 +272,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.5"
+                        android:backgroundTint="@color/redButton"
                         android:text="เลือกวัน/เดือน/ปีเกิด" />
                 </LinearLayout>
 
@@ -650,6 +652,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:backgroundTint="@color/redButton"
                                     android:text="ค้นหา"
                                     android:visibility="gone" />
                             </LinearLayout>
@@ -687,6 +690,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:backgroundTint="@color/redButton"
                                     android:text="ค้นหา"
                                     android:visibility="gone" />
                             </LinearLayout>
@@ -766,6 +770,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:backgroundTint="@color/redButton"
                                     android:text="ค้นหา"
                                     android:visibility="gone" />
                             </LinearLayout>
@@ -803,6 +808,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:backgroundTint="@color/redButton"
                                     android:text="ค้นหา"
                                     android:visibility="gone" />
                             </LinearLayout>
@@ -2784,7 +2790,7 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight="0.7"
                             android:gravity="center"
                             android:text="ลำดับ"
                             android:textColor="@color/topicColor" />
@@ -2792,7 +2798,7 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.5"
+                            android:layout_weight="2.5"
                             android:gravity="center"
                             android:text="ประเภททรัพย์สิน"
                             android:textColor="@color/topicColor" />
@@ -2800,7 +2806,7 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2.5"
+                            android:layout_weight="1.8"
                             android:gravity="center"
                             android:text="สถานะทรัพย์สิน"
                             android:textColor="@color/topicColor" />
@@ -2827,6 +2833,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_below="@+id/lvPropertyLayout"
+                        android:backgroundTint="@color/redButton"
                         android:text="เพิ่มทรัพย์สิน" />
                 </RelativeLayout>
             </LinearLayout>

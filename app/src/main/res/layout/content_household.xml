@@ -20,33 +20,33 @@
             android:id="@+id/ivSearchIcon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:paddingLeft="16dp"
-            android:src="@drawable/search_icon"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:paddingLeft="16dp"
+            android:src="@drawable/search_icon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/ivSearchIcon"
             android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/ivSearchIcon"
             android:paddingLeft="8dp"
             android:text="เลือกครัวเรือนที่ต้องการสำรวจ"
             android:textAlignment="center"
             android:textColor="@color/appbarTextColor"
             android:textSize="20dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/householdheaderLayout"
-        android:layout_below="@+id/AppBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/AppBarLayout"
         android:background="#f2f2f2"
+        android:orientation="horizontal"
         android:paddingLeft="13dp"
         android:paddingRight="13dp"
-        android:orientation="horizontal"
         android:weightSum="5">
 
         <Spinner
@@ -54,7 +54,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2.3"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/etSearch"
@@ -69,9 +69,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:backgroundTint="@color/redButton"
             android:text="ค้นหา"
-            android:textStyle="bold"
-            android:textSize="16dp"/>
+            android:textSize="16dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -79,8 +80,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/householdheaderLayout"
+        android:background="@color/listHeadColor"
         android:orientation="horizontal"
-        android:background="#f7f7f7"
         android:paddingTop="8dp"
         android:weightSum="5">
 
@@ -88,32 +89,32 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".7"
-            android:text="หมู่ที่"
             android:gravity="center"
+            android:text="หมู่ที่"
             android:textColor="#000" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.3"
-            android:text="บ้านเลขที่"
             android:gravity="center"
+            android:text="บ้านเลขที่"
             android:textColor="#000" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:text="หมู่บ้าน"
             android:gravity="center"
+            android:text="หมู่บ้าน"
             android:textColor="#000" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="สถานะงาน"
             android:gravity="center"
+            android:text="สถานะงาน"
             android:textColor="#000" />
     </LinearLayout>
 
@@ -122,6 +123,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/listviewHeadLayout"
+        android:background="@color/listItemColor"
         android:orientation="vertical">
 
         <ListView

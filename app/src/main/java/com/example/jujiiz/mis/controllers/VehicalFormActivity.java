@@ -3,7 +3,9 @@ package com.example.jujiiz.mis.controllers;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -84,6 +86,8 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
             month = {"มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"},
             year = new String[300];
 
+    String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +95,9 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
         PersonID = getIntent().getExtras().getString("PersonID");
         HouseID = getIntent().getExtras().getString("HouseID");
         VehicleID = getIntent().getExtras().getString("VehicleID");
+
+        SharedPreferences sp = VehicalFormActivity.this.getSharedPreferences("UserMemo", Context.MODE_PRIVATE);
+        username = sp.getString("username", "");
 
         init();
 
@@ -349,11 +356,11 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
             Val.put("vehical_rent", "0");
         }
         Val.put("distributor", spContributor.getSelectedItem().toString());
-        Val.put("upd_by", "");
+        Val.put("upd_by", username);
         Val.put("upd_date", date);
         Val.put("ACTIVE", "Y");
         if (VehicleID.equals("Nope")) {
-            Val.put("cr_by", "JuJiiz");
+            Val.put("cr_by", username);
             Val.put("cr_date", date);
             db.InsertData("population_asset_vehicle", Val);
             Val = new ContentValues();
@@ -362,7 +369,7 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
         } else {
             VehicleList = db.SelectWhereData("population_asset_vehicle", "vehicle_running", VehicleID);
             if (VehicleList.isEmpty()) {
-                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_by", username);
                 Val.put("cr_date", date);
                 db.InsertData("population_asset_vehicle", Val);
                 Val = new ContentValues();
@@ -439,7 +446,7 @@ public class VehicalFormActivity extends AppCompatActivity implements View.OnCli
         }
         if (v == btnDatePick) {
             //fromDatePickerDialog.show();
-            CustomDialog.DatePickerDialog(VehicalFormActivity.this,etRegisterDate);
+            CustomDialog.DatePickerDialog(VehicalFormActivity.this, etRegisterDate);
         }
         if (v == btnImagePick) {
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);

@@ -3,8 +3,10 @@ package com.example.jujiiz.mis.controllers;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -128,11 +130,16 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
     private static final int CAMERA_REQUEST = 1888;
     private static final int GALLERY_REQUEST = 1;
 
+    String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_household_form);
         HouseID = getIntent().getExtras().getString("HouseID");
+
+        SharedPreferences sp = HouseholdFormActivity.this.getSharedPreferences("UserMemo", Context.MODE_PRIVATE);
+        username = sp.getString("username", "");
 
         init();
 
@@ -479,7 +486,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             Val.put("distributor_img", "");
         }
 
-        Val.put("upd_by", "");
+        Val.put("upd_by", username);
         Val.put("upd_date", date);
         db.UpdateData("house", Val, "house_id", HouseID);
         ///////////////////////////////////House///////////////////////////////////////////
@@ -501,12 +508,12 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             Val.put("problem_another", etAnotherProblem.getText().toString());
         }
         Val.put("house_id", HouseID);
-        Val.put("upd_by", "");
+        Val.put("upd_by", username);
         Val.put("upd_date", date);
         Val.put("ACTIVE", "Y");
         HProbList = db.SelectWhereData("house_problem", "house_id", HouseID);
         if (HProbList.isEmpty()) {
-            Val.put("cr_by", "JuJiiz");
+            Val.put("cr_by", username);
             Val.put("cr_date", date);
             db.InsertData("house_problem", Val);
         } else {
@@ -668,12 +675,12 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             }
         }
         Val.put("house_id", HouseID);
-        Val.put("upd_by", "");
+        Val.put("upd_by", username);
         Val.put("upd_date", date);
         Val.put("ACTIVE", "Y");
         HEnProbList = db.SelectWhereData("house_envyprob", "house_id", HouseID);
         if (HEnProbList.isEmpty()) {
-            Val.put("cr_by", "JuJiiz");
+            Val.put("cr_by", username);
             Val.put("cr_date", date);
             db.InsertData("house_envyprob", Val);
         } else {
@@ -982,12 +989,12 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
             }
         }
         Val.put("house_id", HouseID);
-        Val.put("upd_by", "");
+        Val.put("upd_by", username);
         Val.put("upd_date", date);
         Val.put("ACTIVE", "Y");
         HDisasList = db.SelectWhereData("house_disaster", "house_id", HouseID);
         if (HDisasList.isEmpty()) {
-            Val.put("cr_by", "JuJiiz");
+            Val.put("cr_by", username);
             Val.put("cr_date", date);
             db.InsertData("house_disaster", Val);
         } else {

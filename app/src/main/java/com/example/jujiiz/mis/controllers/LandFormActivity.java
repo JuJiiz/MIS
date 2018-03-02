@@ -1,6 +1,8 @@
 package com.example.jujiiz.mis.controllers;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -43,6 +45,8 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
     ArrayAdapter<String> dwellerArrayAdapter;
     String PersonID, HouseID, LandID;
 
+    String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +54,9 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
         PersonID = getIntent().getExtras().getString("PersonID");
         HouseID = getIntent().getExtras().getString("HouseID");
         LandID = getIntent().getExtras().getString("LandID");
+
+        SharedPreferences sp = LandFormActivity.this.getSharedPreferences("UserMemo", Context.MODE_PRIVATE);
+        username = sp.getString("username", "");
 
         init();
 
@@ -204,14 +211,14 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
         if (!etDimenA.getText().toString().equals("")) {
             Val.put("dimen1", etDimenA.getText().toString());
         } else {
-            Val.put("dimen1", "1");
+            Val.put("dimen1", "0");
         }
-        if (!etDimenA.getText().toString().equals("")) {
+        if (!etDimenB.getText().toString().equals("")) {
             Val.put("dimen2", etDimenB.getText().toString());
         } else {
             Val.put("dimen2", "0");
         }
-        if (!etDimenA.getText().toString().equals("")) {
+        if (!etDimenC.getText().toString().equals("")) {
             Val.put("dimen3", etDimenC.getText().toString());
         } else {
             Val.put("dimen3", "0");
@@ -257,11 +264,11 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
         }
 
         Val.put("distributor", spContributor.getSelectedItem().toString());
-        Val.put("upd_by", "");
+        Val.put("upd_by", username);
         Val.put("upd_date", date);
         Val.put("ACTIVE", "Y");
         if (LandID.equals("Nope")) {
-            Val.put("cr_by", "JuJiiz");
+            Val.put("cr_by", username);
             Val.put("cr_date", date);
             db.InsertData("population_asset_land", Val);
             Val = new ContentValues();
@@ -270,7 +277,7 @@ public class LandFormActivity extends AppCompatActivity implements View.OnClickL
         } else {
             LandList = db.SelectWhereData("population_asset_land", "land_running", LandID);
             if (LandList.isEmpty()) {
-                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_by", username);
                 Val.put("cr_date", date);
                 db.InsertData("population_asset_land", Val);
                 Val = new ContentValues();

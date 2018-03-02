@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:backgroundTint="@color/redButton"
             android:text="บันทึก" />
     </RelativeLayout>
 
@@ -227,6 +228,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+                        android:backgroundTint="@color/redButton"
                         android:text="เพิ่มประชากรแฝง" />
 
                 </RelativeLayout>
@@ -348,6 +350,7 @@
                     android:id="@+id/btnCurrentLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/redButton"
                     android:text="พิกัดปัจจุบัน"
                     android:visibility="gone" />
 
@@ -1557,7 +1560,8 @@
                         android:id="@+id/btnImagePick"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="8"
+                        android:layout_weight="10"
+                        android:backgroundTint="@color/redButton"
                         android:text="เพิ่มรูปภาพ" />
 
                     <ImageButton
@@ -1565,6 +1569,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
+                        android:visibility="gone"
                         android:src="@drawable/ic_menu_camera" />
                 </LinearLayout>
 

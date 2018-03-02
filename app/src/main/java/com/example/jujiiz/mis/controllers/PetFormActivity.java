@@ -2,7 +2,9 @@ package com.example.jujiiz.mis.controllers;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -66,6 +68,8 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
     Bitmap imgBitmap;
     byte[] imgByteArray = null;
 
+    String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +77,9 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
         PersonID = getIntent().getExtras().getString("PersonID");
         HouseID = getIntent().getExtras().getString("HouseID");
         PetID = getIntent().getExtras().getString("PetID");
+
+        SharedPreferences sp = PetFormActivity.this.getSharedPreferences("UserMemo", Context.MODE_PRIVATE);
+        username = sp.getString("username", "");
 
         init();
 
@@ -281,11 +288,11 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         Val.put("distributor", spContributor.getSelectedItem().toString());
-        Val.put("upd_by", "");
+        Val.put("upd_by", username);
         Val.put("upd_date", date);
         Val.put("ACTIVE", "Y");
         if (PetID.equals("Nope")) {
-            Val.put("cr_by", "JuJiiz");
+            Val.put("cr_by", username);
             Val.put("cr_date", date);
             db.InsertData("population_asset_pet", Val);
             Val = new ContentValues();
@@ -294,7 +301,7 @@ public class PetFormActivity extends AppCompatActivity implements View.OnClickLi
         } else {
             PetList = db.SelectWhereData("population_asset_pet", "pet_running", PetID);
             if (PetList.isEmpty()) {
-                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_by", username);
                 Val.put("cr_date", date);
                 db.InsertData("population_asset_pet", Val);
                 Val = new ContentValues();

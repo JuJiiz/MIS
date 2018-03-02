@@ -354,7 +354,6 @@ public class HouseholdActivity extends AppCompatActivity
             if (!HouseList.isEmpty()) {
                 for (int i = 0; i < HouseList.size(); i++) {
                     HashMap<String, String> temp = new HashMap<String, String>();
-                    //TR14List = db.SelectWhereData("tr14", "house_id", HouseList.get(i).get("house_id"));
                     for (int j = 0; j < TR14List.size(); j++) {
                         if (TR14List.get(j).get("house_id").equals(HouseList.get(i).get("house_id"))) {
                             temp.put(strVilleNo, TR14List.get(j).get("vilage_no"));
@@ -392,19 +391,24 @@ public class HouseholdActivity extends AppCompatActivity
 
     private void searchEvent() {
         String strEditText = etSearch.getText().toString();
-        HouseList = db.SelectData("house");
-
         HouseActive = new ArrayList<HashMap<String, String>>();
+        HouseList = db.SelectData("house");
+        TR14List = db.SelectData("tr14");
+        String VName = "";
         if (!HouseList.isEmpty()) {
             for (int i = 0; i < HouseList.size(); i++) {
                 String strActive = HouseList.get(i).get("ACTIVE");
                 if (strActive.equals("Y")) {
                     if (HouseList.get(i).get("house_no").equals(strEditText)) {
                         HashMap<String, String> temp = new HashMap<String, String>();
-                        TR14List = db.SelectWhereData("tr14", "house_id", HouseList.get(i).get("house_id"));
-                        temp.put(strVilleNo, TR14List.get(0).get("vilage_no"));
+                        for (int j = 0; j < TR14List.size(); j++) {
+                            if (TR14List.get(j).get("house_id").equals(HouseList.get(i).get("house_id"))) {
+                                temp.put(strVilleNo, TR14List.get(j).get("vilage_no"));
+                                VName = "หมู่บ้านที่ " + TR14List.get(j).get("vilage_no");
+                            }
+                        }
                         temp.put(strHouseNo, HouseList.get(i).get("house_no"));
-                        temp.put(strVilleName, " ");
+                        temp.put(strVilleName, VName);
                         if (HouseList.get(i).get("survey_status").equals("0")) {
                             survey = "";
                         }

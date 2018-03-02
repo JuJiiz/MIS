@@ -1,6 +1,8 @@
 package com.example.jujiiz.mis.controllers;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,6 +51,8 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
     ArrayAdapter<String> dwellerArrayAdapter, marketArrayAdapter, typeArrayAdapter;
     String PersonID, HouseID, AnimalID;
 
+    String username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +60,9 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
         PersonID = getIntent().getExtras().getString("PersonID");
         HouseID = getIntent().getExtras().getString("HouseID");
         AnimalID = getIntent().getExtras().getString("AnimalID");
+
+        SharedPreferences sp = AnimalFormActivity.this.getSharedPreferences("UserMemo", Context.MODE_PRIVATE);
+        username = sp.getString("username", "");
 
         init();
 
@@ -216,12 +223,12 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
                     if (!Type.contains(strAnotherType)) {
                         Val = new ContentValues();
                         Val.put("atype_name", strAnotherType);
-                        Val.put("upd_by", "JuJiiz");
+                        Val.put("upd_by", username);
                         Val.put("upd_date", date);
                         Val.put("ACTIVE", "Y");
                         TypeList = db.SelectWhereData("asset_animal", "atype_name", "\"" + strAnotherType + "\"");
                         if (TypeList.isEmpty()) {
-                            Val.put("cr_by", "JuJiiz");
+                            Val.put("cr_by", username);
                             Val.put("cr_date", date);
                             db.InsertData("asset_animal", Val);
                             TypePass = true;
@@ -322,12 +329,12 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
             }
 
             Val.put("distributor", spContributor.getSelectedItem().toString());
-            Val.put("upd_by", "");
+            Val.put("upd_by", username);
             Val.put("upd_date", date);
             Val.put("ACTIVE", "Y");
             if (AnimalID.equals("Nope")) {
                 Log.d("MYLOG", "AnimalID: "+AnimalID);
-                Val.put("cr_by", "JuJiiz");
+                Val.put("cr_by", username);
                 Val.put("cr_date", date);
                 db.InsertData("population_asset_animal", Val);
                 Val = new ContentValues();
@@ -337,7 +344,7 @@ public class AnimalFormActivity extends AppCompatActivity implements View.OnClic
                 AnimalList = db.SelectWhereData("population_asset_animal", "animal_running", AnimalID);
                 if (AnimalList.isEmpty()) {
                     Log.d("MYLOG", "AnimalList: "+AnimalList);
-                    Val.put("cr_by", "JuJiiz");
+                    Val.put("cr_by", username);
                     Val.put("cr_date", date);
                     db.InsertData("population_asset_animal", Val);
                     Val = new ContentValues();
