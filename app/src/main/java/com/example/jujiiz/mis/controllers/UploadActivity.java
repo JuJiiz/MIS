@@ -256,6 +256,17 @@ public class UploadActivity extends AppCompatActivity implements View.OnClickLis
                     temp.put("nationality_id", PopulationList.get(i).get("nationality"));
                     temp.put("house_id", PopulationList.get(i).get("house_id"));
                     temp.put("currentaddr", PopulationList.get(i).get("currentaddr"));
+
+                    if (PopulationList.get(i).get("currentaddr_province").equals("") && PopulationList.get(i).get("currentaddr_country").equals("")){
+                        temp.put("country_curr", "0");
+                    }else if (!PopulationList.get(i).get("currentaddr_province").equals("") && PopulationList.get(i).get("currentaddr_country").equals("")){
+                        temp.put("country_curr", "1");
+                    }else if (PopulationList.get(i).get("currentaddr_province").equals("") && !PopulationList.get(i).get("currentaddr_country").equals("")){
+                        temp.put("country_curr", "2");
+                    }else{
+                        temp.put("country_curr", "0");
+                    }
+
                     temp.put("currentaddr_province", PopulationList.get(i).get("currentaddr_province"));
                     temp.put("currentaddr_country", PopulationList.get(i).get("currentaddr_country"));
                     temp.put("dwellerstatus", PopulationList.get(i).get("dwellerstatus"));

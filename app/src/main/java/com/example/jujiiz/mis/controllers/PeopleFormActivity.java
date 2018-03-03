@@ -1318,8 +1318,16 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Val.put("currentaddr_country", "");
             } else if (rbNotInHousehold.isChecked()) {
                 Val.put("currentaddr", "1");
-                Val.put("currentaddr_province", spIHProvince.getSelectedItem().toString());
-                Val.put("currentaddr_country", spIHProvince.getSelectedItem().toString());
+                if (rbIHProvince.isChecked()){
+                    Val.put("currentaddr_province", spIHProvince.getSelectedItem().toString());
+                    Val.put("currentaddr_country", "");
+                }else if (rbIHCountry.isChecked()){
+                    Val.put("currentaddr_province", "");
+                    Val.put("currentaddr_country", spIHCountry.getSelectedItem().toString());
+                }else {
+                    Val.put("currentaddr_province", "");
+                    Val.put("currentaddr_country", "");
+                }
             } else {
                 Val.put("currentaddr", "0");
                 Val.put("currentaddr_province", "");
@@ -1344,8 +1352,17 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                     Val.put("latentpop_country", "");
                 } else if (rbInRegister.isChecked()) {
                     Val.put("residence_status", "0");
-                    Val.put("latentpop_province", spIRProvince.getSelectedItem().toString());
-                    Val.put("latentpop_country", spIRCountry.getSelectedItem().toString());
+
+                    if (rbIRProvince.isChecked()){
+                        Val.put("latentpop_province", spIRProvince.getSelectedItem().toString());
+                        Val.put("latentpop_country", "");
+                    }else if (rbIRCountry.isChecked()){
+                        Val.put("latentpop_province", "");
+                        Val.put("latentpop_country", spIRCountry.getSelectedItem().toString());
+                    }else {
+                        Val.put("latentpop_province", "");
+                        Val.put("latentpop_country", "");
+                    }
                 }
             }
 
@@ -2421,6 +2438,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 Toast.makeText(this, "กรุณาระบุ \"การใช้บริการขนส่งสาธารณะ\"", Toast.LENGTH_SHORT).show();
             } else if (fieldCheck() == 32) {
                 Toast.makeText(this, "กรุณาระบุ \"ชื่อผู้ให้ข้อมูล\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 33) {
+                Toast.makeText(this, "กรุณาระบุ \"ที่อยู่\"", Toast.LENGTH_SHORT).show();
+            } else if (fieldCheck() == 34) {
+                Toast.makeText(this, "กรุณาระบุ \"ที่อยู่\"", Toast.LENGTH_SHORT).show();
             }
         }
         if (view == btnAddProperty) {
@@ -2510,7 +2531,9 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                 disPass = true,//29
                 regionPass = true,//30
                 transPass = true,//31
-                conPass = true;//32
+                conPass = true,//32
+                irPass = true,//33
+                ihPass = true;//34
 
         if (!rbMale.isChecked() && !rbFemale.isChecked()) {
             sexPass = false;
@@ -2545,6 +2568,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         }
 
         if (rbNotInRegister.isChecked()) {
+            if (!rbIRProvince.isChecked() && !rbIRCountry.isChecked()){
+                irPass = false;
+            }
+
             if (rbIRProvince.isChecked()) {
                 irPPass = ModelCheckForm.checkSpinner(spIRProvince);
             }
@@ -2555,6 +2582,10 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
         }
 
         if (rbNotInHousehold.isChecked()) {
+            if (!rbIHProvince.isChecked() && !rbIHCountry.isChecked()){
+                ihPass = false;
+            }
+
             if (rbIHProvince.isChecked()) {
                 ihPPass = ModelCheckForm.checkSpinner(spIHProvince);
             }
@@ -2802,7 +2833,15 @@ public class PeopleFormActivity extends AppCompatActivity implements CompoundBut
                                                                                                                             if (regionPass == true) {
                                                                                                                                 if (transPass == true) {
                                                                                                                                     if (conPass == true) {
-                                                                                                                                        formPass = 0;
+                                                                                                                                        if (irPass == true) {
+                                                                                                                                            if (ihPass == true) {
+                                                                                                                                                formPass = 0;
+                                                                                                                                            } else {
+                                                                                                                                                formPass = 34;
+                                                                                                                                            }
+                                                                                                                                        } else {
+                                                                                                                                            formPass = 33;
+                                                                                                                                        }
                                                                                                                                     } else {
                                                                                                                                         formPass = 32;
                                                                                                                                     }

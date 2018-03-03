@@ -396,8 +396,8 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                 ModelCheckboxCheck.checkboxSetCheck(cbProb6, HProbList.get(0).get("prob6"));
                 ModelCheckboxCheck.checkboxSetCheck(cbProb7, HProbList.get(0).get("prob7"));
                 ModelCheckboxCheck.checkboxSetCheck(cbProb8, HProbList.get(0).get("prob8"));
-                ModelCheckboxCheck.checkboxSetCheck(cbProb9, HProbList.get(0).get("prob1"));
-                ModelCheckboxCheck.checkboxSetCheck(cbProb10, HProbList.get(0).get("prob1"));
+                ModelCheckboxCheck.checkboxSetCheck(cbProb9, HProbList.get(0).get("prob9"));
+                ModelCheckboxCheck.checkboxSetCheck(cbProb10, HProbList.get(0).get("prob10"));
                 etAnotherProblem.setText(HProbList.get(0).get("problem_another"));
             }
 
@@ -453,7 +453,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         int register = registerRadioGroup.getCheckedRadioButtonId();
         radioButton = findViewById(register);
         int idxregister = registerRadioGroup.indexOfChild(radioButton);
-        if (idxregister <= 0) {
+        if (idxregister >= 0) {
             Val.put("house_in_registry", idxregister);
         } else {
             Val.put("house_in_registry", "0");
@@ -462,7 +462,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         int hStatus = housestatusRadioGroup.getCheckedRadioButtonId();
         radioButton = findViewById(hStatus);
         int idxhStatus = housestatusRadioGroup.indexOfChild(radioButton);
-        if (idxhStatus <= 0) {
+        if (idxhStatus >= 0) {
             Val.put("house_status", idxhStatus);
         } else {
             Val.put("house_status", "0");
@@ -470,7 +470,7 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
         int famtype = familyRadioGroup.getCheckedRadioButtonId();
         radioButton = findViewById(famtype);
         int idxfamtype = familyRadioGroup.indexOfChild(radioButton);
-        if (idxfamtype <= 0) {
+        if (idxfamtype >= 0) {
             Val.put("house_family_type", idxfamtype);
         } else {
             Val.put("house_family_type", "0");
@@ -578,13 +578,13 @@ public class HouseholdFormActivity extends AppCompatActivity implements Compound
                     int dust = dustRadioGroup.getCheckedRadioButtonId();
                     radioButton = findViewById(dust);
                     int idxdust = dustRadioGroup.indexOfChild(radioButton);
-                    if (dust == 0) {
+                    if (idxdust == 0) {
                         Val.put("ep3", "3");
                     }
-                    if (dust == 1) {
+                    if (idxdust == 1) {
                         Val.put("ep3", "2");
                     }
-                    if (dust == 2) {
+                    if (idxdust == 2) {
                         Val.put("ep3", "1");
                     }
                 } else {
